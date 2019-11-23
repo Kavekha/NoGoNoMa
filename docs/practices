@@ -1,0 +1,3 @@
+* Layers:
+    Prendre un layer de data.layersorder.
+    Commencer toujours avec terminal.layer(layerorder.X)

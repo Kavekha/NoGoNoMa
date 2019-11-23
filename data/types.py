@@ -9,6 +9,16 @@ class State:
         self.current_state = new_state
 
 
+class Layers(Enum):
+    UNKNOWN = 0
+    MAP = 1
+    ITEM = 2
+    MONSTER = 3
+    PLAYER = 4
+    INTERFACE = 5
+    MENU = 6
+
+
 class States(Enum):
     AWAITING_INPUT = 0
     PRE_RUN = 1

@@ -1,6 +1,6 @@
 from bearlibterminal import terminal
 
-from data.types import TileType
+from data.types import TileType, Layers
 from world import World
 from components.player_component import PlayerComponent
 from components.viewshed_component import ViewshedComponent
@@ -15,7 +15,7 @@ def draw_map():
     current_map = World.fetch('current_map')
     gmap = current_map.tiles
     for entity in subjects:
-        terminal.layer(1)
+        terminal.layer(Layers.MAP.value)
         x = 0
         y = 0
         for tile in range(len(gmap)):
