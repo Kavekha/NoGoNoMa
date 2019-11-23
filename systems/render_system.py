@@ -12,9 +12,22 @@ class RenderSystem(System):
         if not subjects:
             return
 
-        terminal.layer(2)
         current_map = World.fetch('current_map')
         for entity, (position, render) in subjects:
             idx = current_map.xy_idx(position.x, position.y)
             if current_map.visible_tiles[idx]:
                 terminal.printf(position.x, position.y, f'[color={render.fg}]{render.glyph}[/color]')
+
+
+def render_system():
+    subjects = World.get_components(PositionComponent, RenderableComponent)
+    if not subjects:
+        return
+
+    current_map = World.fetch('current_map')
+    for entity, (position, render) in subjects:
+        idx = current_map.xy_idx(position.x, position.y)
+        if current_map.visible_tiles[idx]:
+            terminal.printf(position.x, position.y, f'[color={render.fg}]{render.glyph}[/color]')
+
+

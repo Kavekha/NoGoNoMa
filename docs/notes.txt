@@ -1,0 +1,27 @@
+Tooltips:
+    Necessite read terminal pour obtenir positions x, y de la mouse regulierement.
+    Mal formaté.
+    Ne prends pas en compte la visibilité.
+
+AI:
+    Meilleur pathfinding.
+    Attiré par des items au sol.
+    Actif / inactif selon presence pj.
+
+Tour par Tour:
+    Fonctionnement etrange des tours: "je me deplace, mais en fait c'est le mob qui avance vers moi"
+
+Main loop:
+    Affichage map + persos au debut.
+
+Affichage:
+    Superposition item / mobs
+    Layers = Changement de layers à gerer.
+
+World:
+    maintain :
+        Gerer autrement les delete pour ne pas defoncer les iterators.
+        On marque une entité comme "morte", et on l'efface en fin de cycle.
+
+UI:
+    Fusionner DropMenu & InventoryMenu. Juste le texte change.

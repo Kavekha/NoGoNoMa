@@ -7,7 +7,7 @@ from random import seed
 import config
 from world import World
 from player_systems.player_input import player_input
-from systems.render_system import RenderSystem
+from systems.render_system import render_system
 from systems.visibility_system import VisibilitySystem
 from systems.monster_ai_system import MonsterAi
 from systems.map_indexing_system import MapIndexingSystem
@@ -66,8 +66,13 @@ def run_systems():
     terminal.clear()
     World.update()
     draw_map()
+    render_system()
     draw_tooltip()
     terminal.refresh()
+
+
+def render_entities():
+    render_system()
 
 
 def main(main_seed):
@@ -78,8 +83,6 @@ def main(main_seed):
     World.insert('seed', main_seed)
 
     # create systems.
-    render_system = RenderSystem()
-    World.add_system(render_system)
     visibility_system = VisibilitySystem()
     World.add_system(visibility_system)
     monster_ai_system = MonsterAi()

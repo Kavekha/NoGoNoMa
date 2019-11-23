@@ -1,5 +1,8 @@
+from data.types import Layers
+
+
 class RenderableComponent:
-    def __init__(self, glyph, fg, bg='black'):
+    def __init__(self, glyph, char_color, render_order=Layers.UNKNOWN):
         self.glyph = glyph
-        self.fg = fg
-        self.bg = bg
+        self.fg = char_color
+        self.render_order = render_order

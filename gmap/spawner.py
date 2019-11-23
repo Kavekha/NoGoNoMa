@@ -11,6 +11,7 @@ from components.player_component import PlayerComponent
 from components.item_component import ItemComponent
 from components.potion_component import PotionComponent
 
+from data.types import Layers
 from world import World
 import config
 
@@ -57,7 +58,7 @@ def spawn_player(x, y):
     # Entity Name, Pos & Rend & PLAYER
     x, y = x, y
     pos = PositionComponent(x, y)
-    rend = RenderableComponent('@', 'yellow', 'black')
+    rend = RenderableComponent('@', 'yellow', Layers.PLAYER)
     name = NameComponent('Player')
     viewshed = ViewshedComponent()
     player = PlayerComponent()
@@ -69,7 +70,7 @@ def spawn_player(x, y):
 
 def create_monster(name, x, y):
     position = PositionComponent(x, y)
-    renderable = RenderableComponent('g', 'red', 'darker green')
+    renderable = RenderableComponent('g', 'red', Layers.MONSTER)
     name = NameComponent(name)
     viewshed = ViewshedComponent(8)
     block = BlockTileComponent()
