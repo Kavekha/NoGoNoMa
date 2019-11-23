@@ -8,6 +8,7 @@ from components.name_component import NameComponent
 from components.position_component import PositionComponent
 from components.in_backpack_component import InBackPackComponent
 from components.wants_to_drink_potion_component import WantToDrinkPotionComponent
+from components.wants_to_drop_component import WantsToDropComponent
 from data.types import ItemMenuResult
 import config
 
@@ -106,6 +107,7 @@ def show_inventory(user):
                         f' {World.get_entity_component(item, NameComponent).name}')
         y += 1
         letter_index += 1
+    terminal.printf(18, y + 4, f'[color=darker yellow] ESCAPE to cancel.[/color]')
 
     terminal.refresh()
     terminal.layer(previous_layer)
@@ -113,16 +115,62 @@ def show_inventory(user):
     if terminal.has_input():
         key = terminal.read()
         if key == terminal.TK_ESCAPE:
-            return (ItemMenuResult.CANCEL, None)
+            return ItemMenuResult.CANCEL, None
         else:
             index = terminal.state(terminal.TK_CHAR) - ord('a')
-            if index >= 0:
-                return (ItemMenuResult.SELECTED, items_in_user_backpack[index])
-            return (ItemMenuResult.NO_RESPONSE, None)
-    return (ItemMenuResult.NO_RESPONSE, None)
+            if 0 <= index < len(items_in_user_backpack):
+                return ItemMenuResult.SELECTED, items_in_user_backpack[index]
+            return ItemMenuResult.NO_RESPONSE, None
+    return ItemMenuResult.NO_RESPONSE, None
 
 
 def select_item_from_inventory(item_id):
     drink_intent = WantToDrinkPotionComponent(item_id)
     player = World.fetch('player')
     World.add_component(drink_intent, player)
+
+
+def drop_item_from_inventory(item_id):
+    drop_intent = WantsToDropComponent(item_id)
+    player = World.fetch('player')
+    World.add_component(drop_intent, player)
+
+
+def drop_item_menu(user):
+    subjects = World.get_components(NameComponent, InBackPackComponent)
+    if not subjects:
+        return
+
+    items_in_user_backpack = []
+    for entity, (name, in_backpack, *args) in subjects:
+        if in_backpack.owner == user:
+            items_in_user_backpack.append(entity)
+
+    previous_layer = terminal.state(terminal.TK_LAYER)
+    terminal.layer(3)
+
+    y = (25 - (len(items_in_user_backpack) // 2))
+    terminal.printf(18, y - 2, f'[color=yellow] Drop which item?[/color]')
+
+    letter_index = ord('a')
+    for item in items_in_user_backpack:
+        terminal.printf(17, y,
+                        f'([color=orange]{chr(letter_index)}[/color])'
+                        f' {World.get_entity_component(item, NameComponent).name}')
+        y += 1
+        letter_index += 1
+    terminal.printf(18, y + 4, f'[color=darker yellow] ESCAPE to cancel.[/color]')
+
+    terminal.refresh()
+    terminal.layer(previous_layer)
+
+    if terminal.has_input():
+        key = terminal.read()
+        if key == terminal.TK_ESCAPE:
+            return ItemMenuResult.CANCEL, None
+        else:
+            index = terminal.state(terminal.TK_CHAR) - ord('a')
+            if 0 <= index < len(items_in_user_backpack):
+                return ItemMenuResult.SELECTED, items_in_user_backpack[index]
+            return ItemMenuResult.NO_RESPONSE, None
+    return ItemMenuResult.NO_RESPONSE, None
