@@ -15,6 +15,7 @@ class States(Enum):
     PLAYER_TURN = 2
     MONSTER_TURN = 3
     SHOW_INVENTORY = 4
+    SHOW_DROP_ITEM = 5
 
 
 class TileType(Enum):

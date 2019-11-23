@@ -14,8 +14,9 @@ from systems.map_indexing_system import MapIndexingSystem
 from systems.melee_combat_system import MeleeCombatSystem
 from systems.damage_system import DamageSystem
 from systems.death_system import DeathSystem
-from systems.ui_system import UiSystem, draw_tooltip, show_inventory, select_item_from_inventory
-from systems.inventory_system import ItemCollectionSystem
+from systems.ui_system import UiSystem, draw_tooltip, show_inventory, select_item_from_inventory, drop_item_menu, \
+    drop_item_from_inventory
+from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.potion_use_system import PotionUseSystem
 
 from gmap.map_creation import Gmap
@@ -46,11 +47,19 @@ def tick():
         result, item = show_inventory(World.fetch('player'))
         if result == ItemMenuResult.CANCEL:
             run_state.change_state(States.AWAITING_INPUT)
-            terminal.refresh()
+            run_systems()
         elif result == ItemMenuResult.SELECTED:
             select_item_from_inventory(item)
             run_state.change_state(States.PLAYER_TURN)
-            terminal.refresh()
+
+    elif run_state.current_state == States.SHOW_DROP_ITEM:
+        result, item = drop_item_menu(World.fetch('player'))
+        if result == ItemMenuResult.CANCEL:
+            run_state.change_state(States.AWAITING_INPUT)
+            run_systems()
+        elif result == ItemMenuResult.SELECTED:
+            drop_item_from_inventory(item)
+            run_state.change_state(States.PLAYER_TURN)
 
 
 def run_systems():
@@ -87,6 +96,8 @@ def main(main_seed):
     World.add_system(ui_system)
     inventory_system = ItemCollectionSystem()
     World.add_system(inventory_system)
+    drop_system = ItemDropSystem()
+    World.add_system(drop_system)
     potion_system = PotionUseSystem()
     World.add_system(potion_system)
 

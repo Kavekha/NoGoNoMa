@@ -31,6 +31,8 @@ def player_input(run_state):
             get_item(World.fetch('player'))
         elif key == terminal.TK_I:
             return States.SHOW_INVENTORY
+        elif key == terminal.TK_D:
+            return States.SHOW_DROP_ITEM
 
         elif key == terminal.TK_CLOSE:
             terminal.close()
