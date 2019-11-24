@@ -8,10 +8,9 @@ from components.monster_component import MonsterComponent
 from components.blocktile_component import BlockTileComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
-from components.item_component import ItemComponent
-from components.potion_component import PotionComponent
 
 from data.types import Layers
+from data.items_creation import create_healing_potion_item, create_magic_missile_scroll
 from world import World
 import config
 
@@ -36,7 +35,7 @@ def spawn_room(room):
     item_position_to_spawn = random_room_positions_list(nb_items, current_map, room)
     for idx in item_position_to_spawn:
         x, y = current_map.index_to_point2d(idx)
-        create_item(x, y)
+        create_random_item(x, y)
 
 
 def random_room_positions_list(nb_iterations, current_map, room):
@@ -87,11 +86,12 @@ def create_random_monster(x, y):
     return create_monster(name, x, y)
 
 
-def create_item(x, y):
-    position = PositionComponent(x, y)
-    renderable = RenderableComponent('!', 'purple')
-    name = NameComponent('Health Potion')
-    item = ItemComponent()
-    potion = PotionComponent(amount=8)
-    item_id = World.create_entity(position, renderable, name, item, potion)
-    return item_id
+def create_random_item(x, y):
+    rand = randint(-1, 0)
+    if rand == 1:
+        return create_healing_potion_item(x, y)
+    else:
+        return create_magic_missile_scroll(x, y)
+
+
+

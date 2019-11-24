@@ -7,9 +7,11 @@ from components.player_component import PlayerComponent
 from components.name_component import NameComponent
 from components.position_component import PositionComponent
 from components.in_backpack_component import InBackPackComponent
-from components.wants_to_drink_potion_component import WantToDrinkPotionComponent
+from components.wants_use_item_component import WantsToUseComponent
 from components.wants_to_drop_component import WantsToDropComponent
-from data.types import ItemMenuResult
+from components.ranged_component import RangedComponent
+from components.targeting_component import TargetingComponent
+from data.types import ItemMenuResult, States, Layers
 import config
 
 
@@ -23,11 +25,10 @@ class UiSystem(System):
         if not subjects:
             return
 
-        terminal.layer(0)
+        terminal.layer(Layers.INTERFACE.value)
         for entity, (combat_stats, player) in subjects:
             terminal.printf(1, self.line, f'HP: {combat_stats.hp} / {combat_stats.max_hp}')
 
-        #display logs
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE
         for line in log:
@@ -38,17 +39,18 @@ class UiSystem(System):
 
 def draw_tooltip():
     # mouse & tooltip
+    terminal.layer(Layers.TOOLTIP.value)
+    terminal.clear_area(0, 0, config.MAP_WIDTH, config.MAP_HEIGHT)
+
     subjects = World.get_components(PositionComponent, NameComponent)
     if not subjects:
         return
 
-    # Need terminal.read()
     mouse_pos_x = terminal.state(terminal.TK_MOUSE_X)
     mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y)
 
     if mouse_pos_x < config.MAP_WIDTH or mouse_pos_y < config.MAP_HEIGHT:
         tooltip = []
-        terminal.layer(0)
         for entity, (position, name) in subjects:
             if position.x == mouse_pos_x and position.y == mouse_pos_y:
                 tooltip.append(f'{name.name}')
@@ -82,6 +84,7 @@ def draw_tooltip():
                         terminal.printf(arrow_pos[0] - 1, y, f'[bkcolor=gray] [/color]')
                         y += 1
                 terminal.printf(arrow_pos[0], arrow_pos[1], f'[bkcolor=gray] <- [/color]')
+            terminal.refresh()
 
 
 def show_inventory(user):
@@ -94,9 +97,7 @@ def show_inventory(user):
         if in_backpack.owner == user:
             items_in_user_backpack.append(entity)
 
-    previous_layer = terminal.state(terminal.TK_LAYER)
-    terminal.layer(3)
-
+    terminal.layer(Layers.MENU.value)
     y = (25 - (len(items_in_user_backpack) //2))
     terminal.printf(18, y -2, f'[color=yellow] Inventory [/color]')
 
@@ -110,7 +111,6 @@ def show_inventory(user):
     terminal.printf(18, y + 4, f'[color=darker yellow] ESCAPE to cancel.[/color]')
 
     terminal.refresh()
-    terminal.layer(previous_layer)
 
     if terminal.has_input():
         key = terminal.read()
@@ -125,9 +125,23 @@ def show_inventory(user):
 
 
 def select_item_from_inventory(item_id):
-    drink_intent = WantToDrinkPotionComponent(item_id)
     player = World.fetch('player')
-    World.add_component(drink_intent, player)
+    ranged = World.get_entity_component(item_id, RangedComponent)
+    if ranged:
+        target_intent = TargetingComponent(item_id, ranged.range)
+        World.add_component(target_intent, player)
+        logs = World.fetch('logs')
+        terminal.layer(Layers.INTERFACE.value)
+        logs.appendleft(f'[color={config.COLOR_SYS_MSG}]Select target. ESCAPE to cancel.[/color]')
+        return States.SHOW_TARGETING
+    use_item(item_id)
+    return States.PLAYER_TURN
+
+
+def use_item(item_id, target_position=None):
+    player = World.fetch('player')
+    use_intent = WantsToUseComponent(item_id, target_position)
+    World.add_component(use_intent, player)
 
 
 def drop_item_from_inventory(item_id):
@@ -146,9 +160,7 @@ def drop_item_menu(user):
         if in_backpack.owner == user:
             items_in_user_backpack.append(entity)
 
-    previous_layer = terminal.state(terminal.TK_LAYER)
-    terminal.layer(3)
-
+    terminal.layer(Layers.MENU.value)
     y = (25 - (len(items_in_user_backpack) // 2))
     terminal.printf(18, y - 2, f'[color=yellow] Drop which item?[/color]')
 
@@ -162,7 +174,6 @@ def drop_item_menu(user):
     terminal.printf(18, y + 4, f'[color=darker yellow] ESCAPE to cancel.[/color]')
 
     terminal.refresh()
-    terminal.layer(previous_layer)
 
     if terminal.has_input():
         key = terminal.read()
