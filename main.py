@@ -16,8 +16,9 @@ from systems.damage_system import DamageSystem
 from systems.death_system import DeathSystem
 from systems.ui_system import UiSystem, draw_tooltip, show_inventory, select_item_from_inventory, drop_item_menu, \
     drop_item_from_inventory
+from systems.targeting_system import TargetingSystem, show_targeting
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
-from systems.potion_use_system import PotionUseSystem
+from systems.item_use_system import ItemUseSystem
 
 from gmap.map_creation import Gmap
 from gmap.draw_map import draw_map
@@ -49,8 +50,9 @@ def tick():
             run_state.change_state(States.AWAITING_INPUT)
             run_systems()
         elif result == ItemMenuResult.SELECTED:
-            select_item_from_inventory(item)
-            run_state.change_state(States.PLAYER_TURN)
+            new_state = select_item_from_inventory(item)
+            run_systems()
+            run_state.change_state(new_state)
 
     elif run_state.current_state == States.SHOW_DROP_ITEM:
         result, item = drop_item_menu(World.fetch('player'))
@@ -59,6 +61,12 @@ def tick():
             run_systems()
         elif result == ItemMenuResult.SELECTED:
             drop_item_from_inventory(item)
+            run_state.change_state(States.PLAYER_TURN)
+
+    elif run_state.current_state == States.SHOW_TARGETING:
+        print(f'show target!')
+        result = show_targeting()
+        if result == ItemMenuResult.CANCEL:
             run_state.change_state(States.PLAYER_TURN)
 
 
@@ -101,8 +109,10 @@ def main(main_seed):
     World.add_system(inventory_system)
     drop_system = ItemDropSystem()
     World.add_system(drop_system)
-    potion_system = PotionUseSystem()
-    World.add_system(potion_system)
+    item_use_system = ItemUseSystem()
+    World.add_system(item_use_system)
+    #targeting_system = TargetingSystem()
+    #World.add_system(targeting_system)
 
     # create map
     current_map = Gmap()

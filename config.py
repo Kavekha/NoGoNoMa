@@ -25,5 +25,6 @@ COLOR_PLAYER_INFO_OK = 'lighter blue'
 COLOR_PLAYER_INFO_NOT = 'light orange'
 COLOR_MAJOR_INFO = 'orange'
 COLOR_DEADLY_INFO = 'red'
+COLOR_SYS_MSG = 'yellow'
 
 PRECISE_MOUSE = True

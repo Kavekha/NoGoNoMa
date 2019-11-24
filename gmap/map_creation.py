@@ -111,31 +111,4 @@ class Rect:
         return False
 
     def center(self):
-        return ((self.x1 + self.x2)//2, (self.y1 + self.y2) //2)
-
-
-'''
-def new_map_first_iteration():
-    # map filed with floor
-    gmap = [TileType.FLOOR] * (config.MAP_HEIGHT * config.MAP_WIDTH)
-
-    # map with boundaries walls
-    for x in range(config.MAP_WIDTH):
-        gmap[xy_idx(x, 0)] = TileType.WALL
-        gmap[xy_idx(x, config.MAP_HEIGHT -1)] = TileType.WALL
-
-    for y in range(0, config.MAP_HEIGHT-1):
-        gmap[xy_idx(0, y)] = TileType.WALL
-        gmap[xy_idx(config.MAP_WIDTH-1, y)] = TileType.WALL
-
-    # random walls
-    from random import randint
-    for _i in range(0, 400):
-        x = randint(1, config.MAP_WIDTH -1)
-        y = randint(1, config.MAP_HEIGHT -1)
-        tile_pos = xy_idx(x, y)
-        if tile_pos != xy_idx(config.BASE_PLAYER_X, config.BASE_PLAYER_Y):
-            gmap[tile_pos] = TileType.WALL
-
-    return gmap
-'''
+        return (self.x1 + self.x2)//2, (self.y1 + self.y2) //2

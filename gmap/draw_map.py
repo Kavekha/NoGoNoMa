@@ -35,21 +35,3 @@ def draw_map():
             if x > config.MAP_WIDTH - 1:
                 x = 0
                 y += 1
-
-
-def draw_map_old():
-    current_map = World.fetch('current_map')
-    gmap = current_map.tiles
-
-    terminal.layer(1)
-    x = 0
-    y = 0
-    for tile in range(len(gmap)):
-        if gmap[tile] == TileType.FLOOR:
-            terminal.printf(x, y, f'[color=darker blue].[/color]')
-        elif gmap[tile] == TileType.WALL:
-            terminal.printf(x, y, f'[color=darker red]#[/color]')
-        x += 1
-        if x > config.MAP_WIDTH - 1:
-            x = 0
-            y += 1

@@ -25,7 +25,7 @@ class VisibilitySystem(System):
                 y = 0
                 for row in viewshed.visible_tiles:
                     for tile in row:
-                        if tile == True:
+                        if tile:
                             idx = current_map.xy_idx(x, y)
                             current_map.revealed_tiles[idx] = True
                             current_map.visible_tiles[idx] = True

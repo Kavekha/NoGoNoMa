@@ -7,6 +7,7 @@ from components.position_component import PositionComponent
 from components.name_component import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from data.types import States
+from gmap.utils import distance_to
 from world import World
 import config
 
@@ -26,7 +27,7 @@ class MonsterAi(System):
         x, y = player_position.x, player_position.y
         for entity, (name, monster, viewshed, position, *args) in subjects:
             if viewshed.visible_tiles[y][x]:
-                if self.distance_to(position, player_position) <= 1:
+                if distance_to(position.x, position.y, player_position.x, player_position.y) <= 1:
                     print(f'{name.name} shouts insults!')
                     want_to_melee = WantsToMeleeComponent(player)
                     World.add_component(want_to_melee, entity)
@@ -49,8 +50,3 @@ class MonsterAi(System):
         if not current_map.blocked_tiles[current_map.xy_idx(new_pos_x, new_pos_y)]:
             position_component.x = new_pos_x
             position_component.y = new_pos_y
-
-    def distance_to(self, self_position, other_position):
-        dx = other_position.x - self_position.x
-        dy = other_position.y - self_position.y
-        return math.sqrt(dx ** 2 + dy ** 2)
