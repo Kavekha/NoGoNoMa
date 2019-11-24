@@ -4,22 +4,23 @@ from enum import Enum
 class State:
     def __init__(self, state):
         self.current_state = state
-        self.data = {}
 
     def change_state(self, new_state):
         self.current_state = new_state
 
 
 class Layers(Enum):
-    UNKNOWN = 0
-    MAP = 1
-    ITEM = 2
-    MONSTER = 3
-    PLAYER = 4
-    INTERFACE = 5
-    MENU = 6
-    AVAILABLE_TILES = 7
-    TOOLTIP = 8
+    BACKGROUND = 0
+    UNKNOWN = 1
+    MAP = 2
+    ITEM = 3
+    MONSTER = 4
+    PLAYER = 5
+    INTERFACE = 6
+    TOOLTIP = 7
+    MENU = 8
+
+
 
 
 class States(Enum):

@@ -16,7 +16,7 @@ from systems.damage_system import DamageSystem
 from systems.death_system import DeathSystem
 from systems.ui_system import UiSystem, draw_tooltip, show_inventory, select_item_from_inventory, drop_item_menu, \
     drop_item_from_inventory
-from systems.targeting_system import TargetingSystem, show_targeting
+from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
 
@@ -27,6 +27,7 @@ from gmap.spawner import spawn_world, spawn_player
 
 
 def tick():
+
     run_state = World.fetch('state')
     if run_state.current_state == States.PRE_RUN:
         run_systems()
@@ -55,7 +56,7 @@ def tick():
             run_state.change_state(new_state)
 
     elif run_state.current_state == States.SHOW_DROP_ITEM:
-        result, item = drop_item_menu(World.fetch('player'))
+        result, item, target_pos = drop_item_menu(World.fetch('player'))
         if result == ItemMenuResult.CANCEL:
             run_state.change_state(States.AWAITING_INPUT)
             run_systems()
@@ -64,9 +65,11 @@ def tick():
             run_state.change_state(States.PLAYER_TURN)
 
     elif run_state.current_state == States.SHOW_TARGETING:
-        print(f'show target!')
-        result = show_targeting()
+        result, item, target_pos = show_targeting()
         if result == ItemMenuResult.CANCEL:
+            run_state.change_state(States.PLAYER_TURN)
+        elif result == ItemMenuResult.SELECTED:
+            select_target(item, target_pos)
             run_state.change_state(States.PLAYER_TURN)
 
 
@@ -111,8 +114,6 @@ def main(main_seed):
     World.add_system(drop_system)
     item_use_system = ItemUseSystem()
     World.add_system(item_use_system)
-    #targeting_system = TargetingSystem()
-    #World.add_system(targeting_system)
 
     # create map
     current_map = Gmap()
@@ -136,8 +137,9 @@ def main(main_seed):
     World.insert('state', state)
 
     terminal.open()
-    terminal.set(f'window: title={config.TITLE}, size={config.SCREEN_WIDTH}x{config.SCREEN_HEIGHT}, filter=[keyboard, mouse]')
-    terminal.set('font: {}'.format(config.FONT))
+    terminal.set(f'window: title={config.TITLE}, size={config.SCREEN_WIDTH}x{config.SCREEN_HEIGHT}')
+    terminal.set(f'font: {config.FONT}')
+    terminal.set("input.filter={keyboard, mouse+}")
     terminal.refresh()
 
     while True:

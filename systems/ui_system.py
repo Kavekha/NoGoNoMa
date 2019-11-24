@@ -10,10 +10,7 @@ from components.in_backpack_component import InBackPackComponent
 from components.wants_use_item_component import WantsToUseComponent
 from components.wants_to_drop_component import WantsToDropComponent
 from components.ranged_component import RangedComponent
-from components.viewshed_component import ViewshedComponent
 from components.targeting_component import TargetingComponent
-
-from gmap.utils import distance_to
 from data.types import ItemMenuResult, States, Layers
 import config
 
@@ -42,6 +39,9 @@ class UiSystem(System):
 
 def draw_tooltip():
     # mouse & tooltip
+    terminal.layer(Layers.TOOLTIP.value)
+    terminal.clear_area(0, 0, config.MAP_WIDTH, config.MAP_HEIGHT)
+
     subjects = World.get_components(PositionComponent, NameComponent)
     if not subjects:
         return
@@ -51,7 +51,6 @@ def draw_tooltip():
 
     if mouse_pos_x < config.MAP_WIDTH or mouse_pos_y < config.MAP_HEIGHT:
         tooltip = []
-        terminal.layer(Layers.TOOLTIP.value)
         for entity, (position, name) in subjects:
             if position.x == mouse_pos_x and position.y == mouse_pos_y:
                 tooltip.append(f'{name.name}')
@@ -85,6 +84,7 @@ def draw_tooltip():
                         terminal.printf(arrow_pos[0] - 1, y, f'[bkcolor=gray] [/color]')
                         y += 1
                 terminal.printf(arrow_pos[0], arrow_pos[1], f'[bkcolor=gray] <- [/color]')
+            terminal.refresh()
 
 
 def show_inventory(user):
@@ -134,9 +134,14 @@ def select_item_from_inventory(item_id):
         terminal.layer(Layers.INTERFACE.value)
         logs.appendleft(f'[color={config.COLOR_SYS_MSG}]Select target. ESCAPE to cancel.[/color]')
         return States.SHOW_TARGETING
-    use_intent = WantsToUseComponent(item_id)
-    World.add_component(use_intent, player)
+    use_item(item_id)
     return States.PLAYER_TURN
+
+
+def use_item(item_id, target_position=None):
+    player = World.fetch('player')
+    use_intent = WantsToUseComponent(item_id, target_position)
+    World.add_component(use_intent, player)
 
 
 def drop_item_from_inventory(item_id):

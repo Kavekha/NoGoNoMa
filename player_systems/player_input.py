@@ -4,6 +4,9 @@ from systems.inventory_system import get_item
 from data.types import States
 from world import World
 
+import config
+from data.types import Layers
+
 
 def player_input(run_state):
     if terminal.has_input():
