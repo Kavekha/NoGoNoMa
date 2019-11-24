@@ -1,5 +1,4 @@
 Tooltips:
-    Necessite read terminal pour obtenir positions x, y de la mouse regulierement.
     Mal formaté.
     Ne prends pas en compte la visibilité.
 
@@ -11,13 +10,6 @@ AI:
 Tour par Tour:
     Fonctionnement etrange des tours: "je me deplace, mais en fait c'est le mob qui avance vers moi"
 
-Main loop:
-    Affichage map + persos au debut.
-
-Affichage:
-    Superposition item / mobs
-    Layers = Changement de layers à gerer.
-
 World:
     maintain :
         Gerer autrement les delete pour ne pas defoncer les iterators.
@@ -25,3 +17,12 @@ World:
 
 UI:
     Fusionner DropMenu & InventoryMenu. Juste le texte change.
+
+MapGeneration:
+    Items & monstres dans les murs.
+    Mauvais corridor (seed 1000)
+
+Map, visible tiles etc
+    3 models : 1 en idx, 1 en xy et un en yx
+    A uniformiser ou moyen de reduire erreur.
+    (exemple: viewshed.visible_tiles est en yx)
