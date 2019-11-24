@@ -147,5 +147,5 @@ def main(main_seed):
 
 
 if __name__ == '__main__':
-    main_seed = 1000
+    main_seed = 10000
     main(main_seed)

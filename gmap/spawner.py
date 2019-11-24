@@ -10,7 +10,7 @@ from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
 
 from data.types import Layers
-from data.items_creation import create_healing_potion_item, create_magic_missile_scroll
+from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll
 from world import World
 import config
 
@@ -87,11 +87,13 @@ def create_random_monster(x, y):
 
 
 def create_random_item(x, y):
-    rand = randint(-1, 0)
+    rand = randint(0, 2)
     if rand == 1:
         return create_healing_potion_item(x, y)
-    else:
+    elif rand == 2:
         return create_magic_missile_scroll(x, y)
+    else:
+        return create_fireball_scroll(x, y)
 
 
 
