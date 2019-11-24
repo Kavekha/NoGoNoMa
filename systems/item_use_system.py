@@ -8,6 +8,7 @@ from components.consumable_component import ConsumableComponent
 from components.suffer_damage_component import SufferDamageComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.viewshed_component import ViewshedComponent
+from components.confusion_component import ConfusionComponent
 from gmap.utils import xy_idx
 from world import World
 import config
@@ -25,6 +26,7 @@ class ItemUseSystem(System):
 
             item_inflicts_dmg = World.get_entity_component(wants_to_use.item, InflictsDamageComponent)
             item_provides_healing = World.get_entity_component(wants_to_use.item, ProvidesHealingComponent)
+            item_causes_confusion = World.get_entity_component(wants_to_use.item, ConfusionComponent)
             item_name = World.get_entity_component(wants_to_use.item, NameComponent)
 
             targets = []
@@ -56,21 +58,29 @@ class ItemUseSystem(System):
                 targets.append(entity)
 
             for target in targets:
+                target_name = World.get_entity_component(target, NameComponent)
                 if World.get_entity_component(target, CombatStatsComponent):
                     if item_inflicts_dmg:
                         suffer_dmg = SufferDamageComponent(item_inflicts_dmg.damage)
                         World.add_component(suffer_dmg, target)
                         if entity == player:
-                            target_name = World.get_entity_component(target, NameComponent)
+
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}] '
                                             f'You use {item_name.name} on {target_name.name}'
                                             f' for {item_inflicts_dmg.damage} hp.')
 
                     if item_provides_healing:
-                        stats.hp = min(stats.max_hp, stats.hp + item_provides_healing.healing_amount)
                         if entity == player:
+                            stats.hp = min(stats.max_hp, stats.hp + item_provides_healing.amount)
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You drink: {item_name.name}'
                                             f' You are heal for {item_provides_healing.healing_amount} hp.[/color]')
+
+                    if item_causes_confusion:
+                        add_confusion = ConfusionComponent(item_causes_confusion.turns)
+                        World.add_component(add_confusion, target)
+                        if entity == player:
+                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You use {item_name.name} '
+                                            f'on {target_name.name}, confusing them.')
 
             consumable = World.get_entity_component(wants_to_use.item, ConsumableComponent)
             if consumable:

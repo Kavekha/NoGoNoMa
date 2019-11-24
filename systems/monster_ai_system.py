@@ -6,6 +6,7 @@ from components.viewshed_component import ViewshedComponent
 from components.position_component import PositionComponent
 from components.name_component import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
+from components.confusion_component import ConfusionComponent
 from data.types import States
 from gmap.utils import distance_to
 from world import World
@@ -25,14 +26,26 @@ class MonsterAi(System):
         player = World.fetch('player')
         player_position = World.get_entity_component(player, PositionComponent)
         x, y = player_position.x, player_position.y
+
         for entity, (name, monster, viewshed, position, *args) in subjects:
-            if viewshed.visible_tiles[y][x]:
-                if distance_to(position.x, position.y, player_position.x, player_position.y) <= 1:
-                    print(f'{name.name} shouts insults!')
-                    want_to_melee = WantsToMeleeComponent(player)
-                    World.add_component(want_to_melee, entity)
-                else:
-                    self.move_towards(position, player_position.x, player_position.y)
+            can_act = True
+            is_confused = World.get_entity_component(entity, ConfusionComponent)
+            if is_confused:
+                is_confused.turns -= 1
+                if is_confused.turns < 1:
+                    World.remove_component(ConfusionComponent, entity)
+                can_act = False
+
+            if can_act:
+                if viewshed.visible_tiles[y][x]:
+                    if distance_to(position.x, position.y, player_position.x, player_position.y) <= 1:
+                        print(f'{name.name} shouts insults!')
+                        want_to_melee = WantsToMeleeComponent(player)
+                        World.add_component(want_to_melee, entity)
+                    else:
+                        self.move_towards(position, player_position.x, player_position.y)
+            else:
+                print(f'{name.name} is confused.')
 
     def move_towards(self, position_component, target_x, target_y):
         dx = target_x - position_component.x
