@@ -45,8 +45,8 @@ def random_room_positions_list(nb_iterations, current_map, room):
     for _i in range(0, nb_iterations):
         added = False
         while not added:
-            x = room.x1 + randint(1, abs(room.x2 - room.x1))
-            y = room.y1 + randint(1, abs(room.y2 - room.y1))
+            x = room.x1 + randint(1, abs(room.x2 - room.x1) -2)
+            y = room.y1 + randint(1, abs(room.y2 - room.y1) -2)
             idx = current_map.xy_idx(x, y)
             if idx not in position_list:
                 position_list.append(idx)

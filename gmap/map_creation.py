@@ -47,7 +47,6 @@ class Gmap:
         return fov_map
 
     def apply_room_to_map(self, room, gmap):
-        # TODO : Room out of map
         for y in range(room.y1, room.y2-1):
             for x in range(room.x1, room.x2-1):
                 gmap[self.xy_idx(x, y)] = TileType.FLOOR
@@ -55,13 +54,13 @@ class Gmap:
     def apply_horizontal_tunnel(self, x1, x2, y, gmap):
         for x in range(min(x1, x2), max(x1, x2)):
             idx = self.xy_idx(x, y)
-            if idx > 0 and idx < config.MAP_WIDTH * config.MAP_HEIGHT:
+            if 0 < idx < config.MAP_WIDTH * config.MAP_HEIGHT:
                 gmap[idx] = TileType.FLOOR
 
     def apply_vertical_tunnel(self, y1, y2, x, gmap):
         for y in range(min(y1, y2), max(y1, y2)):
             idx = self.xy_idx(x, y)
-            if idx > 0 and idx < config.MAP_WIDTH * config.MAP_HEIGHT:
+            if 0 < idx < config.MAP_WIDTH * config.MAP_HEIGHT:
                 gmap[idx] = TileType.FLOOR
 
     def new_map(self):
@@ -71,8 +70,8 @@ class Gmap:
         for _i in range(0, config.MAX_ROOMS):
             w = randint(config.MIN_SIZE, config.MAX_SIZE)
             h = randint(config.MIN_SIZE, config.MAX_SIZE)
-            x = randint(1, config.MAP_WIDTH - w - 1) -1
-            y = randint(1, config.MAP_HEIGHT - h - 1) -1
+            x = randint(2, config.MAP_WIDTH - w - 1) -1
+            y = randint(2, config.MAP_HEIGHT - h - 1) -1
             new_room = Rect(x, y, w, h)
 
             can_be_add = True

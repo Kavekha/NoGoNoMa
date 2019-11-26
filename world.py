@@ -2,7 +2,7 @@ from systems.system import System
 
 
 class World:
-    _next_available_id = 0
+    _next_available_id = 1  # If 0, will return False when checking entity :D
     _entities = {}
     _components = {}
     _systems = []
