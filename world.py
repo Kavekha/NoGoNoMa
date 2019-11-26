@@ -7,6 +7,7 @@ class World:
     _components = {}
     _systems = []
     _ressources = {}
+    _version = 0
 
     @classmethod
     def add_component(cls, component_instance, entity_id):
@@ -97,3 +98,55 @@ class World:
     def get_entity_component(cls, entity, component):
         if cls.entity_has_component(entity, component):
             return cls._entities[entity][component]
+
+    @classmethod
+    def get_all_systems(cls):
+        return cls._systems
+
+    @classmethod
+    def get_all_components(cls):
+        return cls._components
+
+    @classmethod
+    def get_all_entities(cls):
+        return cls._entities
+
+    @classmethod
+    def get_all_ressources(cls):
+        return cls._ressources
+
+    @classmethod
+    def get_version(cls):
+        return cls._version
+
+    @classmethod
+    def reload_data(cls, data_file):
+
+        systems_save, entities_save, ressources_save = data_file
+
+        entities_file = entities_save
+        for entity, components in entities_file.items():
+            print(f'entity is {entity}, its components are {components}')
+            count = 0
+            for component_type, component_instance in components.items():
+                if count == 0:
+                    cls.create_entity(component_instance)
+                    count += 1
+                else:
+                    cls.add_component(component_instance, entity)
+
+        print('-----')
+
+        ressources_file = ressources_save
+        for ressource_name, ressource_content in ressources_file.items():
+            print(f'insert {ressource_name} with object {ressource_content}')
+            cls.insert(ressource_name, ressource_content)
+
+        print('---------')
+
+        systems_file = systems_save
+        for system in systems_file:
+            cls.add_system(system)
+            print(f'add system {system}')
+
+        print('----- END RELOAD -------')
