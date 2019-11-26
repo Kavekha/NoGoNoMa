@@ -3,6 +3,7 @@
 from bearlibterminal import terminal
 from collections import deque
 from random import seed
+import sys
 
 import config
 from world import World
@@ -19,17 +20,44 @@ from systems.ui_system import UiSystem, draw_tooltip, show_inventory, select_ite
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
-
+from menus.main_menu import main_menu
 from gmap.map_creation import Gmap
 from gmap.draw_map import draw_map
-from data.types import States, State, ItemMenuResult
+from data.types import States, State, ItemMenuResult, MainMenuSelection
+from data.save_and_load import load_game, save_game, has_saved_game
 from gmap.spawner import spawn_world, spawn_player
 
 
-def tick():
+MASTER_SEED = 1000
 
+def tick():
     run_state = World.fetch('state')
-    if run_state.current_state == States.PRE_RUN:
+    if run_state.current_state == States.MAIN_MENU:
+        result = main_menu()
+        if result == MainMenuSelection.NEWGAME:
+            init_game(MASTER_SEED)
+            run_state.change_state(States.PRE_RUN)
+        elif result == MainMenuSelection.LOAD_GAME:
+            run_state.change_state(States.LOAD_GAME)
+        elif result == MainMenuSelection.QUIT:
+            sys.exit()
+
+    elif run_state.current_state == States.LOAD_GAME:
+        if has_saved_game():
+            data_file = load_game()
+            World.reload_data(data_file)
+            run_state.change_state(States.PRE_RUN)
+            World.insert('state', run_state)
+        else:
+            print(f'no save file')
+            run_state.change_state(States.MAIN_MENU)
+
+    elif run_state.current_state == States.SAVE_GAME:
+        save_game(World)
+        terminal.clear()
+        run_state.change_state(States.MAIN_MENU)
+
+    elif run_state.current_state == States.PRE_RUN:
         run_systems()
         run_state.change_state(States.AWAITING_INPUT)
 
@@ -86,12 +114,9 @@ def render_entities():
     render_system()
 
 
-def main(main_seed):
-    # Word is the main system.
-
-    # create first seed
-    seed(main_seed)
-    World.insert('seed', main_seed)
+def init_game(master_seed):
+    seed(master_seed)
+    World.insert('seed', master_seed)
 
     # create systems.
     visibility_system = VisibilitySystem()
@@ -132,9 +157,9 @@ def main(main_seed):
     log_entry.append("Welcome to RuToPy Roguelike!")
     World.insert('logs', log_entry)
 
-    # Add State to World
-    state = State(States.PRE_RUN)
-    World.insert('state', state)
+
+def main():
+    # Word is the main system.
 
     terminal.open()
     terminal.set(f'window: title={config.TITLE}, size={config.SCREEN_WIDTH}x{config.SCREEN_HEIGHT}')
@@ -142,10 +167,11 @@ def main(main_seed):
     terminal.set("input.filter={keyboard, mouse+}")
     terminal.refresh()
 
+    run_state = State(States.MAIN_MENU)
+    World.insert('state', run_state)
     while True:
         tick()
 
 
 if __name__ == '__main__':
-    main_seed = 10000
-    main(main_seed)
+    main()

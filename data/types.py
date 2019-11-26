@@ -21,8 +21,6 @@ class Layers(Enum):
     MENU = 8
 
 
-
-
 class States(Enum):
     AWAITING_INPUT = 0
     PRE_RUN = 1
@@ -32,6 +30,9 @@ class States(Enum):
     SHOW_ITEM_WINDOW = 5
     SHOW_DROP_ITEM = 6
     SHOW_TARGETING = 7
+    MAIN_MENU = 8
+    LOAD_GAME = 9
+    SAVE_GAME = 10
 
 
 class TileType(Enum):
@@ -43,3 +44,10 @@ class ItemMenuResult(Enum):
     CANCEL = 0
     NO_RESPONSE = 1
     SELECTED = 2
+
+
+class MainMenuSelection(Enum):
+    NEWGAME = 0
+    LOAD_GAME = 1
+    QUIT = 2
+    NO_RESPONSE = 3
