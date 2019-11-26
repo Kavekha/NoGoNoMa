@@ -4,11 +4,8 @@ from systems.inventory_system import get_item
 from data.types import States
 from world import World
 
-import config
-from data.types import Layers
 
-
-def player_input(run_state):
+def player_input():
     if terminal.has_input():
         key = terminal.read()
 
@@ -37,6 +34,8 @@ def player_input(run_state):
         elif key == terminal.TK_D:
             return States.SHOW_DROP_ITEM
 
+        elif key == terminal.TK_ESCAPE:
+            return States.SAVE_GAME
         elif key == terminal.TK_CLOSE:
             terminal.close()
         else:

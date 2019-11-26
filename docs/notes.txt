@@ -1,6 +1,7 @@
 Tooltips:
     Mal formaté.
     Ne prends pas en compte la visibilité.
+    Ne se retire pas quand curseur hors objet
 
 AI:
     Meilleur pathfinding.
@@ -21,6 +22,7 @@ UI:
 MapGeneration:
     Items & monstres dans les murs.
     Mauvais corridor (seed 1000)
+
 
 Map, visible tiles etc
     3 models : 1 en idx, 1 en xy et un en yx

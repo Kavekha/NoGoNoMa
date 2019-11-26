@@ -72,7 +72,3 @@ def get_item(user):
         else:
             pickup = WantsToPickUpComponent(user, target_item)
             World.add_component(pickup, user)
-
-
-
-

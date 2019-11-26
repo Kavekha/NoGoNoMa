@@ -62,7 +62,7 @@ def tick():
         run_state.change_state(States.AWAITING_INPUT)
 
     elif run_state.current_state == States.AWAITING_INPUT:
-        run_state.change_state(player_input(run_state))
+        run_state.change_state(player_input())
         draw_tooltip()
 
     elif run_state.current_state == States.PLAYER_TURN:
