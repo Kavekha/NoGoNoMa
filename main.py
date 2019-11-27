@@ -4,6 +4,7 @@ from bearlibterminal import terminal
 from collections import deque
 from random import seed
 import sys
+import time
 
 import config
 from world import World
@@ -30,11 +31,13 @@ from gmap.spawner import spawn_world, spawn_player
 
 MASTER_SEED = 1000
 
+
 def tick():
     run_state = World.fetch('state')
     if run_state.current_state == States.MAIN_MENU:
         result = main_menu()
         if result == MainMenuSelection.NEWGAME:
+            World.reset_all()
             init_game(MASTER_SEED)
             run_state.change_state(States.PRE_RUN)
         elif result == MainMenuSelection.LOAD_GAME:
@@ -169,8 +172,16 @@ def main():
 
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)
+
+    iteration = 0
+    FPS = 100
     while True:
+        start_time = time.perf_counter()  # limit fps
         tick()
+        print(f'iteration = {iteration}')
+        iteration += 1
+        delta_time = (time.perf_counter() - start_time) * 1000
+        terminal.delay(max(int(1000.0 / FPS - delta_time), 0))
 
 
 if __name__ == '__main__':

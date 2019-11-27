@@ -71,7 +71,7 @@ class ItemUseSystem(System):
 
                     if item_provides_healing:
                         if entity == player:
-                            stats.hp = min(stats.max_hp, stats.hp + item_provides_healing.amount)
+                            stats.hp = min(stats.max_hp, stats.hp + item_provides_healing.healing_amount)
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You drink: {item_name.name}'
                                             f' You are heal for {item_provides_healing.healing_amount} hp.[/color]')
 
