@@ -56,7 +56,6 @@ def draw_tooltip():
                 tooltip.append(f'{name.name}')
 
         if tooltip:
-            World.insert('tooltip', tooltip)
             width = 0
             for string in tooltip:
                 if width < len(string):
