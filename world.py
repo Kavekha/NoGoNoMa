@@ -7,7 +7,6 @@ class World:
     _components = {}
     _systems = []
     _ressources = {}
-    _version = 0
 
     @classmethod
     def add_component(cls, component_instance, entity_id):
@@ -104,10 +103,6 @@ class World:
         return cls._systems
 
     @classmethod
-    def get_all_components(cls):
-        return cls._components
-
-    @classmethod
     def get_all_entities(cls):
         return cls._entities
 
@@ -116,8 +111,19 @@ class World:
         return cls._ressources
 
     @classmethod
-    def get_version(cls):
-        return cls._version
+    def reset_all(cls):
+        for entity in cls._entities:
+            del entity
+
+        for component in cls._components:
+            del component
+
+        for system in cls._systems:
+            del system
+
+        for ressource in cls._ressources:
+            del ressource
+        cls._next_available_id = 1  # If 0, will return False when checking entity :D
 
     @classmethod
     def reload_data(cls, data_file):

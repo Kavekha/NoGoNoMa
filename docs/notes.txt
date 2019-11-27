@@ -3,6 +3,9 @@ Tooltips:
     Ne prends pas en compte la visibilité.
     Ne se retire pas quand curseur hors objet
 
+Logs:
+    Raffraichissement de l'affichage des logs.
+
 AI:
     Meilleur pathfinding.
     Attiré par des items au sol.
