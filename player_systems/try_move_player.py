@@ -5,6 +5,8 @@ from components.player_component import PlayerComponent
 from components.viewshed_component import ViewshedComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
+from gmap.utils import xy_idx
+from data.types import TileType
 
 
 def try_move_player(delta_x, delta_y):
@@ -30,3 +32,13 @@ def try_move_player(delta_x, delta_y):
             World.insert('player_pos', (position.x, position.y))
             player_viewshed = World.get_entity_component(entity, ViewshedComponent)
             player_viewshed.dirty = True
+
+
+def try_next_level():
+    player_pos = World.get_entity_component(World.fetch('player'), PositionComponent)
+    logs = World.fetch('logs')
+    current_map = World.fetch('current_map')
+    if current_map.tiles[xy_idx(player_pos.x, player_pos.y)] == TileType.DOWN_STAIRS:
+        return True
+    logs.appendleft(f"[color={config.COLOR_MAJOR_INFO}]There is no way down from here.[/color]")
+    return False

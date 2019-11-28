@@ -24,7 +24,8 @@ from systems.item_use_system import ItemUseSystem
 from menus.main_menu import main_menu
 from gmap.map_creation import Gmap
 from gmap.draw_map import draw_map
-from data.types import States, State, ItemMenuResult, MainMenuSelection
+from data.types import States, ItemMenuResult, MainMenuSelection
+from state import State
 from data.save_and_load import load_game, save_game, has_saved_game
 from gmap.spawner import spawn_world, spawn_player
 
@@ -103,6 +104,10 @@ def tick():
             select_target(item, target_pos)
             run_state.change_state(States.PLAYER_TURN)
 
+    elif run_state.current_state == States.NEXT_LEVEL:
+        run_state.go_next_level()
+        run_state.change_state(States.PRE_RUN)
+
 
 def run_systems():
     terminal.clear()
@@ -144,7 +149,7 @@ def init_game(master_seed):
     World.add_system(item_use_system)
 
     # create map
-    current_map = Gmap()
+    current_map = Gmap(1)
     World.insert('current_map', current_map)
 
     # create entities in current_map

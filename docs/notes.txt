@@ -6,6 +6,13 @@ Tooltips:
 Logs:
     Raffraichissement de l'affichage des logs.
 
+Input:
+    Refacto pour avoir tous les inputs au meme endroit.
+    Recuperation des inputs dans le save pour le Replay.
+
+Initialisation
+    Fichier a part.
+
 AI:
     Meilleur pathfinding.
     Attiré par des items au sol.
@@ -21,13 +28,20 @@ World:
 
 UI:
     Fusionner DropMenu & InventoryMenu. Juste le texte change.
+    API graphique, rassembler les affichages au meme endroit.
 
 MapGeneration:
-    Items & monstres dans les murs.
-    Mauvais corridor (seed 1000)
+    Rewrite map, trop de melange et de methodes au meme endroit
+    Niveau 2 : Encore des mobs dans les murs??
 
 
 Map, visible tiles etc
     3 models : 1 en idx, 1 en xy et un en yx
     A uniformiser ou moyen de reduire erreur.
     (exemple: viewshed.visible_tiles est en yx)
+
+Use:
+    Fireball basé sur la visibilité de la cible, pas du joueur.
+
+Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
+

@@ -1,14 +1,6 @@
 from enum import Enum
 
 
-class State:
-    def __init__(self, state):
-        self.current_state = state
-
-    def change_state(self, new_state):
-        self.current_state = new_state
-
-
 class Layers(Enum):
     BACKGROUND = 0
     UNKNOWN = 1
@@ -33,11 +25,13 @@ class States(Enum):
     MAIN_MENU = 8
     LOAD_GAME = 9
     SAVE_GAME = 10
+    NEXT_LEVEL = 11
 
 
 class TileType(Enum):
     FLOOR = 0
     WALL = 1
+    DOWN_STAIRS = 2
 
 
 class ItemMenuResult(Enum):
