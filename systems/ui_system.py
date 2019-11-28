@@ -25,9 +25,11 @@ class UiSystem(System):
         if not subjects:
             return
 
+        current_map = World.fetch('current_map')
         terminal.layer(Layers.INTERFACE.value)
+        terminal.printf(1, self.line, f'[color=light grey]Depth: {current_map.depth}[/color]')
         for entity, (combat_stats, player) in subjects:
-            terminal.printf(1, self.line, f'HP: {combat_stats.hp} / {combat_stats.max_hp}')
+            terminal.printf(20, self.line, f'[color=light grey]HP: {combat_stats.hp} / {combat_stats.max_hp}[/color]')
 
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE

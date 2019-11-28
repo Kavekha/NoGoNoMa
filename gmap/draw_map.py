@@ -25,6 +25,8 @@ def draw_map():
                         terminal.printf(x, y, f'[color=dark yellow].[/color]')
                     elif gmap[tile] == TileType.WALL:
                         terminal.printf(x, y, f'[color=darker yellow]#[/color]')
+                    elif gmap[tile] == TileType.DOWN_STAIRS:
+                        terminal.printf(x, y, f'[color=light cyan]>[/color]')
                 else:
                     if gmap[tile] == TileType.FLOOR:
                         terminal.printf(x, y, f'[color=dark gray].[/color]')

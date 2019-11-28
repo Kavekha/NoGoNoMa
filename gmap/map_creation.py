@@ -5,8 +5,9 @@ from random import randint
 import config
 from data.types import TileType
 
+
 class Gmap:
-    def __init__(self):
+    def __init__(self, depth):
         self.rooms = []
         self.width = config.MAP_WIDTH
         self.height = config.MAP_HEIGHT
@@ -16,6 +17,7 @@ class Gmap:
         self.visible_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.blocked_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.tile_content = [[] for x in range(config.MAP_HEIGHT * config.MAP_WIDTH)]
+        self.depth = depth
 
     def xy_idx(self, x, y):
         # Return the map tile (x, y). Avoid List in list [x][y]
@@ -93,6 +95,10 @@ class Gmap:
                         self.apply_horizontal_tunnel(prev_x, new_x, new_y, gmap)
 
                 self.rooms.append(new_room)
+
+        stair_position_x, stair_position_y = self.rooms[len(self.rooms) -1].center()
+        stair_idx = self.xy_idx(stair_position_x, stair_position_y)
+        gmap[stair_idx] = TileType.DOWN_STAIRS
 
         return gmap
 

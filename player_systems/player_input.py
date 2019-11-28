@@ -1,5 +1,5 @@
 from bearlibterminal import terminal
-from player_systems.try_move_player import try_move_player
+from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from data.types import States
 from world import World
@@ -33,6 +33,9 @@ def player_input():
             return States.SHOW_INVENTORY
         elif key == terminal.TK_D:
             return States.SHOW_DROP_ITEM
+        elif key == terminal.TK_SPACE:
+            if try_next_level():
+                return States.NEXT_LEVEL
 
         elif key == terminal.TK_ESCAPE:
             return States.SAVE_GAME
