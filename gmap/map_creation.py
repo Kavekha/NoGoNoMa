@@ -19,6 +19,34 @@ class Gmap:
         self.tile_content = [[] for x in range(config.MAP_HEIGHT * config.MAP_WIDTH)]
         self.depth = depth
 
+        self.print_map_debug()
+
+    def print_map_debug(self):
+        dic_map = {}
+        for idx in range(len(self.tiles)):
+            x, y = self.index_to_point2d(idx)
+            try:
+                dic_map[y]
+            except:
+                dic_map[y] = {}
+            dic_map[y][x] = self.tiles[idx]
+
+        map_string = ''
+        for y, row in dic_map.items():
+            map_y = ''
+            for x, tile in row.items():
+                tile = self.tiles[self.xy_idx(x, y)]
+                if tile == TileType.DOWN_STAIRS:
+                    map_y += '> '
+                elif tile == TileType.FLOOR:
+                    map_y += '. '
+                elif tile == TileType.WALL:
+                    map_y += '# '
+                else:
+                    map_y += '* '
+            map_string += '\n' + map_y
+        print(f'\n{map_string}')
+
     def xy_idx(self, x, y):
         # Return the map tile (x, y). Avoid List in list [x][y]
         return (y * config.MAP_WIDTH) + x

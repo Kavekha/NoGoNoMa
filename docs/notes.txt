@@ -10,6 +10,10 @@ Input:
     Refacto pour avoir tous les inputs au meme endroit.
     Recuperation des inputs dans le save pour le Replay.
 
+Saves
+    Esc game en cours : Sauvegarde. Reload = Un etat. Quitter le jeu / reload = une autre situation.
+        Le perso pas au meme endroit, des bouts de map...wtf.
+
 Initialisation
     Fichier a part.
 
@@ -28,7 +32,8 @@ World:
 
 UI:
     Fusionner DropMenu & InventoryMenu. Juste le texte change.
-    API graphique, rassembler les affichages au meme endroit.
+    rassembler les affichages au meme endroit.
+    API graphique, pour gerer ASCII / Tiles
 
 MapGeneration:
     Rewrite map, trop de melange et de methodes au meme endroit
@@ -45,3 +50,4 @@ Use:
 
 Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
 
+systems order
