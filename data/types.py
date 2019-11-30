@@ -1,6 +1,11 @@
 from enum import Enum
 
 
+class EquipmentSlots:
+    MELEE = 0
+    SHIELD = 1
+
+
 class Layers(Enum):
     BACKGROUND = 0
     UNKNOWN = 1

@@ -12,7 +12,7 @@ from components.player_component import PlayerComponent
 from data.types import Layers
 from data.random_table import room_table
 from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll, \
-    create_confusion_scroll
+    create_confusion_scroll, create_dagger, create_shield
 from world import World
 from gmap.utils import xy_idx, index_to_point2d
 import config
@@ -31,7 +31,9 @@ def monster_and_items_list():
         "health potion": create_healing_potion_item,
         'missile Magic Scroll': create_magic_missile_scroll,
         "fireball scroll": create_fireball_scroll,
-        'confusion scroll': create_confusion_scroll
+        'confusion scroll': create_confusion_scroll,
+        'dagger': create_dagger,
+        'shield': create_shield
     }
     return monster_list
 
@@ -95,7 +97,7 @@ def create_monster(name, x, y):
     monster_id = World.create_entity(position, renderable, viewshed, name, monster_component, block, combat_stats)
     return monster_id
 
-
+'''
 def create_random_monster(x, y):
     monster_list = ['Orc', 'Morblin']
     name = monster_list[randint(0, len(monster_list) -1)]
@@ -113,6 +115,6 @@ def create_random_item(x, y):
         return create_confusion_scroll(x, y)
     else:
         return create_fireball_scroll(x, y)
-
+'''
 
 

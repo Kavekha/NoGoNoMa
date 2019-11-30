@@ -3,6 +3,7 @@ from gmap.spawner import spawn_world
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.in_backpack_component import InBackPackComponent
+from components.equipped_component import EquippedComponent
 from world import World
 import config
 
@@ -28,6 +29,11 @@ class State:
             backpack = World.get_entity_component(entity, InBackPackComponent)
             if backpack:
                 if backpack.owner == player:
+                    should_delete = False
+
+            equipped = World.get_entity_component(entity, EquippedComponent)
+            if equipped:
+                if equipped.owner == player:
                     should_delete = False
 
             if should_delete:

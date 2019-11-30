@@ -47,7 +47,11 @@ Map, visible tiles etc
 
 Use:
     Fireball basé sur la visibilité de la cible, pas du joueur.
-
+    Use system a refactor pour plus de lisibilité. Notamment le code equip / unequip, illisible.
+    Items : Potion sans interdiction de boire alors que full pv.
+    
 Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
 
 systems order
+
+

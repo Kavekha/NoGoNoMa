@@ -40,5 +40,7 @@ def room_table(current_depth=0):
     table.add('missile Magic Scroll', 4 + current_depth)
     table.add("fireball scroll", 2)
     table.add('confusion scroll', 2)
+    table.add('dagger', 10)
+    table.add('shield', 10)
 
     return table
