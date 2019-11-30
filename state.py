@@ -44,6 +44,7 @@ class State:
         new_worldmap = Gmap(current_map.depth + 1)
         World.insert('current_map', new_worldmap)
 
+        current_map = World.fetch('current_map')
         spawn_world(current_map)
 
         player = World.fetch('player')
@@ -53,4 +54,4 @@ class State:
         player_viewshed.dirty = True
 
         logs = World.fetch('logs')
-        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]"You descend to the next level.[/color]')
+        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You descend to the next level.[/color]')

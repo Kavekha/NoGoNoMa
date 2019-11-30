@@ -36,6 +36,8 @@ def player_input():
         elif key == terminal.TK_SPACE:
             if try_next_level():
                 return States.NEXT_LEVEL
+        elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
+            return States.PLAYER_TURN
 
         elif key == terminal.TK_ESCAPE:
             return States.SAVE_GAME

@@ -10,9 +10,11 @@ from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
 
 from data.types import Layers
+from data.random_table import room_table
 from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll, \
     create_confusion_scroll
 from world import World
+from gmap.utils import xy_idx, index_to_point2d
 import config
 
 
@@ -22,36 +24,50 @@ def spawn_world(current_map):
             spawn_room(room)
 
 
+def monster_and_items_list():
+    monster_list = {
+        'morblin': create_monster,
+        'orcish': create_monster,
+        "health potion": create_healing_potion_item,
+        'missile Magic Scroll': create_magic_missile_scroll,
+        "fireball scroll": create_fireball_scroll,
+        'confusion scroll': create_confusion_scroll
+    }
+    return monster_list
+
+
 def spawn_room(room):
-    nb_mobs = randint(1, config.MAX_MONSTERS_ROOM +2) -3
-    nb_items = randint(1, config.MAX_ITEMS_ROOM +2) -3
-
     current_map = World.fetch('current_map')
+    current_depth = current_map.depth
+    spawn_table = room_table(current_depth)
+    spawn_points = []
+    num_spawns = randint(1, config.MAX_MONSTERS_ROOM + 3) + (current_depth - 1) - 3
 
-    monster_position_to_spawn = random_room_positions_list(nb_mobs, current_map, room)
-    for idx in monster_position_to_spawn:
-        x, y = current_map.index_to_point2d(idx)
-        create_random_monster(x, y)
-
-    item_position_to_spawn = random_room_positions_list(nb_items, current_map, room)
-    for idx in item_position_to_spawn:
-        x, y = current_map.index_to_point2d(idx)
-        create_random_item(x, y)
-
-
-def random_room_positions_list(nb_iterations, current_map, room):
-    position_list = []
-
-    for _i in range(0, nb_iterations):
+    for _i in range(0, num_spawns):
         added = False
-        while not added:
+        tries = 0
+        while not added and tries < 20:
             x = room.x1 + randint(1, abs(room.x2 - room.x1) -2)
             y = room.y1 + randint(1, abs(room.y2 - room.y1) -2)
-            idx = current_map.xy_idx(x, y)
-            if idx not in position_list:
-                position_list.append(idx)
+            idx = xy_idx(x, y)
+            if idx not in spawn_points:
+                spawn_points.append((idx, spawn_table.roll()))
                 added = True
-    return position_list
+            else:
+                tries += 1
+
+    for idx, spawn in spawn_points:
+        x, y = index_to_point2d(idx)
+        monster_list = monster_and_items_list()
+
+        try:
+            created = monster_list[spawn]
+            if created == create_monster:
+                created(spawn, x, y)
+            else:
+                created(x, y)
+        except:
+            print(f'Nothing in monster list')
 
 
 def spawn_player(x, y):
