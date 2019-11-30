@@ -14,8 +14,9 @@ class RandomTable:
         self.current_depth = current_depth
 
     def add(self, name, weight):
-        self.entries.append(RandomEntry(name, weight))
-        self.total_weight += weight
+        if weight > 0:
+            self.entries.append(RandomEntry(name, weight))
+            self.total_weight += weight
 
     def roll(self):
         if not self.total_weight:
@@ -40,7 +41,9 @@ def room_table(current_depth=0):
     table.add('missile Magic Scroll', 4 + current_depth)
     table.add("fireball scroll", 2)
     table.add('confusion scroll', 2)
-    table.add('dagger', 10)
-    table.add('shield', 10)
+    table.add('dagger', 3)
+    table.add('shield', 2)
+    table.add('longsword', current_depth - 1)
+    table.add('tower shield', current_depth - 1)
 
     return table
