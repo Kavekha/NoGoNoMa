@@ -13,12 +13,16 @@ class State:
         self.current_state = state
 
     def change_state(self, new_state):
+        if new_state != self.current_state:
+            print(f'new state required for {self}: from {self.current_state} to {new_state}')
         self.current_state = new_state
 
     def entities_to_remove_on_level_change(self):
+        print('------- ENTITIES TO REMOVE ----------')
         entities = World.get_all_entities()
         to_delete = []
         player = World.fetch('player')
+        print(f'entities to remove: player is now {player}')
 
         for entity in entities:
             should_delete = True

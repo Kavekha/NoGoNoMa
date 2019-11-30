@@ -10,9 +10,6 @@ Input:
     Refacto pour avoir tous les inputs au meme endroit.
     Recuperation des inputs dans le save pour le Replay.
 
-Saves
-    Reload => Les tours des persos sont tous petés, les monstres jouent plusieurs fois.
-
 Initialisation
     Fichier a part.
 
@@ -22,7 +19,6 @@ AI:
     Actif / inactif selon presence pj.
 
 Tour par Tour:
-    Fonctionnement etrange des tours: "je me deplace, mais en fait c'est le mob qui avance vers moi"
     Deplacement impossible (dans le mur) compte comme un tour
     Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
 
@@ -49,6 +45,9 @@ Use:
     Fireball basé sur la visibilité de la cible, pas du joueur.
     Use system a refactor pour plus de lisibilité. Notamment le code equip / unequip, illisible.
     Items : Potion sans interdiction de boire alors que full pv.
+
+Changer State
+    Tjrs penible. cf damage_system pour changer l'etat de mort.
 
 systems order
 

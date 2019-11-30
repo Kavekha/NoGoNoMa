@@ -11,14 +11,13 @@ class Gmap:
         self.rooms = []
         self.width = config.MAP_WIDTH
         self.height = config.MAP_HEIGHT
-        self.tiles = self.new_map()
-        self.fov_map = self.create_fov_map()
         self.revealed_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.visible_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.blocked_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.tile_content = [[] for x in range(config.MAP_HEIGHT * config.MAP_WIDTH)]
         self.depth = depth
-
+        self.tiles = self.new_map()
+        self.fov_map = self.create_fov_map()
         self.print_map_debug()
 
     def print_map_debug(self):
@@ -42,6 +41,8 @@ class Gmap:
                     map_y += '. '
                 elif tile == TileType.WALL:
                     map_y += '# '
+                elif tile == TileType.EXIT_PORTAL:
+                    map_y += 'O '
                 else:
                     map_y += '* '
             map_string += '\n' + map_y
@@ -95,7 +96,7 @@ class Gmap:
 
     def new_map(self):
         # map filed with wall
-        gmap = [TileType.WALL] * (config.MAP_HEIGHT * config.MAP_WIDTH)
+        tiles = [TileType.WALL] * (config.MAP_HEIGHT * config.MAP_WIDTH)
 
         for _i in range(0, config.MAX_ROOMS):
             w = randint(config.MIN_SIZE, config.MAX_SIZE)
@@ -110,17 +111,17 @@ class Gmap:
                     can_be_add = False
 
             if can_be_add:
-                self.apply_room_to_map(new_room, gmap)
+                self.apply_room_to_map(new_room, tiles)
 
                 if self.rooms:
                     (new_x, new_y) = new_room.center()
                     (prev_x, prev_y) = self.rooms[len(self.rooms) -1].center()
                     if randint(0, 1) == 1:
-                        self.apply_horizontal_tunnel(prev_x, new_x, prev_y, gmap)
-                        self.apply_vertical_tunnel(prev_y, new_y, new_x, gmap)
+                        self.apply_horizontal_tunnel(prev_x, new_x, prev_y, tiles)
+                        self.apply_vertical_tunnel(prev_y, new_y, new_x, tiles)
                     else:
-                        self.apply_vertical_tunnel(prev_y, new_y, prev_x, gmap)
-                        self.apply_horizontal_tunnel(prev_x, new_x, new_y, gmap)
+                        self.apply_vertical_tunnel(prev_y, new_y, prev_x, tiles)
+                        self.apply_horizontal_tunnel(prev_x, new_x, new_y, tiles)
                 else:
                     print(f'new map: first room, with center {new_room.center()}')
 
@@ -128,9 +129,13 @@ class Gmap:
 
         stair_position_x, stair_position_y = self.rooms[len(self.rooms) -1].center()
         stair_idx = self.xy_idx(stair_position_x, stair_position_y)
-        gmap[stair_idx] = TileType.DOWN_STAIRS
+        print(f'self is {self} and have {self.__dict__}')
+        if self.depth != config.MAX_DEPTH:
+            tiles[stair_idx] = TileType.DOWN_STAIRS
+        else:
+            tiles[stair_idx] = TileType.EXIT_PORTAL
 
-        return gmap
+        return tiles
 
 
 class Rect:

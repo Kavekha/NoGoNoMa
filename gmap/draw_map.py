@@ -26,12 +26,18 @@ def draw_map():
                     elif gmap[tile] == TileType.WALL:
                         terminal.printf(x, y, f'[color=darker yellow]#[/color]')
                     elif gmap[tile] == TileType.DOWN_STAIRS:
-                        terminal.printf(x, y, f'[color=light cyan]>[/color]')
+                        terminal.printf(x, y, f'[color=lighter blue]>[/color]')
+                    elif gmap[tile] == TileType.EXIT_PORTAL:
+                        terminal.printf(x, y, f'[color=lighter blue]O[/color]')
                 else:
                     if gmap[tile] == TileType.FLOOR:
                         terminal.printf(x, y, f'[color=dark gray].[/color]')
                     elif gmap[tile] == TileType.WALL:
                         terminal.printf(x, y, f'[color=darker gray]#[/color]')
+                    elif gmap[tile] == TileType.DOWN_STAIRS:
+                        terminal.printf(x, y, f'[color=darker gray]>[/color]')
+                    elif gmap[tile] == TileType.EXIT_PORTAL:
+                        terminal.printf(x, y, f'[color=darker gray]O[/color]')
             # Move coordinates
             x += 1
             if x > config.MAP_WIDTH - 1:

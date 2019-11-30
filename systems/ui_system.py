@@ -187,3 +187,30 @@ def drop_item_menu(user):
                 return ItemMenuResult.SELECTED, items_in_user_backpack[index]
             return ItemMenuResult.NO_RESPONSE, None
     return ItemMenuResult.NO_RESPONSE, None
+
+
+def show_game_over():
+    terminal.printf(15, 15, f'GAME OVER')
+    terminal.printf(15, 20, 'Press any Key to go back to Main Menu')
+
+    terminal.refresh()
+
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            return ItemMenuResult.SELECTED
+    return ItemMenuResult.NO_RESPONSE
+
+
+def show_victory_screen():
+    terminal.printf(15, 15, f'VICTORY !!!!')
+    terminal.printf(15, 17, f'You escape the dungeon.')
+    terminal.printf(15, 20, 'Press any Key to go back to Main Menu')
+
+    terminal.refresh()
+
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            return ItemMenuResult.SELECTED
+    return ItemMenuResult.NO_RESPONSE
