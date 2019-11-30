@@ -58,6 +58,7 @@ def tick():
 
     elif run_state.current_state == States.SAVE_GAME:
         save_game(World)
+        World.reset_all()
         terminal.clear()
         run_state.change_state(States.MAIN_MENU)
 

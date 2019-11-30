@@ -9,6 +9,7 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
 from components.equippable_component import EquippableComponent
+from components.bonus_components import PowerBonusComponent, DefenseBonusComponent
 
 from data.types import Layers, EquipmentSlots
 from world import World
@@ -69,7 +70,8 @@ def create_dagger(x, y):
     name = NameComponent('Dagger')
     item = ItemComponent()
     equippable = EquippableComponent(EquipmentSlots.MELEE)
-    item_id = World.create_entity(position, renderable, name, item, equippable)
+    power_bonus = PowerBonusComponent(2)
+    item_id = World.create_entity(position, renderable, name, item, equippable, power_bonus)
     return item_id
 
 
@@ -79,5 +81,28 @@ def create_shield(x, y):
     name = NameComponent('Shield')
     item = ItemComponent()
     equippable = EquippableComponent(EquipmentSlots.SHIELD)
-    item_id = World.create_entity(position, renderable, name, item, equippable)
+    defense_bonus = DefenseBonusComponent(1)
+    item_id = World.create_entity(position, renderable, name, item, equippable, defense_bonus)
+    return item_id
+
+
+def create_long_sword(x, y):
+    position = PositionComponent(x, y)
+    renderable = RenderableComponent('/', 'light blue', Layers.ITEM)
+    name = NameComponent('Long sword')
+    item = ItemComponent()
+    equippable = EquippableComponent(EquipmentSlots.MELEE)
+    power_bonus = PowerBonusComponent(4)
+    item_id = World.create_entity(position, renderable, name, item, equippable, power_bonus)
+    return item_id
+
+
+def create_tower_shield(x, y):
+    position = PositionComponent(x, y)
+    renderable = RenderableComponent('[[', 'light blue', Layers.ITEM)
+    name = NameComponent('Tower shield')
+    item = ItemComponent()
+    equippable = EquippableComponent(EquipmentSlots.SHIELD)
+    defense_bonus = DefenseBonusComponent(2)
+    item_id = World.create_entity(position, renderable, name, item, equippable, defense_bonus)
     return item_id

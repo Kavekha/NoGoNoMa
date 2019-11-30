@@ -39,6 +39,7 @@ class State:
             if should_delete:
                 to_delete.append(entity)
 
+        print(f'to delete: contains {to_delete}')
         return to_delete
 
     def go_next_level(self):
@@ -55,7 +56,7 @@ class State:
 
         player = World.fetch('player')
         player_pos = World.get_entity_component(player, PositionComponent)
-        player_pos.x, player_pos.x = current_map.rooms[0].center()
+        player_pos.x, player_pos.y = current_map.rooms[0].center()
         player_viewshed = World.get_entity_component(player, ViewshedComponent)
         player_viewshed.dirty = True
 

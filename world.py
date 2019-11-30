@@ -10,6 +10,7 @@ class World:
 
     @classmethod
     def add_component(cls, component_instance, entity_id):
+        print(f'add component {component_instance} for entity {entity_id}')
         component_type = type(component_instance)
         # On enregistre les components
         try:
@@ -127,32 +128,39 @@ class World:
 
     @classmethod
     def reload_data(cls, data_file):
-
+        print('------ RELOAD BEGINS ----------')
         systems_save, entities_save, ressources_save = data_file
 
         entities_file = entities_save
+
         for entity, components in entities_file.items():
-            print(f'entity is {entity}, its components are {components}')
-            count = 0
+            print(f'------ entity {entity} ----------')
+            # count = 0
             for component_type, component_instance in components.items():
-                if count == 0:
-                    cls.create_entity(component_instance)
-                    count += 1
-                else:
-                    cls.add_component(component_instance, entity)
+                cls.add_component(component_instance, entity)
 
         print('-----')
 
         ressources_file = ressources_save
         for ressource_name, ressource_content in ressources_file.items():
-            print(f'insert {ressource_name} with object {ressource_content}')
             cls.insert(ressource_name, ressource_content)
+
+        # Player has to be updated, because entity player is not the same since we recreate everything.
+        from components.player_component import PlayerComponent
+        player_comp_list = cls.get_components(PlayerComponent)
+        for entity, player in player_comp_list:
+            # should have only one
+            player = entity
+            cls.insert('player', player)
 
         print('---------')
 
         systems_file = systems_save
         for system in systems_file:
             cls.add_system(system)
-            print(f'add system {system}')
 
         print('----- END RELOAD -------')
+        from components.position_component import PositionComponent
+        player = cls.fetch('player')
+        player_pos = cls.get_entity_component(player, PositionComponent)
+        print(f'player is at {player_pos.x}, {player_pos.y} after reload')
