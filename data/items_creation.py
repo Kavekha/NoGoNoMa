@@ -8,8 +8,9 @@ from components.ranged_component import RangedComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
+from components.equippable_component import EquippableComponent
 
-from data.types import Layers
+from data.types import Layers, EquipmentSlots
 from world import World
 import config
 
@@ -59,4 +60,24 @@ def create_confusion_scroll(x, y):
     ranged = RangedComponent(6)
     confusion = ConfusionComponent(4)
     item_id = World.create_entity(position, renderable, name, item, ranged, confusion, consumable)
+    return item_id
+
+
+def create_dagger(x, y):
+    position = PositionComponent(x, y)
+    renderable = RenderableComponent('/', 'dark cyan', Layers.ITEM)
+    name = NameComponent('Dagger')
+    item = ItemComponent()
+    equippable = EquippableComponent(EquipmentSlots.MELEE)
+    item_id = World.create_entity(position, renderable, name, item, equippable)
+    return item_id
+
+
+def create_shield(x, y):
+    position = PositionComponent(x, y)
+    renderable = RenderableComponent('[[', 'dark cyan', Layers.ITEM)
+    name = NameComponent('Shield')
+    item = ItemComponent()
+    equippable = EquippableComponent(EquipmentSlots.SHIELD)
+    item_id = World.create_entity(position, renderable, name, item, equippable)
     return item_id

@@ -3,6 +3,7 @@ from gmap.spawner import spawn_world
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.in_backpack_component import InBackPackComponent
+from components.equipped_component import EquippedComponent
 from world import World
 import config
 
@@ -30,6 +31,11 @@ class State:
                 if backpack.owner == player:
                     should_delete = False
 
+            equipped = World.get_entity_component(entity, EquippedComponent)
+            if equipped:
+                if equipped.owner == player:
+                    should_delete = False
+
             if should_delete:
                 to_delete.append(entity)
 
@@ -44,6 +50,7 @@ class State:
         new_worldmap = Gmap(current_map.depth + 1)
         World.insert('current_map', new_worldmap)
 
+        current_map = World.fetch('current_map')
         spawn_world(current_map)
 
         player = World.fetch('player')
@@ -53,4 +60,4 @@ class State:
         player_viewshed.dirty = True
 
         logs = World.fetch('logs')
-        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]"You descend to the next level.[/color]')
+        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You descend to the next level.[/color]')

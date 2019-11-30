@@ -9,6 +9,9 @@ from components.suffer_damage_component import SufferDamageComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.viewshed_component import ViewshedComponent
 from components.confusion_component import ConfusionComponent
+from components.equippable_component import EquippableComponent
+from components.equipped_component import EquippedComponent
+from components.in_backpack_component import InBackPackComponent
 from gmap.utils import xy_idx
 from world import World
 import config
@@ -28,6 +31,7 @@ class ItemUseSystem(System):
             item_provides_healing = World.get_entity_component(wants_to_use.item, ProvidesHealingComponent)
             item_causes_confusion = World.get_entity_component(wants_to_use.item, ConfusionComponent)
             item_name = World.get_entity_component(wants_to_use.item, NameComponent)
+            item_equippable = World.get_entity_component(wants_to_use.item, EquippableComponent)
 
             targets = []
             if wants_to_use.target:
@@ -85,5 +89,32 @@ class ItemUseSystem(System):
             consumable = World.get_entity_component(wants_to_use.item, ConsumableComponent)
             if consumable:
                 World.delete_entity(wants_to_use.item)
+
+            if item_equippable:
+                to_unequip = []
+                if targets:
+                    target = targets[0]
+                else:
+                    target = entity
+
+                subjects = World.get_components(EquippedComponent, NameComponent)
+                for item_entity, (already_equipped, name, *args) in subjects:
+                    if already_equipped.owner == target and already_equipped.slot == item_equippable.slot:
+                        to_unequip.append(item_entity)
+                        if target == player:
+                            logs.appendleft(f'[color={config.COLOR_SYS_MSG}]You unequip: {name.name}[/color]')
+
+                for item_entity in to_unequip:
+                    World.remove_component(EquippedComponent, item_entity)
+                    backpack = InBackPackComponent(target)
+                    World.add_component(backpack, item_entity)
+
+                equipped = EquippedComponent(target, item_equippable.slot)
+                World.add_component(equipped, wants_to_use.item)
+                World.remove_component(InBackPackComponent, wants_to_use.item)
+                if target == player:
+                    logs.appendleft(f'[color={config.COLOR_SYS_MSG}]'
+                                    f'You equip: {World.get_entity_component(wants_to_use.item, NameComponent).name}'
+                                    f'[/color]')
 
             World.remove_component(WantsToUseComponent, entity)
