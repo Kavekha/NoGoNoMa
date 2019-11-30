@@ -17,6 +17,7 @@ def try_move_player(delta_x, delta_y):
     current_map = World.fetch('current_map')
     for entity, (position, player) in subjects:
         destination_idx = current_map.xy_idx(position.x + delta_x, position.y + delta_y)
+        print(f'player try to move from {position.x}, {position.y}')
 
         for potential_target in current_map.tile_content[destination_idx]:
             target = World.get_entity_component(potential_target, CombatStatsComponent)
@@ -29,7 +30,6 @@ def try_move_player(delta_x, delta_y):
         if not current_map.blocked_tiles[destination_idx]:
             position.x = min(config.MAP_WIDTH -1, max(0, position.x + delta_x))
             position.y = min(config.MAP_HEIGHT -1, max(0, position.y + delta_y))
-            World.insert('player_pos', (position.x, position.y))
             player_viewshed = World.get_entity_component(entity, ViewshedComponent)
             player_viewshed.dirty = True
 

@@ -121,6 +121,8 @@ class Gmap:
                     else:
                         self.apply_vertical_tunnel(prev_y, new_y, prev_x, gmap)
                         self.apply_horizontal_tunnel(prev_x, new_x, new_y, gmap)
+                else:
+                    print(f'new map: first room, with center {new_room.center()}')
 
                 self.rooms.append(new_room)
 

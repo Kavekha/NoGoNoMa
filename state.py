@@ -19,7 +19,6 @@ class State:
         entities = World.get_all_entities()
         to_delete = []
         player = World.fetch('player')
-        print(f'state: player is {player}')
 
         for entity in entities:
             should_delete = True
@@ -44,11 +43,6 @@ class State:
         return to_delete
 
     def go_next_level(self):
-        # debug
-        player = World.fetch('player')
-        player_pos = World.get_entity_component(player, PositionComponent)
-        print(f'player position before go next lvl: is {player_pos.x}, {player_pos.y}')
-
         to_delete = self.entities_to_remove_on_level_change()
         for entity in to_delete:
             World.delete_entity(entity)
@@ -61,12 +55,10 @@ class State:
         spawn_world(current_map)
 
         player = World.fetch('player')
-        print(f'go next lvl : player is {player}')
         player_pos = World.get_entity_component(player, PositionComponent)
-        player_pos.x, player_pos.x = current_map.rooms[0].center()
+        player_pos.x, player_pos.y = current_map.rooms[0].center()
         player_viewshed = World.get_entity_component(player, ViewshedComponent)
         player_viewshed.dirty = True
-        print(f'player position: is {player_pos.x}, {player_pos.y}')
 
         logs = World.fetch('logs')
         logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You descend to the next level.[/color]')
