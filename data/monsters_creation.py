@@ -5,7 +5,7 @@ from components.viewshed_component import ViewshedComponent
 from components.name_component import NameComponent
 from components.blocktile_component import BlockTileComponent
 from components.combat_stats_component import CombatStatsComponent
-from data.types import Layers
+from ui_system.ui_enums import Layers
 from world import World
 
 

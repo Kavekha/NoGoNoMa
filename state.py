@@ -1,3 +1,5 @@
+from enum import Enum
+
 from gmap.map_creation import Gmap
 from gmap.spawner import spawn_world
 from components.position_component import PositionComponent
@@ -6,6 +8,23 @@ from components.in_backpack_component import InBackPackComponent
 from components.equipped_component import EquippedComponent
 from world import World
 import config
+
+
+class States(Enum):
+    AWAITING_INPUT = 0
+    PRE_RUN = 1
+    PLAYER_TURN = 2
+    MONSTER_TURN = 3
+    SHOW_INVENTORY = 4
+    SHOW_ITEM_WINDOW = 5
+    SHOW_DROP_ITEM = 6
+    SHOW_TARGETING = 7
+    MAIN_MENU = 8
+    LOAD_GAME = 9
+    SAVE_GAME = 10
+    NEXT_LEVEL = 11
+    GAME_OVER = 12
+    VICTORY = 13
 
 
 class State:

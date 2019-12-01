@@ -6,7 +6,8 @@ from components.viewshed_component import ViewshedComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from gmap.utils import xy_idx
-from data.types import TileType
+from gmap.gmap_enums import TileType
+from ui_system.ui_enums import NextLevelResult
 
 
 def try_move_player(delta_x, delta_y):
@@ -17,12 +18,10 @@ def try_move_player(delta_x, delta_y):
     current_map = World.fetch('current_map')
     for entity, (position, player) in subjects:
         destination_idx = current_map.xy_idx(position.x + delta_x, position.y + delta_y)
-        print(f'player try to move from {position.x}, {position.y}')
 
         for potential_target in current_map.tile_content[destination_idx]:
             target = World.get_entity_component(potential_target, CombatStatsComponent)
             if target:
-                print(f'Player attack!')
                 want_to_melee = WantsToMeleeComponent(potential_target)
                 World.add_component(want_to_melee, entity)
                 return
@@ -39,6 +38,8 @@ def try_next_level():
     logs = World.fetch('logs')
     current_map = World.fetch('current_map')
     if current_map.tiles[xy_idx(player_pos.x, player_pos.y)] == TileType.DOWN_STAIRS:
-        return True
+        return NextLevelResult.NEXT_FLOOR
+    elif current_map.tiles[xy_idx(player_pos.x, player_pos.y)] == TileType.EXIT_PORTAL:
+        return NextLevelResult.EXIT_DUNGEON
     logs.appendleft(f"[color={config.COLOR_MAJOR_INFO}]There is no way down from here.[/color]")
-    return False
+    return NextLevelResult.NO_EXIT

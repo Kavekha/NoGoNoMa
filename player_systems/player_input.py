@@ -1,8 +1,11 @@
 from bearlibterminal import terminal
 from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
-from data.types import States
+from state import States
+from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection
 from world import World
+from components.targeting_component import TargetingComponent
+import config
 
 
 def player_input():
@@ -34,8 +37,11 @@ def player_input():
         elif key == terminal.TK_D:
             return States.SHOW_DROP_ITEM
         elif key == terminal.TK_SPACE:
-            if try_next_level():
+            next_lvl = try_next_level()
+            if next_lvl == NextLevelResult.NEXT_FLOOR:
                 return States.NEXT_LEVEL
+            elif next_lvl == NextLevelResult.EXIT_DUNGEON:
+                return States.VICTORY
         elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
             return States.PLAYER_TURN
 
@@ -47,3 +53,57 @@ def player_input():
             return States.AWAITING_INPUT
         return States.PLAYER_TURN
     return States.AWAITING_INPUT
+
+
+def targeting_input(item, mouse_coords, valid_target=False):
+    cancel = False
+    if terminal.has_input():
+        logs = World.fetch('logs')
+        key = terminal.read()
+        if key == terminal.TK_ESCAPE:
+            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]You change your mind.[/color]')
+            cancel = True
+        elif key == terminal.TK_MOUSE_LEFT:
+            if valid_target and item:
+                return ItemMenuResult.SELECTED, item, mouse_coords
+            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]There is nothing to target there.[/color]')
+            cancel = True
+
+    if cancel:
+        World.remove_component(TargetingComponent, World.fetch('player'))
+        return ItemMenuResult.CANCEL, None, None
+    return ItemMenuResult.NO_RESPONSE, None, None
+
+
+def any_input_for_quit():
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            return ItemMenuResult.SELECTED
+    return ItemMenuResult.NO_RESPONSE
+
+
+def inventory_input(item_list):
+    if terminal.has_input():
+        key = terminal.read()
+        if key == terminal.TK_ESCAPE:
+            return ItemMenuResult.CANCEL, None
+        else:
+            index = terminal.state(terminal.TK_CHAR) - ord('a')
+            if 0 <= index < len(item_list):
+                return ItemMenuResult.SELECTED, item_list[index]
+            return ItemMenuResult.NO_RESPONSE, None
+    return ItemMenuResult.NO_RESPONSE, None
+
+
+def main_menu_input():
+    if terminal.has_input():
+        key = terminal.read()
+        index = terminal.state(terminal.TK_CHAR) - ord('a')
+        if key == terminal.TK_ESCAPE or index == 2:
+            return MainMenuSelection.QUIT
+        elif index == 0:
+            return MainMenuSelection.NEWGAME
+        elif index == 1:
+            return MainMenuSelection.LOAD_GAME
+    return MainMenuSelection.NO_RESPONSE

@@ -3,7 +3,7 @@ import tcod
 from random import randint
 
 import config
-from data.types import TileType
+from gmap.gmap_enums import TileType
 
 
 class Gmap:

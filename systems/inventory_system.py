@@ -2,11 +2,15 @@ from systems.system import System
 from world import World
 
 from components.wants_to_pickup_component import WantsToPickUpComponent
-from components.name_component import NameComponent
-from components.in_backpack_component import InBackPackComponent
 from components.position_component import PositionComponent
 from components.item_component import ItemComponent
+from components.wants_use_item_component import WantsToUseComponent
 from components.wants_to_drop_component import WantsToDropComponent
+from components.name_component import NameComponent
+from components.in_backpack_component import InBackPackComponent
+from components.ranged_component import RangedComponent
+from components.targeting_component import TargetingComponent
+from state import States
 import config
 
 
@@ -72,3 +76,28 @@ def get_item(user):
         else:
             pickup = WantsToPickUpComponent(user, target_item)
             World.add_component(pickup, user)
+
+
+def use_item(item_id, target_position=None):
+    player = World.fetch('player')
+    use_intent = WantsToUseComponent(item_id, target_position)
+    World.add_component(use_intent, player)
+
+
+def drop_item_from_inventory(item_id):
+    drop_intent = WantsToDropComponent(item_id)
+    player = World.fetch('player')
+    World.add_component(drop_intent, player)
+
+
+def select_item_from_inventory(item_id):
+    player = World.fetch('player')
+    ranged = World.get_entity_component(item_id, RangedComponent)
+    if ranged:
+        target_intent = TargetingComponent(item_id, ranged.range)
+        World.add_component(target_intent, player)
+        logs = World.fetch('logs')
+        logs.appendleft(f'[color={config.COLOR_SYS_MSG}]Select target. ESCAPE to cancel.[/color]')
+        return States.SHOW_TARGETING
+    use_item(item_id)
+    return States.PLAYER_TURN

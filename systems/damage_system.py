@@ -6,7 +6,7 @@ import config
 from components.combat_stats_component import CombatStatsComponent
 from components.suffer_damage_component import SufferDamageComponent
 from components.name_component import NameComponent
-from data.types import States
+from state import States
 
 
 class DamageSystem(System):

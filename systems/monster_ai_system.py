@@ -7,7 +7,7 @@ from components.position_component import PositionComponent
 from components.name_component import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
-from data.types import States
+from state import States
 from gmap.utils import distance_to
 from world import World
 import config
