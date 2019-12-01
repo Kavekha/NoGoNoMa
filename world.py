@@ -49,13 +49,18 @@ class World:
             pass
 
     @classmethod
+    def next_available_entity_id(cls):
+        while cls._next_available_id in cls._entities:
+            cls._next_available_id += 1
+        return cls._next_available_id
+
+    @classmethod
     def create_entity(cls, *components):
         print(f'entity to create with following components : {components}')
-        entity_id = cls._next_available_id
+        entity_id = cls.next_available_entity_id()
         for component in components:
             cls.add_component(component, entity_id)
             print(f'component add for the following entity : {entity_id}: {component}')
-        cls._next_available_id += 1
         return entity_id
 
     @classmethod

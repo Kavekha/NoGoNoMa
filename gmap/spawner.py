@@ -8,7 +8,7 @@ from components.blocktile_component import BlockTileComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
 
-from data.types import Layers
+from ui_system.ui_enums import Layers
 from data.random_table import room_table
 from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll, \
     create_confusion_scroll, create_dagger, create_shield, create_long_sword, create_tower_shield

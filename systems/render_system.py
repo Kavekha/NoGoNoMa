@@ -1,6 +1,6 @@
 from bearlibterminal import terminal
 
-from systems.system import System
+
 from world import World
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent

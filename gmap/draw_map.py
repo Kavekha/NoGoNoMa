@@ -1,6 +1,7 @@
 from bearlibterminal import terminal
 
-from data.types import TileType, Layers
+from ui_system.ui_enums import Layers
+from gmap.gmap_enums import TileType
 from world import World
 from components.player_component import PlayerComponent
 from components.viewshed_component import ViewshedComponent

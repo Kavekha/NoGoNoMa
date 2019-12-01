@@ -1,4 +1,4 @@
-from data.types import Layers
+from ui_system.ui_enums import Layers
 
 
 class RenderableComponent:
