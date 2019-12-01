@@ -13,16 +13,12 @@ def save_game(world):
     from components.position_component import PositionComponent
     player = world.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
-    print(f'player is at {player_pos.x}, {player_pos.y} at save')
 
     with shelve.open('savegame', 'n') as data_file:
-
+        data_file['next_available_id'] = world.get_next_available_id()
         data_file['systems'] = world.get_all_systems()
         data_file['entities'] = world.get_all_entities()
         data_file['ressources'] = world.get_all_ressources()
-
-        print(f'save: data file ressources is {data_file["ressources"]}')
-        print(f'save: data file entities is {data_file["entities"]}')
 
 
 def load_game():
@@ -30,7 +26,8 @@ def load_game():
         raise FileNotFoundError
 
     with shelve.open('savegame', 'r') as data_file:
+        next_id = data_file['next_available_id']
         systems = data_file['systems']
         entities = data_file['entities']
         ressources = data_file['ressources']
-    return systems, entities, ressources
+    return next_id, systems, entities, ressources

@@ -9,6 +9,10 @@ class World:
     _ressources = {}
 
     @classmethod
+    def get_next_available_id(cls):
+        return cls._next_available_id
+
+    @classmethod
     def add_component(cls, component_instance, entity_id):
         print(f'add component {component_instance} for entity {entity_id}')
         component_type = type(component_instance)
@@ -70,6 +74,10 @@ class World:
         cls._systems.append(system)
 
     @classmethod
+    def remove_system(cls, system):
+        cls._systems.remove(system)
+
+    @classmethod
     def update(cls, *args, **kwargs):
         for system in cls._systems:
             system.update(*args, **kwargs)
@@ -84,6 +92,10 @@ class World:
             return cls._ressources[name]
         except KeyError:
             return False
+
+    @classmethod
+    def throw(cls, name):
+        cls._ressources['name'] = None
 
     @classmethod
     def entity_has_component(cls, entity, component):
@@ -112,30 +124,47 @@ class World:
         return cls._ressources
 
     @classmethod
+    def override_next_id(cls, next_id):
+        if next_id < cls._next_available_id:
+            print('CRITICAL: next id reference change to a lower number. High risk of errors.')
+        cls._next_available_id = next_id
+
+    @classmethod
     def reset_all(cls):
+        entities_to_delete = []
         for entity in cls._entities:
-            del entity
+            entities_to_delete.append(entity)
 
-        for component in cls._components:
-            del component
+        for entity in entities_to_delete:
+            cls.delete_entity(entity)
 
+        systems_to_remove = []
         for system in cls._systems:
-            del system
+            systems_to_remove.append(system)
 
+        for system in systems_to_remove:
+            cls.remove_system(system)
+
+        ressource_to_delete = []
         for ressource in cls._ressources:
-            del ressource
+            ressource_to_delete.append(ressource)
+
+        for ressource in ressource_to_delete:
+            cls.throw(ressource)
+
         cls._next_available_id = 1  # If 0, will return False when checking entity :D
 
     @classmethod
     def reload_data(cls, data_file):
         print('------ RELOAD BEGINS ----------')
-        systems_save, entities_save, ressources_save = data_file
+        next_id, systems_save, entities_save, ressources_save = data_file
+
+        cls.override_next_id(next_id)
 
         entities_file = entities_save
 
         for entity, components in entities_file.items():
             print(f'------ entity {entity} ----------')
-            # count = 0
             for component_type, component_instance in components.items():
                 cls.add_component(component_instance, entity)
 

@@ -15,9 +15,8 @@ from systems.monster_ai_system import MonsterAi
 from systems.map_indexing_system import MapIndexingSystem
 from systems.melee_combat_system import MeleeCombatSystem
 from systems.damage_system import DamageSystem
-from systems.death_system import DeathSystem
 from systems.ui_system import UiSystem, draw_tooltip, show_inventory, select_item_from_inventory, drop_item_menu, \
-    drop_item_from_inventory
+    drop_item_from_inventory, show_game_over, show_victory_screen
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
@@ -38,9 +37,9 @@ def tick():
     if run_state.current_state == States.MAIN_MENU:
         result = main_menu()
         if result == MainMenuSelection.NEWGAME:
+            run_state.change_state(States.PRE_RUN)
             World.reset_all()
             init_game(MASTER_SEED)
-            run_state.change_state(States.PRE_RUN)
         elif result == MainMenuSelection.LOAD_GAME:
             run_state.change_state(States.LOAD_GAME)
         elif result == MainMenuSelection.QUIT:
@@ -57,32 +56,32 @@ def tick():
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.SAVE_GAME:
+        run_state.change_state(States.MAIN_MENU)
         save_game(World)
         World.reset_all()
         terminal.clear()
-        run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.PRE_RUN:
-        run_systems()
         run_state.change_state(States.AWAITING_INPUT)
+        run_systems()
 
     elif run_state.current_state == States.AWAITING_INPUT:
         run_state.change_state(player_input())
         draw_tooltip()
 
     elif run_state.current_state == States.PLAYER_TURN:
-        run_systems()
         run_state.change_state(States.MONSTER_TURN)
+        run_systems()
 
     elif run_state.current_state == States.MONSTER_TURN:
-        run_systems()
         run_state.change_state(States.AWAITING_INPUT)
+        run_systems()
 
     elif run_state.current_state == States.SHOW_INVENTORY:
         result, item = show_inventory(World.fetch('player'))
         if result == ItemMenuResult.CANCEL:
-            run_state.change_state(States.AWAITING_INPUT)
             run_systems()
+            run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             new_state = select_item_from_inventory(item)
             run_systems()
@@ -109,18 +108,32 @@ def tick():
         run_state.go_next_level()
         run_state.change_state(States.PRE_RUN)
 
+    elif run_state.current_state == States.GAME_OVER:
+        terminal.clear()
+        result = show_game_over()
+        if result == ItemMenuResult.SELECTED:
+            World.reset_all()
+            terminal.clear()
+            run_state.change_state(States.MAIN_MENU)
+
+    elif run_state.current_state == States.VICTORY:
+        terminal.clear()
+        result = show_victory_screen()
+        if result == ItemMenuResult.SELECTED:
+            World.reset_all()
+            terminal.clear()
+            run_state.change_state(States.MAIN_MENU)
+
+
 
 def run_systems():
+    print(f'--- run systems ---')
     terminal.clear()
     World.update()
     draw_map()
     render_system()
     draw_tooltip()
     terminal.refresh()
-
-
-def render_entities():
-    render_system()
 
 
 def init_game(master_seed):
@@ -138,8 +151,8 @@ def init_game(master_seed):
     World.add_system(melee_combat_system)
     damage_system = DamageSystem()
     World.add_system(damage_system)
-    death_system = DeathSystem()
-    World.add_system(death_system)
+    # death_system = DeathSystem()
+    # World.add_system(death_system)
     ui_system = UiSystem()
     World.add_system(ui_system)
     inventory_system = ItemCollectionSystem()

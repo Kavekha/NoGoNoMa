@@ -31,18 +31,27 @@ class States(Enum):
     LOAD_GAME = 9
     SAVE_GAME = 10
     NEXT_LEVEL = 11
+    GAME_OVER = 12
+    VICTORY = 13
 
 
 class TileType(Enum):
     FLOOR = 0
     WALL = 1
     DOWN_STAIRS = 2
+    EXIT_PORTAL = 3
 
 
 class ItemMenuResult(Enum):
     CANCEL = 0
     NO_RESPONSE = 1
     SELECTED = 2
+
+
+class NextLevelResult(Enum):
+    NO_EXIT = 0
+    NEXT_FLOOR = 1
+    EXIT_DUNGEON = 2
 
 
 class MainMenuSelection(Enum):

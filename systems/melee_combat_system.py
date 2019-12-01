@@ -39,11 +39,9 @@ class MeleeCombatSystem(System):
                     target_name = World.get_entity_component(wants_melee.target, NameComponent).name
                     logs = World.fetch('logs')
                     if damage == 0:
-                        logs.appendleft(f'{target_name} is unable to hurt {name.name}')
-                        print(f'{target_name} is unable to hurt {name.name}')
+                        logs.appendleft(f'{name.name} is unable to hurt {target_name}')
                     else:
                         logs.appendleft(f'{name.name} hits {target_name} for {damage} hp.')
-                        print(f'{name.name} hits {target_name} for {damage} hp.')
                         target_suffer_dmg = SufferDamageComponent(damage)
                         World.add_component(target_suffer_dmg, wants_melee.target)
 

@@ -35,12 +35,12 @@ class RandomTable:
 
 def room_table(current_depth=0):
     table = RandomTable()
-    table.add("morblin", 10)
+    table.add("morblin", 10 + current_depth)
     table.add("orcish", 2 + current_depth)
     table.add("health potion", 7 + current_depth)
     table.add('missile Magic Scroll', 4 + current_depth)
-    table.add("fireball scroll", 2)
-    table.add('confusion scroll', 2)
+    table.add("fireball scroll", 2 + current_depth)
+    table.add('confusion scroll', 2 + current_depth)
     table.add('dagger', 3)
     table.add('shield', 2)
     table.add('longsword', current_depth - 1)
