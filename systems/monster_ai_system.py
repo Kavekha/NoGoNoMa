@@ -39,7 +39,6 @@ class MonsterAi(System):
             if can_act:
                 if viewshed.visible_tiles[y][x]:
                     if distance_to(position.x, position.y, player_position.x, player_position.y) <= 1:
-                        print(f'{name.name} shouts insults!')
                         want_to_melee = WantsToMeleeComponent(player)
                         World.add_component(want_to_melee, entity)
                     else:

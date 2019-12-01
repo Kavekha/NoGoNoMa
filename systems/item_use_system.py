@@ -14,6 +14,7 @@ from components.equipped_component import EquippedComponent
 from components.in_backpack_component import InBackPackComponent
 from gmap.utils import xy_idx
 from world import World
+from texts import Texts
 import config
 
 
@@ -68,23 +69,24 @@ class ItemUseSystem(System):
                         suffer_dmg = SufferDamageComponent(item_inflicts_dmg.damage)
                         World.add_component(suffer_dmg, target)
                         if entity == player:
-
-                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}] '
-                                            f'You use {item_name.name} on {target_name.name}'
-                                            f' for {item_inflicts_dmg.damage} hp.')
+                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
+                                            f'{Texts.get_text("YOU_USE_ITEM").format(item_name.name, target_name.name)}'
+                                            f'{Texts.get_text("_FOR_DMG").format(item_inflicts_dmg.damage)}'
+                                            f'[/color]')
 
                     if item_provides_healing:
                         if entity == player:
                             stats.hp = min(stats.max_hp, stats.hp + item_provides_healing.healing_amount)
-                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You drink: {item_name.name}'
-                                            f' You are heal for {item_provides_healing.healing_amount} hp.[/color]')
+                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("YOU_DRINK_ITEM").format(item_name.name)}'
+                                            f'{Texts.get_text("YOU_ARE_HEAL_FOR").format(item_provides_healing.healing_amount)}[/color]')
 
                     if item_causes_confusion:
                         add_confusion = ConfusionComponent(item_causes_confusion.turns)
                         World.add_component(add_confusion, target)
                         if entity == player:
-                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You use {item_name.name} '
-                                            f'on {target_name.name}, confusing them.')
+                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
+                                            f'{Texts.get_text("YOU_USE_ITEM").format(item_name.name, target_name.name)}'
+                                            f'{Texts.get_text("_CONFUSING_THEM")}')
 
             consumable = World.get_entity_component(wants_to_use.item, ConsumableComponent)
             if consumable:
@@ -102,7 +104,8 @@ class ItemUseSystem(System):
                     if already_equipped.owner == target and already_equipped.slot == item_equippable.slot:
                         to_unequip.append(item_entity)
                         if target == player:
-                            logs.appendleft(f'[color={config.COLOR_SYS_MSG}]You unequip: {name.name}[/color]')
+                            logs.appendleft(f'[color={config.COLOR_SYS_MSG}]'
+                                            f'{Texts.get_text("YOU_UNEQUIP").format(name.name)}[/color]')
 
                 for item_entity in to_unequip:
                     World.remove_component(EquippedComponent, item_entity)
@@ -113,8 +116,9 @@ class ItemUseSystem(System):
                 World.add_component(equipped, wants_to_use.item)
                 World.remove_component(InBackPackComponent, wants_to_use.item)
                 if target == player:
+                    item_name = World.get_entity_component(wants_to_use.item, NameComponent).name
                     logs.appendleft(f'[color={config.COLOR_SYS_MSG}]'
-                                    f'You equip: {World.get_entity_component(wants_to_use.item, NameComponent).name}'
+                                    f'{Texts.get_text("YOU_EQUIP").format(item_name)}'
                                     f'[/color]')
 
             World.remove_component(WantsToUseComponent, entity)

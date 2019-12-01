@@ -1,20 +1,21 @@
 from bearlibterminal import terminal
-from ui_system.ui_enums import ItemMenuResult
+
+from texts import Texts
 from player_systems.player_input import any_input_for_quit
 
 
 def show_game_over():
-    terminal.printf(15, 15, f'GAME OVER')
-    terminal.printf(15, 20, 'Press any Key to go back to Main Menu')
+    terminal.printf(15, 15, f'{Texts.get_text("GAME_OVER")}')
+    terminal.printf(15, 20, f'{Texts.get_text("PRESS_ANY_KEY")}')
 
     terminal.refresh()
     return any_input_for_quit()
 
 
 def show_victory_screen():
-    terminal.printf(15, 15, f'VICTORY !!!!')
-    terminal.printf(15, 17, f'You escape the dungeon.')
-    terminal.printf(15, 20, 'Press any Key to go back to Main Menu')
+    terminal.printf(15, 15, f'{Texts.get_text("VICTORY")}')
+    terminal.printf(15, 17, f'{Texts.get_text("YOU_ESCAPE_DUNGEON")}')
+    terminal.printf(15, 20, f'{Texts.get_text("PRESS_ANY_KEY")}')
 
     terminal.refresh()
 

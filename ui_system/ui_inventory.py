@@ -3,8 +3,9 @@ from bearlibterminal import terminal
 from world import World
 from components.name_component import NameComponent
 from components.in_backpack_component import InBackPackComponent
-from ui_system.ui_enums import Layers, ItemMenuResult
+from ui_system.ui_enums import Layers
 from player_systems.player_input import inventory_input
+from texts import Texts
 
 
 def show_inventory(user):
@@ -19,7 +20,7 @@ def show_inventory(user):
 
     terminal.layer(Layers.MENU.value)
     y = (25 - (len(items_in_user_backpack) //2))
-    terminal.printf(18, y -2, f'[color=yellow] Inventory [/color]')
+    terminal.printf(18, y -2, f'[color=yellow] {Texts.get_text("INVENTORY")} [/color]')
 
     letter_index = ord('a')
     for item in items_in_user_backpack:
@@ -28,7 +29,7 @@ def show_inventory(user):
                         f' {World.get_entity_component(item, NameComponent).name}')
         y += 1
         letter_index += 1
-    terminal.printf(18, y + 4, f'[color=darker yellow] ESCAPE to cancel.[/color]')
+    terminal.printf(18, y + 4, f'[color=darker yellow] {Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
 
     terminal.refresh()
 
@@ -47,7 +48,7 @@ def drop_item_menu(user):
 
     terminal.layer(Layers.MENU.value)
     y = (25 - (len(items_in_user_backpack) // 2))
-    terminal.printf(18, y - 2, f'[color=yellow] Drop which item?[/color]')
+    terminal.printf(18, y - 2, f'[color=yellow] {Texts.get_text("DROP_WHICH_ITEM")}[/color]')
 
     letter_index = ord('a')
     for item in items_in_user_backpack:

@@ -1,0 +1,45 @@
+key;en;fr
+GAME_TITLE;NoGo NoMa;NoGo NoMa
+GO_NEXT_LEVEL;You descend to the next level.;Vous descendez a l'etage inferieur.
+DEPTH;Depth;Profondeur
+HP;HP;PV
+INVENTORY;Inventory;Inventaire
+ESCAPE_TO_CANCEL;ESCAPE to cancel.;ECHAP pour annuler
+DROP_WHICH_ITEM;Drop which item?;Abandonner quel objet?
+NEW_GAME;New game;Nouvelle partie
+LOAD_GAME;Load save;Charger une sauvegarde
+QUIT;Quit;Quitter
+GAME_OVER;GAME OVER;DEFAITE!
+PRESS_ANY_KEY;Press any key to continue;Appuyez sur une touche pour continuer
+VICTORY;VICTORY!;VICTOIRE!
+YOU_ESCAPE_DUNGEON;You escape the dungeon.;Vous vous êtes évadé du donjon!
+UNABLE_TO_HURT;{0} is unable to hurt {1};{0} ne parvient pas a blesser {1}
+HITS_FOR_DMG;{0} hits {1} for {2} hp.;{0} frappe {1} pour {2} pv.
+YOU_USE_ITEM:You use {0} on {1};Vous utilisez {0} sur {1}
+_FOR_DMG; for {0} hp.; pour {0} pv.
+YOU_DRINK_ITEM;You drink: {0}.;Vous buvez: {0}.
+YOU_ARE_HEAL_FOR;You are heal for {0} hp.;Vous êtes soigné de {0} pv.
+_CONFUSING_THEM;,confusing them.;, provoquant la confusion dans son esprit.
+YOU_UNEQUIP;You unequip: {0};Vous desequipez: {0}
+YOU_EQUIP;You equip: {0};Vous equipez: {0}
+YOU_PICK_UP;You pick up: ;Vous ramassez:
+YOU_DROP_UP;You drop up : ;Vous laissez tomber:
+NOTHING_TO_PICK_UP;There is nothing here to pick up.;Il n'y a rien à ramasser ici.
+SELECT_TARGET;Select target.;Selectionnez une cible.
+_HAS_BEEN_SLAIN;{0} has been slain.;{0} a été vaincu.
+YOU_ARE_DEAD;You are dead!;Vous êtes mort!
+YOU_CHANGE_MIND;You change your mind.;Vous changez d'avis.
+NOTHING_TO_TARGET;There is nothing to target there.;Il n'y a rien à cibler ici.
+NO_WAY_DOWN;There is no way down from here.;Il n'y a pas de passage inferieur ici.
+HEALTH_POTION;Health Potion;Potion de Soins
+MISSILE_MAGIC_SCROLL;Missile Magic Scroll;Parchemin de Missile Magique
+FIREBALL_SCROLL;Fireball Scroll;Parchemin de Boule de Feu
+CONFUSION_SCROLL;Confusion Scroll;Parchemin de Confusion
+DAGGER;Dagger;Dague
+BUCKLER;Buckler;Rondache
+LONG_SWORD;Longsword;Grande épée
+TOWER_SHIELD;Tower Shield;Pavois
+WELCOME_MESSAGE;The opportunity is now! Escape the dungeon!;Vous avez une opportunité! Echappez-vous du donjon!
+
+
+

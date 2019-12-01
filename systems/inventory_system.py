@@ -11,6 +11,7 @@ from components.in_backpack_component import InBackPackComponent
 from components.ranged_component import RangedComponent
 from components.targeting_component import TargetingComponent
 from state import States
+from texts import Texts
 import config
 
 
@@ -30,7 +31,8 @@ class ItemCollectionSystem(System):
 
             if wants_to_pick.collected_by == player:
                 item_name = World.get_entity_component(wants_to_pick.item, NameComponent)
-                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]You pick up: {item_name.name}[/color]')
+                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("YOU_PICK_UP")}'
+                                f'{item_name.name}[/color]')
 
             World.remove_component(WantsToPickUpComponent, entity)
 
@@ -51,7 +53,8 @@ class ItemDropSystem(System):
 
             if entity == player:
                 item_name = World.get_entity_component(wants_to_drop.item, NameComponent)
-                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]You drop up : {item_name.name}[/color]')
+                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("YOU_DROP_UP")}'
+                                f'{item_name.name}[/color]')
 
             World.remove_component(WantsToDropComponent, entity)
 
@@ -72,7 +75,7 @@ def get_item(user):
 
     if user == player:
         if not target_item:
-            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]There is nothing here to pick up.[/color]')
+            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOTHING_TO_PICK_UP")}[/color]')
         else:
             pickup = WantsToPickUpComponent(user, target_item)
             World.add_component(pickup, user)
@@ -97,7 +100,8 @@ def select_item_from_inventory(item_id):
         target_intent = TargetingComponent(item_id, ranged.range)
         World.add_component(target_intent, player)
         logs = World.fetch('logs')
-        logs.appendleft(f'[color={config.COLOR_SYS_MSG}]Select target. ESCAPE to cancel.[/color]')
+        logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("SELECT_TARGET")} '
+                        f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
         return States.SHOW_TARGETING
     use_item(item_id)
     return States.PLAYER_TURN

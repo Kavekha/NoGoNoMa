@@ -8,6 +8,7 @@ from components.wants_to_melee_component import WantsToMeleeComponent
 from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
 from ui_system.ui_enums import NextLevelResult
+from texts import Texts
 
 
 def try_move_player(delta_x, delta_y):
@@ -41,5 +42,5 @@ def try_next_level():
         return NextLevelResult.NEXT_FLOOR
     elif current_map.tiles[xy_idx(player_pos.x, player_pos.y)] == TileType.EXIT_PORTAL:
         return NextLevelResult.EXIT_DUNGEON
-    logs.appendleft(f"[color={config.COLOR_MAJOR_INFO}]There is no way down from here.[/color]")
+    logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("NO_WAY_DOWN")}[/color]')
     return NextLevelResult.NO_EXIT
