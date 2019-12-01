@@ -143,6 +143,7 @@ def main():
     World.insert('state', run_state)
 
     FPS = config.FPS
+
     while True:
         start_time = time.perf_counter()  # limit fps
         tick()

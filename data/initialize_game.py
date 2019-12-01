@@ -13,6 +13,7 @@ from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
 from gmap.map_creation import Gmap
 from gmap.spawner import spawn_world, spawn_player
+from texts import Texts
 
 
 def init_game(master_seed=None):
@@ -54,5 +55,5 @@ def init_game(master_seed=None):
 
     # add logs
     log_entry = deque()
-    log_entry.append(config.LOG_FIRST_SENTENCE)
+    log_entry.append(Texts.get_text("WELCOME_MESSAGE"))
     World.insert('logs', log_entry)

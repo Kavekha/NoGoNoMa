@@ -14,13 +14,14 @@ from components.bonus_components import PowerBonusComponent, DefenseBonusCompone
 from data.types import EquipmentSlots
 from ui_system.ui_enums import Layers
 from world import World
+from texts import Texts
 import config
 
 
 def create_healing_potion_item(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent('!', 'purple', Layers.ITEM)
-    name = NameComponent('Health Potion')
+    name = NameComponent(f'{Texts.get_text("HEALTH_POTION")}')
     item = ItemComponent()
     consumable = ConsumableComponent()
     provide_healing = ProvidesHealingComponent(amount=8)
@@ -31,7 +32,7 @@ def create_healing_potion_item(x, y):
 def create_magic_missile_scroll(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent(')', 'cyan', Layers.ITEM)
-    name = NameComponent('Magic missile scroll')
+    name = NameComponent(f'{Texts.get_text("MISSILE_MAGIC_SCROLL")}')
     item = ItemComponent()
     consumable = ConsumableComponent()
     ranged = RangedComponent(6)
@@ -43,7 +44,7 @@ def create_magic_missile_scroll(x, y):
 def create_fireball_scroll(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent(')', 'orange', Layers.ITEM)
-    name = NameComponent('Fireball scroll')
+    name = NameComponent(f'{Texts.get_text("FIREBALL_SCROLL")}')
     item = ItemComponent()
     consumable = ConsumableComponent()
     ranged = RangedComponent(6)
@@ -56,7 +57,7 @@ def create_fireball_scroll(x, y):
 def create_confusion_scroll(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent(')', 'pink', Layers.ITEM)
-    name = NameComponent('Confusion scroll')
+    name = NameComponent(f'{Texts.get_text("CONFUSION_SCROLL")}')
     item = ItemComponent()
     consumable = ConsumableComponent()
     ranged = RangedComponent(6)
@@ -68,7 +69,7 @@ def create_confusion_scroll(x, y):
 def create_dagger(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent('/', 'dark cyan', Layers.ITEM)
-    name = NameComponent('Dagger')
+    name = NameComponent(f'{Texts.get_text("DAGGER")}')
     item = ItemComponent()
     equippable = EquippableComponent(EquipmentSlots.MELEE)
     power_bonus = PowerBonusComponent(2)
@@ -79,7 +80,7 @@ def create_dagger(x, y):
 def create_shield(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent('[[', 'dark cyan', Layers.ITEM)
-    name = NameComponent('Shield')
+    name = NameComponent(f'{Texts.get_text("BUCKLER")}')
     item = ItemComponent()
     equippable = EquippableComponent(EquipmentSlots.SHIELD)
     defense_bonus = DefenseBonusComponent(1)
@@ -90,7 +91,7 @@ def create_shield(x, y):
 def create_long_sword(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent('/', 'light blue', Layers.ITEM)
-    name = NameComponent('Long sword')
+    name = NameComponent(f'{Texts.get_text("LONG_SWORD")}')
     item = ItemComponent()
     equippable = EquippableComponent(EquipmentSlots.MELEE)
     power_bonus = PowerBonusComponent(4)
@@ -101,7 +102,7 @@ def create_long_sword(x, y):
 def create_tower_shield(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent('[[', 'light blue', Layers.ITEM)
-    name = NameComponent('Tower shield')
+    name = NameComponent(f'{Texts.get_text("TOWER_SHIELD")}')
     item = ItemComponent()
     equippable = EquippableComponent(EquipmentSlots.SHIELD)
     defense_bonus = DefenseBonusComponent(2)

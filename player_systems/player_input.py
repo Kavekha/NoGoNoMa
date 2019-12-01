@@ -4,6 +4,7 @@ from systems.inventory_system import get_item
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection
 from world import World
+from texts import Texts
 from components.targeting_component import TargetingComponent
 import config
 
@@ -61,12 +62,12 @@ def targeting_input(item, mouse_coords, valid_target=False):
         logs = World.fetch('logs')
         key = terminal.read()
         if key == terminal.TK_ESCAPE:
-            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]You change your mind.[/color]')
+            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("YOU_CHANGE_MIND")}[/color]')
             cancel = True
         elif key == terminal.TK_MOUSE_LEFT:
             if valid_target and item:
                 return ItemMenuResult.SELECTED, item, mouse_coords
-            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]There is nothing to target there.[/color]')
+            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOTHING_TO_TARGET")}[/color]')
             cancel = True
 
     if cancel:
@@ -100,10 +101,17 @@ def main_menu_input():
     if terminal.has_input():
         key = terminal.read()
         index = terminal.state(terminal.TK_CHAR) - ord('a')
-        if key == terminal.TK_ESCAPE or index == 2:
+        if key == terminal.TK_ESCAPE or index == 3:
             return MainMenuSelection.QUIT
         elif index == 0:
             return MainMenuSelection.NEWGAME
         elif index == 1:
             return MainMenuSelection.LOAD_GAME
+        elif index == 2:
+            # change language
+            if Texts.get_current_language() == 'fr':
+                Texts.set_language('en')
+            else:
+                Texts.set_language('fr')
+            terminal.clear()
     return MainMenuSelection.NO_RESPONSE

@@ -4,6 +4,7 @@ FONT = "fonts/16x16_sm_ascii.png, size=16x16, codepage=437"
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 
+DEFAULT_LANGUAGE = 'en'
 FPS = 100
 
 MAP_WIDTH = 80
@@ -12,7 +13,6 @@ MAP_COUNT = MAP_HEIGHT * MAP_WIDTH
 
 UI_STATS_INFO_LINE = 43
 UI_LOG_FIRST_LINE = 44
-LOG_FIRST_SENTENCE = "The opportunity is now! Escape the dungeon!"
 
 MAX_DEPTH = 6
 MAX_ROOMS = 30
@@ -34,3 +34,4 @@ LOW_RADIUS = 3
 MEDIUM_RADIUS = 5
 HIGH_RADIUS = 7
 HUGE_RADIUS = 9
+

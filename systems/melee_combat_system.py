@@ -6,6 +6,7 @@ from components.combat_stats_component import CombatStatsComponent
 from components.suffer_damage_component import SufferDamageComponent
 from components.bonus_components import DefenseBonusComponent, PowerBonusComponent
 from components.equipped_component import EquippedComponent
+from texts import Texts
 
 
 class MeleeCombatSystem(System):
@@ -39,9 +40,9 @@ class MeleeCombatSystem(System):
                     target_name = World.get_entity_component(wants_melee.target, NameComponent).name
                     logs = World.fetch('logs')
                     if damage == 0:
-                        logs.appendleft(f'{name.name} is unable to hurt {target_name}')
+                        logs.appendleft(f'{Texts.get_text("UNABLE_TO_HURT").format(name.name, target_name)}')
                     else:
-                        logs.appendleft(f'{name.name} hits {target_name} for {damage} hp.')
+                        logs.appendleft(f'{Texts.get_text("HITS_FOR_DMG").format(name.name, target_name, damage)}')
                         target_suffer_dmg = SufferDamageComponent(damage)
                         World.add_component(target_suffer_dmg, wants_melee.target)
 
