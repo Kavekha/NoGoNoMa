@@ -101,10 +101,17 @@ def main_menu_input():
     if terminal.has_input():
         key = terminal.read()
         index = terminal.state(terminal.TK_CHAR) - ord('a')
-        if key == terminal.TK_ESCAPE or index == 2:
+        if key == terminal.TK_ESCAPE or index == 3:
             return MainMenuSelection.QUIT
         elif index == 0:
             return MainMenuSelection.NEWGAME
         elif index == 1:
             return MainMenuSelection.LOAD_GAME
+        elif index == 2:
+            # change language
+            if Texts.get_current_language() == 'fr':
+                Texts.set_language('en')
+            else:
+                Texts.set_language('fr')
+            terminal.clear()
     return MainMenuSelection.NO_RESPONSE

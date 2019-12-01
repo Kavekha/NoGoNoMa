@@ -13,7 +13,9 @@ def main_menu():
     letter_index += 1
     terminal.printf(15, 22, f'[color=orange]({chr(letter_index)}) {Texts.get_text("LOAD_GAME")}[/color]')
     letter_index += 1
-    terminal.printf(15, 24, f'[color=orange]({chr(letter_index)}) {Texts.get_text("QUIT")}[/color]')
+    terminal.printf(15, 24, f'[color=orange]({chr(letter_index)}) {Texts.get_text("CHANGE_LANGUAGE")}[/color]')
+    letter_index += 1
+    terminal.printf(15, 26, f'[color=orange]({chr(letter_index)}) {Texts.get_text("QUIT")}[/color]')
 
     terminal.refresh()
 

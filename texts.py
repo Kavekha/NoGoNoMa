@@ -1,4 +1,5 @@
 import csv
+import config
 
 
 '''
@@ -21,7 +22,7 @@ class Texts:
     trad_dict = {}
     chosen_language = ''
 
-    def __init__(self, language='fr'):
+    def __init__(self, language=config.DEFAULT_LANGUAGE):
         Texts.available_languages, Texts.trad_dict = Texts.set_language_and_trad_dict_from_csv(
             'data/' + 'localization.csv'
         )
@@ -47,6 +48,9 @@ class Texts:
     def get_available_languages():
         return Texts.available_languages
 
+    @staticmethod
+    def get_current_language():
+        return Texts.chosen_language
     @staticmethod
     def set_language(language):
         if language in list(Texts.get_available_languages()):
