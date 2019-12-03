@@ -12,9 +12,10 @@ from ui_system.ui_enums import Layers
 from data.random_table import room_table
 from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll, \
     create_confusion_scroll, create_dagger, create_shield, create_long_sword, create_tower_shield
-from data.monsters_creation import create_monster, create_monster_morblin, create_monster_orcish
+from data.monsters_creation import create_monster_morblin, create_monster_orcish
 from world import World
 from gmap.utils import xy_idx, index_to_point2d
+from data.load_raws import RawsMaster
 import config
 
 
@@ -64,8 +65,9 @@ def spawn_room(room):
     for idx, spawn in spawn_points:
         x, y = index_to_point2d(idx)
         try:
-            created = monster_list[spawn]
-            created(x, y)
+            if not RawsMaster.create_item(spawn, x, y):
+                created = monster_list[spawn]
+                created(x, y)
         except:
             print(f'Spawner:spawn room: {spawn} requested, but doesnt appear in monster list')
 

@@ -5,7 +5,6 @@
           "renderable": {
               "glyph" : "!",
               "fg" : "#FF00FF",
-              "bg" : "#000000",
               "order" : 2
           },
           "consumable" : {
@@ -13,17 +12,46 @@
           }
       },
       {
-          "name" : "Magic Missile Scroll",
+          "name" : "MISSILE_MAGIC_SCROLL",
           "renderable": {
               "glyph" : ")",
               "fg" : "#00FFFF",
-              "bg" : "#000000",
               "order" : 2
           },
           "consumable" : {
               "effects" : {
                   "ranged" : "6",
                   "damage" : "20"
+              }
+          }
+      },
+      {
+          "name" : "FIREBALL_SCROLL",
+          "renderable": {
+            "glyph" : ")",
+            "fg" : "#FFA500",
+            "order" : 2
+          },
+          "consumable" : {
+            "effects" : {
+                "ranged" : "6",
+                "damage" : "20",
+                "area_of_effect" : "3"
+                }
+            }
+      },
+      {
+          "name" : "CONFUSION_SCROLL",
+          "renderable": {
+            "glyph" : ")",
+            "fg" : "#FFAAAA",
+            "order" : 2
+          },
+          "consumable" : {
+              "effects" : {
+              "ranged" : "6",
+              "damage" : "20",
+              "confusion" : "4"
               }
           }
       }

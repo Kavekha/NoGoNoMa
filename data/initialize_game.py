@@ -2,7 +2,6 @@ from collections import deque
 from random import seed
 
 from world import World
-import config
 from systems.visibility_system import VisibilitySystem
 from systems.monster_ai_system import MonsterAi
 from systems.map_indexing_system import MapIndexingSystem

@@ -8,10 +8,14 @@ from components.consumable_component import ConsumableComponent
 from components.provides_healing_component import ProvidesHealingComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
+from components.area_effect_component import AreaOfEffectComponent
+from components.confusion_component import ConfusionComponent
+from components.item_component import ItemComponent
 from world import World
+from ui_system.ui_enums import Layers
 
 
-RAW_PATH = "../raws/"
+RAW_PATH = "/raws/"
 
 
 class RawsItem:
@@ -38,34 +42,43 @@ class RawsEffect:
         self.provides_healing = None
         self.damage = None
         self.ranged = None
+        self.area_of_effect = None
+        self.confusion = None
 
 
-class Raws:
-    def __init__(self):
-        self.items = []
-        self.item_index = {}
+class RawsMaster:
+    items = []
+    item_index = {}
 
-    def load_index(self):
-        for i, item in enumerate(self.items):
-            self.item_index[item.name] = i + 1
+    @staticmethod
+    def load_index():
+        for i, item in enumerate(RawsMaster.items):
+            RawsMaster.item_index[item.name] = i + 1
 
-    def load_raws(self):
-        from os.path import isfile, join
-        json_files = [f for f in os.listdir(RAW_PATH) if isfile(join(RAW_PATH, f)) and f.endswith(".json")]
+    @staticmethod
+    def load_raws():
+        print(f'current working dir is {os.getcwd()}')
+        print(f'path should be {os.getcwd() + RAW_PATH}')
+        for file in os.listdir(os.getcwd() + RAW_PATH):
+            RawsMaster.load_raw(file)
 
-        for file in json_files:
-            self.load_raw(file)
+        RawsMaster.load_index()
+        print(f'---- raws loaded -------')
 
-        self.load_index()
-
-    def load_raw(self, file):
-        with open(file, 'r') as json_file:
+    @staticmethod
+    def load_raw(file):
+        print(f'I have receive {file}')
+        with open(os.getcwd() + RAW_PATH + file, 'r') as json_file:
             datas = json.load(json_file)
             for data in datas:
                 if data == "items":
-                    self.load_item_raw(datas[data])
+                    RawsMaster.load_item_raw(datas[data])
+                else:
+                    print(f'load raw: Data was not items but {data}')
+                    raise NotImplementedError
 
-    def load_renderable_raw(self, renderable):
+    @staticmethod
+    def load_renderable_raw(renderable):
         render = RawsRenderable()
         for attribute in renderable:
             # print(f'attribute for render is {attribute}')
@@ -75,47 +88,68 @@ class Raws:
             elif attribute == "fg":
                 render.fg = renderable[attribute]
             elif attribute == "order":
-                render.order = renderable[attribute]
+                render.order = Layers(renderable[attribute])
+            else:
+                print(f'load render raw: unkown attribute in {renderable}')
+                raise NotImplementedError
         return render
 
-    def load_consumable_raw(self, consumable):
+    @staticmethod
+    def load_consumable_raw(consumable):
         consum = RawsConsumable()
         for attribute in consumable:
             if attribute == 'effects':
                 raw_effects = RawsEffect()
                 for effect in consumable[attribute]:
                     if effect == "provides_healing":
-                        raw_effects.provides_healing = consumable[attribute][effect]
+                        raw_effects.provides_healing = int(consumable[attribute][effect])
                     elif effect == "damage":
-                        raw_effects.damage = consumable[attribute][effect]
+                        raw_effects.damage = int(consumable[attribute][effect])
                     elif effect == "ranged":
-                        raw_effects.ranged = consumable[attribute][effect]
+                        raw_effects.ranged = int(consumable[attribute][effect])
+                    elif effect == "area_of_effect":
+                        raw_effects.area_of_effect = int(consumable[attribute][effect])
+                    elif effect == "confusion":
+                        raw_effects.confusion = int(consumable[attribute][effect])
                     else:
+                        print(f'load consum raw: unknown effect in {consumable[attribute]}')
                         raise NotImplementedError
                 consum.effects = raw_effects
+            else:
+                print(f'load consumable raw: unkown attribute in {consumable}')
+                raise NotImplementedError
         return consum
 
-    def load_item_raw(self, data):
+    @staticmethod
+    def load_item_raw(data):
         for item in data:
             raw_item = RawsItem()
             for component in item:
                 if component == 'name':
                     raw_item.name = item[component]
                 elif component == 'renderable':
-                    raw_item.renderable = self.load_renderable_raw(item[component])
+                    raw_item.renderable = RawsMaster.load_renderable_raw(item[component])
                 elif component == 'consumable':
-                    raw_item.consumable = self.load_consumable_raw(item[component])
+                    raw_item.consumable = RawsMaster.load_consumable_raw(item[component])
                 else:
+                    print(f'load item raw: unkown component in {component}')
                     raise NotImplementedError
-            self.items.append(raw_item)
+            RawsMaster.items.append(raw_item)
 
-    def create_item(self, name, x, y):
-        if not self.item_index.get(name):
-            raise KeyError
+    @staticmethod
+    def create_item(name, x, y):
+        print(f'create: name is {name}')
+        print(f'self item index is {RawsMaster.item_index}')
+        if not RawsMaster.item_index.get(name):
+            return
 
-        to_create = self.items[self.item_index[name]]
+        to_create = RawsMaster.items[RawsMaster.item_index[name] - 1]
         pos = PositionComponent(x, y)
         id = World.create_entity(pos)
+        print(f'TO CREATE : id {id}, name {name}')
+
+        item = ItemComponent()
+        World.add_component(item, id)
 
         if to_create.name:
             name = NameComponent(to_create.name)
@@ -132,6 +166,7 @@ class Raws:
         if to_create.consumable.effects:
             if to_create.consumable.effects.provides_healing:
                 provide_heal = ProvidesHealingComponent(to_create.consumable.effects.provides_healing)
+                print(f'provide heal is {provide_heal.healing_amount}')
                 World.add_component(provide_heal, id)
 
             if to_create.consumable.effects.damage:
@@ -142,14 +177,26 @@ class Raws:
                 ranged = RangedComponent(to_create.consumable.effects.ranged)
                 World.add_component(ranged, id)
 
+            if to_create.consumable.effects.area_of_effect:
+                print(f'aoe: {to_create.consumable.effects.area_of_effect}')
+                area = AreaOfEffectComponent(to_create.consumable.effects.area_of_effect)
+                World.add_component(area, id)
+
+            if to_create.consumable.effects.confusion:
+                confusion = ConfusionComponent(to_create.consumable.effects.confusion)
+                World.add_component(confusion, id)
+        return True
+
 
 if __name__ == "__main__":
     x = 0
     y = 0
-    raws = Raws()
-    raws.load_raws()
+    RawsMaster()
+    RawsMaster.load_raws()
 
-    raws.create_item('HEALTH_POTION', x, y)
+    to_test = ['HEALTH_POTION', 'CONFUSION_SCROLL', 'FIREBALL_SCROLL', 'MISSILE_MAGIC_SCROLL']
+    for item in to_test:
+        RawsMaster.create_item(item, x, y)
 
     print(f'world component is {World.get_all_entities()}')
 
