@@ -9,9 +9,6 @@ from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
 
 from ui_system.ui_enums import Layers
-from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll, \
-    create_confusion_scroll, create_dagger, create_shield, create_long_sword, create_tower_shield
-from data.monsters_creation import create_monster_morblin, create_monster_orcish
 from world import World
 from gmap.utils import xy_idx, index_to_point2d
 from data.load_raws import RawsMaster
@@ -25,29 +22,10 @@ def spawn_world(current_map):
             spawn_room(room, current_map)
 
 
-def monster_and_items_list():
-    monster_list = {
-        'morblin': create_monster_morblin,
-        'orcish': create_monster_orcish,
-        "health potion": create_healing_potion_item,
-        'missile Magic Scroll': create_magic_missile_scroll,
-        "fireball scroll": create_fireball_scroll,
-        'confusion scroll': create_confusion_scroll,
-        'dagger': create_dagger,
-        'shield': create_shield,
-        'longsword': create_long_sword,
-        'tower shield': create_tower_shield
-    }
-    return monster_list
-
-
 def spawn_room(room, current_map):
     current_depth = current_map.depth
-    # spawn_table = RawsMaster.get_spawn_table_for_depth(current_depth)
-    print(f'spawn table is {current_map.spawn_table}')
     spawn_points = []
     num_spawns = randint(1, config.MAX_MONSTERS_ROOM + 3) + (current_depth - 1) - 3
-    # monster_list = monster_and_items_list()
 
     for _i in range(0, num_spawns):
         added = False

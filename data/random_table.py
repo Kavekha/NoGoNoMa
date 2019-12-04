@@ -30,19 +30,3 @@ class RandomTable:
 
             roll -= self.entries[index].weight
             index += 1
-
-
-def room_table(current_depth=0):
-    table = RandomTable()
-    table.add("MORBLIN", 10 + current_depth)
-    table.add("OOGLOTH", 2 + current_depth)
-    table.add("HEALTH_POTION", 7 + current_depth)
-    table.add('MISSILE_MAGIC_SCROLL', 4 + current_depth)
-    table.add("FIREBALL_SCROLL", 2 + current_depth)
-    table.add('CONFUSION_SCROLL', 2 + current_depth)
-    table.add('DAGGER', 3)
-    table.add('BUCKLET', 2)
-    table.add('LONGSWORD', current_depth - 1)
-    table.add('TOWER_SHIELD', current_depth - 1)
-
-    return table

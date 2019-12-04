@@ -60,4 +60,6 @@ Changer State
 
 systems order
 
+Inventory
+    Max items, crash si letter index > 26?
 =====
