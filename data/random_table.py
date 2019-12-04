@@ -30,7 +30,6 @@ class RandomTable:
 
             roll -= self.entries[index].weight
             index += 1
-        return None
 
 
 def room_table(current_depth=0):

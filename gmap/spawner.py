@@ -9,7 +9,6 @@ from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
 
 from ui_system.ui_enums import Layers
-from data.random_table import room_table
 from data.items_creation import create_healing_potion_item, create_magic_missile_scroll, create_fireball_scroll, \
     create_confusion_scroll, create_dagger, create_shield, create_long_sword, create_tower_shield
 from data.monsters_creation import create_monster_morblin, create_monster_orcish
@@ -20,9 +19,10 @@ import config
 
 
 def spawn_world(current_map):
+    current_map.spawn_table = RawsMaster.get_spawn_table_for_depth(current_map.depth)
     for room in current_map.rooms:
         if len(current_map.rooms) > 0 and room != current_map.rooms[0]:
-            spawn_room(room)
+            spawn_room(room, current_map)
 
 
 def monster_and_items_list():
@@ -41,10 +41,10 @@ def monster_and_items_list():
     return monster_list
 
 
-def spawn_room(room):
-    current_map = World.fetch('current_map')
+def spawn_room(room, current_map):
     current_depth = current_map.depth
-    spawn_table = room_table(current_depth)
+    # spawn_table = RawsMaster.get_spawn_table_for_depth(current_depth)
+    print(f'spawn table is {current_map.spawn_table}')
     spawn_points = []
     num_spawns = randint(1, config.MAX_MONSTERS_ROOM + 3) + (current_depth - 1) - 3
     # monster_list = monster_and_items_list()
@@ -57,7 +57,7 @@ def spawn_room(room):
             y = room.y1 + randint(1, abs(room.y2 - room.y1) -2)
             idx = xy_idx(x, y)
             if idx not in spawn_points:
-                spawn_points.append((idx, spawn_table.roll()))
+                spawn_points.append((idx, current_map.spawn_table.roll()))
                 added = True
             else:
                 tries += 1

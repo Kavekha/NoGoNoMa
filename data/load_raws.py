@@ -18,39 +18,16 @@ from components.blocktile_component import BlockTileComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.viewshed_component import ViewshedComponent
 from data.items_enum import EquipmentSlots
+from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from world import World
 from ui_system.ui_enums import Layers
 import config
 
 
-
-class RawsItem:
-    def __init__(self):
-        self.name = None
-        self.renderable = {}    # {'glyph': None, 'fg': None, 'order': None}
-        self.consumable = {}    # {'effects': {'provides_healing': None,'damage': None,'ranged': None,
-        # 'area_of_effect': None,'confusion': None}}
-        self.weapon = {}    # {'range': None,'power_bonus': None}
-        self.shield = {}    # {'defense_bonus': None}
-
-
-class RawsMob:
-    def __init__(self):
-        self.name = None
-        self.renderable = None
-        self.blocks_tile = True
-        self.stats = {
-            'max_hp': 1,
-            'hp': 1,
-            'defense': 0,
-            'power': 0
-        }
-        self.vision_range = 5
-
-
 class RawsMaster:
     items = []
     mobs = []
+    spawn_table = []
     item_index = {}
     mob_index = {}
 
@@ -65,9 +42,8 @@ class RawsMaster:
     @staticmethod
     def load_raws():
         print(f'------- load raws ------')
-        full_path = os.getcwd() + config.RAW_FILES
+        full_path = os.getcwd() + config.RAW_FILES  # game
         # full_path = '../raws'
-        # print(f'full path {full_path}')
 
         for file in os.listdir(full_path):
             RawsMaster.load_raw(file)
@@ -77,9 +53,8 @@ class RawsMaster:
 
     @staticmethod
     def load_raw(file):
-        # print(f'I have receive {file}')
-        #full_path = os.getcwd() + config.RAW_FILES + '/' + file
-        full_path = os.getcwd() + config.RAW_FILES + '/' + file
+        # full_path = '../raws/' + file   # load raws
+        full_path = os.getcwd() + config.RAW_FILES + '/' + file # game
         with open(full_path, 'r') as json_file:
             print(f'--- loading raw {file} ----')
             datas = json.load(json_file)
@@ -89,9 +64,65 @@ class RawsMaster:
                     RawsMaster.load_item_raw(datas[data])
                 elif data == 'mobs':
                     RawsMaster.load_mob_raw(datas[data])
+                elif data == 'spawn_table':
+                    RawsMaster.load_spawn_table_raw(datas[data])
                 else:
                     print(f'load raw: Data was not items but {data}')
                     raise NotImplementedError
+
+    @staticmethod
+    def load_spawn_table_raw(data):
+        print(f'--- load spawn tables ---')
+        raw_table = RawsSpawnTable()
+        for spawn_entry in data:
+            object_entry = {}
+            name = None
+            for info in spawn_entry:
+                print(f'current info is {info}')
+                if info == 'name' and not object_entry:
+                    name = spawn_entry[info]
+                    print(f'table: name : {info}, object entry is {object_entry} and name is {name}')
+                elif info == 'weight' and name:
+                    object_entry[info] = int(spawn_entry[info])
+                    print(f'table: weight: table object entry is now {object_entry}')
+                elif info == 'min_depth' and name:
+                    object_entry[info] = int(spawn_entry[info])
+                elif info == 'max_depth' and name:
+                    object_entry[info] = int(spawn_entry[info])
+                elif info == 'add_map_depth_to_weight'and name:
+                    object_entry[info] = spawn_entry[info]
+                else:
+                    print(f'spawn table raw: info is {info} and spawn entry is {spawn_entry}')
+                    raise NotImplementedError
+            if object_entry:
+                raw_table.spawn_infos[name] = object_entry
+        print(f'load table: raw table is {raw_table}')
+        print(f'load table: raw table content is {raw_table.spawn_infos}')
+        RawsMaster.spawn_table.append(raw_table)
+
+    @staticmethod
+    def get_spawn_table_for_depth(depth):
+        from data.random_table import RandomTable
+        table_depth = RandomTable()
+        for table in RawsMaster.spawn_table:
+            available_spawns = []
+            for entry in table.spawn_infos:
+                print(f'get depth: entry is {entry}')
+                mind, maxd = table.spawn_infos[entry].get('min_depth', 0), table.spawn_infos[entry].get('max_depth', 0)
+                if mind <= depth and maxd >= depth:
+                    print(f'get depth: {entry} is available at this depth level')
+                    available_spawns.append((entry, table.spawn_infos[entry].get('weight', 0)))
+
+            if available_spawns:
+                for spawn, weight in available_spawns:
+                    table_depth.add(spawn, weight)
+
+        print(f'table_depth is:')
+        for entry in table_depth.entries:
+            print(f'- {entry.name}, {entry.weight}')
+
+        return table_depth
+
 
     @staticmethod
     def load_mob_raw(data):
@@ -144,6 +175,7 @@ class RawsMaster:
             else:
                 print(f'Missing attribute for shield in {shield_component}')
                 raise NotImplementedError
+        return shield_attributes
 
     @staticmethod
     def load_weapon_raw(weapon):
@@ -156,6 +188,7 @@ class RawsMaster:
             else:
                 print(f'Missing attribute for weapon in {weap}')
                 raise NotImplementedError
+        return weap
 
     @staticmethod
     def load_renderable_raw(renderable):
@@ -298,14 +331,14 @@ class RawsMaster:
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))
 
             if to_create.weapon.get('power_bonus'):
-                components_for_entity.append(PowerBonusComponent(to_create['weapon']['power_bonus']))
+                components_for_entity.append(PowerBonusComponent(to_create.weapon['power_bonus']))
 
         if to_create.shield:
             print(f'to create is {to_create} and Equippable Shield component has been requested')
             components_for_entity.append(EquippableComponent(EquipmentSlots.SHIELD))
 
             if to_create.shield.get('defense_bonus'):
-                components_for_entity.append(DefenseBonusComponent(to_create['shield']['defense_bonus']))
+                components_for_entity.append(DefenseBonusComponent(to_create.shield['defense_bonus']))
 
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:
@@ -333,3 +366,6 @@ if __name__ == "__main__":
     print(f'world component is {World.get_all_entities()}')
     print(f'self item index is {RawsMaster.item_index}')
     print(f'self mob index is {RawsMaster.mob_index}')
+
+    print(f'------ spawn table -----')
+    RawsMaster.get_spawn_table_for_depth(1)

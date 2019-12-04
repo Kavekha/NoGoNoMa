@@ -1,3 +1,8 @@
+Load_raws
+    Fusionner les raws pour ne pas les garder.
+    Exemple: Table Raws oblige a chercher dans tous les raws pour determiner la table.
+    Sanity checks: http://bfnightly.bracketproductions.com/rustbook/chapter_46.html
+
 Tooltips:
     Mal formaté.
     Ne prends pas en compte la visibilité.
