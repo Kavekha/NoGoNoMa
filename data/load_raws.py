@@ -13,28 +13,25 @@ from components.confusion_component import ConfusionComponent
 from components.item_component import ItemComponent
 from components.equippable_component import EquippableComponent
 from components.bonus_components import PowerBonusComponent, DefenseBonusComponent
+from components.monster_component import MonsterComponent
+from components.blocktile_component import BlockTileComponent
+from components.combat_stats_component import CombatStatsComponent
+from components.viewshed_component import ViewshedComponent
 from data.items_enum import EquipmentSlots
 from world import World
 from ui_system.ui_enums import Layers
+import config
 
-
-RAW_PATH = "/raws"
 
 
 class RawsItem:
     def __init__(self):
         self.name = None
-        self.renderable = {'glyph': None, 'fg': None, 'order': None}
-        self.consumable = {'effects': {
-            'provides_healing': None,
-        'damage': None,
-        'ranged': None,
-        'area_of_effect': None,
-        'confusion': None}
-        }
-        self.weapon = {'range': None,
-                       'power_bonus': None}
-        self.shield = {'defense_bonus': None}
+        self.renderable = {}    # {'glyph': None, 'fg': None, 'order': None}
+        self.consumable = {}    # {'effects': {'provides_healing': None,'damage': None,'ranged': None,
+        # 'area_of_effect': None,'confusion': None}}
+        self.weapon = {}    # {'range': None,'power_bonus': None}
+        self.shield = {}    # {'defense_bonus': None}
 
 
 class RawsMob:
@@ -67,12 +64,11 @@ class RawsMaster:
 
     @staticmethod
     def load_raws():
-        full_path = os.getcwd() + RAW_PATH
-        full_path = '../raws'
+        print(f'------- load raws ------')
+        full_path = os.getcwd() + config.RAW_FILES
+        # full_path = '../raws'
+        # print(f'full path {full_path}')
 
-        print(f'current working dir is {os.getcwd()}')
-        print(f'path should be {os.getcwd() + RAW_PATH}')
-        print(f'full path is {full_path}')
         for file in os.listdir(full_path):
             RawsMaster.load_raw(file)
 
@@ -81,12 +77,14 @@ class RawsMaster:
 
     @staticmethod
     def load_raw(file):
-        print(f'I have receive {file}')
-        full_path = os.getcwd() + RAW_PATH + '/' + file
-        full_path = '../raws/' + file
+        # print(f'I have receive {file}')
+        #full_path = os.getcwd() + config.RAW_FILES + '/' + file
+        full_path = os.getcwd() + config.RAW_FILES + '/' + file
         with open(full_path, 'r') as json_file:
+            print(f'--- loading raw {file} ----')
             datas = json.load(json_file)
             for data in datas:
+                # print(f'data is {data}')
                 if data == "items":
                     RawsMaster.load_item_raw(datas[data])
                 elif data == 'mobs':
@@ -97,6 +95,7 @@ class RawsMaster:
 
     @staticmethod
     def load_mob_raw(data):
+        print(f'---- load mob ---')
         for mob in data:
             raw_mob = RawsMob()
             for component in mob:
@@ -117,6 +116,7 @@ class RawsMaster:
 
     @staticmethod
     def load_item_raw(data):
+        print(f'---- load item ---')
         for item in data:
             raw_item = RawsItem()
             for component in item:
@@ -217,7 +217,7 @@ class RawsMaster:
             return raw_consumable
 
     @staticmethod
-    def create_something(name, x, y):
+    def spawn_named_entity(name, x, y):
         print(f'------ spawn something')
         print(f'create: name is {name}')
         if RawsMaster.item_index.get(name):
@@ -229,11 +229,7 @@ class RawsMaster:
     @staticmethod
     def create_mob(name, x, y):
         to_create = RawsMaster.mobs[RawsMaster.mob_index[name] - 1]
-
-        components_for_entity = []
-
-        components_for_entity.append(PositionComponent(x, y))
-        components_for_entity.append(ItemComponent())
+        components_for_entity = [MonsterComponent()]
 
         if to_create.name:
             components_for_entity.append(NameComponent(to_create.name))
@@ -242,10 +238,6 @@ class RawsMaster:
             components_for_entity.append(RenderableComponent(to_create.renderable['glyph'],
                                                              to_create.renderable['fg'],
                                                              to_create.renderable['order']))
-
-        from components.blocktile_component import BlockTileComponent
-        from components.combat_stats_component import CombatStatsComponent
-        from components.viewshed_component import ViewshedComponent
 
         if to_create.blocks_tile:
             components_for_entity.append(BlockTileComponent)
@@ -260,21 +252,21 @@ class RawsMaster:
         if to_create.vision_range:
             components_for_entity.append(ViewshedComponent(to_create.vision_range))
 
-        World.create_entity([components_for_entity])
+        mob_id = World.create_entity(PositionComponent(x, y))
+        for component in components_for_entity:
+            World.add_component(component, mob_id)
         return True
 
     @staticmethod
     def create_item(name, x, y):
         to_create = RawsMaster.items[RawsMaster.item_index[name] - 1]
-        print(f'item raw contains: {to_create.name}\n {to_create.renderable}\n {to_create.consumable}')
+        # print(f'item raw contains: {to_create.name}\n {to_create.renderable}\n {to_create.consumable}')
 
-        components_for_entity = []
-
-        components_for_entity.append(PositionComponent(x, y))
-        components_for_entity.append(ItemComponent())
+        components_for_entity = [ItemComponent()]
 
         if to_create.name:
             components_for_entity.append(NameComponent(to_create.name))
+            print(f'item {name} has component Name {to_create.name}')
 
         if to_create.renderable:
             components_for_entity.append(RenderableComponent(to_create.renderable['glyph'],
@@ -302,18 +294,27 @@ class RawsMaster:
                 components_for_entity.append(ConfusionComponent(to_create.consumable['effects']['confusion']))
 
         if to_create.weapon:
+            print(f'to create is {to_create} and Equippable Melee component has been requested')
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))
 
             if to_create.weapon.get('power_bonus'):
                 components_for_entity.append(PowerBonusComponent(to_create['weapon']['power_bonus']))
 
         if to_create.shield:
+            print(f'to create is {to_create} and Equippable Shield component has been requested')
             components_for_entity.append(EquippableComponent(EquipmentSlots.SHIELD))
 
             if to_create.shield.get('defense_bonus'):
                 components_for_entity.append(DefenseBonusComponent(to_create['shield']['defense_bonus']))
 
-        World.create_entity([components_for_entity])
+        item_id = World.create_entity(PositionComponent(x, y))
+        for component in components_for_entity:
+            World.add_component(component, item_id)
+
+        print(f'check item creation : {item_id}, name component {World.get_entity_component(item_id, NameComponent)}')
+        print(f'check item creation Name : {World.get_entity_component(item_id, NameComponent)}')
+
+
         return True
 
 
@@ -326,7 +327,7 @@ if __name__ == "__main__":
     to_test = ['HEALTH_POTION', 'CONFUSION_SCROLL', 'FIREBALL_SCROLL', 'MISSILE_MAGIC_SCROLL',
                'DAGGER', "LONGSWORD", "BUCKLET", "TOWER_SHIELD", "MORBLIN", "OOGLOTH"]
     for item in to_test:
-        RawsMaster.create_something(item, x, y)
+        RawsMaster.spawn_named_entity(item, x, y)
         print(f'---------------')
 
     print(f'world component is {World.get_all_entities()}')

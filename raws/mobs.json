@@ -1,11 +1,11 @@
 {
   "mobs": [
     {
-      "name": "OOGOTH",
+      "name": "OOGLOTH",
       "renderable": {
         "glyph": "o",
         "fg": "#FF0000",
-        "order": 1
+        "order": 4
       },
       "blocks_tile": true,
       "stats": {
@@ -21,7 +21,7 @@
       "renderable": {
         "glyph": "m",
         "fg": "#FF0000",
-        "order": 1
+        "order": 4
       },
       "blocks_tile": true,
       "stats": {

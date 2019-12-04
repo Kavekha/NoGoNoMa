@@ -5,7 +5,7 @@
           "renderable": {
               "glyph" : "!",
               "fg" : "#FF00FF",
-              "order" : 2
+              "order" : 3
           },
           "consumable" : {
               "effects" : { "provides_healing" : "8"}
@@ -16,12 +16,12 @@
           "renderable": {
               "glyph" : ")",
               "fg" : "#00FFFF",
-              "order" : 2
+              "order" : 3
           },
           "consumable" : {
               "effects" : {
                   "ranged" : "6",
-                  "damage" : "20"
+                  "damage" : "12"
               }
           }
       },
@@ -30,7 +30,7 @@
           "renderable": {
             "glyph" : ")",
             "fg" : "#FFA500",
-            "order" : 2
+            "order" : 3
           },
           "consumable" : {
             "effects" : {
@@ -45,7 +45,7 @@
           "renderable": {
             "glyph" : ")",
             "fg" : "#FFAAAA",
-            "order" : 2
+            "order" : 3
           },
           "consumable" : {
               "effects" : {
@@ -59,7 +59,7 @@
           "renderable": {
               "glyph" : "/",
               "fg" : "#FFAAAA",
-              "order" : 2
+              "order" : 3
           },
           "weapon" : {
             "range" : "melee",
@@ -71,7 +71,7 @@
           "renderable": {
             "glyph" : "/",
             "fg" : "#FFAAFF",
-            "order" : 2
+            "order" : 3
           },
           "weapon" : {
               "range" : "melee",
@@ -83,7 +83,7 @@
           "renderable": {
                 "glyph" : "[",
                 "fg" : "#00AAFF",
-                "order" : 2
+                "order" : 3
           },
           "shield" : {
                 "defense_bonus" : 1
@@ -94,7 +94,7 @@
           "renderable": {
               "glyph" : "[",
               "fg" : "#00FFFF",
-              "order" : 2
+              "order" : 3
           },
           "shield" : {
               "defense_bonus" : 3

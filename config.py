@@ -1,6 +1,7 @@
 TITLE = "RuToPy RL"
 FONT = "fonts/16x16_sm_ascii.png, size=16x16, codepage=437"
 
+RAW_FILES = '/raws'
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 

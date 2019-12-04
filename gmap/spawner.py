@@ -47,7 +47,7 @@ def spawn_room(room):
     spawn_table = room_table(current_depth)
     spawn_points = []
     num_spawns = randint(1, config.MAX_MONSTERS_ROOM + 3) + (current_depth - 1) - 3
-    monster_list = monster_and_items_list()
+    # monster_list = monster_and_items_list()
 
     for _i in range(0, num_spawns):
         added = False
@@ -65,9 +65,9 @@ def spawn_room(room):
     for idx, spawn in spawn_points:
         x, y = index_to_point2d(idx)
         try:
-            if not RawsMaster.create_item(spawn, x, y):
-                created = monster_list[spawn]
-                created(x, y)
+            print(f'idx spawn in spawn points is {spawn}')
+            RawsMaster.spawn_named_entity(spawn, x, y)
+            print(f'{World.get_all_entities()}')
         except:
             print(f'Spawner:spawn room: {spawn} requested, but doesnt appear in monster list')
 
