@@ -81,7 +81,7 @@
       {
           "name" : "BUCKLET",
           "renderable": {
-                "glyph" : "[",
+                "glyph" : "[[",
                 "fg" : "#00AAFF",
                 "order" : 3
           },
@@ -92,7 +92,7 @@
       {
           "name" : "TOWER_SHIELD",
           "renderable": {
-              "glyph" : "[",
+              "glyph" : "[[",
               "fg" : "#00FFFF",
               "order" : 3
           },

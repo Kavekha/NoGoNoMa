@@ -18,6 +18,7 @@ class Gmap:
         self.depth = depth
         self.tiles = self.new_map()
         self.fov_map = self.create_fov_map()
+        self.spawn_table = None
         self.print_map_debug()
 
     def print_map_debug(self):
