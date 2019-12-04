@@ -11,7 +11,7 @@ from components.confusion_component import ConfusionComponent
 from components.equippable_component import EquippableComponent
 from components.bonus_components import PowerBonusComponent, DefenseBonusComponent
 
-from data.types import EquipmentSlots
+from data.items_enum import EquipmentSlots
 from ui_system.ui_enums import Layers
 from world import World
 from texts import Texts

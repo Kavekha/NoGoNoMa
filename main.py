@@ -5,6 +5,7 @@ import time
 
 import config
 from world import World
+from data.load_raws import RawsMaster
 from player_systems.player_input import player_input
 from systems.render_system import render_system
 from ui_system.end_game_screens import show_game_over, show_victory_screen
@@ -138,6 +139,10 @@ def main():
     terminal.set(f'font: {config.FONT}')
     terminal.set("input.filter={keyboard, mouse+}")
     terminal.refresh()
+
+    # load raws
+    RawsMaster()
+    RawsMaster.load_raws()
 
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)

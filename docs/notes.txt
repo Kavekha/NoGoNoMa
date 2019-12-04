@@ -1,7 +1,16 @@
+Load_raws
+    Fusionner les raws pour ne pas les garder.
+    Exemple: Table Raws oblige a chercher dans tous les raws pour determiner la table.
+    Sanity checks: http://bfnightly.bracketproductions.com/rustbook/chapter_46.html
+
 Tooltips:
     Mal formaté.
     Ne prends pas en compte la visibilité.
     Ne se retire pas quand curseur hors objet
+    AwaitingInput: Enregistrer coordonnées + tooltip dans dico.
+        Si coordonnées == mouse, on ne fait rien.
+        Si coordonnées != mouse, on regarde si deja dans le dico + refresh
+            Si pas dans le dico & tooltip, on créé le tooltip et on l'affiche
 
 Logs:
     Raffraichissement de l'affichage des logs.
@@ -51,4 +60,6 @@ Changer State
 
 systems order
 
+Inventory
+    Max items, crash si letter index > 26?
 =====

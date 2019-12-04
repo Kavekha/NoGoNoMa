@@ -1,0 +1,104 @@
+{
+  "items" : [
+      {
+          "name" : "HEALTH_POTION",
+          "renderable": {
+              "glyph" : "!",
+              "fg" : "#FF00FF",
+              "order" : 3
+          },
+          "consumable" : {
+              "effects" : { "provides_healing" : "8"}
+          }
+      },
+      {
+          "name" : "MISSILE_MAGIC_SCROLL",
+          "renderable": {
+              "glyph" : ")",
+              "fg" : "#00FFFF",
+              "order" : 3
+          },
+          "consumable" : {
+              "effects" : {
+                  "ranged" : "6",
+                  "damage" : "12"
+              }
+          }
+      },
+      {
+          "name" : "FIREBALL_SCROLL",
+          "renderable": {
+            "glyph" : ")",
+            "fg" : "#FFA500",
+            "order" : 3
+          },
+          "consumable" : {
+            "effects" : {
+                "ranged" : "6",
+                "damage" : "20",
+                "area_of_effect" : "3"
+                }
+            }
+      },
+      {
+          "name" : "CONFUSION_SCROLL",
+          "renderable": {
+            "glyph" : ")",
+            "fg" : "#FFAAAA",
+            "order" : 3
+          },
+          "consumable" : {
+              "effects" : {
+              "ranged" : "6",
+              "confusion" : "4"
+              }
+          }
+      },
+      {
+          "name" : "DAGGER",
+          "renderable": {
+              "glyph" : "/",
+              "fg" : "#FFAAAA",
+              "order" : 3
+          },
+          "weapon" : {
+            "range" : "melee",
+            "power_bonus" : 2
+          }
+      },
+      {
+          "name" : "LONGSWORD",
+          "renderable": {
+            "glyph" : "/",
+            "fg" : "#FFAAFF",
+            "order" : 3
+          },
+          "weapon" : {
+              "range" : "melee",
+              "power_bonus" : 4
+          }
+      },
+      {
+          "name" : "BUCKLET",
+          "renderable": {
+                "glyph" : "[[",
+                "fg" : "#00AAFF",
+                "order" : 3
+          },
+          "shield" : {
+                "defense_bonus" : 1
+          }
+      },
+      {
+          "name" : "TOWER_SHIELD",
+          "renderable": {
+              "glyph" : "[[",
+              "fg" : "#00FFFF",
+              "order" : 3
+          },
+          "shield" : {
+              "defense_bonus" : 3
+          }
+      }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "mobs": [
+    {
+      "name": "OOGLOTH",
+      "renderable": {
+        "glyph": "o",
+        "fg": "#FF0000",
+        "order": 4
+      },
+      "blocks_tile": true,
+      "stats": {
+        "max_hp": 16,
+        "defense": 1,
+        "power": 4
+      },
+      "vision_range": 8
+    },
+    {
+      "name": "MORBLIN",
+      "renderable": {
+        "glyph": "m",
+        "fg": "#FF0000",
+        "order": 4
+      },
+      "blocks_tile": true,
+      "stats": {
+        "max_hp": 8,
+        "defense": 1,
+        "power": 3
+      },
+      "vision_range": 8
+    }
+  ]
+}

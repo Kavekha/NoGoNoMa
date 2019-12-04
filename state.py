@@ -8,7 +8,7 @@ from components.in_backpack_component import InBackPackComponent
 from components.equipped_component import EquippedComponent
 from world import World
 import config
-
+from texts import Texts
 
 class States(Enum):
     AWAITING_INPUT = 0
@@ -32,8 +32,8 @@ class State:
         self.current_state = state
 
     def change_state(self, new_state):
-        if new_state != self.current_state:
-            print(f'new state required for {self}: from {self.current_state} to {new_state}')
+        # if new_state != self.current_state:
+            # print(f'new state required for {self}: from {self.current_state} to {new_state}')
         self.current_state = new_state
 
     def entities_to_remove_on_level_change(self):
@@ -84,4 +84,4 @@ class State:
         player_viewshed.dirty = True
 
         logs = World.fetch('logs')
-        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]You descend to the next level.[/color]')
+        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("GO_NEXT_LEVEL")}[/color]')
