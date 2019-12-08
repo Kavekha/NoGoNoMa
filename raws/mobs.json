@@ -8,12 +8,17 @@
         "order": 4
       },
       "blocks_tile": true,
-      "stats": {
-        "max_hp": 16,
-        "defense": 1,
-        "power": 4
+      "vision_range": 8,
+      "attributes": {
+        "might": 4,
+        "body": 4,
+        "quickness": 2,
+        "wits": 1
       },
-      "vision_range": 8
+       "skills": {
+        "melee": 2
+      },
+      "level": 2
     },
     {
       "name": "MORBLIN",
@@ -23,12 +28,17 @@
         "order": 4
       },
       "blocks_tile": true,
-      "stats": {
-        "max_hp": 8,
-        "defense": 1,
-        "power": 3
+      "vision_range": 8,
+      "attributes": {
+        "might": 2,
+        "body": 2,
+        "quickness": 4,
+        "wits": 1
       },
-      "vision_range": 8
+      "skills": {
+        "melee": 1
+      },
+      "level": 1
     }
   ]
 }

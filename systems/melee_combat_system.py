@@ -2,7 +2,8 @@ from systems.system import System
 from world import World
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.name_component import NameComponent
-from components.combat_stats_component import CombatStatsComponent
+from components.pools_component import Pools
+from components.attributes_component import AttributesComponent
 from components.suffer_damage_component import SufferDamageComponent
 from components.bonus_components import DefenseBonusComponent, PowerBonusComponent
 from components.equipped_component import EquippedComponent
@@ -11,16 +12,17 @@ from texts import Texts
 
 class MeleeCombatSystem(System):
     def update(self, *args, **kwargs):
-        subjects = World.get_components(WantsToMeleeComponent, NameComponent, CombatStatsComponent)
+        subjects = World.get_components(WantsToMeleeComponent, NameComponent, Pools, AttributesComponent)
         if not subjects:
             return
 
-        for entity, (wants_melee, name, combat_stats) in subjects:
+        for entity, (wants_melee, name, pools, attributes) in subjects:
             # Attacker Not dead
-            if combat_stats.hp > 0:
-                target_stats = World.get_entity_component(wants_melee.target, CombatStatsComponent)
+            if pools.hit_points.current > 0:
+                target_pools = World.get_entity_component(wants_melee.target, Pools)
                 # Defenser not dead
-                if target_stats.hp > 0:
+                print(f'melee combat: target is {wants_melee.target}, pool is {target_pools}')
+                if target_pools.hit_points.current > 0:
                     # Calcul bonus / malus then dmg
                     offensive_bonus = 0
                     for _item_entity, (power_bonus, equipped_by) in World.get_components(PowerBonusComponent,
@@ -34,7 +36,8 @@ class MeleeCombatSystem(System):
                         if equipped_by.owner == wants_melee.target:
                             defensive_bonus += defense_bonus.defense
 
-                    damage = max(0, (combat_stats.power + offensive_bonus) - (target_stats.defense + defensive_bonus))
+                    target_attributes = World.get_entity_component(wants_melee.target, AttributesComponent)
+                    damage = max(0, (attributes.might + offensive_bonus) - (target_attributes.body + defensive_bonus))
 
                     # Logs
                     target_name = World.get_entity_component(wants_melee.target, NameComponent).name

@@ -3,7 +3,7 @@ import config
 from components.position_component import PositionComponent
 from components.player_component import PlayerComponent
 from components.viewshed_component import ViewshedComponent
-from components.combat_stats_component import CombatStatsComponent
+from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
 from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
@@ -21,7 +21,7 @@ def try_move_player(delta_x, delta_y):
         destination_idx = current_map.xy_idx(position.x + delta_x, position.y + delta_y)
 
         for potential_target in current_map.tile_content[destination_idx]:
-            target = World.get_entity_component(potential_target, CombatStatsComponent)
+            target = World.get_entity_component(potential_target, Pools)
             if target:
                 want_to_melee = WantsToMeleeComponent(potential_target)
                 World.add_component(want_to_melee, entity)

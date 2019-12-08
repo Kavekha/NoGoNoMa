@@ -17,6 +17,11 @@ from components.monster_component import MonsterComponent
 from components.blocktile_component import BlockTileComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.viewshed_component import ViewshedComponent
+from components.attributes_component import AttributesComponent
+from components.skills_component import Skills, SkillsComponent
+from components.pools_component import Pools
+
+from systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots
 from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from world import World
@@ -50,6 +55,9 @@ class RawsMaster:
 
         RawsMaster.load_index()
         print(f'---- raws loaded -------')
+
+        print(f'item index is {RawsMaster.item_index}')
+        print(f'mob index is {RawsMaster.mob_index}')
 
     @staticmethod
     def load_raw(file):
@@ -136,10 +144,14 @@ class RawsMaster:
                     raw_mob.renderable = RawsMaster.load_renderable_raw(mob[component])
                 elif component == 'blocks_tile':
                     raw_mob.blocks_tile = mob[component]
-                elif component == 'stats':
-                    raw_mob.stats = RawsMaster.load_stats_raw(mob[component])
                 elif component == 'vision_range':
                     raw_mob.vision_range = int(mob[component])
+                elif component == 'attributes':
+                    raw_mob.attributes = RawsMaster.load_attributes_raw(mob[component])
+                elif component == 'skills':
+                    raw_mob.skills = RawsMaster.load_skills_raw(mob[component])
+                elif component == 'level':
+                    raw_mob.lvl = mob[component]
                 else:
                     print(f'Unknown component {component} for mob {mob}')
                     raise NotImplementedError
@@ -191,6 +203,14 @@ class RawsMaster:
         return weap
 
     @staticmethod
+    def load_attributes_raw(attributes_raw):
+        attributes = {}
+        for attribute in attributes_raw:
+            if attribute == 'might' or attribute == 'body' or attribute == 'wits' or attribute == 'quickness':
+                attributes[attribute] = attributes_raw[attribute]
+        return attributes
+
+    @staticmethod
     def load_renderable_raw(renderable):
         render = {}
         for attribute in renderable:
@@ -208,20 +228,17 @@ class RawsMaster:
         return render
 
     @staticmethod
-    def load_stats_raw(stats_component):
-        stats = {}
-        for attribute in stats_component:
-            if attribute == 'max_hp':
-                stats['max_hp'] = int(stats_component[attribute])
-            elif attribute == 'hp':
-                stats['_hp'] = int(stats_component[attribute])
-            elif attribute == 'defense':
-                stats['defense'] = int(stats_component[attribute])
-            elif attribute == 'power':
-                stats['power'] = int(stats_component[attribute])
+    def load_skills_raw(skills_component):
+        skills = {}
+        for skill in skills_component:
+            # valid skill?
+            if skill == 'melee':
+                real_skill = Skills.MELEE
             else:
-                print(f'load stat raws: unknown attribute {attribute} in {stats_component}')
-        return stats
+                print(f'load skills raw: Unknown skill {skill}')
+                raise NotImplementedError
+            skills[real_skill] = skills_component[skill]
+        return skills
 
     @staticmethod
     def load_consumable_raw(consumable):
@@ -252,10 +269,14 @@ class RawsMaster:
     @staticmethod
     def spawn_named_entity(name, x, y):
         print(f'------ spawn something')
-        print(f'create: name is {name}')
+        print(f'spawn name entity: '
+              f'name requested was {name},'
+              f' \n index item is {RawsMaster.item_index} \n index mob is {RawsMaster.mob_index}')
         if RawsMaster.item_index.get(name):
+            print(f'item name found')
             return RawsMaster.create_item(name, x, y)
         if RawsMaster.mob_index.get(name):
+            print('monster found')
             return RawsMaster.create_mob(name, x, y)
         return
 
@@ -275,19 +296,37 @@ class RawsMaster:
         if to_create.blocks_tile:
             components_for_entity.append(BlockTileComponent)
 
-        if to_create.stats:
-            if to_create.stats.get('max_hp') and to_create.stats.get('power') and to_create.stats.get('defense'):
-                components_for_entity.append(CombatStatsComponent(to_create.stats.get('max_hp'),
-                                                                  to_create.stats.get('defense'),
-                                                                  to_create.stats.get('power')
-                                                                  )
-                                             )
         if to_create.vision_range:
             components_for_entity.append(ViewshedComponent(to_create.vision_range))
 
+        if to_create.attributes:
+            components_for_entity.append(AttributesComponent(might=to_create.attributes.get('might', 1),
+                                                             body=to_create.attributes.get('body', 1),
+                                                             quickness=to_create.attributes.get('quickness', 1),
+                                                             wits=to_create.attributes.get('wits', 1)
+                                                             ))
+
+        if to_create.skills:
+            skill_component = SkillsComponent()
+            for skill in to_create.skills:
+                skill_component.skills[skill] = to_create.skills[skill]
+            components_for_entity.append(SkillsComponent())
+
+        if to_create.lvl:
+            mob_lvl = to_create.lvl
+        else:
+            mob_lvl = 1
+        mob_hp = npc_hp_at_lvl(to_create.attributes.get('body', config.DEFAULT_MONSTER_BODY_ATTRIBUTE), mob_lvl)
+        mob_mana = mana_point_at_level(to_create.attributes.get('wits', config.DEFAULT_MONSTER_WITS_ATTRIBUTE), mob_lvl)
+        print(f'create mob: pools: {mob_lvl}, hp {mob_hp}, mana {mob_mana}')
+
+        components_for_entity.append(Pools(mob_hp, mob_mana, mob_lvl))
+
         mob_id = World.create_entity(PositionComponent(x, y))
+        print(f'components in components for entity is {components_for_entity}')
         for component in components_for_entity:
             World.add_component(component, mob_id)
+
         return True
 
     @staticmethod
@@ -346,7 +385,6 @@ class RawsMaster:
 
         print(f'check item creation : {item_id}, name component {World.get_entity_component(item_id, NameComponent)}')
         print(f'check item creation Name : {World.get_entity_component(item_id, NameComponent)}')
-
 
         return True
 

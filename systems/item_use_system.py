@@ -1,6 +1,6 @@
 from systems.system import System
 from components.wants_use_item_component import WantsToUseComponent
-from components.combat_stats_component import CombatStatsComponent
+from components.pools_component import Pools
 from components.provides_healing_component import ProvidesHealingComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.name_component import NameComponent
@@ -20,13 +20,13 @@ import config
 
 class ItemUseSystem(System):
     def update(self, *args, **kwargs):
-        subjects = World.get_components(WantsToUseComponent, CombatStatsComponent)
+        subjects = World.get_components(WantsToUseComponent, Pools)
         if not subjects:
             return
 
         player = World.fetch('player')
         logs = World.fetch('logs')
-        for entity, (wants_to_use, stats, *args) in subjects:
+        for entity, (wants_to_use, pools, *args) in subjects:
 
             item_inflicts_dmg = World.get_entity_component(wants_to_use.item, InflictsDamageComponent)
             item_provides_healing = World.get_entity_component(wants_to_use.item, ProvidesHealingComponent)
@@ -64,7 +64,7 @@ class ItemUseSystem(System):
 
             for target in targets:
                 target_name = World.get_entity_component(target, NameComponent)
-                if World.get_entity_component(target, CombatStatsComponent):
+                if World.get_entity_component(target, Pools):
                     if item_inflicts_dmg:
                         suffer_dmg = SufferDamageComponent(item_inflicts_dmg.damage)
                         World.add_component(suffer_dmg, target)
@@ -76,7 +76,8 @@ class ItemUseSystem(System):
 
                     if item_provides_healing:
                         if entity == player:
-                            stats.hp = min(stats.max_hp, stats.hp + item_provides_healing.healing_amount)
+                            pools.hit_points.current = min(pools.hit_points.max,
+                                                           pools.hit_points.current + item_provides_healing.healing_amount)
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("YOU_DRINK_ITEM").format(item_name.name)}'
                                             f'{Texts.get_text("YOU_ARE_HEAL_FOR").format(item_provides_healing.healing_amount)}[/color]')
 
