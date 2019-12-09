@@ -16,7 +16,8 @@
         "wits": 1
       },
        "skills": {
-        "melee": 2
+        "melee": 2,
+         "defense": 1
       },
       "level": 2
     },
@@ -36,7 +37,8 @@
         "wits": 1
       },
       "skills": {
-        "melee": 1
+        "melee": 1,
+        "defense": -1
       },
       "level": 1
     }

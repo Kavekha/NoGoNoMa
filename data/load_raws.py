@@ -234,10 +234,13 @@ class RawsMaster:
             # valid skill?
             if skill == 'melee':
                 real_skill = Skills.MELEE
+            elif skill == 'defense':
+                real_skill = Skills.DEFENSE
             else:
                 print(f'load skills raw: Unknown skill {skill}')
                 raise NotImplementedError
             skills[real_skill] = skills_component[skill]
+        print(f'load skill raw: skills is {skills}')
         return skills
 
     @staticmethod
@@ -310,7 +313,7 @@ class RawsMaster:
             skill_component = SkillsComponent()
             for skill in to_create.skills:
                 skill_component.skills[skill] = to_create.skills[skill]
-            components_for_entity.append(SkillsComponent())
+            components_for_entity.append(skill_component)
 
         if to_create.lvl:
             mob_lvl = to_create.lvl
@@ -318,12 +321,10 @@ class RawsMaster:
             mob_lvl = 1
         mob_hp = npc_hp_at_lvl(to_create.attributes.get('body', config.DEFAULT_MONSTER_BODY_ATTRIBUTE), mob_lvl)
         mob_mana = mana_point_at_level(to_create.attributes.get('wits', config.DEFAULT_MONSTER_WITS_ATTRIBUTE), mob_lvl)
-        print(f'create mob: pools: {mob_lvl}, hp {mob_hp}, mana {mob_mana}')
 
         components_for_entity.append(Pools(mob_hp, mob_mana, mob_lvl))
 
         mob_id = World.create_entity(PositionComponent(x, y))
-        print(f'components in components for entity is {components_for_entity}')
         for component in components_for_entity:
             World.add_component(component, mob_id)
 
@@ -332,13 +333,11 @@ class RawsMaster:
     @staticmethod
     def create_item(name, x, y):
         to_create = RawsMaster.items[RawsMaster.item_index[name] - 1]
-        # print(f'item raw contains: {to_create.name}\n {to_create.renderable}\n {to_create.consumable}')
 
         components_for_entity = [ItemComponent()]
 
         if to_create.name:
             components_for_entity.append(NameComponent(to_create.name))
-            print(f'item {name} has component Name {to_create.name}')
 
         if to_create.renderable:
             components_for_entity.append(RenderableComponent(to_create.renderable['glyph'],
@@ -366,14 +365,12 @@ class RawsMaster:
                 components_for_entity.append(ConfusionComponent(to_create.consumable['effects']['confusion']))
 
         if to_create.weapon:
-            print(f'to create is {to_create} and Equippable Melee component has been requested')
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))
 
             if to_create.weapon.get('power_bonus'):
                 components_for_entity.append(PowerBonusComponent(to_create.weapon['power_bonus']))
 
         if to_create.shield:
-            print(f'to create is {to_create} and Equippable Shield component has been requested')
             components_for_entity.append(EquippableComponent(EquipmentSlots.SHIELD))
 
             if to_create.shield.get('defense_bonus'):
@@ -382,9 +379,6 @@ class RawsMaster:
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:
             World.add_component(component, item_id)
-
-        print(f'check item creation : {item_id}, name component {World.get_entity_component(item_id, NameComponent)}')
-        print(f'check item creation Name : {World.get_entity_component(item_id, NameComponent)}')
 
         return True
 

@@ -82,6 +82,8 @@ def get_item(user):
 
 
 def use_item(item_id, target_position=None):
+    if target_position:
+        print(f'item id is {item_id}, position is {target_position}')
     player = World.fetch('player')
     use_intent = WantsToUseComponent(item_id, target_position)
     World.add_component(use_intent, player)
