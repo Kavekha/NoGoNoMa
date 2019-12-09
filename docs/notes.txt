@@ -12,11 +12,7 @@ Tooltips:
         Si coordonnées != mouse, on regarde si deja dans le dico + refresh
             Si pas dans le dico & tooltip, on créé le tooltip et on l'affiche
 
-Logs:
-    Raffraichissement de l'affichage des logs.
-
 Input:
-    Refacto pour avoir tous les inputs au meme endroit.
     Recuperation des inputs dans le save pour le Replay.
 
 Initialisation
@@ -26,6 +22,7 @@ AI:
     Meilleur pathfinding.
     Attiré par des items au sol.
     Actif / inactif selon presence pj.
+    Eviter les NPC les uns dans les autres.
 
 Tour par Tour:
     Deplacement impossible (dans le mur) compte comme un tour
@@ -55,11 +52,14 @@ Use:
     Use system a refactor pour plus de lisibilité. Notamment le code equip / unequip, illisible.
     Items : Potion sans interdiction de boire alors que full pv.
 
+Target
+    Ne fonctionne plus dans certaines circonstances. Distance?
+
 Changer State
     Tjrs penible. cf damage_system pour changer l'etat de mort.
 
 systems order
 
 Inventory
-    Max items, crash si letter index > 26?
+    Max items, crash si letter index > 26
 =====

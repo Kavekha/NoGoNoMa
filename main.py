@@ -16,6 +16,7 @@ from systems.inventory_system import  select_item_from_inventory, drop_item_from
 from ui_system.main_menu import main_menu
 from gmap.draw_map import draw_map
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection
+from new_ui.interface import Interface
 from state import States, State
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
@@ -77,6 +78,8 @@ def tick():
         run_systems()
 
     elif run_state.current_state == States.AWAITING_INPUT:
+        interface = World.fetch('interface')
+        interface.update()
         run_state.change_state(player_input())
         draw_tooltip()
 
@@ -143,6 +146,10 @@ def main():
     # load raws
     RawsMaster()
     RawsMaster.load_raws()
+
+    # Interface
+    interface = Interface()
+    World.insert('interface', interface)
 
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)

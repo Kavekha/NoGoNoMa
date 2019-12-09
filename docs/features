@@ -1,63 +1,57 @@
-Version #2
-    Ranged scroll, targeting.
-    Menu, save, permadeath.
+Release 2 - Done
+    Raws - items & mobs
+    Raws - spawn table
+    Stats & Combat - Nouveau systeme.
+    new IHM / UI, show character sheet, ASCII & Tiles
 
-Version #3
-    Multi level dungeon.
-    Wait key
-    Increase difficulty, monsters & items rate.
-    Equipement
-    Game over screen
+Release 2 - WIP
+    Equipement, equipement par defaut & nouvelles stats : http://bfnightly.bracketproductions.com/rustbook/chapter_51.html
+    API graphique pour menus & interface
+    Experience, gains d'xp et leveling
+    Menu option graphique
+    Attaques & defenses naturelles : http://bfnightly.bracketproductions.com/rustbook/chapter_51.html
+    API graphique: map & NPCs.
+    Effets Particules.
+    Nice walls & blood stains & decorations.
+    Fixes & Optimisations
 
-Version #4
-    Multi saves.
-    Replay mode.
-    Morgue file.
-    Dictionnary.
-    Tiles & Sprites
-
-Version #5
-    Nice walls
-    Bloodstains.
-    Particule effects.
-    Hunger clock
-    Simple traps
-
-Version #6
-    Rawfiles
-    Datadriven spawn files
-    Camera
-    Living NPC
-
-Version #7
-    Experience
-    Stats
-    Skills
-    Combat improvements
-    Starting gear
-    NPC with equipement
-
-Version #8
-    Better interface
-    Map name
-    Mini map.
-    Show equipment
-    Show status
-    Better tooltips
-    Items windows for better choices and infos.
-    Shortcut keys
-
-Version #9
-    Master maps & backtracking
-    Better seeding
-    New map algorithms
+Release 3 - To Do
+    Refactor Map Building
+    Map building Harness
+    Algorithms
     Prefabs
+    Rooms builders
     Better corridors
     Doors
+    Traps
+    Skills
 
-Version #10
-    AI cleanup
-    Status effects
+Release 4 - To Do
+    Master Dungeon Map
+    Melange d'algorithmes
+    Tables de loot particulieres
+    Mouse support.
+    Larger maps & Zooms.
+
+Release 5 - TODO
+    Affixes sur items & mobs
+    Magic items
+    Effects
+    Cursed items
+    Choix de classes.
+    Specificités de classes: skills, Capacités & progression.
+
+Release 6 - TODO
+    Backtracking
+    NPC dialogues
+    Better IA
+    Spellbooks, spells & skills
+
+
+
+
+
+
 
 
 
