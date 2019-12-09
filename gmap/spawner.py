@@ -7,6 +7,9 @@ from components.name_component import NameComponent
 from components.blocktile_component import BlockTileComponent
 from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
+from components.attributes_component import AttributesComponent
+from components.skills_component import SkillsComponent, Skills
+from components.pools_component import Pools
 
 from ui_system.ui_enums import Layers
 from world import World
@@ -45,7 +48,7 @@ def spawn_room(room, current_map):
         try:
             print(f'idx spawn in spawn points is {spawn}')
             RawsMaster.spawn_named_entity(spawn, x, y)
-            print(f'{World.get_all_entities()}')
+            # print(f'{World.get_all_entities()}')
         except:
             print(f'Spawner:spawn room: {spawn} requested, but doesnt appear in monster list')
 
@@ -60,5 +63,13 @@ def spawn_player(x, y):
     player = PlayerComponent()
     block = BlockTileComponent()
     combat_stats = CombatStatsComponent(30, 2, 5)
-    player_id = World.create_entity(pos, rend, name, player, viewshed, block, combat_stats)
+    attributes = AttributesComponent(might=config.DEFAULT_PLAYER_MIGHT_ATTRIBUTE,
+                                     body=config.DEFAULT_PLAYER_BODY_ATTRIBUTE,
+                                     quickness=config.DEFAULT_PLAYER_QUICKNESS_ATTRIBUTE,
+                                     wits=config.DEFAULT_PLAYER_WITS_ATTRIBUTE)
+    skills = SkillsComponent()
+    skills.skills[Skills.MELEE] = 1
+    skills.skills[Skills.DEFENSE] = 1
+    player_pool = Pools(hits=30, mana=5)
+    player_id = World.create_entity(pos, rend, name, player, viewshed, block, combat_stats, attributes, skills, player_pool)
     return player_id

@@ -1,3 +1,6 @@
+import config
+
+
 class RawsItem:
     def __init__(self):
         self.name = None
@@ -13,12 +16,15 @@ class RawsMob:
         self.name = None
         self.renderable = None
         self.blocks_tile = True
-        self.stats = {
-            'max_hp': 1,
-            'defense': 0,
-            'power': 0
-        }
         self.vision_range = 5
+        self.attributes = {
+            'might': 1,
+            'body': 1,
+            'quickness': 1,
+            'wits': 1
+        }
+        self.skills = {}
+        self.lvl = 1
 
 
 class RawsSpawnTable:

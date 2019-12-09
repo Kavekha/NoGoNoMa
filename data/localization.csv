@@ -41,6 +41,8 @@ LONG_SWORD;Longsword;Grande épée
 TOWER_SHIELD;Tower Shield;Pavois
 WELCOME_MESSAGE;The opportunity is now! Escape the dungeon!;Vous avez une opportunité! Echappez-vous du donjon!
 CHANGE_LANGUAGE;Change language;Changez de langue
+FAIL_TO_HIT;{0} try to hit {1} but failed badly at it!;{0} tente de frapper {1} mais echoue terriblement!
+MISS_HIT;{0} miss {1};{0} rate {1}
 
 
 
