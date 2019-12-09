@@ -5,13 +5,13 @@ from components.renderable_component import RenderableComponent
 from components.viewshed_component import ViewshedComponent
 from components.name_component import NameComponent
 from components.blocktile_component import BlockTileComponent
-from components.combat_stats_component import CombatStatsComponent
 from components.player_component import PlayerComponent
 from components.attributes_component import AttributesComponent
 from components.skills_component import SkillsComponent, Skills
 from components.pools_component import Pools
 
 from ui_system.ui_enums import Layers
+from systems.game_system import player_hp_at_level, mana_point_at_level
 from world import World
 from gmap.utils import xy_idx, index_to_point2d
 from data.load_raws import RawsMaster
@@ -62,14 +62,13 @@ def spawn_player(x, y):
     viewshed = ViewshedComponent()
     player = PlayerComponent()
     block = BlockTileComponent()
-    combat_stats = CombatStatsComponent(30, 2, 5)
     attributes = AttributesComponent(might=config.DEFAULT_PLAYER_MIGHT_ATTRIBUTE,
                                      body=config.DEFAULT_PLAYER_BODY_ATTRIBUTE,
                                      quickness=config.DEFAULT_PLAYER_QUICKNESS_ATTRIBUTE,
                                      wits=config.DEFAULT_PLAYER_WITS_ATTRIBUTE)
     skills = SkillsComponent()
     skills.skills[Skills.MELEE] = 1
-    skills.skills[Skills.DEFENSE] = 1
-    player_pool = Pools(hits=30, mana=5)
-    player_id = World.create_entity(pos, rend, name, player, viewshed, block, combat_stats, attributes, skills, player_pool)
+    skills.skills[Skills.DODGE] = 1
+    player_pool = Pools(hits=player_hp_at_level(attributes.body, 1), mana=mana_point_at_level(attributes.wits, 1))
+    player_id = World.create_entity(pos, rend, name, player, viewshed, block, attributes, skills, player_pool)
     return player_id

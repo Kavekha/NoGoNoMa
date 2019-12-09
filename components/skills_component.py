@@ -3,7 +3,7 @@ from enum import Enum
 
 class Skills(Enum):
     MELEE = 0
-    DEFENSE = 1
+    DODGE = 1
 
 
 class SkillsComponent:
