@@ -12,11 +12,11 @@ from ui_system.end_game_screens import show_game_over, show_victory_screen
 from ui_system.ui_inventory import show_inventory,drop_item_menu
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
-from systems.inventory_system import  select_item_from_inventory, drop_item_from_inventory
-from ui_system.main_menu import main_menu
+from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
+from player_systems.player_input import main_menu_input
 from gmap.draw_map import draw_map
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection
-from new_ui.interface import Interface
+from new_ui.interface import Interface, CurrentUI
 from state import States, State
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
@@ -30,12 +30,16 @@ def tick():
 
     # Menus
     if run_state.current_state == States.MAIN_MENU:
-        result = main_menu()
+        if not Interface.current_menu == CurrentUI.MAIN_MENU:
+            Interface.show_main_menu()
+        result = main_menu_input()
         if result == MainMenuSelection.NEWGAME:
+            Interface.clear()
             run_state.change_state(States.PRE_RUN)
             World.reset_all()
             init_game(MASTER_SEED)
         elif result == MainMenuSelection.LOAD_GAME:
+            Interface.clear()
             run_state.change_state(States.LOAD_GAME)
         elif result == MainMenuSelection.QUIT:
             sys.exit()
@@ -78,8 +82,6 @@ def tick():
         run_systems()
 
     elif run_state.current_state == States.AWAITING_INPUT:
-        interface = World.fetch('interface')
-        interface.update()
         run_state.change_state(player_input())
         draw_tooltip()
 
@@ -149,7 +151,6 @@ def main():
 
     # Interface
     interface = Interface()
-    World.insert('interface', interface)
 
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)
