@@ -7,8 +7,8 @@ class RawsItem:
         self.renderable = {}    # {'glyph': None, 'fg': None, 'order': None}
         self.consumable = {}    # {'effects': {'provides_healing': None,'damage': None,'ranged': None,
         # 'area_of_effect': None,'confusion': None}}
-        self.weapon = {}    # {'range': None,'power_bonus': None}
-        self.shield = {}    # {'defense_bonus': None}
+        self.weapon = {}    # {'range': None,'attribute': None, "min_dmg":None, "max_dmg":None, hit_bonus:None}
+        self.wearable = {}    # {'slot': None, 'armor':None}
 
 
 class RawsMob:

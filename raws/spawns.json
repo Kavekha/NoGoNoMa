@@ -62,8 +62,12 @@
               "order" : 3
           },
           "weapon" : {
-            "range" : "melee",
-            "power_bonus" : 2
+              "range" : "melee",
+              "attribute": "quickness",
+              "min_dmg": 1,
+              "max_dmg": 4,
+              "hit_bonus": 1,
+              "dmg_bonus": 0
           }
       },
       {
@@ -75,7 +79,11 @@
           },
           "weapon" : {
               "range" : "melee",
-              "power_bonus" : 4
+              "attribute": "might",
+              "min_dmg": 1,
+              "max_dmg": 6,
+              "hit_bonus": 0,
+              "dmg_bonus": 1
           }
       },
       {
@@ -85,8 +93,9 @@
                 "fg" : "#00AAFF",
                 "order" : 3
           },
-          "shield" : {
-                "defense_bonus" : 1
+          "wearable" : {
+              "slot": "shield",
+              "armor" : 1
           }
       },
       {
@@ -96,8 +105,21 @@
               "fg" : "#00FFFF",
               "order" : 3
           },
-          "shield" : {
-              "defense_bonus" : 3
+          "wearable" : {
+              "slot": "shield",
+              "armor" : 1
+          }
+      },
+            {
+          "name" : "TUNIC",
+          "renderable": {
+              "glyph" : "[[",
+              "fg" : "#00FF00",
+              "order" : 3
+          },
+          "wearable" : {
+              "slot": "torso",
+              "armor" : 2
           }
       }
   ]

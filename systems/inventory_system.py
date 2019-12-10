@@ -3,7 +3,7 @@ from world import World
 
 from components.wants_to_pickup_component import WantsToPickUpComponent
 from components.position_component import PositionComponent
-from components.item_component import ItemComponent
+from components.items_component import ItemComponent
 from components.wants_use_item_component import WantsToUseComponent
 from components.wants_to_drop_component import WantsToDropComponent
 from components.name_component import NameComponent

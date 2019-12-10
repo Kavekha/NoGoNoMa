@@ -1,0 +1,8 @@
+*Attributes*
+    might: utilisé par les armes mélée concernée par la force brute.
+    body: Pris en compte dans le calcul des pv.
+    quickness: pris en compte dans l'esquive et les armes mélée de precision.
+    wits: Pris en compte dans le calcul de mana.
+
+    reflexions:
+        wits pour les attaques "malignes"?

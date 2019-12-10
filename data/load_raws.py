@@ -10,19 +10,17 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
-from components.item_component import ItemComponent
+from components.items_component import ItemComponent, MeleeWeaponComponent, WearableComponent
 from components.equippable_component import EquippableComponent
-from components.bonus_components import PowerBonusComponent, DefenseBonusComponent
 from components.monster_component import MonsterComponent
 from components.blocktile_component import BlockTileComponent
-from components.combat_stats_component import CombatStatsComponent
 from components.viewshed_component import ViewshedComponent
 from components.attributes_component import AttributesComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 
 from systems.game_system import npc_hp_at_lvl, mana_point_at_level
-from data.items_enum import EquipmentSlots
+from data.items_enum import EquipmentSlots, WeaponAttributes
 from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from world import World
 from ui_system.ui_enums import Layers
@@ -171,34 +169,62 @@ class RawsMaster:
                     raw_item.consumable = RawsMaster.load_consumable_raw(item[component])
                 elif component == 'weapon':
                     raw_item.weapon = RawsMaster.load_weapon_raw(item[component])
-                elif component == 'shield':
-                    raw_item.shield = RawsMaster.load_shield_raw(item[component])
+                elif component == 'wearable':
+                    raw_item.wearable = RawsMaster.load_wearable_raw(item[component])
                 else:
                     print(f'load item raw: unkown component in {component}')
                     raise NotImplementedError
             RawsMaster.items.append(raw_item)
 
     @staticmethod
-    def load_shield_raw(shield_component):
-        shield_attributes = {}
-        for attribute in shield_component:
-            if attribute == 'defense_bonus':
-                shield_attributes['defense_bonus'] = int(shield_component[attribute])
+    def load_wearable_raw(wearable_component):
+        wearable_attributes = {}
+        for attribute in wearable_component:
+            if attribute == 'armor':
+                wearable_attributes[attribute] = int(wearable_component[attribute])
+            elif attribute == 'slot':
+                if wearable_component[attribute] == 'shield':
+                    wearable_attributes[attribute] = EquipmentSlots.SHIELD
+                elif wearable_component[attribute] == 'torso':
+                    wearable_attributes[attribute] = EquipmentSlots.TORSO
+                elif wearable_component[attribute] == 'head':
+                    wearable_attributes[attribute] = EquipmentSlots.HEAD
+                else:
+                    print(f'Missing equipment slots in wearable: {wearable_component[attribute]}')
+                    raise NotImplementedError
             else:
-                print(f'Missing attribute for shield in {shield_component}')
+                print(f'Missing attribute {attribute} for shield in {wearable_component}')
                 raise NotImplementedError
-        return shield_attributes
+        return wearable_attributes
 
     @staticmethod
     def load_weapon_raw(weapon):
         weap = {}
         for attribute in weapon:
             if attribute == 'range':
-                weap['range'] = weapon[attribute]
-            elif attribute == 'power_bonus':
-                weap['power_bonus'] = int(weapon[attribute])
+                weap[attribute] = weapon[attribute]
+            elif attribute == 'attribute':
+                if weapon[attribute] == 'quickness':
+                    weap[attribute] = WeaponAttributes.QUICKNESS
+                elif weapon[attribute] == 'might':
+                    weap[attribute] = WeaponAttributes.MIGHT
+                else:
+                    print(f'WeaponAttribute {weapon[attribute]} not supported in {weap}')
+                    raise NotImplementedError
+            elif attribute == 'min_dmg':
+                weap[attribute] = weapon[attribute]
+            elif attribute == 'max_dmg':
+                weap[attribute] = weapon[attribute]
+            elif attribute == 'hit_bonus':
+                weap[attribute] = weapon[attribute]
+            elif attribute == 'dmg_bonus':
+                weap[attribute] = weapon[attribute]
             else:
-                print(f'Missing attribute for weapon in {weap}')
+                print(f'Missing attribute {attribute} for weapon in {weap}')
+                raise NotImplementedError
+        else:
+            if not weap.get('min_dmg') or not weap.get('max_dmg'):
+                print(f'weapon load raw: min dmg or max dmg missing in {weapon}')
                 raise NotImplementedError
         return weap
 
@@ -234,8 +260,8 @@ class RawsMaster:
             # valid skill?
             if skill == 'melee':
                 real_skill = Skills.MELEE
-            elif skill == 'defense':
-                real_skill = Skills.DEFENSE
+            elif skill == 'dodge':
+                real_skill = Skills.DODGE
             else:
                 print(f'load skills raw: Unknown skill {skill}')
                 raise NotImplementedError
@@ -367,14 +393,20 @@ class RawsMaster:
         if to_create.weapon:
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))
 
-            if to_create.weapon.get('power_bonus'):
-                components_for_entity.append(PowerBonusComponent(to_create.weapon['power_bonus']))
+            weap_attribute = to_create.weapon.get('attribute', WeaponAttributes.MIGHT)
+            weap_min_dmg = to_create.weapon.get('min_dmg')
+            weap_max_dmg = to_create.weapon.get('max_dmg')
+            weap_dmg_bonus = to_create.weapon.get('dmg_bonus')
+            weap_hit_bonus = to_create.weapon.get('hit_bonus')
 
-        if to_create.shield:
-            components_for_entity.append(EquippableComponent(EquipmentSlots.SHIELD))
+            components_for_entity.append(MeleeWeaponComponent(weap_attribute, weap_min_dmg,
+                                                     weap_max_dmg, weap_dmg_bonus, weap_hit_bonus))
 
-            if to_create.shield.get('defense_bonus'):
-                components_for_entity.append(DefenseBonusComponent(to_create.shield['defense_bonus']))
+        if to_create.wearable:
+            components_for_entity.append(EquippableComponent(to_create.wearable.get('slot')))
+
+            if to_create.wearable.get('armor'):
+                components_for_entity.append(WearableComponent(to_create.wearable.get('armor')))
 
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:

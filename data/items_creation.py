@@ -1,4 +1,4 @@
-from components.item_component import ItemComponent
+from components.items_component import ItemComponent
 from components.provides_healing_component import ProvidesHealingComponent
 from components.consumable_component import ConsumableComponent
 from components.position_component import PositionComponent
