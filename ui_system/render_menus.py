@@ -59,7 +59,7 @@ def show_main_menu():
     letter_index += 1
     text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("LOAD_GAME")}[/color]' + '\n'
     letter_index += 1
-    text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("CHANGE_LANGUAGE")}[/color]' + '\n'
+    text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("OPTIONS_MENU")}[/color]' + '\n'
     letter_index += 1
     text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("QUIT")}[/color]'
 
@@ -115,7 +115,6 @@ def show_item_screen(header):
     items_to_display = get_items_in_user_backpack(user)
     letter_index = ord('a')
 
-    header = f'[color=yellow] {Texts.get_text("INVENTORY")} [/color]'
     text = '\n'
     for index, item in enumerate(items_to_display):
         item_name = World.get_entity_component(item, NameComponent)
@@ -131,4 +130,26 @@ def show_item_screen(header):
     terminal.refresh()
 
 
+def show_option_menu():
+    terminal.layer(Layers.MENU.value)
+
+    window_x = config.SCREEN_WIDTH // 4  # 20
+    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_end_x = window_x * 3  # 60
+    window_end_y = window_y * 3  # 40
+
+    header = f'[color=yellow]{Texts.get_text("OPTIONS_MENU")}[/color]'
+
+    letter_index = ord('a')
+    text = f'[color=orange]({chr(letter_index)}) {Texts.get_text("CHANGE_LANGUAGE")}[/color]' + '\n'
+    letter_index += 1
+    text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("CHANGE_GRAPHICS")}[/color]' + '\n'
+    letter_index += 1
+    text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("BACK_TO_MAIN_MENU")}[/color]'
+
+    if Interface.mode == GraphicalModes.TILES:
+        draw_tile_menu(window_x, window_y, window_end_x, window_end_y, header, text)
+    else:
+        draw_ascii_menu(window_x, window_y, window_end_x, window_end_y, header, text)
+    terminal.refresh()
 
