@@ -8,6 +8,7 @@ from components.name_component import NameComponent
 from components.pools_component import Pools
 from systems.inventory_system import get_items_in_user_backpack
 from ui_system.ui_enums import Layers
+from player_systems.game_system import xp_for_next_level
 import config
 from texts import Texts
 
@@ -27,7 +28,8 @@ def show_character_sheet():
     header = Texts.get_text('CHARACTER_SHEET_HEADER')
 
     text = Texts.get_text('CHARACTER_SHEET_CONTENT_LEVEL').format(player_pools.level) + '\n'
-    text += Texts.get_text('CHARACTER_SHEET_CONTENT_XP').format(player_pools.xp, player_pools.level * 100) + '\n' + \
+    text += Texts.get_text('CHARACTER_SHEET_CONTENT_XP').format(player_pools.xp,
+                                                                xp_for_next_level(player_pools.level)) + '\n' + \
             '\n' + '\n'
     text += Texts.get_text('CHARACTER_SHEET_CONTENT_ATTRIBUTES') + '\n' + '\n'
     text += Texts.get_text('CHARACTER_SHEET_CONTENT_MIGHT').format(player_attributes.might) + '\n'

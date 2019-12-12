@@ -3,7 +3,7 @@ from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection
-from new_ui.interface import Interface
+from new_ui.render_menus import show_main_menu, show_character_sheet
 from world import World
 from texts import Texts
 from components.targeting_component import TargetingComponent
@@ -39,7 +39,8 @@ def player_input():
         elif key == terminal.TK_D:
             return States.SHOW_DROP_ITEM
         elif key == terminal.TK_C:
-            Interface.show_character_sheet()
+            print(f'character sheet')
+            return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:
             next_lvl = try_next_level()
             if next_lvl == NextLevelResult.NEXT_FLOOR:
@@ -116,7 +117,7 @@ def main_menu_input():
                 Texts.set_language('en')
             else:
                 Texts.set_language('fr')
-            Interface.show_main_menu()
+            show_main_menu()
     return MainMenuSelection.NO_RESPONSE
 
 
@@ -125,4 +126,4 @@ def character_sheet_input():
         if terminal.read() == terminal.TK_ESCAPE:
             terminal.clear_area(0, 0, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
             terminal.refresh()
-            Interface.clear()
+

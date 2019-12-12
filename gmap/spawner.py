@@ -11,7 +11,7 @@ from components.skills_component import SkillsComponent, Skills
 from components.pools_component import Pools
 
 from ui_system.ui_enums import Layers
-from systems.game_system import player_hp_at_level, mana_point_at_level
+from player_systems.game_system import player_hp_at_level, mana_point_at_level
 from world import World
 from gmap.utils import xy_idx, index_to_point2d
 from data.load_raws import RawsMaster
