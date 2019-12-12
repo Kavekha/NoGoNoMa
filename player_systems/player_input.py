@@ -3,7 +3,7 @@ from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection
-from new_ui.render_menus import show_main_menu, show_character_sheet
+from ui_system.render_menus import show_main_menu
 from world import World
 from texts import Texts
 from components.targeting_component import TargetingComponent
