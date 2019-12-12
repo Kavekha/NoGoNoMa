@@ -57,7 +57,10 @@ def spawn_player(x, y):
     # Entity Name, Pos & Rend & PLAYER
     x, y = x, y
     pos = PositionComponent(x, y)
-    rend = RenderableComponent('@', 'yellow', Layers.PLAYER)
+    rend = RenderableComponent(glyph='@',
+                               char_color='white',
+                               render_order=Layers.PLAYER,
+                               sprite='chars/player.png')
     name = NameComponent('Player')
     viewshed = ViewshedComponent()
     player = PlayerComponent()

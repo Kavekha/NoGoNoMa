@@ -4,7 +4,7 @@ import config
 class RawsItem:
     def __init__(self):
         self.name = None
-        self.renderable = {}    # {'glyph': None, 'fg': None, 'order': None}
+        self.renderable = {}    # {'glyph': None, 'fg': None, 'order': None, 'sprite': None}
         self.consumable = {}    # {'effects': {'provides_healing': None,'damage': None,'ranged': None,
         # 'area_of_effect': None,'confusion': None}}
         self.weapon = {}    # {'range': None,'attribute': None, "min_dmg":None, "max_dmg":None, hit_bonus:None}

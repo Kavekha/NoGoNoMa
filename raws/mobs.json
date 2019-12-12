@@ -5,6 +5,7 @@
       "renderable": {
         "glyph": "o",
         "fg": "#FF0000",
+        "sprite": "chars/oogloth.png",
         "order": 4
       },
       "blocks_tile": true,
@@ -26,7 +27,8 @@
       "renderable": {
         "glyph": "m",
         "fg": "#FF0000",
-        "order": 4
+        "order": 4,
+        "sprite": "chars/morblin.png"
       },
       "blocks_tile": true,
       "vision_range": 8,

@@ -248,6 +248,8 @@ class RawsMaster:
                 render['fg'] = renderable[attribute]
             elif attribute == "order":
                 render['order'] = Layers(renderable[attribute])
+            elif attribute == 'sprite':
+                render[attribute] = renderable[attribute]
             else:
                 print(f'load render raw: unknown attribute {attribute} in {renderable}')
                 raise NotImplementedError
@@ -318,9 +320,12 @@ class RawsMaster:
             components_for_entity.append(NameComponent(to_create.name))
 
         if to_create.renderable:
-            components_for_entity.append(RenderableComponent(to_create.renderable['glyph'],
-                                                             to_create.renderable['fg'],
-                                                             to_create.renderable['order']))
+            components_for_entity.append(RenderableComponent(glyph=to_create.renderable.get('glyph'),
+                                                             char_color=to_create.renderable.get('fg'),
+                                                             render_order=to_create.renderable.get('order'),
+                                                             sprite=to_create.renderable.get('sprite')
+                                                             )
+                                         )
 
         if to_create.blocks_tile:
             components_for_entity.append(BlockTileComponent)
@@ -366,9 +371,12 @@ class RawsMaster:
             components_for_entity.append(NameComponent(to_create.name))
 
         if to_create.renderable:
-            components_for_entity.append(RenderableComponent(to_create.renderable['glyph'],
-                                                             to_create.renderable['fg'],
-                                                             to_create.renderable['order']))
+            components_for_entity.append(RenderableComponent(glyph=to_create.renderable.get('glyph'),
+                                                             char_color=to_create.renderable.get('fg'),
+                                                             render_order=to_create.renderable.get('order'),
+                                                             sprite=to_create.renderable.get('sprite')
+                                                             )
+                                         )
 
         if to_create.consumable:
             components_for_entity.append(ConsumableComponent())

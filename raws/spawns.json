@@ -5,7 +5,8 @@
           "renderable": {
               "glyph" : "!",
               "fg" : "#FF00FF",
-              "order" : 3
+              "order" : 3,
+              "sprite": "items/potion.png"
           },
           "consumable" : {
               "effects" : { "provides_healing" : "8"}
@@ -16,7 +17,8 @@
           "renderable": {
               "glyph" : ")",
               "fg" : "#00FFFF",
-              "order" : 3
+              "order" : 3,
+              "sprite": "items/scroll.png"
           },
           "consumable" : {
               "effects" : {
@@ -30,7 +32,8 @@
           "renderable": {
             "glyph" : ")",
             "fg" : "#FFA500",
-            "order" : 3
+            "order" : 3,
+              "sprite": "items/scroll.png"
           },
           "consumable" : {
             "effects" : {
@@ -45,7 +48,8 @@
           "renderable": {
             "glyph" : ")",
             "fg" : "#FFAAAA",
-            "order" : 3
+            "order" : 3,
+              "sprite": "items/scroll.png"
           },
           "consumable" : {
               "effects" : {
@@ -59,7 +63,8 @@
           "renderable": {
               "glyph" : "/",
               "fg" : "#FFAAAA",
-              "order" : 3
+              "order" : 3,
+              "sprite": "items/sword.png"
           },
           "weapon" : {
               "range" : "melee",
@@ -75,7 +80,8 @@
           "renderable": {
             "glyph" : "/",
             "fg" : "#FFAAFF",
-            "order" : 3
+            "order" : 3,
+              "sprite": "items/sword.png"
           },
           "weapon" : {
               "range" : "melee",
@@ -91,7 +97,8 @@
           "renderable": {
                 "glyph" : "[[",
                 "fg" : "#00AAFF",
-                "order" : 3
+                "order" : 3,
+              "sprite": "items/shield.png"
           },
           "wearable" : {
               "slot": "shield",
@@ -103,7 +110,8 @@
           "renderable": {
               "glyph" : "[[",
               "fg" : "#00FFFF",
-              "order" : 3
+              "order" : 3,
+              "sprite": "items/shield.png"
           },
           "wearable" : {
               "slot": "shield",
@@ -115,7 +123,8 @@
           "renderable": {
               "glyph" : "[[",
               "fg" : "#00FF00",
-              "order" : 3
+              "order" : 3,
+              "sprite": "items/armor.png"
           },
           "wearable" : {
               "slot": "torso",
