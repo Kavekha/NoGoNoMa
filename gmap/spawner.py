@@ -50,7 +50,7 @@ def spawn_room(room, current_map):
             RawsMaster.spawn_named_entity(spawn, x, y)
             # print(f'{World.get_all_entities()}')
         except:
-            print(f'Spawner:spawn room: {spawn} requested, but doesnt appear in monster list')
+            print(f'Spawner:spawn room: {spawn} requested, not generated because error.')
 
 
 def spawn_player(x, y):

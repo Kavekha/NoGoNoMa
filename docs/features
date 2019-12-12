@@ -8,9 +8,10 @@ Release 2 - Done
     Experience, gains d'xp et leveling - monstres & depth
     Graphismes pour interface
     graphisme: map & NPCs.
+    Attaques & defenses naturelles
 
 Release 2 - WIP
-    Attaques & defenses naturelles : http://bfnightly.bracketproductions.com/rustbook/chapter_51.html
+
     Menu option graphique
     Effets Particules.
     tooltips
@@ -18,6 +19,7 @@ Release 2 - WIP
     Fixes & Optimisations
 
 Release 3 - To Do
+    Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
     Refactor Map Building
     Map building Harness
     Algorithms

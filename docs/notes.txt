@@ -2,6 +2,7 @@ Load_raws
     Fusionner les raws pour ne pas les garder.
     Exemple: Table Raws oblige a chercher dans tous les raws pour determiner la table.
     Sanity checks: http://bfnightly.bracketproductions.com/rustbook/chapter_46.html
+    Avoir les attaques speciales dans un Raw a part, pour mutualiser.
 
 Tooltips:
     Mal formaté.

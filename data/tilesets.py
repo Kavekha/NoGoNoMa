@@ -23,7 +23,8 @@ MAP = [
 CHARS = [
     'chars/player.png',
     'chars/morblin.png',
-    'chars/oogloth.png'
+    'chars/oogloth.png',
+    'chars/troll.png'
 ]
 
 
