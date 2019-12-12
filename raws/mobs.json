@@ -43,6 +43,47 @@
         "dodge": -2
       },
       "level": 1
+    },
+    {
+      "name": "TROLL",
+      "renderable": {
+        "glyph": "T",
+        "fg": "#FF0000",
+        "order": 4,
+        "sprite": "chars/troll.png"
+      },
+      "blocks_tile": true,
+      "vision_range": 6,
+      "attributes": {
+        "might": 4,
+        "body": 3,
+        "quickness": 1,
+        "wits": 1
+      },
+      "skills": {
+        "melee": 2,
+        "dodge": -3
+      },
+      "level": 3,
+      "natural": {
+        "armor": 1,
+        "attacks": [
+          {
+            "name": "Frappe brutale",
+            "attribute": "might",
+            "hit_bonus": -1,
+            "min_dmg": 3,
+            "max_dmg": 9,
+            "dmg_bonus": 1},
+          {
+            "name": "Quick jab",
+            "attribute": "quickness",
+            "hit_bonus": 3,
+            "min_dmg": 2,
+            "max_dmg": 4,
+            "dmg_bonus": -1}
+        ]
+      }
     }
   ]
 }

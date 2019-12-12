@@ -25,6 +25,7 @@ class RawsMob:
         }
         self.skills = {}
         self.lvl = 1
+        self.natural = None # {'armor':0, 'attacks':[{'name':None, 'attribute':None, 'hit_bonus':0, 'min_dmg':0, 'max_dmg':0, dmg_bonus:0}]
 
 
 class RawsSpawnTable:

@@ -10,6 +10,7 @@ from components.suffer_damage_component import SufferDamageComponent
 from components.items_component import MeleeWeaponComponent, WearableComponent
 from components.equipped_component import EquippedComponent
 from components.skills_component import SkillsComponent, Skills
+from components.natural_attack_defense_component import NaturalAttackDefenseComponent
 from player_systems.game_system import skill_level
 from texts import Texts
 from data.items_enum import EquipmentSlots, WeaponAttributes
@@ -39,12 +40,19 @@ class MeleeCombatSystem(System):
 
                 # Opponents infos
                 attacker_skill = World.get_entity_component(entity, SkillsComponent)
+                attacker_natural_attacks = World.get_entity_component(entity, NaturalAttackDefenseComponent)
+
                 # attacker has weapon?
                 weapon_info = None
                 wielded_weapons = World.get_components(EquippedComponent, MeleeWeaponComponent)
                 for wielden_weapon, (wielded, melee) in wielded_weapons:
                     if wielded.owner == entity and wielded.slot == EquipmentSlots.MELEE:
                         weapon_info = melee
+                # natural attack?
+                if attacker_natural_attacks:
+                    if randint(0, 100) <= config.DEFAULT_NATURAL_ATTACK_CHOICE:
+                        rand = randint(0, len(attacker_natural_attacks.attacks) - 1)
+                        weapon_info = attacker_natural_attacks.attacks[rand]
 
                 target_attributes = World.get_entity_component(wants_melee.target, AttributesComponent)
                 target_skills = World.get_entity_component(wants_melee.target, SkillsComponent)
@@ -72,7 +80,6 @@ class MeleeCombatSystem(System):
                 if not natural_roll == 20 and not modified_hit_roll > dodge_difficulty:
                     # fail
                     logs.appendleft(f'{Texts.get_text("MISS_HIT").format(attacker_name.name, target_name)}')
-                    World.remove_component(WantsToMeleeComponent, entity)
                     continue
 
                 # success Damage calculation
@@ -85,6 +92,9 @@ class MeleeCombatSystem(System):
 
                 # armor mitigation calculation
                 target_armor = target_attributes.body
+                natural_target_armor = World.get_entity_component(wants_melee.target, NaturalAttackDefenseComponent)
+                if natural_target_armor:
+                    target_armor += natural_target_armor.natural_armor
                 wearable_armors = World.get_components(EquippedComponent, WearableComponent)
                 for wearable_armor, (equipped, wearable) in wearable_armors:
                     if equipped.owner == wants_melee.target:

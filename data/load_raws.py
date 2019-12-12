@@ -18,6 +18,7 @@ from components.viewshed_component import ViewshedComponent
 from components.attributes_component import AttributesComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
+from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots, WeaponAttributes
@@ -150,10 +151,55 @@ class RawsMaster:
                     raw_mob.skills = RawsMaster.load_skills_raw(mob[component])
                 elif component == 'level':
                     raw_mob.lvl = mob[component]
+                elif component == 'natural':
+                    raw_mob.natural = RawsMaster.load_natural_def_attack_raw(mob[component])
                 else:
                     print(f'Unknown component {component} for mob {mob}')
                     raise NotImplementedError
             RawsMaster.mobs.append(raw_mob)
+
+    @staticmethod
+    def load_natural_def_attack_raw(data):
+        naturals = {}
+        for natural in data:
+            if natural == 'armor':
+                naturals[natural] = data[natural]
+            elif natural == 'attacks':
+                naturals[natural] = RawsMaster.load_natural_attacks_raw(data[natural])
+            else:
+                print(f'load natural {natural} not implemented')
+                raise NotImplementedError
+        return naturals
+
+    @staticmethod
+    def load_natural_attacks_raw(natural_attacks_raw):
+        natural_attacks = []
+        for attack in natural_attacks_raw:
+            natural_attack = {}
+            for component in attack:
+                if component == 'name':
+                    natural_attack[component] = attack[component]
+                elif component == 'attribute':
+                    if attack[component] == 'might':
+                        natural_attack[component] = WeaponAttributes.MIGHT
+                    elif attack[component] == 'quickness':
+                        natural_attack[component] = WeaponAttributes.QUICKNESS
+                    else:
+                        print(f'natural attack attribute {attack[component]} not implemented')
+                        raise NotImplementedError
+                elif component == 'hit_bonus':
+                    natural_attack[component] = int(attack[component])
+                elif component == 'min_dmg':
+                    natural_attack[component] = int(attack[component])
+                elif component == 'max_dmg':
+                    natural_attack[component] = int(attack[component])
+                elif component == 'dmg_bonus':
+                    natural_attack[component] = int(attack[component])
+                else:
+                    print(f'component {component} in attack {attack} not implemented')
+                    raise NotImplementedError
+            natural_attacks.append(natural_attack)
+        return natural_attacks
 
     @staticmethod
     def load_item_raw(data):
@@ -352,6 +398,23 @@ class RawsMaster:
             mob_lvl = 1
         mob_hp = npc_hp_at_lvl(to_create.attributes.get('body', config.DEFAULT_MONSTER_BODY_ATTRIBUTE), mob_lvl)
         mob_mana = mana_point_at_level(to_create.attributes.get('wits', config.DEFAULT_MONSTER_WITS_ATTRIBUTE), mob_lvl)
+
+        if to_create.natural:
+            natural_def_attack_component = NaturalAttackDefenseComponent(to_create.natural.get('armor', 0))
+
+            attacks = to_create.natural.get('attacks')
+            if attacks:
+                for attack in attacks:
+                    natural_attack = NaturalAttack(
+                        attack.get('name', 'Unknown attack'),
+                        attack.get('attribute', WeaponAttributes.MIGHT),
+                        attack.get('min_dmg', config.DEFAULT_MIN_DMG),
+                        attack.get('max_dmg', config.DEFAULT_MAX_DMG),
+                        attack.get('dmg_bonus', 0),
+                        attack.get('hit_bonus', 0)
+                    )
+                    natural_def_attack_component.attacks.append(natural_attack)
+            components_for_entity.append(natural_def_attack_component)
 
         components_for_entity.append(Pools(mob_hp, mob_mana, mob_lvl))
 
