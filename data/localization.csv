@@ -15,7 +15,7 @@ VICTORY;VICTORY!;VICTOIRE!
 YOU_ESCAPE_DUNGEON;You escape the dungeon.;Vous vous êtes évadé du donjon!
 UNABLE_TO_HURT;{0} is unable to hurt {1};{0} ne parvient pas a blesser {1}
 HITS_FOR_DMG;{0} hits {1} for {2} hp.;{0} frappe {1} pour {2} pv.
-YOU_USE_ITEM:You use {0} on {1};Vous utilisez {0} sur {1}
+YOU_USE_ITEM;You use {0} on {1};Vous utilisez {0} sur {1}
 _FOR_DMG; for {0} hp.; pour {0} pv.
 YOU_DRINK_ITEM;You drink: {0}.;Vous buvez: {0}.
 YOU_ARE_HEAL_FOR;You are heal for {0} hp.;Vous êtes soigné de {0} pv.
@@ -43,7 +43,13 @@ WELCOME_MESSAGE;The opportunity is now! Escape the dungeon!;Vous avez une opport
 CHANGE_LANGUAGE;Change language;Changez de langue
 FAIL_TO_HIT;{0} try to hit {1} but failed badly at it!;{0} tente de frapper {1} mais echoue terriblement!
 MISS_HIT;{0} miss {1};{0} rate {1}
-
-
+CHARACTER_SHEET_CONTENT_LEVEL;Level : {0};Niveau: {0}
+CHARACTER_SHEET_CONTENT_XP;xp : {0} / {1};xp : {0} / {1}
+CHARACTER_SHEET_CONTENT_ATTRIBUTES;* Attributes *;* Attributs *
+CHARACTER_SHEET_CONTENT_MIGHT;Might: {0};Puissance: {0}
+CHARACTER_SHEET_CONTENT_BODY;Body: {0};Corporel: {0}
+CHARACTER_SHEET_CONTENT_QUICKNESS;Quickness: {0};Rapidité: {0}
+CHARACTER_SHEET_CONTENT_WITS;Wits: {0};Astuce: {0}
+CHARACTER_SHEET_HEADER;-character sheet-;-Fiche de personnage-
 
 

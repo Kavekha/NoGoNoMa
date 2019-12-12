@@ -8,18 +8,20 @@ from world import World
 from data.load_raws import RawsMaster
 from player_systems.player_input import player_input
 from systems.render_system import render_system
-from ui_system.end_game_screens import show_game_over, show_victory_screen
-from ui_system.ui_inventory import show_inventory,drop_item_menu
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
-from player_systems.player_input import main_menu_input
+from player_systems.player_input import main_menu_input, any_input_for_quit, inventory_input
 from gmap.draw_map import draw_map
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection
-from new_ui.interface import Interface, CurrentUI
+from systems.inventory_system import get_items_in_user_backpack
+from new_ui.interface import Interface
+from new_ui.render_menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
+    show_item_screen
 from state import States, State
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
+from texts import Texts
 
 
 MASTER_SEED = 1000
@@ -30,16 +32,13 @@ def tick():
 
     # Menus
     if run_state.current_state == States.MAIN_MENU:
-        if not Interface.current_menu == CurrentUI.MAIN_MENU:
-            Interface.show_main_menu()
+        show_main_menu()
         result = main_menu_input()
         if result == MainMenuSelection.NEWGAME:
-            Interface.clear()
             run_state.change_state(States.PRE_RUN)
             World.reset_all()
             init_game(MASTER_SEED)
         elif result == MainMenuSelection.LOAD_GAME:
-            Interface.clear()
             run_state.change_state(States.LOAD_GAME)
         elif result == MainMenuSelection.QUIT:
             sys.exit()
@@ -62,7 +61,8 @@ def tick():
 
     elif run_state.current_state == States.GAME_OVER:
         terminal.clear()
-        result = show_game_over()
+        show_game_over_screen()
+        result = any_input_for_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
@@ -70,11 +70,19 @@ def tick():
 
     elif run_state.current_state == States.VICTORY:
         terminal.clear()
-        result = show_victory_screen()
+        show_victory_screen()
+        result = any_input_for_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
             run_state.change_state(States.MAIN_MENU)
+
+    elif run_state.current_state == States.CHARACTER_SHEET:
+        show_character_sheet()
+        result = any_input_for_quit()
+        if result == ItemMenuResult.SELECTED:
+            run_state.change_state(States.AWAITING_INPUT)
+            run_systems()
 
     # Game State
     elif run_state.current_state == States.PRE_RUN:
@@ -95,7 +103,9 @@ def tick():
 
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
-        result, item = show_inventory(World.fetch('player'))
+        show_item_screen(f'[color=yellow] {Texts.get_text("INVENTORY")} [/color]')
+        items_in_backpack = get_items_in_user_backpack(World.fetch('player'))
+        result, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
             run_systems()
             run_state.change_state(States.AWAITING_INPUT)
@@ -105,7 +115,9 @@ def tick():
             run_state.change_state(new_state)
 
     elif run_state.current_state == States.SHOW_DROP_ITEM:
-        result, item = drop_item_menu(World.fetch('player'))
+        show_item_screen(f'[color=yellow] {Texts.get_text("DROP_WHICH_ITEM")}[/color]')
+        items_in_backpack = get_items_in_user_backpack(World.fetch('player'))
+        result, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
             run_state.change_state(States.AWAITING_INPUT)
             run_systems()

@@ -25,6 +25,7 @@ class States(Enum):
     NEXT_LEVEL = 11
     GAME_OVER = 12
     VICTORY = 13
+    CHARACTER_SHEET = 14
 
 
 class State:
