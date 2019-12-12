@@ -4,32 +4,87 @@ from systems.system import System
 from player_systems.game_system import xp_for_next_level
 from world import World
 from components.pools_component import Pools
-from components.player_component import PlayerComponent
 from ui_system.ui_enums import Layers
 import config
 from texts import Texts
+from ui_system.interface import Interface, GraphicalModes
+from ui_system.render_functions import render_bar, print_shadow
 
 
 class UiSystem(System):
     def update(self, *args, **kwargs):
-        # display HP
-        subjects = World.get_components(Pools, PlayerComponent)
-        if not subjects:
-            return
-
+        player = World.fetch('player')
+        player_pool = World.get_entity_component(player, Pools)
         current_map = World.fetch('current_map')
+
+        info_to_display = {
+            'depth': current_map.depth,
+            'player_hp': player_pool.hit_points.current,
+            'player_max_hp': player_pool.hit_points.max,
+            'player_current_xp': player_pool.xp,
+            'player_next_level_xp': xp_for_next_level(player_pool.level)
+        }
+
+        if Interface.mode == GraphicalModes.ASCII:
+            self.draw_ui_ascii(info_to_display)
+        elif Interface.mode == GraphicalModes.TILES:
+            self.draw_ui_tiles(info_to_display)
+        else:
+            print(f'Graphical mode is {Interface.mode}, no UI support for this mode.')
+            raise NotImplementedError
+
+    def draw_ui_ascii(self, info_to_display):
         terminal.layer(Layers.INTERFACE.value)
+
         terminal.printf(1, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("DEPTH")}'
-                                                      f': {current_map.depth}[/color]')
-        for entity, (pools, player) in subjects:
-            terminal.printf(20, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("HP")}: '
-                                                           f'{pools.hit_points.current} / {pools.hit_points.max}[/color]')
-            terminal.printf(45, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("XP")}: '
-                                                           f'{pools.xp} / {xp_for_next_level(pools.level)}[/color]')
+                                                      f': {info_to_display["depth"]}[/color]')
+
+        terminal.printf(20, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("HP")}: '
+                                                       f'{info_to_display.get("player_hp", "??")} / '
+                                                       f'{info_to_display.get("player_max_hp", "??")}[/color]')
+        terminal.printf(45, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("XP")}: '
+                                                       f'{info_to_display.get("player_current_xp", "??")} / '
+                                                       f'{info_to_display.get("player_next_level_xp", "??")}[/color]')
 
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE
         for line in log:
             if y < config.SCREEN_HEIGHT:
                 terminal.printf(2, y, line)
+                y += 1
+
+    def draw_ui_tiles(self, info_to_display):
+        terminal.layer(Layers.INTERFACE.value)
+
+        # depth
+        print_shadow(1, config.UI_STATS_INFO_LINE,
+                     f'[color=light grey]{Texts.get_text("DEPTH")} : {info_to_display["depth"]}[/color]')
+
+        # HP
+        render_bar(20,
+                   config.UI_STATS_INFO_LINE,
+                   config.UI_HP_BAR_WIDTH,
+                   Texts.get_text("HP"),
+                   info_to_display.get("player_hp", 0),
+                   info_to_display.get("player_max_hp", 0),
+                   config.COLOR_HP_BAR_VALUE,
+                   config.COLOR_HP_BAR_BACKGROUND,
+                   config.COLOR_TEXT_HP_BAR)
+
+        # XP
+        render_bar(45,
+                   config.UI_STATS_INFO_LINE,
+                   config.UI_XP_BAR_WIDTH,
+                   Texts.get_text("XP"),
+                   info_to_display.get("player_current_xp", 0),
+                   info_to_display.get("player_next_level_xp", 0),
+                   config.COLOR_XP_BAR_VALUE,
+                   config.COLOR_XP_BAR_BACKGROUND,
+                   config.COLOR_TEXT_XP_BAR)
+
+        log = World.fetch('logs')
+        y = config.UI_LOG_FIRST_LINE
+        for line in log:
+            if y < config.SCREEN_HEIGHT:
+                print_shadow(2, y, line)
                 y += 1

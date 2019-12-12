@@ -12,8 +12,8 @@ from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
 from player_systems.player_input import main_menu_input, any_input_for_quit, inventory_input
-from gmap.draw_map import draw_map
-from ui_system.ui_enums import ItemMenuResult, MainMenuSelection
+from new_ui.draw_map import draw_map
+from new_ui.ui_enums import ItemMenuResult, MainMenuSelection
 from systems.inventory_system import get_items_in_user_backpack
 from new_ui.interface import Interface
 from new_ui.render_menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \

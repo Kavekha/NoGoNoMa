@@ -5,14 +5,15 @@ Release 2 - Done
     new IHM / UI, show character sheet, ASCII & Tiles
     Equipement, armes & combat
     graphisme pour menus
+    Experience, gains d'xp et leveling - monstres & depth
+    Graphismes pour interface
+    graphisme: map & NPCs.
 
 Release 2 - WIP
-    Experience, gains d'xp et leveling
-    Graphismes pour interface
     Attaques & defenses naturelles : http://bfnightly.bracketproductions.com/rustbook/chapter_51.html
     Menu option graphique
     Effets Particules.
-    graphisme: map & NPCs.
+    tooltips
     Nice walls & blood stains & decorations.
     Fixes & Optimisations
 
