@@ -51,5 +51,6 @@ CHARACTER_SHEET_CONTENT_BODY;Body: {0};Corporel: {0}
 CHARACTER_SHEET_CONTENT_QUICKNESS;Quickness: {0};Rapidité: {0}
 CHARACTER_SHEET_CONTENT_WITS;Wits: {0};Astuce: {0}
 CHARACTER_SHEET_HEADER;-character sheet-;-Fiche de personnage-
+YOU_ARE_NOW_LEVEL;Congratulations! You are now level {0};Felicitations! Vous avez atteint le niveau {0}
 
 

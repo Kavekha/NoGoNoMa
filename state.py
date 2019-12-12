@@ -6,6 +6,7 @@ from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.in_backpack_component import InBackPackComponent
 from components.equipped_component import EquippedComponent
+from player_systems.game_system import player_gain_xp, xp_for_next_depth
 from world import World
 import config
 from texts import Texts
@@ -86,3 +87,4 @@ class State:
 
         logs = World.fetch('logs')
         logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("GO_NEXT_LEVEL")}[/color]')
+        player_gain_xp(xp_for_next_depth(current_map.depth - 1))

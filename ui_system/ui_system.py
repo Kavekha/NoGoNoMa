@@ -1,6 +1,7 @@
 from bearlibterminal import terminal
 
 from systems.system import System
+from player_systems.game_system import xp_for_next_level
 from world import World
 from components.pools_component import Pools
 from components.player_component import PlayerComponent
@@ -23,6 +24,8 @@ class UiSystem(System):
         for entity, (pools, player) in subjects:
             terminal.printf(20, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("HP")}: '
                                                            f'{pools.hit_points.current} / {pools.hit_points.max}[/color]')
+            terminal.printf(45, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("XP")}: '
+                                                           f'{pools.xp} / {xp_for_next_level(pools.level)}[/color]')
 
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE

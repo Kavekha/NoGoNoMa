@@ -19,7 +19,7 @@ from components.attributes_component import AttributesComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 
-from systems.game_system import npc_hp_at_lvl, mana_point_at_level
+from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots, WeaponAttributes
 from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from world import World

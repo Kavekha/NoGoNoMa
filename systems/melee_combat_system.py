@@ -10,7 +10,7 @@ from components.suffer_damage_component import SufferDamageComponent
 from components.items_component import MeleeWeaponComponent, WearableComponent
 from components.equipped_component import EquippedComponent
 from components.skills_component import SkillsComponent, Skills
-from systems.game_system import skill_level
+from player_systems.game_system import skill_level
 from texts import Texts
 from data.items_enum import EquipmentSlots, WeaponAttributes
 import config
@@ -93,9 +93,13 @@ class MeleeCombatSystem(System):
                 attack_dmg = max(0, attack_dmg - armor_roll)
 
                 if attack_dmg:
+                    attacker_is_player = False
+                    if entity == World.fetch('player'):
+                        attacker_is_player = True
+
                     logs.appendleft(
                         f'{Texts.get_text("HITS_FOR_DMG").format(attacker_name.name, target_name, attack_dmg)}')
-                    target_suffer_dmg = SufferDamageComponent(attack_dmg)
+                    target_suffer_dmg = SufferDamageComponent(attack_dmg, attacker_is_player)
                     World.add_component(target_suffer_dmg, wants_melee.target)
                 else:
                     logs.appendleft(
