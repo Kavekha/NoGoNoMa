@@ -107,3 +107,14 @@ def select_item_from_inventory(item_id):
         return States.SHOW_TARGETING
     use_item(item_id)
     return States.PLAYER_TURN
+
+
+def get_items_in_user_backpack(user):
+    subjects = World.get_components(NameComponent, InBackPackComponent)
+
+    items_in_user_backpack = []
+    for entity, (name, in_backpack, *args) in subjects:
+        if in_backpack.owner == user:
+            items_in_user_backpack.append(entity)
+
+    return items_in_user_backpack

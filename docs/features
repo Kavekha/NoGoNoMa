@@ -4,14 +4,15 @@ Release 2 - Done
     Stats & Combat - Nouveau systeme.
     new IHM / UI, show character sheet, ASCII & Tiles
     Equipement, armes & combat
+    graphisme pour menus
 
 Release 2 - WIP
-    API graphique pour menus & interface
     Experience, gains d'xp et leveling
-    Menu option graphique
+    Graphismes pour interface
     Attaques & defenses naturelles : http://bfnightly.bracketproductions.com/rustbook/chapter_51.html
-    API graphique: map & NPCs.
+    Menu option graphique
     Effets Particules.
+    graphisme: map & NPCs.
     Nice walls & blood stains & decorations.
     Fixes & Optimisations
 
