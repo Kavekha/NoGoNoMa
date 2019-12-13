@@ -119,6 +119,7 @@ def show_item_screen(header):
     for index, item in enumerate(items_to_display):
         item_name = World.get_entity_component(item, NameComponent)
         text += f'[color=orange]({chr(letter_index)}) {Texts.get_text(item_name.name)}[/color]' + '\n'
+        letter_index += 1
 
     text += '\n'
     text += f'[color=darker yellow] {Texts.get_text("ESCAPE_TO_CANCEL")}'
