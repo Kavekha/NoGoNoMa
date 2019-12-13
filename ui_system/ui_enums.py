@@ -17,6 +17,14 @@ class MainMenuSelection(Enum):
     NEWGAME = 0
     LOAD_GAME = 1
     QUIT = 2
+    OPTION = 3
+    NO_RESPONSE = 4
+
+
+class OptionMenuSelection(Enum):
+    CHANGE_LANGUAGE = 0
+    CHANGE_GRAPHICAL_MODE = 1
+    BACK_TO_MAIN_MENU = 2
     NO_RESPONSE = 3
 
 

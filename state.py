@@ -27,6 +27,7 @@ class States(Enum):
     GAME_OVER = 12
     VICTORY = 13
     CHARACTER_SHEET = 14
+    OPTION_MENU = 15
 
 
 class State:

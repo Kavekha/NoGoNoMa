@@ -2,8 +2,9 @@ from bearlibterminal import terminal
 from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from state import States
-from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection
-from ui_system.render_menus import show_main_menu
+from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
+from ui_system.render_menus import show_option_menu
+from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
 from components.targeting_component import TargetingComponent
@@ -39,7 +40,6 @@ def player_input():
         elif key == terminal.TK_D:
             return States.SHOW_DROP_ITEM
         elif key == terminal.TK_C:
-            print(f'character sheet')
             return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:
             next_lvl = try_next_level()
@@ -112,12 +112,33 @@ def main_menu_input():
         elif index == 1:
             return MainMenuSelection.LOAD_GAME
         elif index == 2:
+            return MainMenuSelection.OPTION
+    return MainMenuSelection.NO_RESPONSE
+
+
+def option_menu_input():
+    if terminal.has_input():
+        key = terminal.read()
+        index = terminal.state(terminal.TK_CHAR) - ord('a')
+        if key == terminal.TK_ESCAPE or index == 2:
+            return OptionMenuSelection.BACK_TO_MAIN_MENU
+        elif index == 0:
             # change language
             if Texts.get_current_language() == 'fr':
                 Texts.set_language('en')
             else:
                 Texts.set_language('fr')
-            show_main_menu()
+            terminal.clear()
+            show_option_menu()
+        elif index == 1:
+            # graphical mode
+            if Interface.mode == GraphicalModes.ASCII:
+                terminal.clear()
+                Interface.change_graphical_mode(GraphicalModes.TILES)
+            elif Interface.mode == GraphicalModes.TILES:
+                terminal.clear()
+                Interface.change_graphical_mode(GraphicalModes.ASCII)
+            show_option_menu()
     return MainMenuSelection.NO_RESPONSE
 
 

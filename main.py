@@ -11,13 +11,13 @@ from systems.render_system import render_system
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
-from player_systems.player_input import main_menu_input, any_input_for_quit, inventory_input
-from new_ui.draw_map import draw_map
-from new_ui.ui_enums import ItemMenuResult, MainMenuSelection
+from player_systems.player_input import main_menu_input, any_input_for_quit, inventory_input, option_menu_input
+from ui_system.draw_map import draw_map
+from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
 from systems.inventory_system import get_items_in_user_backpack
-from new_ui.interface import Interface
-from new_ui.render_menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
-    show_item_screen
+from ui_system.interface import Interface
+from ui_system.render_menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
+    show_item_screen, show_option_menu
 from state import States, State
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
@@ -42,6 +42,9 @@ def tick():
             run_state.change_state(States.LOAD_GAME)
         elif result == MainMenuSelection.QUIT:
             sys.exit()
+        elif result == MainMenuSelection.OPTION:
+            terminal.clear()
+            run_state.change_state(States.OPTION_MENU)
 
     elif run_state.current_state == States.LOAD_GAME:
         if has_saved_game():
@@ -58,6 +61,13 @@ def tick():
         save_game(World)
         World.reset_all()
         terminal.clear()
+
+    elif run_state.current_state == States.OPTION_MENU:
+        show_option_menu()
+        result = option_menu_input()
+        if result == OptionMenuSelection.BACK_TO_MAIN_MENU:
+            terminal.clear()
+            run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.GAME_OVER:
         terminal.clear()
