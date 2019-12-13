@@ -7,6 +7,7 @@ from systems.monster_ai_system import MonsterAi
 from systems.map_indexing_system import MapIndexingSystem
 from systems.melee_combat_system import MeleeCombatSystem
 from systems.damage_system import DamageSystem
+from systems.particule_system import ParticuleSpawnSystem
 from ui_system.ui_system import UiSystem
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
@@ -39,6 +40,8 @@ def init_game(master_seed=None):
     World.add_system(drop_system)
     item_use_system = ItemUseSystem()
     World.add_system(item_use_system)
+    particule_spawn_system = ParticuleSpawnSystem()
+    World.add_system(particule_spawn_system)
 
     # create map
     current_map = Gmap(1)

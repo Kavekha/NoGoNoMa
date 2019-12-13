@@ -1,6 +1,4 @@
 SYSTEM = [
-    'system/ent_bar_base.png',
-    'system/ent_bar_unit.png',
     'system/square.png',
     'system/ui1.png',
     'system/ui2.png',
@@ -34,4 +32,14 @@ ITEMS = [
     'items/scroll.png',
     'items/potion.png',
     'items/armor.png',
+]
+
+
+PARTICULES = [
+    'particules/attack.png',
+    'particules/miss.png',
+    'particules/heal.png',
+    'particules/confusion.png',
+    'particules/offensive_spell.png',
+    'particules/fire.png'
 ]

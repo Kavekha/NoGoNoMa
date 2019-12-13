@@ -34,5 +34,4 @@ def render_entities_tiles(subjects, current_map):
         if current_map.visible_tiles[idx]:
             terminal.layer(render.render_order.value)
             terminal.color(render.fg)
-            print(f'render sprite is {render.sprite} for entity {entity}')
             terminal.put(position.x, position.y, Interface.get_code(render.sprite))

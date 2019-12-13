@@ -34,6 +34,9 @@ World:
         Gerer autrement les delete pour ne pas defoncer les iterators.
         On marque une entité comme "morte", et on l'efface en fin de cycle.
 
+Logs:
+    Morgue files & victory / Death screen.
+
 UI:
     Fusionner DropMenu & InventoryMenu. Juste le texte change.
     rassembler les affichages au meme endroit.
@@ -57,6 +60,7 @@ Use:
 
 Target
     Ne fonctionne plus dans certaines circonstances. Distance?
+    Affichage degueulasse de la zone de ciblage.
 
 Changer State
     Tjrs penible. cf damage_system pour changer l'etat de mort.

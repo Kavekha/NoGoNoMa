@@ -15,6 +15,7 @@ from player_systems.player_input import main_menu_input, any_input_for_quit, inv
 from ui_system.draw_map import draw_map
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
 from systems.inventory_system import get_items_in_user_backpack
+from systems.particule_system import cull_dead_particules
 from ui_system.interface import Interface
 from ui_system.render_menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
     show_item_screen, show_option_menu
@@ -182,6 +183,7 @@ def main():
     while True:
         start_time = time.perf_counter()  # limit fps
         tick()
+        cull_dead_particules()
         delta_time = (time.perf_counter() - start_time) * 1000
         terminal.delay(max(int(1000.0 / FPS - delta_time), 0))
 
