@@ -7,6 +7,7 @@ from components.position_component import PositionComponent
 from components.name_component import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
+from systems.particule_system import ParticuleBuilder
 from state import States
 from gmap.utils import distance_to
 from world import World
@@ -35,6 +36,7 @@ class MonsterAi(System):
                 if is_confused.turns < 1:
                     World.remove_component(ConfusionComponent, entity)
                 can_act = False
+                ParticuleBuilder.request(position.x, position.y, 'magenta', '?', 'particules/confusion.png')
 
             if can_act:
                 if viewshed.visible_tiles[y][x]:

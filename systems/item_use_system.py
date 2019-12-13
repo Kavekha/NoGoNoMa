@@ -12,7 +12,9 @@ from components.confusion_component import ConfusionComponent
 from components.equippable_component import EquippableComponent
 from components.equipped_component import EquippedComponent
 from components.in_backpack_component import InBackPackComponent
-from gmap.utils import xy_idx
+from components.position_component import PositionComponent
+from systems.particule_system import ParticuleBuilder
+from gmap.utils import xy_idx, index_to_point2d
 from world import World
 from texts import Texts
 import config
@@ -55,6 +57,8 @@ class ItemUseSystem(System):
                     for tile in blast_tiles_idx:
                         for mob in current_map.tile_content[tile]:
                             targets.append(mob)
+                        pos_x, pos_y = index_to_point2d(tile)
+                        ParticuleBuilder.request(pos_x, pos_y, 'orange', '░', 'particules/fire.png')
                 else:
                     for mob in current_map.tile_content[idx]:
                         targets.append(mob)
@@ -66,20 +70,24 @@ class ItemUseSystem(System):
                 target_name = World.get_entity_component(target, NameComponent)
                 if World.get_entity_component(target, Pools):
                     if item_inflicts_dmg:
-                        suffer_dmg = SufferDamageComponent(item_inflicts_dmg.damage)
+                        suffer_dmg = SufferDamageComponent(item_inflicts_dmg.damage, from_player=True)
                         World.add_component(suffer_dmg, target)
                         if entity == player:
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
                                             f'{Texts.get_text("YOU_USE_ITEM").format(item_name.name, target_name.name)}'
                                             f'{Texts.get_text("_FOR_DMG").format(item_inflicts_dmg.damage)}'
                                             f'[/color]')
+                        pos = World.get_entity_component(target, PositionComponent)
+                        ParticuleBuilder.request(pos.x, pos.y, 'red', '!!', 'particules/offensive_spell.png')
 
                     if item_provides_healing:
+                        pools.hit_points.current = min(pools.hit_points.max,
+                                                       pools.hit_points.current + item_provides_healing.healing_amount)
                         if entity == player:
-                            pools.hit_points.current = min(pools.hit_points.max,
-                                                           pools.hit_points.current + item_provides_healing.healing_amount)
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("YOU_DRINK_ITEM").format(item_name.name)}'
                                             f'{Texts.get_text("YOU_ARE_HEAL_FOR").format(item_provides_healing.healing_amount)}[/color]')
+                        pos = World.get_entity_component(entity, PositionComponent)
+                        ParticuleBuilder.request(pos.x, pos.y, 'red', '♥', 'particules/heal.png')
 
                     if item_causes_confusion:
                         add_confusion = ConfusionComponent(item_causes_confusion.turns)
@@ -88,6 +96,8 @@ class ItemUseSystem(System):
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
                                             f'{Texts.get_text("YOU_USE_ITEM").format(item_name.name, target_name.name)}'
                                             f'{Texts.get_text("_CONFUSING_THEM")}')
+                        pos = World.get_entity_component(target, PositionComponent)
+                        ParticuleBuilder.request(pos.x, pos.y, 'magenta', '?', 'particules/confusion.png')
 
             consumable = World.get_entity_component(wants_to_use.item, ConsumableComponent)
             if consumable:

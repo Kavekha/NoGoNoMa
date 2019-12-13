@@ -35,6 +35,7 @@ class Layers(Enum):
     ITEM = 3
     MONSTER = 4
     PLAYER = 5
-    INTERFACE = 6
-    TOOLTIP = 7
-    MENU = 8
+    PARTICULE = 6
+    INTERFACE = 7
+    TOOLTIP = 8
+    MENU = 9

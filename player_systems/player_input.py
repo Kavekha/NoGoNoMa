@@ -75,6 +75,7 @@ def targeting_input(item, mouse_coords, valid_target=False):
             cancel = True
 
     if cancel:
+        print('targeting input: cancel targeting.')
         World.remove_component(TargetingComponent, World.fetch('player'))
         return ItemMenuResult.CANCEL, None, None
     return ItemMenuResult.NO_RESPONSE, None, None
