@@ -38,9 +38,6 @@ Logs:
     Morgue files & victory / Death screen.
 
 UI:
-    Fusionner DropMenu & InventoryMenu. Juste le texte change.
-    rassembler les affichages au meme endroit.
-    ASCII / Tiles
     API pour mieux gerer l'interface vs Game.
     Meilleure disposition des menus.
 

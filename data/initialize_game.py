@@ -59,3 +59,7 @@ def init_game(master_seed=None):
     log_entry = deque()
     log_entry.append(Texts.get_text("WELCOME_MESSAGE"))
     World.insert('logs', log_entry)
+
+    # add tooltips
+    tooltip = list()
+    World.insert('tooltip', (tooltip, 0, 0))

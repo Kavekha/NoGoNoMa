@@ -11,49 +11,120 @@ Release 2 - Done
     Attaques & defenses naturelles
     Menu option graphique
     Effets Particules.
+    tooltips
 
 Release 2 - WIP
-    tooltips
     Nice walls & blood stains & decorations.
     ciblage
+    IA plus fine
     Fixes & Optimisations
+        Sanity checks
+        Eviter les NPC les uns dans les autres.
+        Deplacement impossible (dans le mur) compte comme un tour
+        Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
+        Menus basés sur index cassés (inventaire)
+        Rooms avec 2 tiles d'ecart entre elles pour eviter les passages en diagonale
 
 Release 3 - To Do
-    Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
+    Morgue file
     Refactor Map Building
+    Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
     Map building Harness
+    Camera vs Screen
     Algorithms
+    Zoom camera
     Prefabs
+    Groupement de tiles : walkable, opaque, etc
     Rooms builders
+    HUD: pause du jeu + affichage du tooltip quand apparition.
     Better corridors
-    Doors
     Traps
+    Room building & props
+    NPC qui parlent
+    Doors
     Skills
 
-Release 4 - To Do
-    Master Dungeon Map
-    Melange d'algorithmes
-    Tables de loot particulieres
+
+Feature Vision
+    Source de lumiere
+    Orage / Eclair
+
+Feature Combat / tour
+    Initiative / energy cost
+    Gestion du status effect
+    Gestion blabla npc
+
+Feature Interface
+    Tooltip graphique
     Mouse support.
-    Larger maps & Zooms.
+    Menus de confirmation.
+    Animations des tiles.
+    Icones des items
+    Items équipés.
+    Etats du personnage.
+    Raccourcis clavier
+    Affichage "full screen" du nom nouvelle region
+    Modifier les raccourcis clavier.
+    Voir les items et monstres "dernier emplacement" dans les revealed tiles.
 
-Release 5 - TODO
-    Affixes sur items & mobs
-    Magic items
-    Effects
-    Cursed items
-    Choix de classes.
-    Specificités de classes: skills, Capacités & progression.
-
-Release 6 - TODO
+Feature generation map
+    Melange d'algorithmes selon region / theme.
     Backtracking
-    NPC dialogues
-    Better IA
-    Spellbooks, spells & skills
+    Master dungeon map: scenarisation.
+    Teleporteurs
+    "Pont / Reconstruction de ponts" : Zones bloquées, necessitant quetes / items pour ouvrir zone.
+
+Feature Tables
+    Table de loots / monstres selon region / theme / room.
+    Table d'affixes / suffixes pour items / monstres
+    Mobs équipés
+    Mobs droppent des objets.
+    Machines generatrices d'evenements (Clés - portes).
+    Groupe de monstres / territoire de groupe de monstres
+
+Feature Items
+    Magic items.
+    Objets non identifiés
+    Identification
+    Effects.
+    Cursed & unequippable & Remove curse
+    Charges de sorts sur baton
 
 
+Feature Entités
+    Code de conduite
+    Objectifs d'entité
+    Benedictions d'entité
+    Trahir le code, consequences & malediction.
+    Invoquer l'Entité, la vaincre.
 
+Feature Classes
+    Equipement de base.
+    Choix de classes.
+    Specificités, skills, capacités, progression.
 
+Feature Lore / Ambiance.
+    Dialogues NPC.
+    Regions, themes.
+    Boss memorables.
+
+Feature IA.
+    Ai vs Ai
+    Situations & goals
+    Chasser la cible
+    Pack & Leader
+
+Feature Spells
+    Spellbooks
+    Spells
+
+Feature HungerClock
+    Le Fade du Heros & les items pour s'en proteger.
+
+Feature Interaction NPC
+    Vendeurs
+    Crafting
+    Quetes
 
 
 
