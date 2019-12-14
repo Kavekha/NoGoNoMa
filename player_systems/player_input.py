@@ -69,6 +69,7 @@ def targeting_input(item, mouse_coords, valid_target=False):
             logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("YOU_CHANGE_MIND")}[/color]')
             cancel = True
         elif key == terminal.TK_MOUSE_LEFT:
+            print(f'targeting input: {item}, {mouse_coords}, {valid_target}')
             if valid_target and item:
                 return ItemMenuResult.SELECTED, item, mouse_coords
             logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOTHING_TO_TARGET")}[/color]')

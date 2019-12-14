@@ -12,11 +12,12 @@ Release 2 - Done
     Menu option graphique
     Effets Particules.
     tooltips
+    blood stains
+    ciblage
 
 Release 2 - WIP
-    Nice walls & blood stains & decorations.
-    ciblage
     IA plus fine
+    Monstres divers pour variété.
     Fixes & Optimisations
         Sanity checks
         Eviter les NPC les uns dans les autres.
@@ -44,6 +45,12 @@ Release 3 - To Do
     Doors
     Skills
 
+
+Feature Competition & communauté
+    Morgue file
+    Replay
+    Seed game
+    Scores
 
 Feature Vision
     Source de lumiere

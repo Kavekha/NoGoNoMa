@@ -1,6 +1,6 @@
 from enum import Enum
 
-from gmap.map_creation import Gmap
+from gmap.game_map import Gmap
 from gmap.spawner import spawn_world
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent

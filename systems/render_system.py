@@ -5,6 +5,7 @@ from world import World
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
 from ui_system.interface import Interface, GraphicalModes
+from ui_system.ui_enums import Layers
 
 
 def render_system():

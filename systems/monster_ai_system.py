@@ -17,12 +17,13 @@ import config
 class MonsterAi(System):
     def update(self, *args, **kwargs):
         run_state = World.fetch('state')
-        if run_state.current_state != States.MONSTER_TURN:
+        if not run_state.current_state == States.MONSTER_TURN:
+            print(f'not monster turn')
             return
+        print(f'monster turn!')
 
         subjects = World.get_components(NameComponent, MonsterComponent, ViewshedComponent, PositionComponent)
-        if not subjects:
-            return
+
 
         player = World.fetch('player')
         player_position = World.get_entity_component(player, PositionComponent)

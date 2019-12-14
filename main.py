@@ -105,12 +105,12 @@ def tick():
         draw_tooltip()
 
     elif run_state.current_state == States.PLAYER_TURN:
-        run_state.change_state(States.MONSTER_TURN)
         run_systems()
+        run_state.change_state(States.MONSTER_TURN)
 
     elif run_state.current_state == States.MONSTER_TURN:
-        run_state.change_state(States.AWAITING_INPUT)
         run_systems()
+        run_state.change_state(States.AWAITING_INPUT)
 
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
