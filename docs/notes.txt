@@ -26,6 +26,7 @@ AI:
     Eviter les NPC les uns dans les autres.
 
 Tour par Tour:
+    Foutoir dans les States & les run_systems.
     Deplacement impossible (dans le mur) compte comme un tour
     Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
 
