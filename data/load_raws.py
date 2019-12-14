@@ -293,13 +293,25 @@ class RawsMaster:
             elif attribute == "fg":
                 render['fg'] = renderable[attribute]
             elif attribute == "order":
-                render['order'] = Layers(renderable[attribute])
+                render['order'] = RawsMaster.load_render_order(renderable[attribute])
             elif attribute == 'sprite':
                 render[attribute] = renderable[attribute]
             else:
                 print(f'load render raw: unknown attribute {attribute} in {renderable}')
                 raise NotImplementedError
         return render
+
+    @staticmethod
+    def load_render_order(render_order_value):
+        if render_order_value == 'BACKGROUND':
+            return Layers.BACKGROUND
+        elif render_order_value == 'MONSTER':
+            return Layers.MONSTER
+        elif render_order_value == 'ITEM':
+            return Layers.ITEM
+        else:
+            print(f'render order: value {render_order_value} not supported.')
+            raise NotImplementedError
 
     @staticmethod
     def load_skills_raw(skills_component):

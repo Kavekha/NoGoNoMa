@@ -11,7 +11,7 @@ from systems.particule_system import ParticuleSpawnSystem
 from ui_system.ui_system import UiSystem
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
-from gmap.map_creation import Gmap
+from gmap.game_map import Gmap
 from gmap.spawner import spawn_world, spawn_player
 from texts import Texts
 
@@ -22,16 +22,6 @@ def init_game(master_seed=None):
         World.insert('seed', master_seed)
 
     # create systems.
-    visibility_system = VisibilitySystem()
-    World.add_system(visibility_system)
-    monster_ai_system = MonsterAi()
-    World.add_system(monster_ai_system)
-    map_indexing_system = MapIndexingSystem()
-    World.add_system(map_indexing_system)
-    melee_combat_system = MeleeCombatSystem()
-    World.add_system(melee_combat_system)
-    damage_system = DamageSystem()
-    World.add_system(damage_system)
     ui_system = UiSystem()
     World.add_system(ui_system)
     inventory_system = ItemCollectionSystem()
@@ -42,6 +32,18 @@ def init_game(master_seed=None):
     World.add_system(item_use_system)
     particule_spawn_system = ParticuleSpawnSystem()
     World.add_system(particule_spawn_system)
+
+    monster_ai_system = MonsterAi()
+    World.add_system(monster_ai_system)
+    melee_combat_system = MeleeCombatSystem()
+    World.add_system(melee_combat_system)
+    damage_system = DamageSystem()
+    World.add_system(damage_system)
+
+    visibility_system = VisibilitySystem()
+    World.add_system(visibility_system)
+    map_indexing_system = MapIndexingSystem()
+    World.add_system(map_indexing_system)
 
     # create map
     current_map = Gmap(1)

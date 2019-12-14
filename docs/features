@@ -12,18 +12,20 @@ Release 2 - Done
     Menu option graphique
     Effets Particules.
     tooltips
+    blood stains
+    ciblage
 
 Release 2 - WIP
-    Nice walls & blood stains & decorations.
-    ciblage
     IA plus fine
+    Monstres divers pour variété.
     Fixes & Optimisations
         Sanity checks
         Eviter les NPC les uns dans les autres.
         Deplacement impossible (dans le mur) compte comme un tour
         Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
-        Menus basés sur index cassés (inventaire)
         Rooms avec 2 tiles d'ecart entre elles pour eviter les passages en diagonale
+    Permadeath
+    Installateur windows
 
 Release 3 - To Do
     Morgue file
@@ -44,6 +46,12 @@ Release 3 - To Do
     Doors
     Skills
 
+
+Feature Competition & communauté
+    Morgue file
+    Replay
+    Seed game
+    Scores
 
 Feature Vision
     Source de lumiere

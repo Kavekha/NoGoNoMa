@@ -44,6 +44,8 @@ def draw_map_ascii(current_map, tiles):
                     terminal.printf(x, y, f'[color=darker gray]>[/color]')
                 elif tiles[tile] == TileType.EXIT_PORTAL:
                     terminal.printf(x, y, f'[color=darker gray]O[/color]')
+            if current_map.stains[tile]:
+                terminal.printf(x, y, f'[bkcolor=red] [/color]')
         # Move coordinates
         x += 1
         if x > config.MAP_WIDTH - 1:
@@ -58,6 +60,7 @@ def draw_map_tiles(current_map, tiles):
     for tile in range(len(tiles)):
         if current_map.revealed_tiles[current_map.xy_idx(x, y)]:
             if current_map.visible_tiles[current_map.xy_idx(x, y)]:
+                terminal.composition(terminal.TK_ON)
                 if tiles[tile] == TileType.FLOOR:
                     terminal.color('dark yellow')
                     terminal.put(x, y, Interface.get_code('map/ground.png'))
@@ -70,6 +73,13 @@ def draw_map_tiles(current_map, tiles):
                 elif tiles[tile] == TileType.EXIT_PORTAL:
                     terminal.color('lighter cyan')
                     terminal.put(x, y, Interface.get_code('map/stairs_down.png'))
+
+                # blood stains
+                if current_map.stains[tile]:
+                    terminal.layer(Layers.STAINS.value)
+                    terminal.color('dark red')
+                    terminal.put(x, y, Interface.get_code(f'/props/blood{current_map.stains[tile]}.png'))
+                terminal.composition(terminal.TK_OFF)
             else:
                 if tiles[tile] == TileType.FLOOR:
                     terminal.color('dark gray')
@@ -83,6 +93,7 @@ def draw_map_tiles(current_map, tiles):
                 elif tiles[tile] == TileType.EXIT_PORTAL:
                     terminal.color('dark gray')
                     terminal.put(x, y, Interface.get_code('map/stairs_down.png'))
+
         # Move coordinates
         x += 1
         if x > config.MAP_WIDTH - 1:

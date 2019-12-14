@@ -26,6 +26,7 @@ AI:
     Eviter les NPC les uns dans les autres.
 
 Tour par Tour:
+    Foutoir dans les States & les run_systems.
     Deplacement impossible (dans le mur) compte comme un tour
     Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
 
@@ -55,9 +56,9 @@ Use:
     Use system a refactor pour plus de lisibilité. Notamment le code equip / unequip, illisible.
     Items : Potion sans interdiction de boire alors que full pv.
 
-Target
-    Ne fonctionne plus dans certaines circonstances. Distance?
-    Affichage degueulasse de la zone de ciblage.
+Graphismes
+    Grid de target
+    Explosions de dmg.
 
 Changer State
     Tjrs penible. cf damage_system pour changer l'etat de mort.

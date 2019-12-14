@@ -6,7 +6,7 @@
         "glyph": "o",
         "fg": "#FF0000",
         "sprite": "chars/oogloth.png",
-        "order": 4
+        "order": "MONSTER"
       },
       "blocks_tile": true,
       "vision_range": 8,
@@ -27,7 +27,7 @@
       "renderable": {
         "glyph": "m",
         "fg": "#FF0000",
-        "order": 4,
+        "order": "MONSTER",
         "sprite": "chars/morblin.png"
       },
       "blocks_tile": true,
@@ -49,7 +49,7 @@
       "renderable": {
         "glyph": "T",
         "fg": "#FF0000",
-        "order": 4,
+        "order": "MONSTER",
         "sprite": "chars/troll.png"
       },
       "blocks_tile": true,

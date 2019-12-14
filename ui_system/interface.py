@@ -35,7 +35,7 @@ class Interface:
     @staticmethod
     def load_graphical_assets():
         print(f'----- ASSETS LOADING ------')
-        list_of_tilesets = tilesets.SYSTEM + tilesets.CHARS + tilesets.MAP + tilesets.ITEMS + tilesets.PARTICULES
+        list_of_tilesets = tilesets.SYSTEM + tilesets.CHARS + tilesets.MAP + tilesets.ITEMS + tilesets.PARTICULES + tilesets.PROPS
         for path in list_of_tilesets:
             Interface.get_new_code_for_path(path)
 
