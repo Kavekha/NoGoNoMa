@@ -1,6 +1,7 @@
 from bearlibterminal import terminal
 
 from systems.inventory_system import use_item
+from systems.render_system import render_system
 from world import World
 from components.targeting_component import TargetingComponent
 from components.viewshed_component import ViewshedComponent
@@ -50,6 +51,7 @@ def show_targeting():
             y += 1
             x = 0
 
+        render_system()
         terminal.refresh()
 
         return targeting_input(targeter.item, (mouse_pos_x, mouse_pos_y), valid_target)
