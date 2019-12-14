@@ -23,7 +23,11 @@ CHARS = [
     'chars/player.png',
     'chars/morblin.png',
     'chars/oogloth.png',
-    'chars/troll.png'
+    'chars/troll.png',
+    'chars/rat.png',
+    'chars/dragon.png',
+    'chars/golem.png',
+    'chars/skelton.png'
 ]
 
 

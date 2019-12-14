@@ -1,16 +1,22 @@
 {
 "spawn_table" : [
-    { "name" : "MORBLIN", "weight" : 10, "min_depth" : 1, "max_depth" : 100 },
-    { "name" : "OOGLOTH", "weight" : 5, "min_depth" : 3, "max_depth" : 100 },
     { "name" : "HEALTH_POTION", "weight" : 7, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "FIREBALL_SCROLL", "weight" : 1, "min_depth" : 1, "max_depth" : 100, "add_map_depth_to_weight" : true },
     { "name" : "CONFUSION_SCROLL", "weight" : 2, "min_depth" : 1, "max_depth" : 1, "add_map_depth_to_weight" : true },
     { "name" : "MISSILE_MAGIC_SCROLL", "weight" : 4, "min_depth" : 1, "max_depth" : 100 },
-    { "name" : "DAGGER", "weight" : 3, "min_depth" : 1, "max_depth" : 4 },
-    { "name" : "BUCKLET", "weight" : 3, "min_depth" : 1, "max_depth" : 4 },
-    { "name" : "LONGSWORD", "weight" : 2, "min_depth" : 3, "max_depth" : 100 },
-    { "name" : "TOWER_SHIELD", "weight" : 2, "min_depth" : 3, "max_depth" : 100 },
-    { "name" : "TUNIC", "weight" : 2, "min_depth" : 5, "max_depth" : 100 },
-    { "name" : "TROLL", "weight" : 7, "min_depth" : 5, "max_depth" : 100 }
+
+    { "name" : "DAGGER", "weight" : 3, "min_depth" : 2, "max_depth" : 4 },
+    { "name" : "BUCKLET", "weight" : 3, "min_depth" : 3, "max_depth" : 4 },
+    { "name" : "LONGSWORD", "weight" : 2, "min_depth" : 4, "max_depth" : 100 },
+    { "name" : "TOWER_SHIELD", "weight" : 2, "min_depth" : 5, "max_depth" : 100 },
+    { "name" : "TUNIC", "weight" : 2, "min_depth" : 6, "max_depth" : 100 },
+
+    { "name" : "RAT", "weight" : 10, "min_depth" : 1, "max_depth" : 3 },
+    { "name" : "MORBLIN", "weight" : 5, "min_depth" : 1, "max_depth" : 4, "add_map_depth_to_weight" : true},
+    { "name" : "OOGLOTH", "weight" : 2, "min_depth" : 2, "max_depth" : 5, "add_map_depth_to_weight" : true },
+    { "name" : "SKELTON", "weight" : 3, "min_depth" : 3, "max_depth" : 100 },
+    { "name" : "TROLL", "weight" : 3, "min_depth" : 4, "max_depth" : 100 },
+    { "name" : "GOLEM", "weight" : 4, "min_depth" : 5, "max_depth" : 100 },
+    { "name" : "DRAGON", "weight" : 3, "min_depth" : 6, "max_depth" : 100 }
 ]
 }
