@@ -25,7 +25,7 @@ def player_gain_xp(xp_gain):
 
 def calculate_xp_from_entity(entity_id):
     entity_pools = World.get_entity_component(entity_id, Pools)
-    xp_gain = config.XP_GAIN_PER_MONSTER_LVL * entity_pools.level * config.XP_GAIN_MULTIPLIER
+    xp_gain = config.XP_GAIN_PER_MONSTER_LVL * entity_pools.level * config.XP_GAIN_MULTIPLIER * entity_pools.level
     return xp_gain
 
 

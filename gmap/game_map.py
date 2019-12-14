@@ -1,4 +1,4 @@
-import tcod
+import tcod as tcod
 
 from random import randint
 
@@ -69,7 +69,7 @@ class Gmap:
                 self.blocked_tiles[i] = False
 
     def create_fov_map(self):
-        fov_map = tcod.map.Map(config.MAP_WIDTH, config.MAP_HEIGHT)
+        fov_map = tcod.tcod.map.Map(config.MAP_WIDTH, config.MAP_HEIGHT)
 
         for _i in range(len(self.tiles) - 1):
             if self.tiles[_i] != TileType.WALL:

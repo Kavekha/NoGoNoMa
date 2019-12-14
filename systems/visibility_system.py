@@ -9,14 +9,16 @@ import config
 class VisibilitySystem(System):
     def update(self, *args, **kwargs):
         subjects = World.get_components(PositionComponent, ViewshedComponent)
-        if not subjects:
-            return
 
         current_map = World.fetch('current_map')
         for entity, (position, viewshed) in subjects:
             viewshed.dirty = False
             viewshed.visible_tiles = []
-            current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range, viewshed.light_wall)
+            if entity == World.fetch('player'):
+                # on enregistre les murs comme visibles
+                current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range, viewshed.light_wall)
+            else:
+                current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range, False)
             viewshed.visible_tiles = current_map.fov_map.fov.copy()
 
             if World.entity_has_component(entity, PlayerComponent):

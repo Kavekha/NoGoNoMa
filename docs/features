@@ -14,9 +14,10 @@ Release 2 - Done
     tooltips
     blood stains
     ciblage
+    IA plus fine
 
 Release 2 - WIP
-    IA plus fine
+
     Monstres divers pour variété.
     Fixes & Optimisations
         Sanity checks
@@ -25,10 +26,10 @@ Release 2 - WIP
         Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
         Rooms avec 2 tiles d'ecart entre elles pour eviter les passages en diagonale
     Permadeath
+    Morgue file
     Installateur windows
 
 Release 3 - To Do
-    Morgue file
     Refactor Map Building
     Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
     Map building Harness

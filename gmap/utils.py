@@ -17,3 +17,5 @@ def index_to_point2d(idx):
 def xy_idx(x, y):
     # Return the map tile (x, y). Avoid List in list [x][y]
     return (y * config.MAP_WIDTH) + x
+
+
