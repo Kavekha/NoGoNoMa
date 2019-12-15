@@ -15,16 +15,15 @@ Release 2 - Done
     blood stains
     ciblage
     IA plus fine
+    Monstres divers pour variété.
 
 Release 2 - WIP
-
-    Monstres divers pour variété.
     Fixes & Optimisations
         Sanity checks
-        Eviter les NPC les uns dans les autres.
-        Deplacement impossible (dans le mur) compte comme un tour
-        Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
         Rooms avec 2 tiles d'ecart entre elles pour eviter les passages en diagonale
+        set / get from gmap pour mieux gerer tcod et xy_idx
+        Mobs sur la meme tuile
+        Si target, les autres jouent leur tour...?
     Permadeath
     Morgue file
     Installateur windows

@@ -89,7 +89,7 @@
               "min_dmg": 1,
               "max_dmg": 6,
               "hit_bonus": 0,
-              "dmg_bonus": 1
+              "dmg_bonus": 2
           }
       },
       {
@@ -115,7 +115,7 @@
           },
           "wearable" : {
               "slot": "shield",
-              "armor" : 1
+              "armor" : 3
           }
       },
             {

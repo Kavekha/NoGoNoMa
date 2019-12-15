@@ -1,6 +1,50 @@
 {
   "mobs": [
     {
+      "name": "RAT",
+      "renderable": {
+        "glyph": "r",
+        "fg": "#FF0000",
+        "order": "MONSTER",
+        "sprite": "chars/rat.png"
+      },
+      "blocks_tile": true,
+      "vision_range": 10,
+      "attributes": {
+        "might": 1,
+        "body": 1,
+        "quickness": 3,
+        "wits": 1
+      },
+      "skills": {
+        "melee": -2,
+        "dodge": -1
+      },
+      "level": 1
+    },
+    {
+      "name": "MORBLIN",
+      "renderable": {
+        "glyph": "m",
+        "fg": "#FF0000",
+        "order": "MONSTER",
+        "sprite": "chars/morblin.png"
+      },
+      "blocks_tile": true,
+      "vision_range": 8,
+      "attributes": {
+        "might": 2,
+        "body": 1,
+        "quickness": 2,
+        "wits": 1
+      },
+      "skills": {
+        "melee": -1,
+        "dodge": -2
+      },
+      "level": 2
+    },
+    {
       "name": "OOGLOTH",
       "renderable": {
         "glyph": "o",
@@ -20,29 +64,29 @@
         "melee": 1,
          "dodge": -1
       },
-      "level": 2
+      "level": 3
     },
     {
-      "name": "MORBLIN",
+      "name": "SKELTON",
       "renderable": {
-        "glyph": "m",
+        "glyph": "s",
         "fg": "#FF0000",
-        "order": "MONSTER",
-        "sprite": "chars/morblin.png"
+        "sprite": "chars/skelton.png",
+        "order": "MONSTER"
       },
       "blocks_tile": true,
-      "vision_range": 8,
+      "vision_range": 6,
       "attributes": {
-        "might": 2,
-        "body": 1,
-        "quickness": 3,
+        "might": 3,
+        "body": 4,
+        "quickness": 1,
         "wits": 1
       },
-      "skills": {
+       "skills": {
         "melee": -1,
-        "dodge": -2
+         "dodge": -3
       },
-      "level": 1
+      "level": 4
     },
     {
       "name": "TROLL",
@@ -53,34 +97,102 @@
         "sprite": "chars/troll.png"
       },
       "blocks_tile": true,
-      "vision_range": 6,
+      "vision_range": 10,
       "attributes": {
         "might": 4,
         "body": 3,
-        "quickness": 1,
+        "quickness": 3,
         "wits": 1
       },
       "skills": {
         "melee": 2,
         "dodge": -3
       },
-      "level": 3,
+      "level": 5,
       "natural": {
         "armor": 1,
         "attacks": [
           {
-            "name": "Frappe brutale",
-            "attribute": "might",
-            "hit_bonus": -1,
-            "min_dmg": 3,
-            "max_dmg": 9,
-            "dmg_bonus": 1},
-          {
             "name": "Quick jab",
             "attribute": "quickness",
-            "hit_bonus": 3,
+            "hit_bonus": 1,
+            "min_dmg": 1,
+            "max_dmg": 3,
+            "dmg_bonus": 1}
+        ]
+      }
+    },
+    {
+      "name": "GOLEM",
+      "renderable": {
+        "glyph": "G",
+        "fg": "#FF0000",
+        "order": "MONSTER",
+        "sprite": "chars/golem.png"
+      },
+      "blocks_tile": true,
+      "vision_range": 6,
+      "attributes": {
+        "might": 6,
+        "body": 6,
+        "quickness": 1,
+        "wits": 1
+      },
+      "skills": {
+        "melee": 3,
+        "dodge": -4
+      },
+      "level": 6,
+      "natural": {
+        "armor": 3,
+        "attacks": [
+          {
+            "name": "Frappe brutale",
+            "attribute": "might",
+            "hit_bonus": -3,
+            "min_dmg": 1,
+            "max_dmg": 6,
+            "dmg_bonus": 2}
+        ]
+      }
+    },
+    {
+      "name": "DRAGON",
+      "renderable": {
+        "glyph": "D",
+        "fg": "#FF0000",
+        "order": "MONSTER",
+        "sprite": "chars/dragon.png"
+      },
+      "blocks_tile": true,
+      "vision_range": 7,
+      "attributes": {
+        "might": 5,
+        "body": 5,
+        "quickness": 5,
+        "wits": 3
+      },
+      "skills": {
+        "melee": 3,
+        "dodge": 1
+      },
+      "level": 7,
+      "natural": {
+        "armor": 4,
+        "attacks": [
+          {
+            "name": "bite",
+            "attribute": "might",
+            "hit_bonus": -3,
             "min_dmg": 2,
-            "max_dmg": 4,
+            "max_dmg": 8,
+            "dmg_bonus": 1},
+          {
+            "name": "claw",
+            "attribute": "quickness",
+            "hit_bonus": 3,
+            "min_dmg": 1,
+            "max_dmg": 6,
             "dmg_bonus": -1}
         ]
       }
