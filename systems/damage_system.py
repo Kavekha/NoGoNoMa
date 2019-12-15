@@ -8,7 +8,7 @@ from components.suffer_damage_component import SufferDamageComponent
 from components.name_component import NameComponent
 from components.position_component import PositionComponent
 from player_systems.game_system import player_gain_xp, calculate_xp_from_entity
-from state import States
+from player_systems.on_death import on_player_death
 from texts import Texts
 from gmap.utils import xy_idx
 
@@ -31,15 +31,11 @@ class DamageSystem(System):
             if pools.hit_points.current < 1:
                 if entity != player:
                     logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
-                                    f'{Texts.get_text("_HAS_BEEN_SLAIN").format(name.name)}[/color]')
+                                    f'{Texts.get_text("_HAS_BEEN_SLAIN").format(Texts.get_text(name.name))}[/color]')
                     if suffer_damage.from_player:
                         player_gain_xp(calculate_xp_from_entity(entity))
                     World.delete_entity(entity)
                 else:
-                    print(f'You are dead!')
-                    logs.appendleft(f'[color={config.COLOR_DEADLY_INFO}]{Texts.get_text("YOU_ARE_DEAD")}[/color]')
-                    run_state = World.fetch('state')
-                    run_state.change_state(States.GAME_OVER)
-                    World.insert('state', run_state)
+                    on_player_death()
 
             World.remove_component(SufferDamageComponent, entity)

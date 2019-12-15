@@ -11,7 +11,7 @@ from components.wants_to_melee_component import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
 from systems.particule_system import ParticuleBuilder
 from state import States
-from gmap.utils import distance_to
+from gmap.utils import distance_to, xy_idx
 from world import World
 import config
 
@@ -62,12 +62,17 @@ class MonsterAi(System):
         if dy != 0:
             dy = int(round(dy // distance))
 
-        current_map = World.fetch('current_map')
         new_pos_x = min(config.MAP_WIDTH - 1, max(0, position_component.x + dx))
         new_pos_y = min(config.MAP_HEIGHT - 1, max(0, position_component.y + dy))
-        if not current_map.blocked_tiles[current_map.xy_idx(new_pos_x, new_pos_y)]:
+        if self.can_move(new_pos_x, new_pos_y):
             position_component.x = new_pos_x
             position_component.y = new_pos_y
+
+    def can_move(self, x, y):
+        current_map = World.fetch('current_map')
+        if not current_map.blocked_tiles[xy_idx(x, y)]:
+            return True
+        return False
 
     def move_astar(self, viewshed, position_component, player_x, player_y): #target, entities, game_map):
         # /!\ On utilise visible_tiles, qui concerne ce que le mob voit = le transparent est consideré comme walkable.
@@ -75,15 +80,17 @@ class MonsterAi(System):
         # /!\ Pas de second check sur le deplacement, on teleporte le mob. Danger si walkable.
         # Create a FOV map that has the dimensions of the map
         fov = viewshed.visible_tiles
+        current_map = World.fetch('current_map')
 
         '''
         # Scan the current map each turn and set all the walls as unwalkable
         for y1 in range(config.MAP_HEIGHT):
             for x1 in range(config.MAP_WIDTH):
                 # print(f'a star blocked tiles : {current_map.blocked_tiles}')
-                libtcod.map_set_properties(fov, x1, y1, True,
+                tcod.map_set_properties(fov, y1, x1, True,
                                            not current_map.blocked_tiles[xy_idx(x1, y1)])
         '''
+
         # Allocate a A* path
         # The 1.41 is the normal diagonal cost of moving, it can be set as 0.0 if diagonal moves are prohibited
         my_path = tcod.path_new_using_map(fov, 1.41)
@@ -98,11 +105,14 @@ class MonsterAi(System):
         # if there's an alternative path really far away
         if not tcod.path_is_empty(my_path) and tcod.path_size(my_path) < 25:
             # Find the next coordinates in the computed full path
-            x, y = tcod.path_walk(my_path, True)
+            y, x = tcod.path_walk(my_path, True)    # tcod : [y][x]
             if x or y:
                 # Set self's coordinates to the next path tile
-                position_component.x = y
-                position_component.y = x
+                if self.can_move(x, y):
+                    position_component.x = x
+                    position_component.y = y
+                else:
+                    print('astar : cant move')
         else:
             # Keep the old move function as a backup so that if there are no paths
             # (for example another monster blocks a corridor)

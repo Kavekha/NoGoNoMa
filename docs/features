@@ -16,16 +16,12 @@ Release 2 - Done
     ciblage
     IA plus fine
     Monstres divers pour variété.
-
-Release 2 - WIP
-    Fixes & Optimisations
-        Sanity checks
-        Rooms avec 2 tiles d'ecart entre elles pour eviter les passages en diagonale
-        set / get from gmap pour mieux gerer tcod et xy_idx
-        Mobs sur la meme tuile
-        Si target, les autres jouent leur tour...?
+    fixes:  Mobs sur la meme tuile?
+    Noms traduits dans les logs.
     Permadeath
     Morgue file
+
+Release 2 - WIP
     Installateur windows
 
 Release 3 - To Do

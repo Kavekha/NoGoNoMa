@@ -74,7 +74,7 @@ class ItemUseSystem(System):
                         World.add_component(suffer_dmg, target)
                         if entity == player:
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
-                                            f'{Texts.get_text("YOU_USE_ITEM").format(item_name.name, target_name.name)}'
+                                            f'{Texts.get_text("YOU_USE_ITEM").format(Texts.get_text(item_name.name), Texts.get_text(target_name.name))}'
                                             f'{Texts.get_text("_FOR_DMG").format(item_inflicts_dmg.damage)}'
                                             f'[/color]')
                         pos = World.get_entity_component(target, PositionComponent)
@@ -84,7 +84,7 @@ class ItemUseSystem(System):
                         pools.hit_points.current = min(pools.hit_points.max,
                                                        pools.hit_points.current + item_provides_healing.healing_amount)
                         if entity == player:
-                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("YOU_DRINK_ITEM").format(item_name.name)}'
+                            logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("YOU_DRINK_ITEM").format(Texts.get_text(item_name.name))}'
                                             f'{Texts.get_text("YOU_ARE_HEAL_FOR").format(item_provides_healing.healing_amount)}[/color]')
                         pos = World.get_entity_component(entity, PositionComponent)
                         ParticuleBuilder.request(pos.x, pos.y, 'red', '♥', 'particules/heal.png')
@@ -94,7 +94,7 @@ class ItemUseSystem(System):
                         World.add_component(add_confusion, target)
                         if entity == player:
                             logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
-                                            f'{Texts.get_text("YOU_USE_ITEM").format(item_name.name, target_name.name)}'
+                                            f'{Texts.get_text("YOU_USE_ITEM").format(Texts.get_text(item_name.name), Texts.get_text(target_name.name))}'
                                             f'{Texts.get_text("_CONFUSING_THEM")}')
                         pos = World.get_entity_component(target, PositionComponent)
                         ParticuleBuilder.request(pos.x, pos.y, 'magenta', '?', 'particules/confusion.png')
@@ -116,7 +116,7 @@ class ItemUseSystem(System):
                         to_unequip.append(item_entity)
                         if target == player:
                             logs.appendleft(f'[color={config.COLOR_SYS_MSG}]'
-                                            f'{Texts.get_text("YOU_UNEQUIP").format(name.name)}[/color]')
+                                            f'{Texts.get_text("YOU_UNEQUIP").format(Texts.get_text(name.name))}[/color]')
 
                 for item_entity in to_unequip:
                     World.remove_component(EquippedComponent, item_entity)
@@ -129,7 +129,7 @@ class ItemUseSystem(System):
                 if target == player:
                     item_name = World.get_entity_component(wants_to_use.item, NameComponent).name
                     logs.appendleft(f'[color={config.COLOR_SYS_MSG}]'
-                                    f'{Texts.get_text("YOU_EQUIP").format(item_name)}'
+                                    f'{Texts.get_text("YOU_EQUIP").format(Texts.get_text(item_name))}'
                                     f'[/color]')
 
             World.remove_component(WantsToUseComponent, entity)

@@ -77,8 +77,17 @@ def show_game_over_screen():
     window_end_y = window_y * 3  # 40
 
     header = f'{Texts.get_text("GAME_OVER")}'
-    text = '\n'
-    text += f'{Texts.get_text("PRESS_ANY_KEY")}'
+    text = '\n' + '\n'
+    logs = World.fetch('logs')
+    count = 0
+    for log in logs:
+        if count < 10:
+            text += log + '\n'
+            count += 1
+        else:
+            break
+    text += '\n' + '\n'
+    text += f'{Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")}'
 
     if Interface.mode == GraphicalModes.TILES:
         draw_tile_menu(window_x, window_y, window_end_x, window_end_y, header, text)
@@ -96,7 +105,7 @@ def show_victory_screen():
     header = f'{Texts.get_text("VICTORY")}'
     text = '\n'
     text += f'{Texts.get_text("YOU_ESCAPE_DUNGEON")}' + '\n'
-    text += f'{Texts.get_text("PRESS_ANY_KEY")}'
+    text += f'{Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")}'
 
     if Interface.mode == GraphicalModes.TILES:
         draw_tile_menu(window_x, window_y, window_end_x, window_end_y, header, text)
