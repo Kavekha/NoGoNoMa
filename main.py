@@ -38,7 +38,7 @@ def tick():
         if result == MainMenuSelection.NEWGAME:
             run_state.change_state(States.PRE_RUN)
             World.reset_all()
-            init_game(MASTER_SEED)
+            init_game() # MASTER_SEED)
         elif result == MainMenuSelection.LOAD_GAME:
             run_state.change_state(States.LOAD_GAME)
         elif result == MainMenuSelection.QUIT:
