@@ -32,7 +32,7 @@ class ItemCollectionSystem(System):
             if wants_to_pick.collected_by == player:
                 item_name = World.get_entity_component(wants_to_pick.item, NameComponent)
                 logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("YOU_PICK_UP")}'
-                                f'{item_name.name}[/color]')
+                                f'{Texts.get_text(item_name.name)}[/color]')
 
             World.remove_component(WantsToPickUpComponent, entity)
 

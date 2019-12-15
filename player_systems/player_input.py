@@ -1,4 +1,7 @@
 from bearlibterminal import terminal
+
+import sys
+
 from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from state import States
@@ -9,6 +12,7 @@ from world import World
 from texts import Texts
 from components.targeting_component import TargetingComponent
 import config
+from data.save_and_load import save_game
 
 
 def player_input():
@@ -52,8 +56,11 @@ def player_input():
 
         elif key == terminal.TK_ESCAPE:
             return States.SAVE_GAME
+
         elif key == terminal.TK_CLOSE:
+            save_game(World)
             terminal.close()
+            sys.exit()
         else:
             return States.AWAITING_INPUT
         return States.PLAYER_TURN
@@ -74,6 +81,10 @@ def targeting_input(item, mouse_coords, valid_target=False):
                 return ItemMenuResult.SELECTED, item, mouse_coords
             logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOTHING_TO_TARGET")}[/color]')
             cancel = True
+        elif key == terminal.TK_CLOSE:
+            save_game(World)
+            terminal.close()
+            sys.exit()
 
     if cancel:
         print('targeting input: cancel targeting.')
@@ -82,11 +93,14 @@ def targeting_input(item, mouse_coords, valid_target=False):
     return ItemMenuResult.NO_RESPONSE, None, None
 
 
-def any_input_for_quit():
+def input_escape_to_quit():
     if terminal.has_input():
         key = terminal.read()
-        if key != terminal.TK_MOUSE_MOVE:
+        if key == terminal.TK_ESCAPE:
             return ItemMenuResult.SELECTED
+        elif key == terminal.TK_CLOSE:
+            save_game(World)
+            terminal.close()
     return ItemMenuResult.NO_RESPONSE
 
 
@@ -95,6 +109,10 @@ def inventory_input(item_list):
         key = terminal.read()
         if key == terminal.TK_ESCAPE:
             return ItemMenuResult.CANCEL, None
+        elif key == terminal.TK_CLOSE:
+            save_game(World)
+            terminal.close()
+            sys.exit()
         else:
             index = terminal.state(terminal.TK_CHAR) - ord('a')
             if 0 <= index < len(item_list):
@@ -115,6 +133,10 @@ def main_menu_input():
             return MainMenuSelection.LOAD_GAME
         elif index == 2:
             return MainMenuSelection.OPTION
+        elif key == terminal.TK_CLOSE:
+            save_game(World)
+            terminal.close()
+            sys.exit()
     return MainMenuSelection.NO_RESPONSE
 
 
@@ -124,6 +146,10 @@ def option_menu_input():
         index = terminal.state(terminal.TK_CHAR) - ord('a')
         if key == terminal.TK_ESCAPE or index == 2:
             return OptionMenuSelection.BACK_TO_MAIN_MENU
+        elif key == terminal.TK_CLOSE:
+            save_game(World)
+            terminal.close()
+            sys.exit()
         elif index == 0:
             # change language
             if Texts.get_current_language() == 'fr':
@@ -146,7 +172,12 @@ def option_menu_input():
 
 def character_sheet_input():
     if terminal.has_input():
-        if terminal.read() == terminal.TK_ESCAPE:
+        key = terminal.read()
+        if key == terminal.TK_ESCAPE:
             terminal.clear_area(0, 0, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
             terminal.refresh()
+        elif key == terminal.TK_CLOSE:
+            save_game(World)
+            terminal.close()
+            sys.exit()
 

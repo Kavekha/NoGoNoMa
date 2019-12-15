@@ -9,11 +9,6 @@ def has_saved_game():
 
 
 def save_game(world):
-    from world import World
-    from components.position_component import PositionComponent
-    player = world.fetch('player')
-    player_pos = World.get_entity_component(player, PositionComponent)
-
     with shelve.open('savegame', 'n') as data_file:
         data_file['next_available_id'] = world.get_next_available_id()
         data_file['systems'] = world.get_all_systems()

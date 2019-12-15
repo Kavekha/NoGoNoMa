@@ -38,7 +38,7 @@ class MeleeCombatSystem(System):
                 # HIT ROLL
                 natural_roll = randint(1, 20)
                 if natural_roll == 1:
-                    logs.appendleft(f'{Texts.get_text("FAIL_TO_HIT").format(attacker_name.name, target_name)}')
+                    logs.appendleft(f'{Texts.get_text("FAIL_TO_HIT").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name))}')
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_MISS, '*', 'particules/miss.png')
                     World.remove_component(WantsToMeleeComponent, entity)
@@ -85,7 +85,7 @@ class MeleeCombatSystem(System):
                 # To Hit resolution
                 if not natural_roll == 20 and not modified_hit_roll > dodge_difficulty:
                     # fail
-                    logs.appendleft(f'{Texts.get_text("MISS_HIT").format(attacker_name.name, target_name)}')
+                    logs.appendleft(f'{Texts.get_text("MISS_HIT").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name))}')
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_MISS, '*', 'particules/miss.png')
                     continue
@@ -116,14 +116,14 @@ class MeleeCombatSystem(System):
                         attacker_is_player = True
 
                     logs.appendleft(
-                        f'{Texts.get_text("HITS_FOR_DMG").format(attacker_name.name, target_name, attack_dmg)}')
+                        f'{Texts.get_text("HITS_FOR_DMG").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name), attack_dmg)}')
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_HIT, '!!', 'particules/attack.png')
                     target_suffer_dmg = SufferDamageComponent(attack_dmg, attacker_is_player)
                     World.add_component(target_suffer_dmg, wants_melee.target)
                 else:
                     logs.appendleft(
-                        f'{Texts.get_text("UNABLE_TO_HURT").format(attacker_name.name, target_name)}')
+                        f'{Texts.get_text("UNABLE_TO_HURT").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name))}')
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_NO_HURT, '*', 'particules/miss.png')
             World.remove_component(WantsToMeleeComponent, entity)

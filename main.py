@@ -11,7 +11,7 @@ from systems.render_system import render_system
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
-from player_systems.player_input import main_menu_input, any_input_for_quit, inventory_input, option_menu_input
+from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input
 from ui_system.draw_map import draw_map
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
 from systems.inventory_system import get_items_in_user_backpack
@@ -38,7 +38,7 @@ def tick():
         if result == MainMenuSelection.NEWGAME:
             run_state.change_state(States.PRE_RUN)
             World.reset_all()
-            init_game(MASTER_SEED)
+            init_game() # MASTER_SEED)
         elif result == MainMenuSelection.LOAD_GAME:
             run_state.change_state(States.LOAD_GAME)
         elif result == MainMenuSelection.QUIT:
@@ -73,7 +73,7 @@ def tick():
     elif run_state.current_state == States.GAME_OVER:
         terminal.clear()
         show_game_over_screen()
-        result = any_input_for_quit()
+        result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
@@ -82,7 +82,7 @@ def tick():
     elif run_state.current_state == States.VICTORY:
         terminal.clear()
         show_victory_screen()
-        result = any_input_for_quit()
+        result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
@@ -90,7 +90,7 @@ def tick():
 
     elif run_state.current_state == States.CHARACTER_SHEET:
         show_character_sheet()
-        result = any_input_for_quit()
+        result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             run_state.change_state(States.AWAITING_INPUT)
             run_systems()
