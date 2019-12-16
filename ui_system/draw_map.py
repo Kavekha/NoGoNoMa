@@ -2,6 +2,7 @@ from bearlibterminal import terminal
 
 from ui_system.ui_enums import Layers
 from gmap.gmap_enums import TileType
+from gmap.utils import xy_idx
 from world import World
 from components.player_component import PlayerComponent
 from components.viewshed_component import ViewshedComponent
@@ -9,24 +10,24 @@ from ui_system.interface import Interface, GraphicalModes
 import config
 
 
-def draw_map():
-    subjects = World.get_components(PlayerComponent, ViewshedComponent)
-    current_map = World.fetch('current_map')
-    tiles = current_map.tiles
+def draw_map(map_to_draw):
+    print(f'draw map requested')
+    # current_map = World.fetch('current_map')
+    tiles = map_to_draw.tiles
 
     if Interface.mode == GraphicalModes.ASCII:
-        draw_map_ascii(current_map, tiles)
+        draw_map_ascii(map_to_draw, tiles)
     elif Interface.mode == GraphicalModes.TILES:
-        draw_map_tiles(current_map, tiles)
+        draw_map_tiles(map_to_draw, tiles)
 
 
-def draw_map_ascii(current_map, tiles):
+def draw_map_ascii(map_to_draw, tiles):
     terminal.layer(Layers.MAP.value)
     x = 0
     y = 0
     for tile in range(len(tiles)):
-        if current_map.revealed_tiles[current_map.xy_idx(x, y)]:
-            if current_map.visible_tiles[current_map.xy_idx(x, y)]:
+        if map_to_draw.revealed_tiles[map_to_draw.xy_idx(x, y)]:
+            if map_to_draw.visible_tiles[map_to_draw.xy_idx(x, y)]:
                 if tiles[tile] == TileType.FLOOR:
                     terminal.printf(x, y, f'[color=dark yellow].[/color]')
                 elif tiles[tile] == TileType.WALL:
@@ -44,7 +45,7 @@ def draw_map_ascii(current_map, tiles):
                     terminal.printf(x, y, f'[color=darker gray]>[/color]')
                 elif tiles[tile] == TileType.EXIT_PORTAL:
                     terminal.printf(x, y, f'[color=darker gray]O[/color]')
-            if current_map.stains[tile]:
+            if map_to_draw.stains[tile]:
                 terminal.printf(x, y, f'[bkcolor=red] [/color]')
         # Move coordinates
         x += 1
@@ -53,13 +54,13 @@ def draw_map_ascii(current_map, tiles):
             y += 1
 
 
-def draw_map_tiles(current_map, tiles):
+def draw_map_tiles(map_to_draw, tiles):
     terminal.layer(Layers.MAP.value)
     x = 0
     y = 0
     for tile in range(len(tiles)):
-        if current_map.revealed_tiles[current_map.xy_idx(x, y)]:
-            if current_map.visible_tiles[current_map.xy_idx(x, y)]:
+        if map_to_draw.revealed_tiles[xy_idx(x, y)]:
+            if map_to_draw.visible_tiles[xy_idx(x, y)]:
                 terminal.composition(terminal.TK_ON)
                 if tiles[tile] == TileType.FLOOR:
                     terminal.color('dark yellow')
@@ -75,10 +76,10 @@ def draw_map_tiles(current_map, tiles):
                     terminal.put(x, y, Interface.get_code('map/stairs_down.png'))
 
                 # blood stains
-                if current_map.stains[tile]:
+                if map_to_draw.stains[tile]:
                     terminal.layer(Layers.STAINS.value)
                     terminal.color('dark red')
-                    terminal.put(x, y, Interface.get_code(f'/props/blood{current_map.stains[tile]}.png'))
+                    terminal.put(x, y, Interface.get_code(f'/props/blood{map_to_draw.stains[tile]}.png'))
                 terminal.composition(terminal.TK_OFF)
             else:
                 if tiles[tile] == TileType.FLOOR:

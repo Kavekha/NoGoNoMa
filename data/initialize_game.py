@@ -11,8 +11,8 @@ from systems.particule_system import ParticuleSpawnSystem
 from ui_system.ui_system import UiSystem
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
-from gmap.game_map import Gmap
-from gmap.spawner import spawn_world, spawn_player
+from map_builders.create_random_map import build_random_map
+from gmap.spawner import spawn_player
 from texts import Texts
 
 
@@ -45,17 +45,12 @@ def init_game(master_seed=None):
     map_indexing_system = MapIndexingSystem()
     World.add_system(map_indexing_system)
 
-    # create map
-    current_map = Gmap(1)
-    World.insert('current_map', current_map)
-
-    # create entities in current_map
-    spawn_world(current_map)
-
     # add player position to ressources
-    x, y = current_map.rooms[0].center()
-    player = spawn_player(x, y)
+    player = spawn_player(0, 0)
     World.insert('player', player)
+
+    state = World.fetch('state')
+    state.generate_world_map(1)
 
     # add logs
     log_entry = deque()

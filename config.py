@@ -7,6 +7,8 @@ TILE_DIR = 'tileset'
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 
+SHOW_MAPGEN_VISUALIZER = True    # debug
+
 DEFAULT_LANGUAGE = 'en'
 FPS = 100
 

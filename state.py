@@ -1,7 +1,7 @@
 from enum import Enum
 
-from gmap.game_map import Gmap
 from gmap.spawner import spawn_world
+from map_builders.create_random_map import build_random_map
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.in_backpack_component import InBackPackComponent
@@ -10,6 +10,7 @@ from player_systems.game_system import player_gain_xp, xp_for_next_depth
 from world import World
 import config
 from texts import Texts
+
 
 class States(Enum):
     AWAITING_INPUT = 0
@@ -28,11 +29,15 @@ class States(Enum):
     VICTORY = 13
     CHARACTER_SHEET = 14
     OPTION_MENU = 15
+    MAP_GENERATION = 16
 
 
 class State:
     def __init__(self, state):
         self.current_state = state
+        self.mapgen_index = 0
+        self.mapgen_history = list()
+        self.mapgen_timer = 0
 
     def change_state(self, new_state):
         # if new_state != self.current_state:
@@ -74,18 +79,27 @@ class State:
             World.delete_entity(entity)
 
         current_map = World.fetch('current_map')
-        new_worldmap = Gmap(current_map.depth + 1)
-        World.insert('current_map', new_worldmap)
+        self.generate_world_map(current_map.depth + 1)
 
         current_map = World.fetch('current_map')
-        spawn_world(current_map)
-
-        player = World.fetch('player')
-        player_pos = World.get_entity_component(player, PositionComponent)
-        player_pos.x, player_pos.y = current_map.rooms[0].center()
-        player_viewshed = World.get_entity_component(player, ViewshedComponent)
-        player_viewshed.dirty = True
-
         logs = World.fetch('logs')
         logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("GO_NEXT_LEVEL")}[/color]')
         player_gain_xp(xp_for_next_depth(current_map.depth - 1))
+
+    def generate_world_map(self, new_depth):
+        self.mapgen_index = 0
+        self.mapgen_timer = 0
+        self.mapgen_history.clear()
+
+        builder = build_random_map(new_depth)
+        self.mapgen_history = builder.get_snapshot_history()
+        print(f'generate world: map gen history is {self.mapgen_history}')
+        current_map = builder.get_map()
+        World.insert('current_map', current_map)
+
+        x, y = builder.get_starting_position()
+        player = World.fetch('player')
+        player_pos = World.get_entity_component(player, PositionComponent)
+        player_pos.x, player_pos.y = x, y
+        player_viewshed = World.get_entity_component(player, ViewshedComponent)
+        player_viewshed.dirty = True
