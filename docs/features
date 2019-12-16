@@ -1,27 +1,3 @@
-Release 2
-    Raws - items & mobs
-    Raws - spawn table
-    Stats & Combat - Nouveau systeme.
-    new IHM / UI, show character sheet, ASCII & Tiles
-    Equipement, armes & combat
-    graphisme pour menus
-    Experience, gains d'xp et leveling - monstres & depth
-    Graphismes pour interface
-    graphisme: map & NPCs.
-    Attaques & defenses naturelles
-    Menu option graphique
-    Effets Particules.
-    tooltips
-    blood stains
-    ciblage
-    IA plus fine
-    Monstres divers pour variété.
-    fixes:  Mobs sur la meme tuile?
-    Noms traduits dans les logs.
-    Permadeath
-    Morgue file
-
-
 Release 3 - To Do
     Refactor Map Building
     Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob

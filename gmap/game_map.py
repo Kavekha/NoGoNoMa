@@ -6,7 +6,7 @@ import config
 from gmap.gmap_enums import TileType
 
 
-class Gmap:
+class OldGmap:
     def __init__(self, depth):
         self.rooms = []
         self.width = config.MAP_WIDTH

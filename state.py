@@ -1,7 +1,7 @@
 from enum import Enum
 
-from gmap.game_map import Gmap
 from gmap.spawner import spawn_world
+from map_builders.create_random_map import build_random_map
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.in_backpack_component import InBackPackComponent
@@ -10,6 +10,7 @@ from player_systems.game_system import player_gain_xp, xp_for_next_depth
 from world import World
 import config
 from texts import Texts
+
 
 class States(Enum):
     AWAITING_INPUT = 0
@@ -74,15 +75,17 @@ class State:
             World.delete_entity(entity)
 
         current_map = World.fetch('current_map')
-        new_worldmap = Gmap(current_map.depth + 1)
-        World.insert('current_map', new_worldmap)
 
-        current_map = World.fetch('current_map')
-        spawn_world(current_map)
+        # create map
+        # create map
+        builder = build_random_map(1)
+        World.insert('current_map', builder.get_map())
 
+        # add player position to ressources
+        x, y = builder.get_starting_position()
         player = World.fetch('player')
         player_pos = World.get_entity_component(player, PositionComponent)
-        player_pos.x, player_pos.y = current_map.rooms[0].center()
+        player_pos.x, player_pos.y = x, y
         player_viewshed = World.get_entity_component(player, ViewshedComponent)
         player_viewshed.dirty = True
 
