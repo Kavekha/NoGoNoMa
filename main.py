@@ -36,7 +36,10 @@ def tick():
         show_main_menu()
         result = main_menu_input()
         if result == MainMenuSelection.NEWGAME:
-            run_state.change_state(States.PRE_RUN)
+            if config.SHOW_MAPGEN_VISUALIZER:
+                run_state.change_state(States.MAP_GENERATION)
+            else:
+                run_state.change_state(States.PRE_RUN)
             World.reset_all()
             init_game()  # MASTER_SEED)
         elif result == MainMenuSelection.LOAD_GAME:
@@ -94,6 +97,22 @@ def tick():
         if result == ItemMenuResult.SELECTED:
             run_state.change_state(States.AWAITING_INPUT)
             run_systems()
+
+    # map gen
+    elif run_state.current_state == States.MAP_GENERATION:
+        if not config.SHOW_MAPGEN_VISUALIZER:
+            run_state.change_state(States.PRE_RUN)
+        else:
+            terminal.clear()
+            draw_map(run_state.mapgen_history[run_state.mapgen_index])
+            print(f'state mapgen timer is {run_state.mapgen_timer}')
+            run_state.mapgen_timer += 1
+            if run_state.mapgen_timer > 10:
+                run_state.mapgen_timer = 0
+                run_state.mapgen_index += 1
+                if run_state.mapgen_index >= len(run_state.mapgen_history):
+                    run_state.change_state(States.PRE_RUN)
+            terminal.refresh()
 
     # Game State
     elif run_state.current_state == States.PRE_RUN:
@@ -156,7 +175,7 @@ def run_systems():
     print(f'--- run systems ---')
     terminal.clear()
     World.update()
-    draw_map()
+    draw_map(World.fetch('current_map'))
     render_system()
     draw_tooltip()
     terminal.refresh()

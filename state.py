@@ -29,11 +29,15 @@ class States(Enum):
     VICTORY = 13
     CHARACTER_SHEET = 14
     OPTION_MENU = 15
+    MAP_GENERATION = 16
 
 
 class State:
     def __init__(self, state):
         self.current_state = state
+        self.mapgen_index = 0
+        self.mapgen_history = list()
+        self.mapgen_timer = 0
 
     def change_state(self, new_state):
         # if new_state != self.current_state:
@@ -75,20 +79,27 @@ class State:
             World.delete_entity(entity)
 
         current_map = World.fetch('current_map')
+        self.generate_world_map(current_map.depth + 1)
 
-        # create map
-        # create map
-        builder = build_random_map(1)
-        World.insert('current_map', builder.get_map())
+        current_map = World.fetch('current_map')
+        logs = World.fetch('logs')
+        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("GO_NEXT_LEVEL")}[/color]')
+        player_gain_xp(xp_for_next_depth(current_map.depth - 1))
 
-        # add player position to ressources
+    def generate_world_map(self, new_depth):
+        self.mapgen_index = 0
+        self.mapgen_timer = 0
+        self.mapgen_history.clear()
+
+        builder = build_random_map(new_depth)
+        self.mapgen_history = builder.get_snapshot_history()
+        print(f'generate world: map gen history is {self.mapgen_history}')
+        current_map = builder.get_map()
+        World.insert('current_map', current_map)
+
         x, y = builder.get_starting_position()
         player = World.fetch('player')
         player_pos = World.get_entity_component(player, PositionComponent)
         player_pos.x, player_pos.y = x, y
         player_viewshed = World.get_entity_component(player, ViewshedComponent)
         player_viewshed.dirty = True
-
-        logs = World.fetch('logs')
-        logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]{Texts.get_text("GO_NEXT_LEVEL")}[/color]')
-        player_gain_xp(xp_for_next_depth(current_map.depth - 1))

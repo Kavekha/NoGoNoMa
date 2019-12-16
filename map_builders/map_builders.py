@@ -1,5 +1,7 @@
 from tcod import tcod
-import config
+
+import copy
+
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_room
 from gmap.utils import index_to_point2d
@@ -11,7 +13,18 @@ class MapBuilder:
         self.map = Gmap(depth)
         self.starting_position = (0, 0)
         self.depth = depth
+        self.history = list()
         self.map.create_fov_map()
+
+    def get_snapshot_history(self):
+        return self.history
+
+    def take_snapshot(self):
+        if config.SHOW_MAPGEN_VISUALIZER:
+            snapshot = copy.deepcopy(self.map)
+            snapshot.revealed_tiles = [True] * (snapshot.height * snapshot.width)
+            snapshot.visible_tiles = [True] * (snapshot.height * snapshot.width)
+            self.history.append(snapshot)
 
     def build_map(self):
         self.build()

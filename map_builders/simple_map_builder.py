@@ -12,6 +12,7 @@ import config
 class SimpleMapBuilder(MapBuilder):
     def __init__(self, depth):
         super().__init__(depth)
+        self.rooms = list()
 
     def build(self):
         self.rooms_and_corridors()
@@ -55,6 +56,7 @@ class SimpleMapBuilder(MapBuilder):
                     print(f'new map: first room, with center {new_room.center()}')
 
                 self.map.rooms.append(new_room)
+                self.take_snapshot()
 
         stair_position_x, stair_position_y = self.map.rooms[len(self.map.rooms) -1].center()
         stair_idx = xy_idx(stair_position_x, stair_position_y)
