@@ -77,15 +77,15 @@ class State:
         current_map = World.fetch('current_map')
 
         # create map
-        new_map, start_position = build_random_map(current_map.depth + 1)
-        World.insert('current_map', new_map)
+        # create map
+        builder = build_random_map(1)
+        World.insert('current_map', builder.get_map())
 
-        # create entities in current_map
-        spawn_world(new_map)
-
+        # add player position to ressources
+        x, y = builder.get_starting_position()
         player = World.fetch('player')
         player_pos = World.get_entity_component(player, PositionComponent)
-        player_pos.x, player_pos.y = start_position
+        player_pos.x, player_pos.y = x, y
         player_viewshed = World.get_entity_component(player, ViewshedComponent)
         player_viewshed.dirty = True
 

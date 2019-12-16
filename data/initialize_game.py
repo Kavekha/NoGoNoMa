@@ -47,14 +47,13 @@ def init_game(master_seed=None):
     World.add_system(map_indexing_system)
 
     # create map
-    new_map, start_position = build_random_map(1)
-    World.insert('current_map', new_map)
-
-    # create entities in current_map
-    spawn_world(new_map)
+    builder = build_random_map(1)
+    current_map = builder.get_map()
+    World.insert('current_map', current_map)
 
     # add player position to ressources
-    x, y = start_position
+    print(f'>> BUILDER : init game: start position is {builder.get_starting_position()}')
+    x, y = builder.get_starting_position()
     player = spawn_player(x, y)
     World.insert('player', player)
 

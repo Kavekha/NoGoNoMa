@@ -1,16 +1,37 @@
 from tcod import tcod
 import config
 from gmap.gmap_enums import TileType
+from gmap.spawner import spawn_room
 from gmap.utils import index_to_point2d
+from data.load_raws import RawsMaster
 
 
 class MapBuilder:
-    pass
+    def __init__(self, depth):
+        self.map = Gmap(depth)
+        self.starting_position = (0, 0)
+        self.depth = depth
+        self.map.create_fov_map()
 
-    def build(self, depth):
-        raise NotImplementedError
+    def build_map(self):
+        self.build()
+        self.spawn_entities()
+        self.map.populate_blocked()
+        self.map.create_fov_map()
 
-    def spawn(self, map, depth):
+    def spawn_entities(self):
+        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
+        for room in self.map.rooms:
+            if len(self.map.rooms) > 0 and room != self.map.rooms[0]:
+                spawn_room(room, self.map)
+
+    def get_map(self):
+        return self.map
+
+    def get_starting_position(self):
+        return self.starting_position
+
+    def build(self):
         raise NotImplementedError
 
 
@@ -37,12 +58,10 @@ class Gmap:
         fov_map = tcod.tcod.map.Map(self.width, self.height)
 
         for _i in range(len(self.tiles) - 1):
-            print(f'create fov map: tile is {self.tiles[_i]}')
             if self.tiles[_i] != TileType.WALL:
                 x, y = index_to_point2d(_i)
                 fov_map.walkable[y, x] = True  # Like the rest of the tcod modules, all arrays here are in row-major order and are addressed with [y,x]
                 fov_map.transparent[y, x] = True
-                print(f'fov map set : {fov_map.walkable[y, x]}')
 
         self.fov_map = fov_map
 
