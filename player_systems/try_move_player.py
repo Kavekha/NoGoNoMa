@@ -18,7 +18,7 @@ def try_move_player(delta_x, delta_y):
 
     current_map = World.fetch('current_map')
     for entity, (position, player) in subjects:
-        destination_idx = current_map.xy_idx(position.x + delta_x, position.y + delta_y)
+        destination_idx = xy_idx(position.x + delta_x, position.y + delta_y)
 
         for potential_target in current_map.tile_content[destination_idx]:
             target = World.get_entity_component(potential_target, Pools)

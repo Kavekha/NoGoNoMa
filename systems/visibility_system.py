@@ -3,6 +3,7 @@ from world import World
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.player_component import PlayerComponent
+from gmap.utils import xy_idx
 import config
 
 
@@ -28,7 +29,7 @@ class VisibilitySystem(System):
                 for row in viewshed.visible_tiles:
                     for tile in row:
                         if tile:
-                            idx = current_map.xy_idx(x, y)
+                            idx = xy_idx(x, y)
                             current_map.revealed_tiles[idx] = True
                             current_map.visible_tiles[idx] = True
                         x += 1

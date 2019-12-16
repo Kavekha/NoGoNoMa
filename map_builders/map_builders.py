@@ -6,7 +6,6 @@ from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_room
 from gmap.utils import index_to_point2d
 from data.load_raws import RawsMaster
-import config
 
 
 class MapBuilder:
