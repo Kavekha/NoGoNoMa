@@ -93,7 +93,6 @@ class State:
 
         builder = build_random_map(new_depth)
         self.mapgen_history = builder.get_snapshot_history()
-        print(f'generate world: map gen history is {self.mapgen_history}')
         current_map = builder.get_map()
         World.insert('current_map', current_map)
 

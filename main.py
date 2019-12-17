@@ -107,7 +107,7 @@ def tick():
             draw_map(run_state.mapgen_history[run_state.mapgen_index])
             print(f'state mapgen timer is {run_state.mapgen_timer}')
             run_state.mapgen_timer += 1
-            if run_state.mapgen_timer > 10:
+            if run_state.mapgen_timer > config.MAPGEN_VISUALIZER_TIMER:
                 run_state.mapgen_timer = 0
                 run_state.mapgen_index += 1
                 if run_state.mapgen_index >= len(run_state.mapgen_history):

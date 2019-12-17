@@ -17,11 +17,11 @@ class SimpleMapBuilder(MapBuilder):
     def build(self):
         self.rooms_and_corridors()
 
-    def spawn(self, map, depth):
-        map.spawn_table = RawsMaster.get_spawn_table_for_depth(depth)
-        for room in map.rooms:
-            if len(map.rooms) > 0 and room != map.rooms[0]:
-                spawn_room(room, map)
+    def spawn_entities(self):
+        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
+        for room in self.rooms:
+            if len(self.rooms) > 0 and room != self.rooms[0]:
+                spawn_room(room, self.map)
 
     def rooms_and_corridors(self):
         MAX_ROOMS = 30
@@ -36,16 +36,16 @@ class SimpleMapBuilder(MapBuilder):
             new_room = Rect(x, y, w, h)
 
             can_be_add = True
-            for other_room in self.map.rooms:
+            for other_room in self.rooms:
                 if new_room.intersect(other_room):
                     can_be_add = False
 
             if can_be_add:
                 apply_room_to_map(new_room, self.map)
 
-                if self.map.rooms:
+                if self.rooms:
                     (new_x, new_y) = new_room.center()
-                    (prev_x, prev_y) = self.map.rooms[len(self.map.rooms) -1].center()
+                    (prev_x, prev_y) = self.rooms[len(self.rooms) -1].center()
                     if randint(0, 1) == 1:
                         apply_horizontal_tunnel(prev_x, new_x, prev_y, self.map)
                         apply_vertical_tunnel(prev_y, new_y, new_x,  self.map)
@@ -55,14 +55,14 @@ class SimpleMapBuilder(MapBuilder):
                 else:
                     print(f'new map: first room, with center {new_room.center()}')
 
-                self.map.rooms.append(new_room)
+                self.rooms.append(new_room)
                 self.take_snapshot()
 
-        stair_position_x, stair_position_y = self.map.rooms[len(self.map.rooms) -1].center()
+        stair_position_x, stair_position_y = self.rooms[len(self.rooms) -1].center()
         stair_idx = xy_idx(stair_position_x, stair_position_y)
         if self.depth != config.MAX_DEPTH:
             self.map.tiles[stair_idx] = TileType.DOWN_STAIRS
         else:
             self.map.tiles[stair_idx] = TileType.EXIT_PORTAL
 
-        self.starting_position = self.map.rooms[0].center()
+        self.starting_position = self.rooms[0].center()
