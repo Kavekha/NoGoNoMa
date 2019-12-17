@@ -33,19 +33,15 @@ class MapBuilder:
         self.map.populate_blocked()
         self.map.create_fov_map()
 
-    def spawn(self):
-        pass
-
     def spawn_entities(self):
-        print(f'spawn entities!')
-        self.spawn()
+        raise NotImplementedError
 
-        '''
-        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
-        for room in self.map.rooms:
-            if len(self.map.rooms) > 0 and room != self.map.rooms[0]:
-                spawn_room(room, self.map)
-        '''
+    '''
+    self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
+    for room in self.map.rooms:
+        if len(self.map.rooms) > 0 and room != self.map.rooms[0]:
+            spawn_room(room, self.map)
+    '''
 
     def get_map(self):
         return self.map

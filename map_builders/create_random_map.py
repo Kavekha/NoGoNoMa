@@ -6,7 +6,7 @@ from map_builders.bsp_map_builder import BspMapBuilder
 
 def random_builder(depth):
     rand = randint(0, 1)
-    if rand == -1:
+    if rand == 0:
         return SimpleMapBuilder(depth)
     else:
         return BspMapBuilder(depth)

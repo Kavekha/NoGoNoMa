@@ -7,6 +7,7 @@ from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_room
 from data.load_raws import RawsMaster
+import config
 
 
 class BspMapBuilder(MapBuilder):
@@ -15,8 +16,7 @@ class BspMapBuilder(MapBuilder):
         self.rooms = list()
         self.rects = list()
 
-    def spawn(self):
-        print(f'spawn!')
+    def spawn_entities(self):
         self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
         for room in self.rooms:
             if len(self.rooms) > 0 and room != self.rooms[0]:
@@ -34,7 +34,6 @@ class BspMapBuilder(MapBuilder):
             candidate = self.get_random_sub_rect(rect)
 
             if self.is_possible(candidate):
-                print(f'is possible candidate : {candidate.x1}, {candidate.x2}, {candidate.y1} {candidate.y2}, center {candidate.center()}')
                 apply_room_to_map(candidate, self.map)
                 self.rooms.append(candidate)
                 self.add_subrects(candidate)
@@ -44,7 +43,6 @@ class BspMapBuilder(MapBuilder):
 
         self.rooms = sorted(self.rooms, key=lambda room: room.x1)
         for i in range(0, len(self.rooms) - 1):
-            print(f'room {i} is {self.rooms[i].center()} ')
             room = self.rooms[i]
             next_room = self.rooms[i + 1]
 
@@ -64,6 +62,14 @@ class BspMapBuilder(MapBuilder):
 
             self.draw_corridor(start_x, start_y, end_x, end_y)
             self.take_snapshot()
+
+        stair_position_x, stair_position_y = self.rooms[len(self.rooms) - 1].center()
+        stair_idx = xy_idx(stair_position_x, stair_position_y)
+
+        if self.depth != config.MAX_DEPTH:
+            self.map.tiles[stair_idx] = TileType.DOWN_STAIRS
+        else:
+            self.map.tiles[stair_idx] = TileType.EXIT_PORTAL
 
         self.starting_position = self.rooms[0].center()
 
