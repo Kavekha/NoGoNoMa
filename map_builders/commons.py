@@ -9,14 +9,14 @@ def apply_room_to_map(room, map):
 
 
 def apply_horizontal_tunnel(x1, x2, y, map):
-    for x in range(min(x1, x2), max(x1, x2)):
+    for x in range(min(x1, x2), max(x1, x2) + 1):
         idx = xy_idx(x, y)
         if 0 < idx < map.width * map.height:
             map.tiles[idx] = TileType.FLOOR
 
 
 def apply_vertical_tunnel(y1, y2, x, map):
-    for y in range(min(y1, y2), max(y1, y2)):
+    for y in range(min(y1, y2), max(y1, y2) + 1):
         idx = xy_idx(x, y)
         if 0 < idx < map.width * map.height:
             map.tiles[idx] = TileType.FLOOR

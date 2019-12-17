@@ -1,10 +1,15 @@
+from random import randint
+
 from map_builders.simple_map_builder import SimpleMapBuilder
+from map_builders.bsp_map_builder import BspMapBuilder
 
 
 def random_builder(depth):
-    rand = 0
-    if rand == 0:
+    rand = randint(0, 1)
+    if rand == -1:
         return SimpleMapBuilder(depth)
+    else:
+        return BspMapBuilder(depth)
 
 
 def build_random_map(depth):

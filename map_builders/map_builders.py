@@ -6,6 +6,7 @@ from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_room
 from gmap.utils import index_to_point2d
 from data.load_raws import RawsMaster
+import config
 
 
 class MapBuilder:
@@ -32,11 +33,19 @@ class MapBuilder:
         self.map.populate_blocked()
         self.map.create_fov_map()
 
+    def spawn(self):
+        pass
+
     def spawn_entities(self):
+        print(f'spawn entities!')
+        self.spawn()
+
+        '''
         self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
         for room in self.map.rooms:
             if len(self.map.rooms) > 0 and room != self.map.rooms[0]:
                 spawn_room(room, self.map)
+        '''
 
     def get_map(self):
         return self.map

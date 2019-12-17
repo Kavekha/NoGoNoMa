@@ -17,11 +17,11 @@ class SimpleMapBuilder(MapBuilder):
     def build(self):
         self.rooms_and_corridors()
 
-    def spawn(self, map, depth):
-        map.spawn_table = RawsMaster.get_spawn_table_for_depth(depth)
-        for room in map.rooms:
-            if len(map.rooms) > 0 and room != map.rooms[0]:
-                spawn_room(room, map)
+    def spawn(self):
+        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
+        for room in self.rooms:
+            if len(self.rooms) > 0 and room != self.rooms[0]:
+                spawn_room(room, self.map)
 
     def rooms_and_corridors(self):
         MAX_ROOMS = 30
