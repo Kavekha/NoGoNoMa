@@ -1,38 +1,60 @@
-Release 3 - To Do
+Release 3 - Done
     Refactor Map Building
-    Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
     Map building Harness
-    Camera vs Screen
+    BSP Algorithm.
+
+Release 3 - To Do
     Algorithms
-    Zoom camera
     Prefabs
-    Groupement de tiles : walkable, opaque, etc
     Rooms builders
-    HUD: pause du jeu + affichage du tooltip quand apparition.
     Better corridors
-    Traps
     Room building & props
-    NPC qui parlent
     Doors
-    Skills
+    * Raws: Attaques naturelles
+    * Raws: particules.
+    * Traps
 
 
-Feature Competition & communauté
+
+Raws:
+    Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
+
+Feature Items:
+    Traps
+    Magic items.
+    Objets non identifiés
+    Identification
+    Effects.
+    Cursed & unequippable & Remove curse
+    Charges de sorts sur baton
+
+Feature Tables:
+    Table de loots / monstres selon region / theme / room.
+    Table d'affixes / suffixes pour items / monstres
+    Mobs équipés
+    Mobs droppent des objets.
+    Machines generatrices d'evenements (Clés - portes).
+    Groupe de monstres / territoire de groupe de monstres
+
+Feature Competition & communauté:
     Morgue file
     Replay
     Seed game
     Scores
 
-Feature Vision
+Feature Vision:
     Source de lumiere
     Orage / Eclair
 
-Feature Combat / tour
+Feature Combat / tour:
     Initiative / energy cost
     Gestion du status effect
     Gestion blabla npc
 
-Feature Interface
+Feature Interface:
+    HUD: pause du jeu + affichage du tooltip quand apparition.
+    Camera vs Screen
+    Zoom camera
     Tooltip graphique
     Mouse support.
     Menus de confirmation.
@@ -45,61 +67,48 @@ Feature Interface
     Modifier les raccourcis clavier.
     Voir les items et monstres "dernier emplacement" dans les revealed tiles.
 
-Feature generation map
+Feature generation map:
+    Groupement de tiles : walkable, opaque, etc
     Melange d'algorithmes selon region / theme.
     Backtracking
     Master dungeon map: scenarisation.
     Teleporteurs
     "Pont / Reconstruction de ponts" : Zones bloquées, necessitant quetes / items pour ouvrir zone.
 
-Feature Tables
-    Table de loots / monstres selon region / theme / room.
-    Table d'affixes / suffixes pour items / monstres
-    Mobs équipés
-    Mobs droppent des objets.
-    Machines generatrices d'evenements (Clés - portes).
-    Groupe de monstres / territoire de groupe de monstres
 
-Feature Items
-    Magic items.
-    Objets non identifiés
-    Identification
-    Effects.
-    Cursed & unequippable & Remove curse
-    Charges de sorts sur baton
-
-
-Feature Entités
+Feature Entités:
     Code de conduite
     Objectifs d'entité
     Benedictions d'entité
     Trahir le code, consequences & malediction.
     Invoquer l'Entité, la vaincre.
 
-Feature Classes
+Feature Classes:
     Equipement de base.
     Choix de classes.
     Specificités, skills, capacités, progression.
+        Skills
 
-Feature Lore / Ambiance.
+Feature Lore / Ambiance:
+    NPC qui parlent
     Dialogues NPC.
     Regions, themes.
     Boss memorables.
 
-Feature IA.
+Feature IA:
     Ai vs Ai
     Situations & goals
     Chasser la cible
     Pack & Leader
 
-Feature Spells
+Feature Spells;
     Spellbooks
     Spells
 
-Feature HungerClock
+Feature HungerClock:
     Le Fade du Heros & les items pour s'en proteger.
 
-Feature Interaction NPC
+Feature Interaction NPC;
     Vendeurs
     Crafting
     Quetes
