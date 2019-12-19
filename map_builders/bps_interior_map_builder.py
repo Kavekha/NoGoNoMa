@@ -40,12 +40,11 @@ class BspInteriorMapBuilder(MapBuilder):
         for i in range(0, len(self.rooms) - 1):
             room = self.rooms[i]
             next_room = self.rooms[i + 1]
-            start_x, start_y = room.center()
-            end_x, end_y = next_room.center()
-            start_x -= 1
-            start_y -= 1
-            end_x -= 1
-            end_y -= 1
+
+            start_x = room.x1 + randint(1, abs(room.x1 - room.x2) - 1)
+            start_y = room.y1 + randint(1, abs(room.y1 - room.y2) - 1)
+            end_x = next_room.x1 + randint(1, abs(next_room.x1 - next_room.x2) - 1)
+            end_y = next_room.y1 + randint(1, abs(next_room.y1 - next_room.y2) - 1)
 
             self.draw_corridor(start_x, start_y, end_x, end_y)
             self.take_snapshot()
@@ -65,6 +64,8 @@ class BspInteriorMapBuilder(MapBuilder):
     def draw_corridor(self, x1, y1, x2, y2):
         x = x1
         y = y1
+        idx = xy_idx(x, y)
+        self.map.tiles[idx] = TileType.DOWN_STAIRS
 
         while x != x2 or y != y2:
             if x < x2:
@@ -78,6 +79,9 @@ class BspInteriorMapBuilder(MapBuilder):
 
             idx = xy_idx(x, y)
             self.map.tiles[idx] = TileType.FLOOR
+
+        idx = xy_idx(x, y)
+        self.map.tiles[idx] = TileType.EXIT_PORTAL
 
     def add_subrects(self, rect):
         if self.rects:
@@ -105,5 +109,5 @@ class BspInteriorMapBuilder(MapBuilder):
                 self.add_subrects(v1)
             v2 = Rect(rect.x1, rect.y1 + half_height, width, half_height)
             self.rects.append(v2)
-            if half_width > config.MIN_SIZE:
+            if half_height > config.MIN_SIZE:
                 self.add_subrects(v2)

@@ -34,7 +34,6 @@ def spawn_room(room, current_map):
         added = False
         tries = 0
         while not added and tries < 20:
-            # print(f'spawn room: roomx1 {room.x1} / x2 {room.x2}, roomy1 {room.y1}, {room.y2}')
             x = room.x1 + randint(1, abs(room.x2 - room.x1) - 2)
             y = room.y1 + randint(1, abs(room.y2 - room.y1) - 2)
             idx = xy_idx(x, y)

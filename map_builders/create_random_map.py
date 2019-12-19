@@ -6,7 +6,7 @@ from map_builders.bps_interior_map_builder import BspInteriorMapBuilder
 
 
 def random_builder(depth):
-    rand = 1    #randint(0, 2)
+    rand = randint(0, 2)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:

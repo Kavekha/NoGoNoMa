@@ -3,10 +3,10 @@ Release 3 - Done
     Map building Harness
     BSP Algorithm.
     BSP Interior Algorithm
+    Raws: Attaques Naturelles
+    Fix : BSP, apply rooms, etc.
 
 Release 3 - To Do
-    > Raws: Attaques naturelles
-    > Fix : BSP & randint & rect x1 7, x2 7
     Algorithms
     Prefabs
     Rooms builders
