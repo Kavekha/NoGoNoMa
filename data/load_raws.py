@@ -32,8 +32,10 @@ class RawsMaster:
     items = []
     mobs = []
     spawn_table = []
+    natural_attacks = []
     item_index = {}
     mob_index = {}
+    natural_attacks_index = {}
 
     @staticmethod
     def load_index():
@@ -42,6 +44,9 @@ class RawsMaster:
 
         for i, mob in enumerate(RawsMaster.mobs):
             RawsMaster.mob_index[mob.name] = i + 1
+
+        for i, attack in enumerate(RawsMaster.natural_attacks):
+            RawsMaster.natural_attacks_index[attack["name"]] = i + 1
 
     @staticmethod
     def load_raws():
@@ -73,9 +78,39 @@ class RawsMaster:
                     RawsMaster.load_mob_raw(datas[data])
                 elif data == 'spawn_table':
                     RawsMaster.load_spawn_table_raw(datas[data])
+                elif data == 'natural_attacks':
+                    RawsMaster.load_natural_attacks_raw(datas[data])
                 else:
-                    print(f'load raw: Data was not items but {data}')
+                    print(f'load raw: Data type {data} not supported')
                     raise NotImplementedError
+
+    @staticmethod
+    def load_natural_attacks_raw(data):
+        for attack in data:
+            natural_attack = {}
+            for component in attack:
+                if component == 'name':
+                    natural_attack[component] = attack[component]
+                elif component == 'attribute':
+                    if attack[component] == 'might':
+                        natural_attack[component] = WeaponAttributes.MIGHT
+                    elif attack[component] == 'quickness':
+                        natural_attack[component] = WeaponAttributes.QUICKNESS
+                    else:
+                        print(f'natural attack attribute {attack[component]} not implemented')
+                        raise NotImplementedError
+                elif component == 'hit_bonus':
+                    natural_attack[component] = int(attack[component])
+                elif component == 'min_dmg':
+                    natural_attack[component] = int(attack[component])
+                elif component == 'max_dmg':
+                    natural_attack[component] = int(attack[component])
+                elif component == 'dmg_bonus':
+                    natural_attack[component] = int(attack[component])
+                else:
+                    print(f'component {component} in attack {attack} not implemented')
+                    raise NotImplementedError
+            RawsMaster.natural_attacks.append(natural_attack)
 
     @staticmethod
     def load_spawn_table_raw(data):
@@ -130,7 +165,6 @@ class RawsMaster:
 
         return table_depth
 
-
     @staticmethod
     def load_mob_raw(data):
         print(f'---- load mob ---')
@@ -165,40 +199,17 @@ class RawsMaster:
             if natural == 'armor':
                 naturals[natural] = data[natural]
             elif natural == 'attacks':
-                naturals[natural] = RawsMaster.load_natural_attacks_raw(data[natural])
+                naturals[natural] = RawsMaster.load_mob_natural_attacks_raw(data[natural])
             else:
                 print(f'load natural {natural} not implemented')
                 raise NotImplementedError
         return naturals
 
     @staticmethod
-    def load_natural_attacks_raw(natural_attacks_raw):
+    def load_mob_natural_attacks_raw(natural_attacks_raw):
         natural_attacks = []
         for attack in natural_attacks_raw:
-            natural_attack = {}
-            for component in attack:
-                if component == 'name':
-                    natural_attack[component] = attack[component]
-                elif component == 'attribute':
-                    if attack[component] == 'might':
-                        natural_attack[component] = WeaponAttributes.MIGHT
-                    elif attack[component] == 'quickness':
-                        natural_attack[component] = WeaponAttributes.QUICKNESS
-                    else:
-                        print(f'natural attack attribute {attack[component]} not implemented')
-                        raise NotImplementedError
-                elif component == 'hit_bonus':
-                    natural_attack[component] = int(attack[component])
-                elif component == 'min_dmg':
-                    natural_attack[component] = int(attack[component])
-                elif component == 'max_dmg':
-                    natural_attack[component] = int(attack[component])
-                elif component == 'dmg_bonus':
-                    natural_attack[component] = int(attack[component])
-                else:
-                    print(f'component {component} in attack {attack} not implemented')
-                    raise NotImplementedError
-            natural_attacks.append(natural_attack)
+            natural_attacks.append(attack)
         return natural_attacks
 
     @staticmethod
@@ -417,13 +428,14 @@ class RawsMaster:
             attacks = to_create.natural.get('attacks')
             if attacks:
                 for attack in attacks:
+                    attack_to_create = RawsMaster.natural_attacks[RawsMaster.natural_attacks_index[attack] - 1]
                     natural_attack = NaturalAttack(
-                        attack.get('name', 'Unknown attack'),
-                        attack.get('attribute', WeaponAttributes.MIGHT),
-                        attack.get('min_dmg', config.DEFAULT_MIN_DMG),
-                        attack.get('max_dmg', config.DEFAULT_MAX_DMG),
-                        attack.get('dmg_bonus', 0),
-                        attack.get('hit_bonus', 0)
+                        attack_to_create.get('name', 'Unknown attack'),
+                        attack_to_create.get('attribute', WeaponAttributes.MIGHT),
+                        attack_to_create.get('min_dmg', config.DEFAULT_MIN_DMG),
+                        attack_to_create.get('max_dmg', config.DEFAULT_MAX_DMG),
+                        attack_to_create.get('dmg_bonus', 0),
+                        attack_to_create.get('hit_bonus', 0)
                     )
                     natural_def_attack_component.attacks.append(natural_attack)
             components_for_entity.append(natural_def_attack_component)

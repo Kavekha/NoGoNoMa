@@ -46,10 +46,12 @@ class BspMapBuilder(MapBuilder):
             room = self.rooms[i]
             next_room = self.rooms[i + 1]
 
-            start_x = room.x1 + randint(1, abs(room.x1 - room.x2) // 2 + 1) - 1
-            start_y = room.y1 + randint(1, abs(room.y1 - room.y2) // 2 + 1) - 1
-            end_x = next_room.x1 + randint(1, abs(next_room.x1 - next_room.x2) // 2 + 1) - 1
-            end_y = next_room.y1 + randint(1, abs(next_room.y1 - next_room.y2) // 2 + 1) - 1
+            start_x, start_y = room.center()
+            end_x, end_y = next_room.center()
+            start_x -= 1
+            start_y -= 1
+            end_x -= 1
+            end_y -= 1
 
             self.draw_corridor(start_x, start_y, end_x, end_y)
             self.take_snapshot()

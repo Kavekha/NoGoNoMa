@@ -1,0 +1,29 @@
+{
+  "natural_attacks": [
+    {
+      "name": "MIGHTY_BLOW",
+      "attribute": "might",
+      "hit_bonus": -3,
+      "min_dmg": 1,
+      "max_dmg": 8,
+      "dmg_bonus": 2
+    },
+    {
+      "name": "BITE",
+      "attribute": "might",
+      "hit_bonus": 1,
+      "min_dmg": 1,
+      "max_dmg": 6,
+      "dmg_bonus": 1
+    },
+    {
+      "name": "CLAW",
+      "attribute": "quickness",
+      "hit_bonus": 3,
+      "min_dmg": 2,
+      "max_dmg": 6,
+      "dmg_bonus": -1
+    }
+  ]
+
+}

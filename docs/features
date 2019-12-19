@@ -2,15 +2,18 @@ Release 3 - Done
     Refactor Map Building
     Map building Harness
     BSP Algorithm.
+    BSP Interior Algorithm
 
 Release 3 - To Do
+    > Raws: Attaques naturelles
+    > Fix : BSP & randint & rect x1 7, x2 7
     Algorithms
     Prefabs
     Rooms builders
     Better corridors
     Room building & props
     Doors
-    * Raws: Attaques naturelles
+    *
     * Raws: particules.
     * Traps
 
