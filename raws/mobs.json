@@ -20,7 +20,12 @@
         "melee": -2,
         "dodge": -1
       },
-      "level": 1
+      "level": 1,
+      "natural": {
+        "attacks": [
+          "BITE"
+        ]
+      }
     },
     {
       "name": "MORBLIN",
@@ -112,13 +117,7 @@
       "natural": {
         "armor": 1,
         "attacks": [
-          {
-            "name": "Quick jab",
-            "attribute": "quickness",
-            "hit_bonus": 1,
-            "min_dmg": 1,
-            "max_dmg": 3,
-            "dmg_bonus": 1}
+          "CLAW"
         ]
       }
     },
@@ -146,13 +145,7 @@
       "natural": {
         "armor": 3,
         "attacks": [
-          {
-            "name": "Frappe brutale",
-            "attribute": "might",
-            "hit_bonus": -3,
-            "min_dmg": 1,
-            "max_dmg": 6,
-            "dmg_bonus": 2}
+          "MIGHTY_BLOW"
         ]
       }
     },
@@ -180,20 +173,8 @@
       "natural": {
         "armor": 4,
         "attacks": [
-          {
-            "name": "bite",
-            "attribute": "might",
-            "hit_bonus": -3,
-            "min_dmg": 2,
-            "max_dmg": 8,
-            "dmg_bonus": 1},
-          {
-            "name": "claw",
-            "attribute": "quickness",
-            "hit_bonus": 3,
-            "min_dmg": 1,
-            "max_dmg": 6,
-            "dmg_bonus": -1}
+          "BITE",
+          "CLAW"
         ]
       }
     }

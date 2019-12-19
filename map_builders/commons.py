@@ -3,8 +3,9 @@ from gmap.utils import xy_idx
 
 
 def apply_room_to_map(room, map):
-    for y in range(room.y1, room.y2 - 1):
-        for x in range(room.x1, room.x2 - 1):
+    print(f'apply room : {room}, with {room.x1}, {room.x2}, {room.y1, room.y2}')
+    for y in range(room.y1, room.y2 + 1):
+        for x in range(room.x1, room.x2 + 1):
             map.tiles[xy_idx(x, y)] = TileType.FLOOR
 
 

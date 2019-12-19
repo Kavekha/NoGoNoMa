@@ -3,9 +3,7 @@ from tcod import tcod
 import copy
 
 from gmap.gmap_enums import TileType
-from gmap.spawner import spawn_room
 from gmap.utils import index_to_point2d
-from data.load_raws import RawsMaster
 import config
 
 
@@ -35,13 +33,6 @@ class MapBuilder:
 
     def spawn_entities(self):
         raise NotImplementedError
-
-    '''
-    self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
-    for room in self.map.rooms:
-        if len(self.map.rooms) > 0 and room != self.map.rooms[0]:
-            spawn_room(room, self.map)
-    '''
 
     def get_map(self):
         return self.map
@@ -107,4 +98,4 @@ class Rect:
         return False
 
     def center(self):
-        return (self.x1 + self.x2)//2, (self.y1 + self.y2) //2
+        return (self.x1 + self.x2)//2, (self.y1 + self.y2) // 2
