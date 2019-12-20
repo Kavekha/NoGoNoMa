@@ -14,6 +14,7 @@ from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level
 from world import World
 from gmap.utils import xy_idx, index_to_point2d
+from gmap.gmap_enums import TileType
 from data.load_raws import RawsMaster
 import config
 
@@ -25,32 +26,40 @@ def spawn_world(current_map):
             spawn_room(room, current_map)
 
 
-def spawn_room(room, current_map):
-    current_depth = current_map.depth
-    spawn_points = []
-    num_spawns = randint(1, config.MAX_MONSTERS_ROOM + 3) + (current_depth - 1) - 3
+def spawn_entity(spawn_name, spawn_point, current_map):
+    x = int(spawn_point % current_map.width)
+    y = spawn_point // current_map.width
+    try:
+        print(f'idx spawn in spawn points is {spawn_name}')
+        RawsMaster.spawn_named_entity(spawn_name, x, y)
+        # print(f'{World.get_all_entities()}')
+    except:
+        print(f'Spawner:spawn room: {spawn_name} requested, not generated because error.')
 
-    for _i in range(0, num_spawns):
-        added = False
-        tries = 0
-        while not added and tries < 20:
-            x = room.x1 + randint(1, abs(room.x2 - room.x1) - 2)
-            y = room.y1 + randint(1, abs(room.y2 - room.y1) - 2)
+
+def spawn_room(room, current_map):
+    possible_targets = []
+    for y in range(room.y1, room.y2 + 1):
+        for x in range(room.x1, room.x2 + 1):
             idx = xy_idx(x, y)
-            if idx not in spawn_points:
-                spawn_points.append((idx, current_map.spawn_table.roll()))
-                added = True
-            else:
-                tries += 1
+            if current_map.tiles[idx] == TileType.FLOOR:
+                possible_targets.append(idx)
+
+    spawn_region(possible_targets, current_map)
+
+
+def spawn_region(list_of_spawn_idx, current_map):
+    num_spawns = min(len(list_of_spawn_idx) - 1, randint(1, config.MAX_MONSTERS_ROOM + 3) + current_map.depth - 1)
+    current_map.spawn_table = RawsMaster.get_spawn_table_for_depth(current_map.depth)
+    if not num_spawns:
+        return
+    spawn_points = list()
+
+    for i in range(0, num_spawns):
+        spawn_points.append((list_of_spawn_idx[i], current_map.spawn_table.roll()))
 
     for idx, spawn in spawn_points:
-        x, y = index_to_point2d(idx)
-        try:
-            print(f'idx spawn in spawn points is {spawn}')
-            RawsMaster.spawn_named_entity(spawn, x, y)
-            # print(f'{World.get_all_entities()}')
-        except:
-            print(f'Spawner:spawn room: {spawn} requested, not generated because error.')
+        spawn_entity(spawn, idx, current_map)
 
 
 def spawn_player(x, y):

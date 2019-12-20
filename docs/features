@@ -7,20 +7,20 @@ Release 3 - Done
     Fix : BSP, apply rooms, etc.
 
 Release 3 - To Do
+    > Cellula automata
     Algorithms
     Prefabs
     Rooms builders
     Better corridors
     Room building & props
     Doors
-    *
     * Raws: particules.
     * Traps
 
 
 
 Raws:
-    Transformer les attaques naturelles en raw a part entiere, pour pouvoir utiliser un pole commun plutot que par mob
+    Particules
 
 Feature Items:
     Traps
