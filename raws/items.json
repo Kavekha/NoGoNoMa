@@ -10,6 +10,9 @@
           },
           "consumable" : {
               "effects" : { "provides_healing" : "8"}
+          },
+          "magic": {
+              "class": "uncommon"
           }
       },
       {
@@ -25,6 +28,9 @@
                   "ranged" : "6",
                   "damage" : "12"
               }
+          },
+          "magic": {
+              "class": "common"
           }
       },
       {
@@ -41,7 +47,10 @@
                 "damage" : "20",
                 "area_of_effect" : "3"
                 }
-            }
+            },
+          "magic": {
+              "class": "uncommon"
+          }
       },
       {
           "name" : "CONFUSION_SCROLL",
@@ -56,6 +65,9 @@
               "ranged" : "6",
               "confusion" : "4"
               }
+          },
+          "magic": {
+              "class": "common"
           }
       },
       {
@@ -73,6 +85,9 @@
               "max_dmg": 4,
               "hit_bonus": 1,
               "dmg_bonus": 0
+          },
+          "magic": {
+              "class": "common"
           }
       },
       {
@@ -90,6 +105,9 @@
               "max_dmg": 6,
               "hit_bonus": 0,
               "dmg_bonus": 2
+          },
+          "magic": {
+              "class": "common"
           }
       },
       {
@@ -103,6 +121,9 @@
           "wearable" : {
               "slot": "shield",
               "armor" : 1
+          },
+          "magic": {
+              "class": "common"
           }
       },
       {
@@ -116,6 +137,9 @@
           "wearable" : {
               "slot": "shield",
               "armor" : 3
+          },
+          "magic": {
+              "class": "common"
           }
       },
             {
@@ -129,6 +153,9 @@
           "wearable" : {
               "slot": "torso",
               "armor" : 2
+          },
+          "magic": {
+              "class": "common"
           }
       }
   ]

@@ -19,9 +19,10 @@ from components.attributes_component import AttributesComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
+from components.magic_item_component import MagicItemComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
-from data.items_enum import EquipmentSlots, WeaponAttributes
+from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
 from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from world import World
 from ui_system.ui_enums import Layers
@@ -228,10 +229,29 @@ class RawsMaster:
                     raw_item.weapon = RawsMaster.load_weapon_raw(item[component])
                 elif component == 'wearable':
                     raw_item.wearable = RawsMaster.load_wearable_raw(item[component])
+                elif component == 'magic':
+                    raw_item.magic = RawsMaster.load_magic_item_raw(item[component])
                 else:
                     print(f'load item raw: unkown component in {component}')
                     raise NotImplementedError
             RawsMaster.items.append(raw_item)
+
+    @staticmethod
+    def load_magic_item_raw(magic_component):
+        magic_attributes = {}
+        for attribute in magic_component:
+            if attribute == 'class':
+                if magic_component[attribute] == 'common':
+                    magic_attributes[attribute] = MagicItemClass.COMMON
+                elif magic_component[attribute] == 'uncommon':
+                    magic_attributes[attribute] = MagicItemClass.UNCOMMON
+                else:
+                    print(f'magic class {magic_component[attribute]} not implemented in magic item raw')
+                    raise NotImplementedError
+            else:
+                print(f'magic attribute {attribute} not implemented in magic item raw')
+                raise NotImplementedError
+        return magic_attributes
 
     @staticmethod
     def load_wearable_raw(wearable_component):
@@ -502,6 +522,9 @@ class RawsMaster:
 
             if to_create.wearable.get('armor'):
                 components_for_entity.append(WearableComponent(to_create.wearable.get('armor')))
+
+        if to_create.magic:
+            components_for_entity.append(MagicItemComponent(to_create.magic.get('class')))
 
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:

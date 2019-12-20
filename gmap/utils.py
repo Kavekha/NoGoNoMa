@@ -11,7 +11,7 @@ def distance_to(self_position_x, self_position_y, other_position_x, other_positi
 
 def index_to_point2d(idx):
     # Transform an idx 1D array to a x, y format for 2D array
-    return idx % config.MAP_WIDTH, idx // config.MAP_WIDTH
+    return int(idx % config.MAP_WIDTH), idx // config.MAP_WIDTH
 
 
 def xy_idx(x, y):

@@ -79,8 +79,10 @@ class CellularAutomataBuilder(MapBuilder):
         x, y = self.map.width // 2, self.map.height // 2
         start_idx = xy_idx(x, y)
         while self.map.tiles[start_idx] != TileType.FLOOR:
-            x -= 1
+            x += 1
+            y += 1
             start_idx = xy_idx(x, y)
+        print(f'starting point is {start_idx}, {x, y}')
 
         # Found an exit
         self.map.create_fov_map()

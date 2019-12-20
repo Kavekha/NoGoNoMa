@@ -3,7 +3,7 @@ from tcod import tcod
 import copy
 
 from gmap.gmap_enums import TileType
-from gmap.utils import index_to_point2d
+from gmap.utils import index_to_point2d, xy_idx
 import config
 
 
@@ -69,13 +69,70 @@ class Gmap:
     def create_fov_map(self):
         fov_map = tcod.tcod.map.Map(self.width, self.height)
 
-        for _i in range(len(self.tiles) - 1):
-            if self.tiles[_i] != TileType.WALL:
-                x, y = index_to_point2d(_i)
+        '''
+        for i in range(0, len(self.tiles)):
+            x, y = index_to_point2d(i)
+            if self.tiles[i] != TileType.WALL:
                 fov_map.walkable[y, x] = True  # Like the rest of the tcod modules, all arrays here are in row-major order and are addressed with [y,x]
                 fov_map.transparent[y, x] = True
+            else:
+                fov_map.walkable[y, x] = False
+                fov_map.transparent[y, x] = False
+        '''
+        for i, tile in enumerate(self.tiles):
+            x, y = index_to_point2d(i)
+            if tile != TileType.WALL:
+                fov_map.walkable[y, x] = True  # Like the rest of the tcod modules, all arrays here are in row-major order and are addressed with [y,x]
+                fov_map.transparent[y, x] = True
+            else:
+                fov_map.walkable[y, x] = False
+                fov_map.transparent[y, x] = False
 
         self.fov_map = fov_map
+
+        self.print_fov_map()
+
+    def print_map(self):
+        dic_map = {}
+        for idx in range(len(self.tiles)):
+            x, y = index_to_point2d(idx)
+            try:
+                dic_map[y]
+            except:
+                dic_map[y] = {}
+            dic_map[y][x] = self.tiles[idx]
+
+        map_string = ''
+        for y, row in dic_map.items():
+            map_y = ''
+            for x, tile in row.items():
+                tile = self.tiles[xy_idx(x, y)]
+                if tile == TileType.DOWN_STAIRS:
+                    map_y += '> '
+                elif tile == TileType.FLOOR:
+                    map_y += '. '
+                elif tile == TileType.WALL:
+                    map_y += '# '
+                elif tile == TileType.EXIT_PORTAL:
+                    map_y += 'O '
+                else:
+                    map_y += '* '
+            map_string += '\n' + map_y
+        print(f'\n{map_string}')
+
+    def print_fov_map(self):
+        print(f'FOV MAP TO PRINT !')
+        map_string = ''
+        for x in range(0, self.height - 1):
+            map_x = ''
+            for y in range(0, self.width - 1):
+                if self.fov_map.walkable[x][y]:
+                    map_x += '+ '
+                else:
+                    map_x += '# '
+            map_string += map_x + '\n'
+
+        print(map_string)
 
     def populate_blocked(self):
         for (i, tile) in enumerate(self.tiles):
