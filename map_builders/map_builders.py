@@ -15,6 +15,9 @@ class MapBuilder:
         self.history = list()
         self.map.create_fov_map()
 
+    def reset(self):
+        self.history = list()
+
     def get_snapshot_history(self):
         return self.history
 

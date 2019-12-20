@@ -64,8 +64,6 @@ class BspInteriorMapBuilder(MapBuilder):
     def draw_corridor(self, x1, y1, x2, y2):
         x = x1
         y = y1
-        idx = xy_idx(x, y)
-        self.map.tiles[idx] = TileType.DOWN_STAIRS
 
         while x != x2 or y != y2:
             if x < x2:
@@ -79,9 +77,6 @@ class BspInteriorMapBuilder(MapBuilder):
 
             idx = xy_idx(x, y)
             self.map.tiles[idx] = TileType.FLOOR
-
-        idx = xy_idx(x, y)
-        self.map.tiles[idx] = TileType.EXIT_PORTAL
 
     def add_subrects(self, rect):
         if self.rects:
