@@ -255,8 +255,8 @@ class RawsMaster:
                 elif magic_component[attribute] == 'potion':
                     magic_attributes[attribute] = magic_component[attribute]
                 else:
-                    print(f'In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
-                    raise NotImplementedError
+                    magic_attributes[attribute] = magic_component[attribute]
+                    print(f'WARNING: In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
             else:
                 print(f'magic attribute {attribute} not implemented in magic item raw')
                 raise NotImplementedError
@@ -546,8 +546,7 @@ class RawsMaster:
                     potion_names = World.fetch('master_dungeon').potion_mappings
                     components_for_entity.append(ObfuscatedNameComponent(potion_names.get(name)))
                 else:
-                    print(f'naming convention {magic_naming_convention} for item {name} not implemented in create item')
-                    raise NotImplementedError
+                    components_for_entity.append(ObfuscatedNameComponent(magic_naming_convention))
 
             components_for_entity.append(MagicItemComponent(magic_class=magic_class,
                                                             naming=magic_naming_convention))

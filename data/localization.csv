@@ -69,7 +69,7 @@ CLAW;Claw;Griffe
 SCROLL_OF_;Scroll of ;Parchemin de
 UNIDENTIFIED_ITEM;Unidentified item;Objet non identifié
 RED_COLOR;red;rouge
-ORANGE_COLOR;orange,orange
+ORANGE_COLOR;orange;orange
 YELLOW_COLOR;yellow;jaune
 GREEN_COLOR;green;vert
 GREEN_COLOR_F;green;verte
@@ -85,3 +85,5 @@ VISCOUS_ADJ;viscous;visqueuse
 SMELLY_ADJ;smelly;odorante
 GLOWING_ADJ;glowing;brillante
 OBFUSCATE_POTION_NAME;{0} {1} potion;Potion {0} {1}
+DAGGER_ASSASSIN;Assassin's dagger;Dague de l'Assassin
+MAGIC_DAGGER_UNIDENTIFIED;magic dagger unidentified;Dague magique non identifiée
