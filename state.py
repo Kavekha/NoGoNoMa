@@ -1,15 +1,13 @@
 from enum import Enum
 
-from gmap.spawner import spawn_world
 from map_builders.create_random_map import build_random_map
-from components.position_component import PositionComponent
-from components.viewshed_component import ViewshedComponent
 from components.in_backpack_component import InBackPackComponent
 from components.equipped_component import EquippedComponent
 from player_systems.game_system import player_gain_xp, xp_for_next_depth
 from world import World
 import config
 from texts import Texts
+from gmap.utils import level_transition
 
 
 class States(Enum):
@@ -91,14 +89,5 @@ class State:
         self.mapgen_timer = 0
         self.mapgen_history.clear()
 
-        builder = build_random_map(new_depth)
-        self.mapgen_history = builder.get_snapshot_history()
-        current_map = builder.get_map()
-        World.insert('current_map', current_map)
-
-        x, y = builder.get_starting_position()
-        player = World.fetch('player')
-        player_pos = World.get_entity_component(player, PositionComponent)
-        player_pos.x, player_pos.y = x, y
-        player_viewshed = World.get_entity_component(player, ViewshedComponent)
-        player_viewshed.dirty = True
+        self.mapgen_history = level_transition(new_depth)
+        print(f'generate world : map gen history is : {self.mapgen_history}')

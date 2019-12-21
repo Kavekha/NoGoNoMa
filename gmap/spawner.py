@@ -13,7 +13,6 @@ from components.pools_component import Pools
 from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level
 from world import World
-from gmap.utils import xy_idx, index_to_point2d
 from gmap.gmap_enums import TileType
 from data.load_raws import RawsMaster
 import config
@@ -41,7 +40,7 @@ def spawn_room(room, current_map):
     possible_targets = []
     for y in range(room.y1, room.y2 + 1):
         for x in range(room.x1, room.x2 + 1):
-            idx = xy_idx(x, y)
+            idx = current_map.xy_idx(x, y)
             if current_map.tiles[idx] == TileType.FLOOR:
                 possible_targets.append(idx)
 

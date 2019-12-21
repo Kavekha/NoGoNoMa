@@ -1,10 +1,11 @@
+from random import randint
+
 import config
 from world import World
 from texts import Texts
 from components.pools_component import Pools
 from components.attributes_component import AttributesComponent
-from components.magic_item_component import MagicItemComponent
-from data.items_enum import MagicItemClass
+
 
 
 def player_gain_xp(xp_gain):
@@ -70,16 +71,17 @@ def skill_level(skill_component, skill):
     return config.DEFAULT_NO_SKILL_VALUE
 
 
-def get_item_color(item_entity):
-    magic_component = World.get_entity_component(item_entity, MagicItemComponent)
-    if magic_component:
-        print(f'i have magic component : {magic_component} with class {magic_component.magic_class}')
-        if magic_component.magic_class == MagicItemClass.UNCOMMON:
-            return 'green'
-        if magic_component.magic_class == MagicItemClass.RARE:
-            return 'blue'
-        elif magic_component.magic_class == MagicItemClass.EPIC:
-            return 'violet'
-        elif magic_component.magic_class == MagicItemClass.LEGENDARY:
-            return 'yellow'
-    return 'white'
+def make_scroll_name():
+    name = Texts.get_text('SCROLL_OF_')
+    print(f'MAKE SCROLL : Name is {name}')
+
+    length = 4 + randint(1, 4)
+
+    for i in range(0, length):
+        if i % 2 == 0:
+            voyelle = ['a', 'e', 'i', 'o', 'u', 'y']
+            name += voyelle[randint(0, len(voyelle) - 1)]
+        else:
+            consonne = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
+            name += consonne[randint(0, len(consonne) - 1)]
+    return name

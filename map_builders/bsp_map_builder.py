@@ -3,7 +3,6 @@ from random import randint
 
 from map_builders.map_builders import MapBuilder, Rect
 from map_builders.commons import apply_room_to_map
-from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_room
 from data.load_raws import RawsMaster
@@ -62,7 +61,7 @@ class BspMapBuilder(MapBuilder):
             self.take_snapshot()
 
         stair_position_x, stair_position_y = self.rooms[len(self.rooms) - 1].center()
-        stair_idx = xy_idx(stair_position_x, stair_position_y)
+        stair_idx = self.map.xy_idx(stair_position_x, stair_position_y)
 
         if self.depth != config.MAX_DEPTH:
             self.map.tiles[stair_idx] = TileType.DOWN_STAIRS
@@ -85,7 +84,7 @@ class BspMapBuilder(MapBuilder):
             elif y > y2:
                 y -= 1
 
-            idx = xy_idx(x, y)
+            idx = self.map.xy_idx(x, y)
             self.map.tiles[idx] = TileType.FLOOR
 
     def add_subrects(self, rect):
@@ -133,9 +132,8 @@ class BspMapBuilder(MapBuilder):
                 if x > self.map.width - 2 or y > self.map.height - 2 or x < 1 or y < 1:
                     can_build = False
 
-
                 if can_build:
-                    idx = xy_idx(x, y)
+                    idx = self.map.xy_idx(x, y)
                     if self.map.tiles[idx] != TileType.WALL:
                         can_build = False
 

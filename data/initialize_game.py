@@ -11,7 +11,7 @@ from systems.particule_system import ParticuleSpawnSystem
 from ui_system.ui_system import UiSystem
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
-from map_builders.create_random_map import build_random_map
+from gmap.master_dungeon import MasterDungeon
 from gmap.spawner import spawn_player
 
 from texts import Texts
@@ -48,9 +48,12 @@ def init_game(master_seed=None):
 
     # add player position to ressources
     player = spawn_player(0, 0)
-
     World.insert('player', player)
 
+    master_dungeon = MasterDungeon()
+    World.insert('master_dungeon', master_dungeon)
+    print(f'INITIALIZE : master dungeon is : {master_dungeon}')
+    print(f'INITIALIZE : World fetch master dungeon is : {World.fetch("master_dungeon")}')
     state = World.fetch('state')
     state.generate_world_map(1)
 

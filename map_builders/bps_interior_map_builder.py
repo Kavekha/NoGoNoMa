@@ -2,7 +2,6 @@ import copy
 from random import randint
 
 from map_builders.map_builders import MapBuilder, Rect
-from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
 from data.load_raws import RawsMaster
 from gmap.spawner import spawn_room
@@ -32,7 +31,7 @@ class BspInteriorMapBuilder(MapBuilder):
             self.rooms.append(room)
             for y in range(room.y1, room.y2):
                 for x in range(room.x1, room.x2):
-                    idx = xy_idx(x, y)
+                    idx = self.map.xy_idx(x, y)
                     if 0 < idx < ((self.map.width * self.map.height) - 1):
                         self.map.tiles[idx] = TileType.FLOOR
             self.take_snapshot()
@@ -52,7 +51,7 @@ class BspInteriorMapBuilder(MapBuilder):
         self.starting_position = self.rooms[0].center()
 
         stair_position_x, stair_position_y = self.rooms[len(self.rooms) - 1].center()
-        stair_idx = xy_idx(stair_position_x, stair_position_y)
+        stair_idx = self.map.xy_idx(stair_position_x, stair_position_y)
 
         if self.depth != config.MAX_DEPTH:
             self.map.tiles[stair_idx] = TileType.DOWN_STAIRS
@@ -75,7 +74,7 @@ class BspInteriorMapBuilder(MapBuilder):
             elif y > y2:
                 y -= 1
 
-            idx = xy_idx(x, y)
+            idx = self.map.xy_idx(x, y)
             self.map.tiles[idx] = TileType.FLOOR
 
     def add_subrects(self, rect):

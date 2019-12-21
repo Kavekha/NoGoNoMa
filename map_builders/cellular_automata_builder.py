@@ -3,9 +3,7 @@ import tcod
 import copy
 from random import randint
 
-from gmap.utils import index_to_point2d
-from map_builders.map_builders import MapBuilder, Rect
-from gmap.utils import xy_idx
+from map_builders.map_builders import MapBuilder
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_region
 import config
@@ -19,13 +17,13 @@ class CellularAutomataBuilder(MapBuilder):
         # region of spawn points
         spawn_points = []
         tiles_check = 0
-        for y in range(1, self.map.height - 2, randint(1, 3)):
+        for y in range(1, self.map.height - 2, randint(1, 5)):
             for x in range(1, self.map.width - 2):
-                idx = xy_idx(x, y)
+                idx = self.map.xy_idx(x, y)
                 if self.map.tiles[idx] == TileType.FLOOR:
                     tiles_check += 1
                     if randint(0, 3) == 1:
-                        spawn_points.append(xy_idx(x, y))
+                        spawn_points.append(self.map.xy_idx(x, y))
                     if len(spawn_points) >= 3:
                         print(f'SPAWN: {spawn_points}')
                         spawn_region(spawn_points, self.map)
@@ -35,7 +33,7 @@ class CellularAutomataBuilder(MapBuilder):
         for y in range(1, self.map.height - 2):
             for x in range(1, self.map.width - 2):
                 rand = randint(1, 100)
-                idx = xy_idx(x, y)
+                idx = self.map.xy_idx(x, y)
                 if rand > 55:
                     self.map.tiles[idx] = TileType.FLOOR
                 else:
@@ -48,7 +46,7 @@ class CellularAutomataBuilder(MapBuilder):
 
             for y in range(1, self.map.height -2):
                 for x in range(1, self.map.width - 2):
-                    idx = xy_idx(x, y)
+                    idx = self.map.xy_idx(x, y)
                     neighbors = 0
                     if self.map.tiles[idx - 1] == TileType.WALL:
                         neighbors += 1
@@ -77,11 +75,11 @@ class CellularAutomataBuilder(MapBuilder):
 
         # starting point
         x, y = self.map.width // 2, self.map.height // 2
-        start_idx = xy_idx(x, y)
+        start_idx = self.map.xy_idx(x, y)
         while self.map.tiles[start_idx] != TileType.FLOOR:
             x += 1
             y += 1
-            start_idx = xy_idx(x, y)
+            start_idx = self.map.xy_idx(x, y)
         print(f'starting point is {start_idx}, {x, y}')
 
         # Found an exit
@@ -93,7 +91,7 @@ class CellularAutomataBuilder(MapBuilder):
         available_exits = []
         for (i, tile) in enumerate(self.map.tiles):
             if tile == TileType.FLOOR:
-                exit_tile_x, exit_tile_y = index_to_point2d(i)
+                exit_tile_x, exit_tile_y = self.map.index_to_point2d(i)
                 tcod.path_compute(my_path, y, x, exit_tile_y, exit_tile_x)
                 if not tcod.path_is_empty(my_path) and tcod.path_size(my_path) < 500:
                     available_exits.append(i)

@@ -3,7 +3,12 @@ from bearlibterminal import terminal
 import re
 
 from ui_system.interface import Interface
+from components.magic_item_component import MagicItemComponent
+from components.name_component import NameComponent
+from components.obfuscated_name_component import ObfuscatedNameComponent
+from data.items_enum import MagicItemClass
 from texts import Texts
+from world import World
 
 
 def print_shadow(x, y, text, shadow_offset=1):
@@ -51,6 +56,34 @@ def render_bar(x, y, width, name, value, max_value, bar_color, back_color, text_
     print_shadow(center_bar_x, y, text)
     terminal.composition(terminal.TK_OFF)
 
+
+def get_item_color(item_entity):
+    magic_component = World.get_entity_component(item_entity, MagicItemComponent)
+    if magic_component:
+        print(f'i have magic component : {magic_component} with class {magic_component.magic_class}')
+        if magic_component.magic_class == MagicItemClass.UNCOMMON:
+            return 'green'
+        if magic_component.magic_class == MagicItemClass.RARE:
+            return 'blue'
+        elif magic_component.magic_class == MagicItemClass.EPIC:
+            return 'violet'
+        elif magic_component.magic_class == MagicItemClass.LEGENDARY:
+            return 'yellow'
+    return 'white'
+
+
+def get_item_display_name(item_id):
+    master_dungeon = World.fetch('master_dungeon')
+    item_name_comp = World.get_entity_component(item_id, NameComponent)
+
+    if item_name_comp.name in master_dungeon.identified_items:
+        return item_name_comp.name
+    else:
+        obfuscate_comp = World.get_entity_component(item_id, ObfuscatedNameComponent)
+        if obfuscate_comp:
+            return obfuscate_comp.name
+        else:
+            return Texts.get_text('UNIDENTIFIED_ITEM')
 
 
 

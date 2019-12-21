@@ -2,13 +2,13 @@ from bearlibterminal import terminal
 
 from ui_system.interface import GraphicalModes, Interface
 from ui_system.render_menus import draw_tile_menu, draw_ascii_menu
+from ui_system.render_functions import get_item_color, get_item_display_name
 from world import World
 from components.attributes_component import AttributesComponent
-from components.name_component import NameComponent
 from components.pools_component import Pools
 from systems.inventory_system import get_items_in_user_backpack
 from ui_system.ui_enums import Layers
-from player_systems.game_system import xp_for_next_level, get_item_color
+from player_systems.game_system import xp_for_next_level
 import config
 from texts import Texts
 
@@ -126,8 +126,8 @@ def show_item_screen(header):
 
     text = '\n'
     for index, item in enumerate(items_to_display):
-        item_name = World.get_entity_component(item, NameComponent)
-        text += f'[color={get_item_color(item)}]({chr(letter_index)}) {Texts.get_text(item_name.name)}[/color]' + '\n'
+        item_name = get_item_display_name(item)
+        text += f'[color={get_item_color(item)}]({chr(letter_index)}) {Texts.get_text(item_name)}[/color]' + '\n'
         letter_index += 1
 
     text += '\n'

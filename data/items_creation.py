@@ -1,3 +1,4 @@
+
 from components.items_component import ItemComponent
 from components.provides_healing_component import ProvidesHealingComponent
 from components.consumable_component import ConsumableComponent
@@ -16,8 +17,7 @@ from ui_system.ui_enums import Layers
 from world import World
 from texts import Texts
 import config
-
-
+'''
 def create_healing_potion_item(x, y):
     position = PositionComponent(x, y)
     renderable = RenderableComponent('!', 'purple', Layers.ITEM)
@@ -108,3 +108,4 @@ def create_tower_shield(x, y):
     defense_bonus = DefenseBonusComponent(2)
     item_id = World.create_entity(position, renderable, name, item, equippable, defense_bonus)
     return item_id
+'''
