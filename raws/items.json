@@ -12,7 +12,8 @@
               "effects" : { "provides_healing" : "8"}
           },
           "magic": {
-              "class": "uncommon"
+              "class": "uncommon",
+              "naming": "potion"
           }
       },
       {

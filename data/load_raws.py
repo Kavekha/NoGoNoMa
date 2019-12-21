@@ -252,8 +252,10 @@ class RawsMaster:
             elif attribute == 'naming':
                 if magic_component[attribute] == 'scroll':
                     magic_attributes[attribute] = magic_component[attribute]
+                elif magic_component[attribute] == 'potion':
+                    magic_attributes[attribute] = magic_component[attribute]
                 else:
-                    print(f'In magic naming, attribute {attribute} not implemented')
+                    print(f'In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
                     raise NotImplementedError
             else:
                 print(f'magic attribute {attribute} not implemented in magic item raw')
@@ -540,6 +542,9 @@ class RawsMaster:
                 if magic_naming_convention == 'scroll':
                     scroll_names = World.fetch('master_dungeon').scroll_mappings
                     components_for_entity.append(ObfuscatedNameComponent(scroll_names.get(name)))
+                elif magic_naming_convention == 'potion':
+                    potion_names = World.fetch('master_dungeon').potion_mappings
+                    components_for_entity.append(ObfuscatedNameComponent(potion_names.get(name)))
                 else:
                     print(f'naming convention {magic_naming_convention} for item {name} not implemented in create item')
                     raise NotImplementedError
@@ -562,12 +567,18 @@ class RawsMaster:
         return result
 
     @staticmethod
+    def get_potion_tags():
+        result = list()
+        for item in RawsMaster.items:
+            if item.magic.get('naming') == 'potion':
+                result.append(item.name)
+        return result
+
+    @staticmethod
     def is_tag_magic(tag):
-        print(f'is tag magic requested : {tag}')
         magic_tag = RawsMaster.item_index.get(tag)
         if magic_tag:
             item = RawsMaster.items[RawsMaster.item_index[tag]]
-            print(f'RAW: is tag magic return {item.magic} when True')
             return item.magic
         return False
 

@@ -68,9 +68,20 @@ BITE;Bite;Morsure
 CLAW;Claw;Griffe
 SCROLL_OF_;Scroll of ;Parchemin de
 UNIDENTIFIED_ITEM;Unidentified item;Objet non identifié
-
-
-
-
-
-
+RED_COLOR;red;rouge
+ORANGE_COLOR;orange,orange
+YELLOW_COLOR;yellow;jaune
+GREEN_COLOR;green;vert
+GREEN_COLOR_F;green;verte
+BROWN_COLOR;brown;marron
+INDIGO_COLOR;indigo;indigo
+VIOLET_COLOR;violet;violet
+VIOLET_COLOR_F;violet;violette
+SWIRLING_ADJ";swirling;swirling
+EFFERVESCENT_ADJ;effervescent;effervescente
+SLIMEY_ADJ;slimey;gluante
+OILEY_ADJ;oiley;huileuse
+VISCOUS_ADJ;viscous;visqueuse
+SMELLY_ADJ;smelly;odorante
+GLOWING_ADJ;glowing;brillante
+OBFUSCATE_POTION_NAME;{0} {1} potion;Potion {0} {1}
