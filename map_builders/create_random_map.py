@@ -4,10 +4,11 @@ from map_builders.simple_map_builder import SimpleMapBuilder
 from map_builders.bsp_map_builder import BspMapBuilder
 from map_builders.bps_interior_map_builder import BspInteriorMapBuilder
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
+from map_builders.drunkard_builder import DrunkardsWalkBuilder
 
 
 def random_builder(depth):
-    rand = 1  #randint(0, 3)
+    rand = 3  #randint(0, 3)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:
@@ -16,8 +17,10 @@ def random_builder(depth):
         return BspMapBuilder(depth)
     elif rand == 3:
         return CellularAutomataBuilder(depth)
+    elif rand == 4:
+        return DrunkardsWalkBuilder(depth)
     else:
-        return CellularAutomataBuilder(depth)
+        return DrunkardsWalkBuilder(depth)
 
 
 def build_random_map(depth):

@@ -34,16 +34,6 @@ class Gmap:
     def create_fov_map(self):
         fov_map = tcod.tcod.map.Map(self.width, self.height)
 
-        '''
-        for i in range(0, len(self.tiles)):
-            x, y = index_to_point2d(i)
-            if self.tiles[i] != TileType.WALL:
-                fov_map.walkable[y, x] = True  # Like the rest of the tcod modules, all arrays here are in row-major order and are addressed with [y,x]
-                fov_map.transparent[y, x] = True
-            else:
-                fov_map.walkable[y, x] = False
-                fov_map.transparent[y, x] = False
-        '''
         for i, tile in enumerate(self.tiles):
             x, y = self.index_to_point2d(i)
             if tile != TileType.WALL:

@@ -84,25 +84,26 @@ class CellularAutomataBuilder(MapBuilder):
 
         # Found an exit
         self.map.create_fov_map()
-        fov = self.map.fov_map
-        my_path = tcod.path_new_using_map(fov, 1.41)
+        dij_path = tcod.path.Dijkstra(self.map.fov_map, 1.41)
 
         # Compute path from starting position
-        available_exits = []
+        best_exit = 0
+        best_distance = 0
         for (i, tile) in enumerate(self.map.tiles):
             if tile == TileType.FLOOR:
                 exit_tile_x, exit_tile_y = self.map.index_to_point2d(i)
-                tcod.path_compute(my_path, y, x, exit_tile_y, exit_tile_x)
-                if not tcod.path_is_empty(my_path) and tcod.path_size(my_path) < 500:
-                    available_exits.append(i)
+                dij_path.set_goal(exit_tile_x, exit_tile_y)
+                my_path = dij_path.get_path(x, y)
+                if my_path:
+                    if len(my_path) > best_distance:
+                        best_exit = i
+                        best_distance = len(my_path)
 
-        tcod.path_delete(my_path)
-        if available_exits:
-            rand = randint(0, len(available_exits) - 1)
+        if best_exit:
             if self.depth != config.MAX_DEPTH:
-                self.map.tiles[rand] = TileType.DOWN_STAIRS
+                self.map.tiles[best_exit] = TileType.DOWN_STAIRS
             else:
-                self.map.tiles[rand] = TileType.EXIT_PORTAL
+                self.map.tiles[best_exit] = TileType.EXIT_PORTAL
 
             # we can add starting position for player
             self.starting_position = x, y
