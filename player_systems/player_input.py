@@ -6,7 +6,7 @@ from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.render_menus import show_option_menu
+from ui_system.menus import show_option_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts

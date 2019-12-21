@@ -11,3 +11,11 @@ class EquipmentSlots(Enum):
 class WeaponAttributes(Enum):
     MIGHT = 0
     QUICKNESS = 1
+
+
+class MagicItemClass(Enum):
+    COMMON = 0
+    UNCOMMON = 1
+    RARE = 2
+    EPIC = 3
+    LEGENDARY = 4

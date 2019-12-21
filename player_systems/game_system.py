@@ -1,8 +1,11 @@
+from random import randint
+
 import config
 from world import World
 from texts import Texts
 from components.pools_component import Pools
 from components.attributes_component import AttributesComponent
+
 
 
 def player_gain_xp(xp_gain):
@@ -66,3 +69,19 @@ def skill_level(skill_component, skill):
     if skill in skill_component.skills:
         return skill_component.skills[skill]
     return config.DEFAULT_NO_SKILL_VALUE
+
+
+def make_scroll_name():
+    name = Texts.get_text('SCROLL_OF_')
+    print(f'MAKE SCROLL : Name is {name}')
+
+    length = 4 + randint(1, 4)
+
+    for i in range(0, length):
+        if i % 2 == 0:
+            voyelle = ['a', 'e', 'i', 'o', 'u', 'y']
+            name += voyelle[randint(0, len(voyelle) - 1)]
+        else:
+            consonne = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
+            name += consonne[randint(0, len(consonne) - 1)]
+    return name

@@ -1,8 +1,7 @@
 from random import randint
 
-from map_builders.map_builders import MapBuilder, Gmap, Rect
+from map_builders.map_builders import MapBuilder, Rect
 from map_builders.commons import apply_room_to_map, apply_horizontal_tunnel, apply_vertical_tunnel
-from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_room
 from data.load_raws import RawsMaster
@@ -59,7 +58,7 @@ class SimpleMapBuilder(MapBuilder):
                 self.take_snapshot()
 
         stair_position_x, stair_position_y = self.rooms[len(self.rooms) -1].center()
-        stair_idx = xy_idx(stair_position_x, stair_position_y)
+        stair_idx = self.map.xy_idx(stair_position_x, stair_position_y)
         if self.depth != config.MAX_DEPTH:
             self.map.tiles[stair_idx] = TileType.DOWN_STAIRS
         else:

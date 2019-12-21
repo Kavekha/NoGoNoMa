@@ -17,7 +17,7 @@ from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSele
 from systems.inventory_system import get_items_in_user_backpack
 from systems.particule_system import cull_dead_particules
 from ui_system.interface import Interface
-from ui_system.render_menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
+from ui_system.menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
     show_item_screen, show_option_menu
 from state import States, State
 from data.save_and_load import load_game, save_game, has_saved_game

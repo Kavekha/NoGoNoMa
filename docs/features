@@ -5,7 +5,7 @@ Release 3 - Done
     BSP Interior Algorithm
     Raws: Attaques Naturelles
     Fix : BSP, apply rooms, etc.
-    Cellula automata
+    Cellula automata - fix
 
 Release 3 - To Do
     Algorithms
@@ -18,9 +18,11 @@ Release 3 - To Do
     * Traps
 
 
-
 Raws:
     Particules
+
+Map algorithms:
+    Reparer le placement de la sortie sur Cellula Automata (Seulement la partie Ouest de la map ????)
 
 Feature Items:
     Traps

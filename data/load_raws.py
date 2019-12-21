@@ -19,9 +19,11 @@ from components.attributes_component import AttributesComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
+from components.magic_item_component import MagicItemComponent
+from components.obfuscated_name_component import ObfuscatedNameComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
-from data.items_enum import EquipmentSlots, WeaponAttributes
+from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
 from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from world import World
 from ui_system.ui_enums import Layers
@@ -228,10 +230,35 @@ class RawsMaster:
                     raw_item.weapon = RawsMaster.load_weapon_raw(item[component])
                 elif component == 'wearable':
                     raw_item.wearable = RawsMaster.load_wearable_raw(item[component])
+                elif component == 'magic':
+                    raw_item.magic = RawsMaster.load_magic_item_raw(item[component])
                 else:
                     print(f'load item raw: unkown component in {component}')
                     raise NotImplementedError
             RawsMaster.items.append(raw_item)
+
+    @staticmethod
+    def load_magic_item_raw(magic_component):
+        magic_attributes = {}
+        for attribute in magic_component:
+            if attribute == 'class':
+                if magic_component[attribute] == 'common':
+                    magic_attributes[attribute] = MagicItemClass.COMMON
+                elif magic_component[attribute] == 'uncommon':
+                    magic_attributes[attribute] = MagicItemClass.UNCOMMON
+                else:
+                    print(f'magic class {magic_component[attribute]} not implemented in magic item raw')
+                    raise NotImplementedError
+            elif attribute == 'naming':
+                if magic_component[attribute] == 'scroll':
+                    magic_attributes[attribute] = magic_component[attribute]
+                else:
+                    print(f'In magic naming, attribute {attribute} not implemented')
+                    raise NotImplementedError
+            else:
+                print(f'magic attribute {attribute} not implemented in magic item raw')
+                raise NotImplementedError
+        return magic_attributes
 
     @staticmethod
     def load_wearable_raw(wearable_component):
@@ -503,11 +530,34 @@ class RawsMaster:
             if to_create.wearable.get('armor'):
                 components_for_entity.append(WearableComponent(to_create.wearable.get('armor')))
 
+        if to_create.magic:
+            magic_class = to_create.magic.get('class', MagicItemClass.COMMON)
+            magic_naming_convention = to_create.magic.get('naming')
+
+            if magic_naming_convention:
+                if magic_naming_convention == 'scroll':
+                    scroll_names = World.fetch('master_dungeon').scroll_mappings
+                    components_for_entity.append(ObfuscatedNameComponent(scroll_names.get(name)))
+                else:
+                    print(f'naming convention {magic_naming_convention} for item {name} not implemented in create item')
+                    raise NotImplementedError
+
+            components_for_entity.append(MagicItemComponent(magic_class=magic_class,
+                                                            naming=magic_naming_convention))
+
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:
             World.add_component(component, item_id)
 
         return True
+
+    @staticmethod
+    def get_scroll_tags():
+        result = list()
+        for item in RawsMaster.items:
+            if item.magic.get('naming') == 'scroll':
+                result.append(item.name)
+        return result
 
 
 if __name__ == "__main__":

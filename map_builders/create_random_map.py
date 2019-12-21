@@ -7,7 +7,7 @@ from map_builders.cellular_automata_builder import CellularAutomataBuilder
 
 
 def random_builder(depth):
-    rand = 99  #randint(0, 3)
+    rand = 1  #randint(0, 3)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:
