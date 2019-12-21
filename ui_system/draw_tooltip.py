@@ -4,6 +4,7 @@ import config
 from world import World
 from gmap.utils import xy_idx
 from ui_system.ui_enums import Layers
+from ui_system.render_functions import get_item_display_name
 from components.position_component import PositionComponent
 from components.name_component import NameComponent
 
@@ -25,7 +26,7 @@ def draw_tooltip():
         tooltip = []
         for entity, (position, name) in subjects:
             if position.x == mouse_pos_x and position.y == mouse_pos_y:
-                tooltip.append(f'{name.name}')
+                tooltip.append(get_item_display_name(entity))
 
         # identique, on ne change rien.
         if tooltip == old_tooltip and mouse_pos_x == old_mouse_x and mouse_pos_y == old_mouse_y:

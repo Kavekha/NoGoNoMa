@@ -10,6 +10,7 @@
     { "name" : "LONGSWORD", "weight" : 2, "min_depth" : 4, "max_depth" : 100 },
     { "name" : "TOWER_SHIELD", "weight" : 2, "min_depth" : 5, "max_depth" : 100 },
     { "name" : "TUNIC", "weight" : 2, "min_depth" : 6, "max_depth" : 100 },
+    { "name" : "DAGGER_ASSASSIN", "weight" : 1, "min_depth" : 6, "max_depth" : 100 },
 
     { "name" : "RAT", "weight" : 10, "min_depth" : 1, "max_depth" : 3 },
     { "name" : "MORBLIN", "weight" : 5, "min_depth" : 1, "max_depth" : 4, "add_map_depth_to_weight" : true},

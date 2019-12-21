@@ -14,6 +14,7 @@ from components.equipped_component import EquippedComponent
 from components.in_backpack_component import InBackPackComponent
 from components.position_component import PositionComponent
 from systems.particule_system import ParticuleBuilder
+from components.identified_component import IdentifiedItemComponent
 from gmap.utils import xy_idx, index_to_point2d
 from world import World
 from texts import Texts
@@ -65,6 +66,10 @@ class ItemUseSystem(System):
             else:
                 # not target
                 targets.append(entity)
+
+            # identify
+            if entity == player:
+                World.add_component(IdentifiedItemComponent(name=item_name.name), entity)
 
             for target in targets:
                 target_name = World.get_entity_component(target, NameComponent)

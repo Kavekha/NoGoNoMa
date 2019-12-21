@@ -6,6 +6,7 @@ from ui_system.interface import Interface
 from components.magic_item_component import MagicItemComponent
 from components.name_component import NameComponent
 from components.obfuscated_name_component import ObfuscatedNameComponent
+from components.items_component import ItemComponent
 from data.items_enum import MagicItemClass
 from texts import Texts
 from world import World
@@ -60,7 +61,6 @@ def render_bar(x, y, width, name, value, max_value, bar_color, back_color, text_
 def get_item_color(item_entity):
     magic_component = World.get_entity_component(item_entity, MagicItemComponent)
     if magic_component:
-        print(f'i have magic component : {magic_component} with class {magic_component.magic_class}')
         if magic_component.magic_class == MagicItemClass.UNCOMMON:
             return 'green'
         if magic_component.magic_class == MagicItemClass.RARE:
@@ -83,7 +83,28 @@ def get_item_display_name(item_id):
         if obfuscate_comp:
             return obfuscate_comp.name
         else:
-            return Texts.get_text('UNIDENTIFIED_ITEM')
+            if World.get_entity_component(item_id, ItemComponent):
+                return Texts.get_text('UNIDENTIFIED_ITEM')
+            else:
+                return Texts.get_text(item_name_comp.name)
 
 
+def get_obfuscate_name(item_id):
+    name_c = World.get_entity_component(item_id, NameComponent)
+    magic_c = World.get_entity_component(item_id, MagicItemComponent)
 
+    if name_c:
+        if magic_c:
+            identified_items = World.fetch('master_dungeon').identified_items
+            obfuscate_c = World.get_entity_component(item_id, ObfuscatedNameComponent)
+            if name_c.name in identified_items:
+                return name_c.name
+            elif obfuscate_c:
+                return obfuscate_c.name
+            else:
+                return Texts.get_text('UNIDENTIFIED_ITEM')
+        else:
+            return name_c.name
+    else:
+        print(f'get_obfuscate_name : nameless object send : entity {item_id}.')
+        raise NotImplementedError

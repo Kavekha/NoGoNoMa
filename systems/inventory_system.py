@@ -12,6 +12,7 @@ from components.ranged_component import RangedComponent
 from components.targeting_component import TargetingComponent
 from state import States
 from texts import Texts
+from ui_system.render_functions import get_obfuscate_name
 import config
 
 
@@ -30,9 +31,8 @@ class ItemCollectionSystem(System):
             World.add_component(backpack, wants_to_pick.item)
 
             if wants_to_pick.collected_by == player:
-                item_name = World.get_entity_component(wants_to_pick.item, NameComponent)
                 logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("YOU_PICK_UP")}'
-                                f'{Texts.get_text(item_name.name)}[/color]')
+                                f'{Texts.get_text(get_obfuscate_name(wants_to_pick.item))}[/color]')
 
             World.remove_component(WantsToPickUpComponent, entity)
 
@@ -54,7 +54,7 @@ class ItemDropSystem(System):
             if entity == player:
                 item_name = World.get_entity_component(wants_to_drop.item, NameComponent)
                 logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("YOU_DROP_UP")}'
-                                f'{item_name.name}[/color]')
+                                f'{get_obfuscate_name(wants_to_drop.item)}[/color]')
 
             World.remove_component(WantsToDropComponent, entity)
 

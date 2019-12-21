@@ -1,3 +1,4 @@
+'''
 import tcod
 
 from random import randint
@@ -153,3 +154,4 @@ class Rect:
 
     def center(self):
         return (self.x1 + self.x2)//2, (self.y1 + self.y2) //2
+'''

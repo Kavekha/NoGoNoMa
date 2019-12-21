@@ -12,7 +12,8 @@
               "effects" : { "provides_healing" : "8"}
           },
           "magic": {
-              "class": "uncommon"
+              "class": "common",
+              "naming": "potion"
           }
       },
       {
@@ -50,7 +51,7 @@
                 }
             },
           "magic": {
-              "class": "uncommon",
+              "class": "common",
               "naming": "scroll"
           }
       },
@@ -91,6 +92,26 @@
           },
           "magic": {
               "class": "common"
+          }
+      },      {
+          "name" : "DAGGER_ASSASSIN",
+          "renderable": {
+              "glyph" : "/",
+              "fg" : "#FFAAAA",
+              "order" : "ITEM",
+              "sprite": "items/sword.png"
+          },
+          "weapon" : {
+              "range" : "melee",
+              "attribute": "quickness",
+              "min_dmg": 1,
+              "max_dmg": 4,
+              "hit_bonus": 3,
+              "dmg_bonus": 1
+          },
+          "magic": {
+              "class": "uncommon",
+              "naming": "MAGIC_DAGGER_UNIDENTIFIED"
           }
       },
       {

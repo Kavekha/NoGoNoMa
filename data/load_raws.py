@@ -252,9 +252,11 @@ class RawsMaster:
             elif attribute == 'naming':
                 if magic_component[attribute] == 'scroll':
                     magic_attributes[attribute] = magic_component[attribute]
+                elif magic_component[attribute] == 'potion':
+                    magic_attributes[attribute] = magic_component[attribute]
                 else:
-                    print(f'In magic naming, attribute {attribute} not implemented')
-                    raise NotImplementedError
+                    magic_attributes[attribute] = magic_component[attribute]
+                    print(f'WARNING: In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
             else:
                 print(f'magic attribute {attribute} not implemented in magic item raw')
                 raise NotImplementedError
@@ -531,16 +533,20 @@ class RawsMaster:
                 components_for_entity.append(WearableComponent(to_create.wearable.get('armor')))
 
         if to_create.magic:
+            identified_items = World.fetch('master_dungeon').identified_items
             magic_class = to_create.magic.get('class', MagicItemClass.COMMON)
             magic_naming_convention = to_create.magic.get('naming')
 
-            if magic_naming_convention:
+            # si nom inconnu, on utilise l'obfuscation
+            if name not in identified_items:
                 if magic_naming_convention == 'scroll':
                     scroll_names = World.fetch('master_dungeon').scroll_mappings
                     components_for_entity.append(ObfuscatedNameComponent(scroll_names.get(name)))
+                elif magic_naming_convention == 'potion':
+                    potion_names = World.fetch('master_dungeon').potion_mappings
+                    components_for_entity.append(ObfuscatedNameComponent(potion_names.get(name)))
                 else:
-                    print(f'naming convention {magic_naming_convention} for item {name} not implemented in create item')
-                    raise NotImplementedError
+                    components_for_entity.append(ObfuscatedNameComponent(magic_naming_convention))
 
             components_for_entity.append(MagicItemComponent(magic_class=magic_class,
                                                             naming=magic_naming_convention))
@@ -558,6 +564,22 @@ class RawsMaster:
             if item.magic.get('naming') == 'scroll':
                 result.append(item.name)
         return result
+
+    @staticmethod
+    def get_potion_tags():
+        result = list()
+        for item in RawsMaster.items:
+            if item.magic.get('naming') == 'potion':
+                result.append(item.name)
+        return result
+
+    @staticmethod
+    def is_tag_magic(tag):
+        magic_tag = RawsMaster.item_index.get(tag)
+        if magic_tag:
+            item = RawsMaster.items[RawsMaster.item_index[tag]]
+            return item.magic
+        return False
 
 
 if __name__ == "__main__":

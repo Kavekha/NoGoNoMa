@@ -11,6 +11,7 @@ from systems.particule_system import ParticuleSpawnSystem
 from ui_system.ui_system import UiSystem
 from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
+from systems.item_identification_system import ItemIdentificationSystem
 from gmap.master_dungeon import MasterDungeon
 from gmap.spawner import spawn_player
 
@@ -45,6 +46,9 @@ def init_game(master_seed=None):
     World.add_system(visibility_system)
     map_indexing_system = MapIndexingSystem()
     World.add_system(map_indexing_system)
+
+    identification_system = ItemIdentificationSystem()
+    World.add_system(identification_system)
 
     # add player position to ressources
     player = spawn_player(0, 0)

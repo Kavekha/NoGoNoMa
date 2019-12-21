@@ -85,3 +85,14 @@ def make_scroll_name():
             consonne = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
             name += consonne[randint(0, len(consonne) - 1)]
     return name
+
+
+def make_potion_name(used_potion_names):
+    while True:
+        adjectives = config.POTION_ADJECTIVES
+        colors = config.POTION_COLORS
+        adjective = adjectives[randint(0, len(adjectives) - 1)]
+        color = colors[randint(0, len(colors) - 1)]
+        name = Texts.get_text('OBFUSCATE_POTION_NAME').format(Texts.get_text(adjective), Texts.get_text(color))
+        if name not in used_potion_names:
+            return name
