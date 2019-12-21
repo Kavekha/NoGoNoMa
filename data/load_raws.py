@@ -531,10 +531,12 @@ class RawsMaster:
                 components_for_entity.append(WearableComponent(to_create.wearable.get('armor')))
 
         if to_create.magic:
+            identified_items = World.fetch('master_dungeon').identified_items
             magic_class = to_create.magic.get('class', MagicItemClass.COMMON)
             magic_naming_convention = to_create.magic.get('naming')
 
-            if magic_naming_convention:
+            # si nom inconnu, on utilise l'obfuscation
+            if name not in identified_items:
                 if magic_naming_convention == 'scroll':
                     scroll_names = World.fetch('master_dungeon').scroll_mappings
                     components_for_entity.append(ObfuscatedNameComponent(scroll_names.get(name)))
@@ -558,6 +560,16 @@ class RawsMaster:
             if item.magic.get('naming') == 'scroll':
                 result.append(item.name)
         return result
+
+    @staticmethod
+    def is_tag_magic(tag):
+        print(f'is tag magic requested : {tag}')
+        magic_tag = RawsMaster.item_index.get(tag)
+        if magic_tag:
+            item = RawsMaster.items[RawsMaster.item_index[tag]]
+            print(f'RAW: is tag magic return {item.magic} when True')
+            return item.magic
+        return False
 
 
 if __name__ == "__main__":

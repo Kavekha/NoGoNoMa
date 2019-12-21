@@ -2,7 +2,9 @@ Load_raws
     Fusionner les raws pour ne pas les garder.
     Exemple: Table Raws oblige a chercher dans tous les raws pour determiner la table.
     Sanity checks: http://bfnightly.bracketproductions.com/rustbook/chapter_46.html
-    Avoir les attaques speciales dans un Raw a part, pour mutualiser.
+
+Spawn & Algorithm:
+    Cellular automata : dijskra, Voronoi
 
 Tooltips:
     Mal formaté.
@@ -15,9 +17,6 @@ Tooltips:
 
 Input:
     Recuperation des inputs dans le save pour le Replay.
-
-Initialisation
-    Fichier a part.
 
 AI:
     # /!\ On utilise visible_tiles, qui concerne ce que le mob voit = le transparent est consideré comme walkable.
@@ -37,16 +36,10 @@ World:
         Gerer autrement les delete pour ne pas defoncer les iterators.
         On marque une entité comme "morte", et on l'efface en fin de cycle.
 
-Logs:
-    Morgue files & victory / Death screen.
-
 UI:
     API pour mieux gerer l'interface vs Game.
     Meilleure disposition des menus.
 
-MapGeneration:
-    Rewrite map, trop de melange et de methodes au meme endroit
-    Rooms avec 2 tiles d'ecart entre elles pour eviter les passages en diagonale
 
 Map, visible tiles etc
     3 models : 1 en idx, 1 en xy et un en yx
@@ -58,10 +51,6 @@ Use:
     Use system a refactor pour plus de lisibilité. Notamment le code equip / unequip, illisible.
     Items : Potion sans interdiction de boire alors que full pv.
 
-Graphismes
-    Grid de target
-    Explosions de dmg.
-
 Changer State
     Tjrs penible. cf damage_system pour changer l'etat de mort.
 
@@ -69,7 +58,3 @@ systems order
 
 Inventory
     Max items, crash si letter index > 26
-
-Localization
-    Noms non traduits dans logs : items equipés, items ramassés, items droppés.
-=====

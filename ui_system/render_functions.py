@@ -60,7 +60,6 @@ def render_bar(x, y, width, name, value, max_value, bar_color, back_color, text_
 def get_item_color(item_entity):
     magic_component = World.get_entity_component(item_entity, MagicItemComponent)
     if magic_component:
-        print(f'i have magic component : {magic_component} with class {magic_component.magic_class}')
         if magic_component.magic_class == MagicItemClass.UNCOMMON:
             return 'green'
         if magic_component.magic_class == MagicItemClass.RARE:

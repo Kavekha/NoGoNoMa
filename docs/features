@@ -6,8 +6,11 @@ Release 3 - Done
     Raws: Attaques Naturelles
     Fix : BSP, apply rooms, etc.
     Cellula automata - fix
+    Objets non identifiés
+    Identification Scrolls.
 
 Release 3 - To Do
+    > Identification Potions.
     Algorithms
     Prefabs
     Rooms builders
@@ -27,7 +30,6 @@ Map algorithms:
 Feature Items:
     Traps
     Magic items.
-    Objets non identifiés
     Identification
     Effects.
     Cursed & unequippable & Remove curse
