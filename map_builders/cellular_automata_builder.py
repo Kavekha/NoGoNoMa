@@ -12,22 +12,11 @@ import config
 class CellularAutomataBuilder(MapBuilder):
     def __init__(self, depth):
         super().__init__(depth)
+        self.noise_areas = dict()
 
     def spawn_entities(self):
-        # region of spawn points
-        spawn_points = []
-        tiles_check = 0
-        for y in range(1, self.map.height - 2, randint(1, 5)):
-            for x in range(1, self.map.width - 2):
-                idx = self.map.xy_idx(x, y)
-                if self.map.tiles[idx] == TileType.FLOOR:
-                    tiles_check += 1
-                    if randint(0, 3) == 1:
-                        spawn_points.append(self.map.xy_idx(x, y))
-                    if len(spawn_points) >= 3:
-                        print(f'SPAWN: {spawn_points}')
-                        spawn_region(spawn_points, self.map)
-                        spawn_points = []
+        for area in self.noise_areas:
+            spawn_region(self.noise_areas[area], self.map)
 
     def build(self):
         for y in range(1, self.map.height - 2):
@@ -108,6 +97,34 @@ class CellularAutomataBuilder(MapBuilder):
             # we can add starting position for player
             self.starting_position = x, y
             self.take_snapshot()
+
+            # simili voronoi with noise
+
+            noise = tcod.noise.Noise(
+                dimensions=2,
+                algorithm=tcod.NOISE_SIMPLEX,
+                implementation=tcod.noise.TURBULENCE,
+                hurst=0.5,
+                lacunarity=2.0,
+                octaves=4,
+                seed=None
+            )
+
+            for y in range(0, self.map.height):
+                for x in range(0, self.map.width):
+                    if self.map.tiles[self.map.xy_idx(x, y)] == TileType.FLOOR:
+                        # score between 0.99 & 0.5 : 550 at >0.9, 1200 at >8, 0 at > 6 and 200 at < 6.
+                        cell_value = noise.get_point(x, y)
+                        cell_value_int = int(cell_value * 10)       # so we have enought for 10 areas.
+                        if cell_value_int not in self.noise_areas:
+                            self.noise_areas[cell_value_int] = list()
+                        self.noise_areas[cell_value_int].append(self.map.xy_idx(x, y))
+
+            count = 0
+            for key, value in self.noise_areas.items():
+                print(f'area {key} - nb of points : {len(value)} idx')
+                count += 1
+            print(f'number of areas : {count}')
 
         else:
             print('WARNING: Cellula Automata - No exit found. Re-doing.')
