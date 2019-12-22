@@ -6,6 +6,9 @@ Load_raws
 Spawn & Algorithm:
     Cellular automata : dijskra, Voronoi
 
+Identification:
+    Couleur des parchos & potions non aleatoire.
+
 Tooltips:
     Mal formaté.
     Ne prends pas en compte la visibilité.

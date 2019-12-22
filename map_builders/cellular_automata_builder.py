@@ -4,6 +4,7 @@ import copy
 from random import randint
 
 from map_builders.map_builders import MapBuilder
+from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_region
 import config
@@ -72,21 +73,7 @@ class CellularAutomataBuilder(MapBuilder):
         print(f'starting point is {start_idx}, {x, y}')
 
         # Found an exit
-        self.map.create_fov_map()
-        dij_path = tcod.path.Dijkstra(self.map.fov_map, 1.41)
-
-        # Compute path from starting position
-        best_exit = 0
-        best_distance = 0
-        for (i, tile) in enumerate(self.map.tiles):
-            if tile == TileType.FLOOR:
-                exit_tile_x, exit_tile_y = self.map.index_to_point2d(i)
-                dij_path.set_goal(exit_tile_x, exit_tile_y)
-                my_path = dij_path.get_path(x, y)
-                if my_path:
-                    if len(my_path) > best_distance:
-                        best_exit = i
-                        best_distance = len(my_path)
+        best_exit = return_most_distant_reachable_area(self.map, start_idx)
 
         if best_exit:
             if self.depth != config.MAX_DEPTH:
@@ -100,31 +87,7 @@ class CellularAutomataBuilder(MapBuilder):
 
             # simili voronoi with noise
 
-            noise = tcod.noise.Noise(
-                dimensions=2,
-                algorithm=tcod.NOISE_SIMPLEX,
-                implementation=tcod.noise.TURBULENCE,
-                hurst=0.5,
-                lacunarity=2.0,
-                octaves=4,
-                seed=None
-            )
-
-            for y in range(0, self.map.height):
-                for x in range(0, self.map.width):
-                    if self.map.tiles[self.map.xy_idx(x, y)] == TileType.FLOOR:
-                        # score between 0.99 & 0.5 : 550 at >0.9, 1200 at >8, 0 at > 6 and 200 at < 6.
-                        cell_value = noise.get_point(x, y)
-                        cell_value_int = int(cell_value * 10)       # so we have enought for 10 areas.
-                        if cell_value_int not in self.noise_areas:
-                            self.noise_areas[cell_value_int] = list()
-                        self.noise_areas[cell_value_int].append(self.map.xy_idx(x, y))
-
-            count = 0
-            for key, value in self.noise_areas.items():
-                print(f'area {key} - nb of points : {len(value)} idx')
-                count += 1
-            print(f'number of areas : {count}')
+            self.noise_areas = generate_voronoi_spawn_points(self.map)
 
         else:
             print('WARNING: Cellula Automata - No exit found. Re-doing.')

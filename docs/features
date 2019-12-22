@@ -7,19 +7,28 @@ Release 3 - Done
     Fix : BSP, apply rooms, etc.
     Cellula automata - fix
     Objets non identifiés
-    Identification Scrolls.
-    Identification Potions.
+    Systeme d'identification.
+    Drunkard's walk
 
 Release 3 - To Do
-    > Identification other objects
-    Algorithms
+    Traps
+    Maze
+    Raw particules
+    Diffusion limited aggregation
+    Effects
+    Symetrie
+    Cursed items
+    Voronoi hive
+    More Items
+    Wave function collapse
+    --
     Prefabs
     Rooms builders
     Better corridors
     Room building & props
     Doors
     * Raws: particules.
-    * Traps
+
 
 
 Raws:

@@ -1,40 +1,109 @@
-import tcod
+from random import randint
 
 from map_builders.map_builders import MapBuilder
 from gmap.gmap_enums import TileType
+from map_builders.builder_structs import DrunkSpawnMode
+from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
+from gmap.spawner import spawn_region
+
 import config
 
 
 class DrunkardsWalkBuilder(MapBuilder):
-    def __init__(self, depth):
+    def __init__(self, depth, mode=DrunkSpawnMode.STARTING_POINT, lifetime=400, floor_percent=0.5):
         super().__init__(depth)
+        self.mode = mode
+        self.lifetime = lifetime
+        self.floor_percent = floor_percent
+        self.noise_areas = dict()
+
+        if self.floor_percent > 0.9:
+            print(f'floor percent at {self.floor_percent} : too high.')
+            raise ValueError
+
+    def open_area(self):
+        self.mode = DrunkSpawnMode.STARTING_POINT
+        self.lifetime = 400
+        self.floor_percent = 0.5
+        return self
+
+    def open_halls(self):
+        self.mode = DrunkSpawnMode.RANDOM
+        self.lifetime = 400
+        self.floor_percent = 0.5
+        return self
+
+    def winding_passages(self):
+        self.mode = DrunkSpawnMode.RANDOM
+        self.lifetime = 100
+        self.floor_percent = 0.4
+        return self
+
+    def spawn_entities(self):
+        for area in self.noise_areas:
+            spawn_region(self.noise_areas[area], self.map)
 
     def build(self):
         # starting point
         x, y = self.map.width // 2, self.map.height // 2
         start_idx = self.map.xy_idx(x, y)
-        while self.map.tiles[start_idx] != TileType.FLOOR:
-            x += 1
-            y += 1
-            start_idx = self.map.xy_idx(x, y)
-        print(f'starting point is {start_idx}, {x, y}')
+        self.starting_position = x, y
 
-        # Found an exit
-        self.map.create_fov_map()
-        dij_path = tcod.path.Dijkstra(self.map.fov_map, 1.41)
+        total_tiles = self.map.width * self.map.height
+        desired_floor_tiles = int(total_tiles * self.floor_percent)
+        floor_tile_count = self.map.tiles.count(TileType.FLOOR)
+        digger_count = 0
+        active_digger_count = 0
 
-        # Compute path from starting position
-        best_exit = 0
-        best_distance = 0
-        for (i, tile) in enumerate(self.map.tiles):
-            if tile == TileType.FLOOR:
-                exit_tile_x, exit_tile_y = self.map.index_to_point2d(i)
-                dij_path.set_goal(exit_tile_x, exit_tile_y)
-                my_path = dij_path.get_path(x, y)
-                if my_path:
-                    if len(my_path) > best_distance:
-                        best_exit = i
-                        best_distance = len(my_path)
+        while floor_tile_count < desired_floor_tiles:
+            did_something = False
+            drunk_life = self.lifetime
+            if self.mode == DrunkSpawnMode.STARTING_POINT:
+                drunk_idx = start_idx
+            elif self.mode == DrunkSpawnMode.RANDOM:
+                if digger_count == 0:
+                    drunk_idx = start_idx
+                else:
+                    drunk_x = randint(1, self.map.width - 3) + 1
+                    drunk_y = randint(1, self.map.height - 3) + 1
+                    drunk_idx = self.map.xy_idx(drunk_x, drunk_y)
+            else:
+                print(f'This DrunkSpawnMode is not implemented : {self.mode}')
+                raise NotImplementedError
+
+            while drunk_life > 0:
+                if self.map.tiles[drunk_idx] == TileType.WALL:
+                    did_something = True
+                self.map.tiles[drunk_idx] = TileType.DOWN_STAIRS
+                stagger_direction = randint(1, 4)
+                drunk_x, drunk_y = self.map.index_to_point2d(drunk_idx)
+                if stagger_direction == 1 and drunk_x > 2:
+                    drunk_x -= 1
+                elif stagger_direction == 2 and drunk_x < self.map.width - 2:
+                    drunk_x += 1
+                elif stagger_direction == 3 and drunk_y > 2:
+                    drunk_y -= 1
+                elif stagger_direction == 4 and drunk_y < self.map.height - 2:
+                    drunk_y += 1
+                drunk_life -= 1
+                drunk_idx = self.map.xy_idx(drunk_x, drunk_y)
+
+            if did_something:
+                self.take_snapshot()
+                active_digger_count += 1
+
+            digger_count += 1
+            for i, tile in enumerate(self.map.tiles):
+                if tile == TileType.DOWN_STAIRS:
+                    self.map.tiles[i] = TileType.FLOOR
+                    print(f'tile {i} was downstair {tile}, now is floor : {self.map.tiles[i]}')
+
+            floor_tile_count = self.map.tiles.count(TileType.FLOOR)
+            print(f'floor tile count is now {floor_tile_count}')
+
+        print(f'{digger_count} diggers gave up their sobriety, of whom {active_digger_count} found a wall.')
+
+        best_exit = return_most_distant_reachable_area(self.map, start_idx)
 
         if best_exit:
             if self.depth != config.MAX_DEPTH:
@@ -46,33 +115,6 @@ class DrunkardsWalkBuilder(MapBuilder):
             self.starting_position = x, y
             self.take_snapshot()
 
-        '''
-        for y in range(0, self.map.height - 1):
-            for x in range(0, self.map.width - 1):
-                idx = self.map.xy_idx(x, y)
-                if self.map.tiles[idx] == TileType.FLOOR:
-                    cell_value = noise.
-        '''
+            # simili voronoi with noise
 
-        noise = tcod.noise.Noise(
-            dimensions=2,
-            algorithm=tcod.NOISE_SIMPLEX,
-            implementation=tcod.noise.TURBULENCE,
-            hurst=0.5,
-            lacunarity=2.0,
-            octaves=4,
-            seed=None,
-        )
-
-        # Create a 5x5 open multi-dimensional mesh-grid.
-        ogrid = self.map.fov_map.copy()
-        sample = noise.sample_ogrid(ogrid)
-        print(ogrid)
-
-        # Scale the grid.
-        ogrid[0] *= 0.25
-        ogrid[1] *= 0.25
-
-        # Return the sampled noise from this grid of points.
-        samples = noise.sample_ogrid(ogrid)
-        print(samples)
+            self.noise_areas = generate_voronoi_spawn_points(self.map)
