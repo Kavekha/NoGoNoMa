@@ -2,11 +2,51 @@ from random import randint
 
 from map_builders.map_builders import MapBuilder
 from gmap.gmap_enums import TileType
-from map_builders.builder_structs import DrunkSpawnMode
 from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
 from gmap.spawner import spawn_region
 
 import config
+
+
+class MazeBuilder(MapBuilder):
+    TOP = 0
+    RIGHT = 1
+    BOTTOM = 2
+    LEFT = 3
+
+    def __init__(self, depth):
+        super().__init__(depth)
+        self.noise_areas = list()
+
+    def spawn_entities(self):
+        for area in self.noise_areas:
+            spawn_region(self.noise_areas[area], self.map)
+
+    def build(self):
+        print(f'---- Maze builder in action! -----')
+
+        print(f'self map is  : {self.map}')
+        maze = Grid((self.map.width // 2) - 2, (self.map.height // 2) - 2)
+        maze.generate_maze(self.map, self)
+
+        # starting point
+        x, y = 2, 2
+        start_idx = self.map.xy_idx(x, y)
+
+        best_exit = return_most_distant_reachable_area(self.map, start_idx)
+        self.take_snapshot()
+
+        if best_exit:
+            if self.depth != config.MAX_DEPTH:
+                self.map.tiles[best_exit] = TileType.DOWN_STAIRS
+            else:
+                self.map.tiles[best_exit] = TileType.EXIT_PORTAL
+
+            # we can add starting position for player
+            self.starting_position = x, y
+            self.take_snapshot()
+
+            self.noise_areas = generate_voronoi_spawn_points(self.map)
 
 
 class Cell:
@@ -74,11 +114,15 @@ class Grid:
 
     def find_next_cell(self):
         neighbors = self.get_available_neighbors()
+        print(f'Find next cell : available : {neighbors}')
         if neighbors:
             if len(neighbors) == 1:
+                print(f'one neighbor : {neighbors[0]}')
                 return neighbors[0]
             else:
-                return neighbors[randint(1, len(neighbors) - 1)]
+                rand = randint(0, len(neighbors) - 1)
+                print(f'several neighbors : chosen is {neighbors[rand]}')
+                return neighbors[rand]
         return None
 
     def generate_maze(self, gmap, builder):
@@ -126,51 +170,3 @@ class Grid:
                 gmap.tiles[idx + gmap.width] = TileType.FLOOR
             if not cell.walls.get(MazeBuilder.LEFT):
                 gmap.tiles[idx - 1] = TileType.FLOOR
-
-
-class MazeBuilder(MapBuilder):
-    TOP = 0
-    RIGHT = 1
-    BOTTOM = 2
-    LEFT = 3
-
-    def __init__(self, depth):
-        super().__init__(depth)
-
-    def spawn_entities(self):
-        pass
-
-    def build(self):
-        print(f'---- Maze builder in action! -----')
-
-        print(f'self map is  : {self.map}')
-        maze = Grid((self.map.width // 2) - 2, (self.map.height // 2) - 2)
-        maze.generate_maze(self.map, self)
-
-        # starting point
-        x, y = self.map.width // 2, self.map.height // 2
-        start_idx = self.map.xy_idx(x, y)
-        '''
-        while self.map.tiles[start_idx] != TileType.FLOOR:
-            x += 1
-            y += 1
-            start_idx = self.map.xy_idx(x, y)
-            '''
-        print(f'starting point is {start_idx}, {x, y}')
-        self.take_snapshot()
-
-        best_exit = return_most_distant_reachable_area(self.map, start_idx)
-        self.take_snapshot()
-
-        if best_exit:
-            if self.depth != config.MAX_DEPTH:
-                self.map.tiles[best_exit] = TileType.DOWN_STAIRS
-            else:
-                self.map.tiles[best_exit] = TileType.EXIT_PORTAL
-
-            # we can add starting position for player
-            self.starting_position = x, y
-            self.take_snapshot()
-
-
-
