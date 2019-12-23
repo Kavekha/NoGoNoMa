@@ -46,6 +46,7 @@ class VisibilitySystem(System):
                                     if skill_roll_against_difficulty(entity,
                                                                      Skills.FOUND_TRAPS,
                                                                      config.DEFAULT_TRAP_DETECTION_DIFFICULTY):
+                                        print(f'visibility check trap : sucess')
                                         # found it!
                                         entity_name = get_obfuscate_name(entity_tile_content)
                                         print(f'visibility: obfuscate name :{entity_name}')
@@ -55,6 +56,8 @@ class VisibilitySystem(System):
                                             f'{Texts.get_text("YOU_SPOTTED_").format(Texts.get_text(entity_name))}'
                                             f'[/color]')
                                         World.remove_component(HiddenComponent, entity_tile_content)
+                                    else:
+                                        print(f'failure to found.')
                         x += 1
                     y += 1
                     x = 0

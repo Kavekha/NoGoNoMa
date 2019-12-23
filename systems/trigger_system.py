@@ -33,9 +33,9 @@ class TriggerSystem(System):
                         logs = World.fetch('logs')
                         entity_id_name = get_obfuscate_name(entity_id)
                         if entity_id_name:
-                            final_log_trigger = Texts.get_text("SOMETHING_TRIGGERS")
+                            final_log_trigger = Texts.get_text("_TRIGGERS").format(Texts.get_text(entity_id_name))
                         else:
-                            final_log_trigger = Texts.get_text("_TRIGGERS")
+                            final_log_trigger = Texts.get_text("SOMETHING_TRIGGERS")
 
                         # Dodge effect!
                         if skill_roll_against_difficulty(entity, Skills.FOUND_TRAPS, config.DEFAULT_TRAP_DODGE):
@@ -45,7 +45,7 @@ class TriggerSystem(System):
                             # effects werent dodge
                             final_log_consequence = Texts.get_text('IT_HITS_YOU')
                             logs.appendleft(f"[color={config.COLOR_MAJOR_INFO}]"
-                                            f"{final_log_trigger}{final_log_consequence}"
+                                            f"{final_log_trigger} {final_log_consequence}"
                                             f"[/color]")
 
                             inflict_dmg = World.get_entity_component(entity_id, InflictsDamageComponent)
