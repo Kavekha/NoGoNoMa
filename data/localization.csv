@@ -62,7 +62,7 @@ OOGLOTH;Oogloth;Oogloth
 SKELTON;Skeleton;Squelette
 GOLEM;Golem;Golem
 DRAGON;Dragon;Dragon
-PRESS_ESCAPE_TO_MAIN_MENU;Press Escape to go back to Main Menu;Appuez sur ECHAPE pour revenir au menu principal
+PRESS_ESCAPE_TO_MAIN_MENU;Press Escape to go back to Main Menu;Appuyez sur ECHAPE pour revenir au menu principal
 MIGHTY_BLOW;Mighty blow;Frappe puissante
 BITE;Bite;Morsure
 CLAW;Claw;Griffe
@@ -87,3 +87,8 @@ GLOWING_ADJ;glowing;brillante
 OBFUSCATE_POTION_NAME;{0} {1} potion;Potion {0} {1}
 DAGGER_ASSASSIN;Assassin's dagger;Dague de l'Assassin
 MAGIC_DAGGER_UNIDENTIFIED;magic dagger unidentified;Dague magique non identifiée
+YOU_SPOTTED_;You spotted: {0};Vous reperez: {0}
+TRAP;Trap;Piege
+SOMETHING_TRIGGERS;Something triggers.;Quelque chose se declenche.
+_TRIGGERS;{0} triggers.;{0} se declenche.
+YOU_DODGE_IT;You dodge it!;Vous l'esquivez!

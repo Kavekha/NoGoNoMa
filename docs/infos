@@ -6,3 +6,9 @@
 
     reflexions:
         wits pour les attaques "malignes"?
+
+*Skills*
+    skill roll : On lance SkillValue vs Difficulté. Base diff = 40.
+    Avoir des difficultés types = 20 : easy, 40: normal, 60: hard.
+    Success = Jet de diff(1, Diff) <= Jet de Skill (0, SkillValue + 5)
+    rappel : skill value par defaut : -4

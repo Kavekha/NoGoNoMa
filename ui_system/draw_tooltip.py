@@ -7,6 +7,7 @@ from ui_system.ui_enums import Layers
 from ui_system.render_functions import get_item_display_name
 from components.position_component import PositionComponent
 from components.name_component import NameComponent
+from components.hidden_component import HiddenComponent
 
 
 def draw_tooltip():
@@ -25,6 +26,8 @@ def draw_tooltip():
 
         tooltip = []
         for entity, (position, name) in subjects:
+            if World.get_entity_component(entity, HiddenComponent):
+                continue
             if position.x == mouse_pos_x and position.y == mouse_pos_y:
                 tooltip.append(get_item_display_name(entity))
 
@@ -37,6 +40,7 @@ def draw_tooltip():
 
         # plus de tooltip a afficher
         if tooltip:
+            terminal.color('white')
             width = 0
             for string in tooltip:
                 if width < len(string):

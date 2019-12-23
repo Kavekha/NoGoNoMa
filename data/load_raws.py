@@ -21,6 +21,8 @@ from components.pools_component import Pools
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
 from components.magic_item_component import MagicItemComponent
 from components.obfuscated_name_component import ObfuscatedNameComponent
+from components.hidden_component import HiddenComponent
+from components.triggers_components import EntryTriggerComponent, ActivationComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
@@ -35,9 +37,11 @@ class RawsMaster:
     mobs = []
     spawn_table = []
     natural_attacks = []
+    props = []
     item_index = {}
     mob_index = {}
     natural_attacks_index = {}
+    props_index = {}
 
     @staticmethod
     def load_index():
@@ -49,6 +53,9 @@ class RawsMaster:
 
         for i, attack in enumerate(RawsMaster.natural_attacks):
             RawsMaster.natural_attacks_index[attack["name"]] = i + 1
+
+        for i, prop in enumerate(RawsMaster.props):
+            RawsMaster.props_index[prop["name"]] = i + 1
 
     @staticmethod
     def load_raws():
@@ -82,9 +89,30 @@ class RawsMaster:
                     RawsMaster.load_spawn_table_raw(datas[data])
                 elif data == 'natural_attacks':
                     RawsMaster.load_natural_attacks_raw(datas[data])
+                elif data == 'props':
+                    RawsMaster.load_props_raw(datas[data])
                 else:
                     print(f'load raw: Data type {data} not supported')
                     raise NotImplementedError
+
+    @staticmethod
+    def load_props_raw(data):
+        for prop_raw in data:
+            props = {}
+            for component in prop_raw:
+                if component == 'name':
+                    props[component] = prop_raw[component]
+                elif component == 'renderable':
+                    props[component] = RawsMaster.load_renderable_raw(prop_raw[component])
+                elif component == 'hidden':
+                    props[component] = prop_raw[component]
+                elif component == 'entry_trigger':
+                    props[component] = prop_raw[component]
+                else:
+                    print(f'prop component {component} is not implemented for props')
+                    raise NotImplementedError
+            print(f'PROP : prop created with {props}')
+            RawsMaster.props.append(props)
 
     @staticmethod
     def load_natural_attacks_raw(data):
@@ -407,7 +435,45 @@ class RawsMaster:
         if RawsMaster.mob_index.get(name):
             print('monster found')
             return RawsMaster.create_mob(name, x, y)
+        if RawsMaster.props_index.get(name):
+            print('PROP: prop found')
+            return RawsMaster.create_prop(name, x, y)
+        else:
+            print('WARNING : Name entity not found : {name}')
         return
+
+    @staticmethod
+    def create_prop(name, x, y):
+        to_create = RawsMaster.props[RawsMaster.props_index[name] - 1]
+        components_for_entity = []
+
+        if to_create.get("name"):
+            components_for_entity.append(NameComponent(to_create.get("name")))
+
+        if to_create.get("renderable"):
+            components_for_entity.append(RenderableComponent(glyph=to_create["renderable"].get('glyph'),
+                                                             char_color=to_create["renderable"].get('fg'),
+                                                             render_order=to_create["renderable"].get('order'),
+                                                             sprite=to_create["renderable"].get('sprite')
+                                                             ))
+
+        if to_create.get("hidden"):
+            components_for_entity.append(HiddenComponent())
+
+        if to_create.get("entry_trigger"):
+            components_for_entity.append(EntryTriggerComponent())
+            if to_create['entry_trigger'].get('effects'):
+                if to_create['entry_trigger']['effects'].get('damage'):
+                    damage = InflictsDamageComponent(int(to_create['entry_trigger']['effects'].get('damage')))
+                    components_for_entity.append(damage)
+                if to_create['entry_trigger']['effects'].get('activations'):
+                    activations = ActivationComponent(int(to_create['entry_trigger']['effects'].get('activations')))
+                    components_for_entity.append(activations)
+
+        prop_id = World.create_entity(PositionComponent(x, y))
+
+        for component in components_for_entity:
+            World.add_component(component, prop_id)
 
     @staticmethod
     def create_mob(name, x, y):

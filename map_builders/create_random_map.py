@@ -9,7 +9,7 @@ from map_builders.maze_builder import MazeBuilder
 
 
 def random_builder(depth):
-    rand = 10   #randint(0, 7)
+    rand = 2   #randint(0, 7)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:

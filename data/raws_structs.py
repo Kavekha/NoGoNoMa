@@ -33,3 +33,10 @@ class RawsSpawnTable:
     def __init__(self):
         self.spawn_infos = {}   # {'name':{weight:0, min_depth:0, max_depth:0, add_map_depth_to_weight:False}
 
+
+class RawProp:
+    def __init__(self):
+        self.name = None
+        self.renderable = None
+        self.hidden = None
+        self.entry_trigger = None
