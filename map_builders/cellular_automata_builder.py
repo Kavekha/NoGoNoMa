@@ -4,6 +4,7 @@ import copy
 from random import randint
 
 from map_builders.map_builders import MapBuilder
+from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
 from gmap.gmap_enums import TileType
 from gmap.spawner import spawn_region
 import config
@@ -12,22 +13,11 @@ import config
 class CellularAutomataBuilder(MapBuilder):
     def __init__(self, depth):
         super().__init__(depth)
+        self.noise_areas = dict()
 
     def spawn_entities(self):
-        # region of spawn points
-        spawn_points = []
-        tiles_check = 0
-        for y in range(1, self.map.height - 2, randint(1, 5)):
-            for x in range(1, self.map.width - 2):
-                idx = self.map.xy_idx(x, y)
-                if self.map.tiles[idx] == TileType.FLOOR:
-                    tiles_check += 1
-                    if randint(0, 3) == 1:
-                        spawn_points.append(self.map.xy_idx(x, y))
-                    if len(spawn_points) >= 3:
-                        print(f'SPAWN: {spawn_points}')
-                        spawn_region(spawn_points, self.map)
-                        spawn_points = []
+        for area in self.noise_areas:
+            spawn_region(self.noise_areas[area], self.map)
 
     def build(self):
         for y in range(1, self.map.height - 2):
@@ -83,30 +73,21 @@ class CellularAutomataBuilder(MapBuilder):
         print(f'starting point is {start_idx}, {x, y}')
 
         # Found an exit
-        self.map.create_fov_map()
-        fov = self.map.fov_map
-        my_path = tcod.path_new_using_map(fov, 1.41)
+        best_exit = return_most_distant_reachable_area(self.map, start_idx)
 
-        # Compute path from starting position
-        available_exits = []
-        for (i, tile) in enumerate(self.map.tiles):
-            if tile == TileType.FLOOR:
-                exit_tile_x, exit_tile_y = self.map.index_to_point2d(i)
-                tcod.path_compute(my_path, y, x, exit_tile_y, exit_tile_x)
-                if not tcod.path_is_empty(my_path) and tcod.path_size(my_path) < 500:
-                    available_exits.append(i)
-
-        tcod.path_delete(my_path)
-        if available_exits:
-            rand = randint(0, len(available_exits) - 1)
+        if best_exit:
             if self.depth != config.MAX_DEPTH:
-                self.map.tiles[rand] = TileType.DOWN_STAIRS
+                self.map.tiles[best_exit] = TileType.DOWN_STAIRS
             else:
-                self.map.tiles[rand] = TileType.EXIT_PORTAL
+                self.map.tiles[best_exit] = TileType.EXIT_PORTAL
 
             # we can add starting position for player
             self.starting_position = x, y
             self.take_snapshot()
+
+            # simili voronoi with noise
+
+            self.noise_areas = generate_voronoi_spawn_points(self.map)
 
         else:
             print('WARNING: Cellula Automata - No exit found. Re-doing.')
