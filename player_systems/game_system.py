@@ -5,6 +5,7 @@ from world import World
 from texts import Texts
 from components.pools_component import Pools
 from components.attributes_component import AttributesComponent
+from components.skills_component import SkillsComponent, Skills
 
 
 
@@ -96,3 +97,16 @@ def make_potion_name(used_potion_names):
         name = Texts.get_text('OBFUSCATE_POTION_NAME').format(Texts.get_text(adjective), Texts.get_text(color))
         if name not in used_potion_names:
             return name
+
+
+def skill_roll_against_difficulty(entity, skill, difficulty):
+    skills = World.get_entity_component(entity, SkillsComponent)
+    if skills:
+        skill_value = Skills.get(skill, config.DEFAULT_NO_SKILL_VALUE)
+    else:
+        skill_value = config.DEFAULT_NO_SKILL_VALUE
+    skill_rand = randint(0, 5 + skill_value)
+    if randint(1, difficulty) <= skill_rand:
+        return True
+    return False
+

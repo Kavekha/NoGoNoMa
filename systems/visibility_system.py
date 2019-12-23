@@ -3,6 +3,11 @@ from world import World
 from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.player_component import PlayerComponent
+from components.hidden_component import HiddenComponent
+from components.skills_component import Skills
+from texts import Texts
+from ui_system.render_functions import get_obfuscate_name
+from player_systems.game_system import skill_roll_against_difficulty
 from gmap.utils import xy_idx
 import config
 
@@ -32,6 +37,24 @@ class VisibilitySystem(System):
                             idx = xy_idx(x, y)
                             current_map.revealed_tiles[idx] = True
                             current_map.visible_tiles[idx] = True
+
+                            # reveal hidden things in tile
+                            for entity_tile_content in current_map.tile_content[idx]:
+                                maybe_hidden = World.get_entity_component(entity_tile_content, HiddenComponent)
+                                if maybe_hidden:
+                                    # roll found trap for detecting
+                                    if skill_roll_against_difficulty(entity,
+                                                                     Skills.FOUND_TRAPS,
+                                                                     config.DEFAULT_TRAP_DETECTION_DIFFICULTY):
+                                        # found it!
+                                        entity_name = get_obfuscate_name(entity_tile_content)
+                                        print(f'visibility: obfuscate name :{entity_name}')
+                                        logs = World.fetch('logs')
+                                        logs.appendleft(
+                                            f'[color={config.COLOR_MAJOR_INFO}]'
+                                            f'{Texts.get_text("YOU_SPOTTED_").format(Texts.get_text(entity_name))}'
+                                            f'[/color]')
+                                        World.remove_component(HiddenComponent, entity_tile_content)
                         x += 1
                     y += 1
                     x = 0

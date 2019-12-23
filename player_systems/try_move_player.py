@@ -5,6 +5,7 @@ from components.player_component import PlayerComponent
 from components.viewshed_component import ViewshedComponent
 from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
+from components.triggers_components import EntityMovedComponent
 from gmap.utils import xy_idx
 from gmap.gmap_enums import TileType
 from ui_system.ui_enums import NextLevelResult
@@ -32,6 +33,8 @@ def try_move_player(delta_x, delta_y):
             position.y = min(config.MAP_HEIGHT -1, max(0, position.y + delta_y))
             player_viewshed = World.get_entity_component(entity, ViewshedComponent)
             player_viewshed.dirty = True
+            has_moved = EntityMovedComponent()
+            World.add_component(has_moved, entity)
 
 
 def try_next_level():

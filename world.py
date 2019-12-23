@@ -13,6 +13,12 @@ class World:
         return cls._next_available_id
 
     @classmethod
+    def remove_component_for_all_entities(cls, component_type):
+        print(f'remove component {component_type} for all entities')
+        for entity in cls._entities:
+            cls.remove_component(component_type, entity)
+
+    @classmethod
     def add_component(cls, component_instance, entity_id):
         print(f'add component {component_instance} for entity {entity_id}')
         component_type = type(component_instance)

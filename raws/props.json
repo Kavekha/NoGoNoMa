@@ -1,0 +1,20 @@
+{
+  "props": [
+    {
+      "name": "TRAP",
+      "renderable": {
+        "glyph": "^",
+        "fg": "#FFFF00",
+        "order": "ITEM",
+        "sprite": "/props/trap.png"
+      },
+      "hidden": true,
+      "entry_trigger": {
+        "effects": {
+          "damage": "6",
+          "activations": "1"
+        }
+      }
+    }
+  ]
+}

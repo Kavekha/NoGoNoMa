@@ -9,6 +9,7 @@ from components.position_component import PositionComponent
 from components.name_component import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
+from components.triggers_components import EntityMovedComponent
 from systems.particule_system import ParticuleBuilder
 from state import States
 from gmap.utils import distance_to, xy_idx
@@ -48,11 +49,11 @@ class MonsterAi(System):
                         want_to_melee = WantsToMeleeComponent(player)
                         World.add_component(want_to_melee, entity)
                     else:
-                        self.move_astar(viewshed, position_component, player_position.x, player_position.y)
+                        self.move_astar(entity, viewshed, position_component, player_position.x, player_position.y)
             else:
                 print(f'{name.name} is confused.')
 
-    def move_towards(self, position_component, target_x, target_y):
+    def move_towards(self, entity, position_component, target_x, target_y):
         dx = target_x - position_component.x
         dy = target_y - position_component.y
         distance = math.sqrt(dx ** 2 + dy ** 2)
@@ -67,6 +68,8 @@ class MonsterAi(System):
         if self.can_move(new_pos_x, new_pos_y):
             position_component.x = new_pos_x
             position_component.y = new_pos_y
+            has_moved = EntityMovedComponent()
+            World.add_component(has_moved, entity)
 
     def can_move(self, x, y):
         current_map = World.fetch('current_map')
@@ -74,7 +77,7 @@ class MonsterAi(System):
             return True
         return False
 
-    def move_astar(self, viewshed, position_component, player_x, player_y): #target, entities, game_map):
+    def move_astar(self, entity, viewshed, position_component, player_x, player_y): #target, entities, game_map):
         # /!\ On utilise visible_tiles, qui concerne ce que le mob voit = le transparent est consideré comme walkable.
         # /!\ Libtcod fonctionne en y,x et pas en x, y. Melange facile à faire, a ameliorer!
         # /!\ Pas de second check sur le deplacement, on teleporte le mob. Danger si walkable.
@@ -111,6 +114,8 @@ class MonsterAi(System):
                 if self.can_move(x, y):
                     position_component.x = x
                     position_component.y = y
+                    has_moved = EntityMovedComponent()
+                    World.add_component(has_moved, entity)
                 else:
                     print('astar : cant move')
         else:
