@@ -100,13 +100,16 @@ def make_potion_name(used_potion_names):
 
 
 def skill_roll_against_difficulty(entity, skill, difficulty):
-    skills = World.get_entity_component(entity, SkillsComponent)
-    if skills:
-        skill_value = Skills.get(skill, config.DEFAULT_NO_SKILL_VALUE)
+    print(f'skill roll : entity {entity}, skill {skill}, difficulty {difficulty}')
+    skills_comp = World.get_entity_component(entity, SkillsComponent)
+    if skills_comp:
+        skill_value = skills_comp.skills.get(skill, config.DEFAULT_NO_SKILL_VALUE)
     else:
         skill_value = config.DEFAULT_NO_SKILL_VALUE
     skill_rand = randint(0, 5 + skill_value)
     if randint(1, difficulty) <= skill_rand:
+        print(f'SUCCESS')
         return True
+    print(f'FAIL')
     return False
 

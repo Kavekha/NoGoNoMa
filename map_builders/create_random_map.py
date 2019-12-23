@@ -6,10 +6,11 @@ from map_builders.bps_interior_map_builder import BspInteriorMapBuilder
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
 from map_builders.maze_builder import MazeBuilder
+from map_builders.diffusion_limited_aggregation_builder import DLABuilder
 
 
 def random_builder(depth):
-    rand = 2   #randint(0, 7)
+    rand = randint(0, 11)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:
@@ -26,8 +27,16 @@ def random_builder(depth):
         return DrunkardsWalkBuilder(depth).winding_passages()
     elif rand == 7:
         return MazeBuilder(depth)
+    elif rand == 8:
+        return DLABuilder(depth).walk_inwards()
+    elif rand == 9:
+        return DLABuilder(depth).walk_outwards()
+    elif rand == 10:
+        return DLABuilder(depth).central_attractor()
+    elif rand == 11:
+        return DLABuilder(depth).insectoid()
     else:
-        return MazeBuilder(depth)
+        return DLABuilder(depth)
 
 
 def build_random_map(depth):
