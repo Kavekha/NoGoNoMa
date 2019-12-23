@@ -3,9 +3,9 @@ from random import randint
 import tcod as tcod
 
 from map_builders.map_builders import MapBuilder
-from map_builders.builder_structs import DLAAlgorithm, DLASymmetry
+from map_builders.builder_structs import DLAAlgorithm, Symmetry
 from gmap.gmap_enums import TileType
-from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
+from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points, paint
 from gmap.spawner import spawn_region
 
 import config
@@ -16,34 +16,34 @@ class DLABuilder(MapBuilder):
         super().__init__(depth)
         self.noise_areas = dict()
         self.algorithm = DLAAlgorithm.WALK_INWARDS
-        self.symmetry = DLASymmetry.NONE
+        self.symmetry = Symmetry.NONE
         self.brush_size = 1
         self.floor_percent = 0.25
 
     def walk_inwards(self):
         self.algorithm = DLAAlgorithm.WALK_INWARDS
-        self.symmetry = DLASymmetry.NONE
+        self.symmetry = Symmetry.NONE
         self.brush_size = 1
         self.floor_percent = 0.25
         return self
 
     def walk_outwards(self):
         self.algorithm = DLAAlgorithm.WALK_OUTWARDS
-        self.symmetry = DLASymmetry.NONE
+        self.symmetry = Symmetry.NONE
         self.brush_size = 2
         self.floor_percent = 0.25
         return self
 
     def central_attractor(self):
         self.algorithm = DLAAlgorithm.CENTRAL_ATTRACTOR
-        self.symmetry = DLASymmetry.NONE
+        self.symmetry = Symmetry.NONE
         self.brush_size = 2
         self.floor_percent = 0.25
         return self
 
     def insectoid(self):
         self.algorithm = DLAAlgorithm.CENTRAL_ATTRACTOR
-        self.symmetry = DLASymmetry.HORIZONTAL
+        self.symmetry = Symmetry.HORIZONTAL
         self.brush_size = 2
         self.floor_percent = 0.25
         return self
@@ -92,7 +92,7 @@ class DLABuilder(MapBuilder):
                     elif stagger_direction == 4 and digger_y < self.map.height - 2:
                         digger_y += 1
                     digger_idx = self.map.xy_idx(digger_x, digger_y)
-                self.paint(prev_x, prev_y)
+                paint(prev_x, prev_y, self.map, self.symmetry, self.brush_size)
             elif self.algorithm == DLAAlgorithm.WALK_OUTWARDS:
                 digger_x = x
                 digger_y = y
@@ -108,7 +108,7 @@ class DLABuilder(MapBuilder):
                     elif stagger_direction == 4 and digger_y < self.map.height - 2:
                         digger_y += 1
                     digger_idx = self.map.xy_idx(digger_x, digger_y)
-                self.paint(digger_x, digger_y)
+                paint(digger_x, digger_y, self.map, self.symmetry, self.brush_size)
             elif self.algorithm == DLAAlgorithm.CENTRAL_ATTRACTOR:
                 digger_x = randint(1, self.map.width - 3) + 1
                 digger_y = randint(1, self.map.height - 3) + 1
@@ -125,7 +125,7 @@ class DLABuilder(MapBuilder):
                     digger_y = where[1][count]
                     digger_idx = self.map.xy_idx(digger_x, digger_y)
                     count += 1
-                self.paint(prev_x, prev_y)
+                paint(prev_x, prev_y, self.map, self.symmetry, self.brush_size)
             else:
                 print(f'Algorithm {self.algorithm} not implemented.')
                 raise NotImplementedError
@@ -146,49 +146,4 @@ class DLABuilder(MapBuilder):
             self.take_snapshot()
 
             # simili voronoi with noise
-
             self.noise_areas = generate_voronoi_spawn_points(self.map)
-
-    def apply_paint(self, x, y):
-        if self.brush_size == 1:
-            digger_idx = self.map.xy_idx(x, y)
-            self.map.tiles[digger_idx] = TileType.FLOOR
-        else:
-            half_brush_size = int(self.brush_size // 2)
-            for brush_y in range(y - half_brush_size, y + half_brush_size):
-                for brush_x in range(x - half_brush_size, x + half_brush_size):
-                    if 1 < brush_x < self.map.width - 1 and 1 < brush_y < self.map.height - 1:
-                        idx = self.map.xy_idx(brush_x, brush_y)
-                        self.map.tiles[idx] = TileType.FLOOR
-
-    def paint(self, x, y):
-        if self.symmetry == DLASymmetry.NONE:
-            self.apply_paint(x, y)
-        elif self.symmetry == DLASymmetry.HORIZONTAL:
-            center_x = self.map.width // 2
-            if x == center_x:
-                self.apply_paint(x, y)
-            else:
-                dist_x = abs(center_x - x)
-                self.apply_paint(center_x + dist_x, y)
-                self.apply_paint(center_x - dist_x, y)
-        elif self.symmetry == DLASymmetry.VERTICAL:
-            center_y = self.map.height // 2
-            if y == center_y:
-                self.apply_paint(x, y)
-            else:
-                dist_y = abs(center_y - y)
-                self.apply_paint(x, center_y + dist_y)
-                self.apply_paint(x, center_y - dist_y)
-        elif self.symmetry == DLASymmetry.BOTH:
-            center_x = self.map.width // 2
-            center_y = self.map.height // 2
-            if x == center_x and y == center_y:
-                self.apply_paint(x, y)
-            else:
-                dist_x = abs(center_x - x)
-                self.apply_paint(center_x + dist_x, y)
-                self.apply_paint(center_x - dist_x, y)
-                dist_y = abs(center_y - y)
-                self.apply_paint(x, center_y + dist_y)
-                self.apply_paint(x, center_y - dist_y)

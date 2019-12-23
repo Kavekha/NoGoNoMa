@@ -2,8 +2,8 @@ from random import randint
 
 from map_builders.map_builders import MapBuilder
 from gmap.gmap_enums import TileType
-from map_builders.builder_structs import DrunkSpawnMode
-from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
+from map_builders.builder_structs import DrunkSpawnMode, Symmetry
+from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points, paint
 from gmap.spawner import spawn_region
 
 import config
@@ -16,6 +16,8 @@ class DrunkardsWalkBuilder(MapBuilder):
         self.lifetime = lifetime
         self.floor_percent = floor_percent
         self.noise_areas = dict()
+        self.symmetry = Symmetry.NONE
+        self.brush_size = 1
 
         if self.floor_percent > 0.9:
             print(f'floor percent at {self.floor_percent} : too high.')
@@ -37,6 +39,21 @@ class DrunkardsWalkBuilder(MapBuilder):
         self.mode = DrunkSpawnMode.RANDOM
         self.lifetime = 100
         self.floor_percent = 0.4
+        return self
+
+    def fat_passages(self):
+        self.mode = DrunkSpawnMode.RANDOM
+        self.lifetime = 100
+        self.floor_percent = 0.4
+        self.brush_size = 2
+        return self
+
+    def fearfull_symmetry(self):
+        self.mode = DrunkSpawnMode.RANDOM
+        self.lifetime = 100
+        self.floor_percent = 0.4
+        self.brush_size = 1
+        self.symmetry = Symmetry.BOTH
         return self
 
     def spawn_entities(self):
@@ -74,9 +91,10 @@ class DrunkardsWalkBuilder(MapBuilder):
             while drunk_life > 0:
                 if self.map.tiles[drunk_idx] == TileType.WALL:
                     did_something = True
+                drunk_x, drunk_y = self.map.index_to_point2d(drunk_idx)
+                paint(drunk_x, drunk_y, self.map, self.symmetry, self.brush_size)
                 self.map.tiles[drunk_idx] = TileType.DOWN_STAIRS
                 stagger_direction = randint(1, 4)
-                drunk_x, drunk_y = self.map.index_to_point2d(drunk_idx)
                 if stagger_direction == 1 and drunk_x > 2:
                     drunk_x -= 1
                 elif stagger_direction == 2 and drunk_x < self.map.width - 2:
@@ -96,12 +114,8 @@ class DrunkardsWalkBuilder(MapBuilder):
             for i, tile in enumerate(self.map.tiles):
                 if tile == TileType.DOWN_STAIRS:
                     self.map.tiles[i] = TileType.FLOOR
-                    print(f'tile {i} was downstair {tile}, now is floor : {self.map.tiles[i]}')
 
             floor_tile_count = self.map.tiles.count(TileType.FLOOR)
-            print(f'floor tile count is now {floor_tile_count}')
-
-        print(f'{digger_count} diggers gave up their sobriety, of whom {active_digger_count} found a wall.')
 
         best_exit = return_most_distant_reachable_area(self.map, start_idx)
 
