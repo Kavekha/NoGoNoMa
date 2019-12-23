@@ -5,11 +5,11 @@ from map_builders.bsp_map_builder import BspMapBuilder
 from map_builders.bps_interior_map_builder import BspInteriorMapBuilder
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
-from map_builders.builder_structs import DrunkSpawnMode
+from map_builders.maze_builder import MazeBuilder
 
 
 def random_builder(depth):
-    rand = randint(0, 6)
+    rand = 10   #randint(0, 7)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:
@@ -24,8 +24,10 @@ def random_builder(depth):
         return DrunkardsWalkBuilder(depth).open_halls()
     elif rand == 6:
         return DrunkardsWalkBuilder(depth).winding_passages()
+    elif rand == 7:
+        return MazeBuilder(depth)
     else:
-        return SimpleMapBuilder(depth)
+        return MazeBuilder(depth)
 
 
 def build_random_map(depth):
