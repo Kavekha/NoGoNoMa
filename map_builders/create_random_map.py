@@ -7,10 +7,12 @@ from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
 from map_builders.maze_builder import MazeBuilder
 from map_builders.diffusion_limited_aggregation_builder import DLABuilder
+from map_builders.prefab_builder import PrefabBuilder, PrefabLevel, PrefabSection
+from map_builders.builder_structs import LEVEL_MAP, RIGHT_FORT, VerticalPlacement, HorizontalPlacement
 
 
 def random_builder(depth):
-    rand = randint(0, 13)
+    rand = 100  #randint(0, 13)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:
@@ -39,8 +41,16 @@ def random_builder(depth):
         return DrunkardsWalkBuilder(depth).fat_passages()
     elif rand == 13:
         return DrunkardsWalkBuilder(depth).fearfull_symmetry()
+    elif rand == 14:
+        return PrefabBuilder(depth, PrefabLevel(LEVEL_MAP, 80, 42))
+    elif rand == 15:
+        return PrefabBuilder(depth,
+                             PrefabSection(RIGHT_FORT, 15, 43, (HorizontalPlacement.RIGHT, VerticalPlacement.TOP)),
+                             CellularAutomataBuilder(depth))
     else:
-        return DLABuilder(depth)
+        return PrefabBuilder(depth,
+                             PrefabSection(RIGHT_FORT, 15, 43, (HorizontalPlacement.RIGHT, VerticalPlacement.TOP)),
+                             CellularAutomataBuilder(depth))
 
 
 def build_random_map(depth):

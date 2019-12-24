@@ -64,15 +64,15 @@ class Gmap:
             for x, tile in row.items():
                 tile = self.tiles[self.xy_idx(x, y)]
                 if tile == TileType.DOWN_STAIRS:
-                    map_y += '> '
+                    map_y += '>'
                 elif tile == TileType.FLOOR:
-                    map_y += '. '
+                    map_y += '.'
                 elif tile == TileType.WALL:
-                    map_y += '# '
+                    map_y += '#'
                 elif tile == TileType.EXIT_PORTAL:
-                    map_y += 'O '
+                    map_y += 'O'
                 else:
-                    map_y += '* '
+                    map_y += '*'
             map_string += '\n' + map_y
         print(f'\n{map_string}')
 
@@ -83,9 +83,9 @@ class Gmap:
             map_x = ''
             for y in range(0, self.width - 1):
                 if self.fov_map.walkable[x][y]:
-                    map_x += '+ '
+                    map_x += '+'
                 else:
-                    map_x += '# '
+                    map_x += '#'
             map_string += map_x + '\n'
 
         print(map_string)
