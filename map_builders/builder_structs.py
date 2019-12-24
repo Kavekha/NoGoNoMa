@@ -36,6 +36,31 @@ class VerticalPlacement(Enum):
     BOTTOM = 2
 
 
+SILLY_SMILE_MAP = """
+      
+ ^  ^ 
+  #  
+      
+ ### 
+      
+"""
+
+
+CHECKERBOARD_MAP = """
+      
+ g#%# 
+ ^# # 
+      
+"""
+
+
+TOTALY_NOT_A_TRAP = """     
+ ^^^ 
+ ^!^ 
+ ^^^ 
+     """
+
+
 RIGHT_FORT = """     #         
   #######      
   #     #      
