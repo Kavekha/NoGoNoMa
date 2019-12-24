@@ -14,12 +14,6 @@ class BspInteriorMapBuilder(MapBuilder):
         self.rooms = list()
         self.rects = list()
 
-    def spawn_entities(self):
-        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
-        for room in self.rooms:
-            if len(self.rooms) > 0 and room != self.rooms[0]:
-                spawn_room(room, self.map)
-
     def build(self):
         self.rects.clear()
         self.rects.append(Rect(1, 1, self.map.width - 2, self.map.height - 2))
@@ -59,6 +53,12 @@ class BspInteriorMapBuilder(MapBuilder):
             self.map.tiles[stair_idx] = TileType.EXIT_PORTAL
 
         self.starting_position = self.rooms[0].center()
+
+        # fill spawn list
+        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
+        for room in self.rooms:
+            if len(self.rooms) > 0 and room != self.rooms[0]:
+                spawn_room(room, self.map, self.spawn_list)
 
     def draw_corridor(self, x1, y1, x2, y2):
         x = x1

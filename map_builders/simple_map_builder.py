@@ -16,12 +16,6 @@ class SimpleMapBuilder(MapBuilder):
     def build(self):
         self.rooms_and_corridors()
 
-    def spawn_entities(self):
-        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
-        for room in self.rooms:
-            if len(self.rooms) > 0 and room != self.rooms[0]:
-                spawn_room(room, self.map)
-
     def rooms_and_corridors(self):
         MAX_ROOMS = 30
         MIN_SIZE = 6
@@ -65,3 +59,9 @@ class SimpleMapBuilder(MapBuilder):
             self.map.tiles[stair_idx] = TileType.EXIT_PORTAL
 
         self.starting_position = self.rooms[0].center()
+
+        # spawn list
+        self.map.spawn_table = RawsMaster.get_spawn_table_for_depth(self.depth)
+        for room in self.rooms:
+            if len(self.rooms) > 0 and room != self.rooms[0]:
+                spawn_room(room, self.map, self.spawn_list)
