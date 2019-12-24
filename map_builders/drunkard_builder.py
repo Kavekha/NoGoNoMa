@@ -56,10 +56,6 @@ class DrunkardsWalkBuilder(MapBuilder):
         self.symmetry = Symmetry.BOTH
         return self
 
-    def spawn_entities(self):
-        for area in self.noise_areas:
-            spawn_region(self.noise_areas[area], self.map)
-
     def build(self):
         # starting point
         x, y = self.map.width // 2, self.map.height // 2
@@ -129,6 +125,7 @@ class DrunkardsWalkBuilder(MapBuilder):
             self.starting_position = x, y
             self.take_snapshot()
 
-            # simili voronoi with noise
-
+            # simili voronoi with noise for spawn
             self.noise_areas = generate_voronoi_spawn_points(self.map)
+            for area in self.noise_areas:
+                spawn_region(self.noise_areas[area], self.map, self.spawn_list)

@@ -48,10 +48,6 @@ class DLABuilder(MapBuilder):
         self.floor_percent = 0.25
         return self
 
-    def spawn_entities(self):
-        for area in self.noise_areas:
-            spawn_region(self.noise_areas[area], self.map)
-
     def build(self):
         # starting point
         x, y = self.map.width // 2, self.map.height // 2
@@ -147,3 +143,5 @@ class DLABuilder(MapBuilder):
 
             # simili voronoi with noise
             self.noise_areas = generate_voronoi_spawn_points(self.map)
+            for area in self.noise_areas:
+                spawn_region(self.noise_areas[area], self.map, self.spawn_list)

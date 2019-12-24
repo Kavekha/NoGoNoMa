@@ -36,7 +36,7 @@ def spawn_entity(spawn_name, spawn_point, current_map):
         print(f'Spawner:spawn room: {spawn_name} requested, not generated because error.')
 
 
-def spawn_room(room, current_map):
+def spawn_room(room, current_map, spawn_list):
     possible_targets = []
     for y in range(room.y1, room.y2 + 1):
         for x in range(room.x1, room.x2 + 1):
@@ -44,21 +44,30 @@ def spawn_room(room, current_map):
             if current_map.tiles[idx] == TileType.FLOOR:
                 possible_targets.append(idx)
 
-    spawn_region(possible_targets, current_map)
+    spawn_region(possible_targets, current_map, spawn_list)
 
 
-def spawn_region(list_of_spawn_idx, current_map):
-    num_spawns = min(len(list_of_spawn_idx) - 1, randint(1, config.MAX_MONSTERS_ROOM + 3) + current_map.depth - 1)
+def spawn_region(areas, current_map, spawn_list):
     current_map.spawn_table = RawsMaster.get_spawn_table_for_depth(current_map.depth)
-    if not num_spawns:
+    spawn_points = dict()
+
+    num_spawn = min(len(areas) - 1, randint(1, config.MAX_MONSTERS_ROOM + 3)) + (current_map.depth - 1) - 3
+    if not num_spawn:
         return
-    spawn_points = list()
 
-    for i in range(0, num_spawns):
-        spawn_points.append((list_of_spawn_idx[i], current_map.spawn_table.roll()))
+    for _i in range(0, num_spawn):
+        if len(areas) == 1:
+            areas_index = 0
+        else:
+            areas_index = randint(1, len(areas) - 1)
+        map_idx = areas[areas_index]
+        spawn_points[map_idx] = current_map.spawn_table.roll()
+        print(f'area index to remove is {areas[areas_index]}. Areas : {areas}')
+        areas.remove(areas[areas_index])
 
-    for idx, spawn in spawn_points:
-        spawn_entity(spawn, idx, current_map)
+    for spawn in spawn_points:
+        print(f'spawn is {spawn}, name is {spawn_points[spawn]}')
+        spawn_list.append((spawn, spawn_points[spawn]))  # idx, name to spawn
 
 
 def spawn_player(x, y):

@@ -12,7 +12,7 @@ from map_builders.builder_structs import LEVEL_MAP, RIGHT_FORT, VerticalPlacemen
 
 
 def random_builder(depth):
-    rand = 100  #randint(0, 13)
+    rand = 14  #randint(0, 13)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:

@@ -30,11 +30,10 @@ class PrefabBuilder(MapBuilder):
         super().__init__(depth)
         self.noise_areas = list()
         self.template = template
-        self.spawns = list()
         self.previous_builder = previous_builder
 
     def spawn_entities(self):
-        for spawn in self.spawns:
+        for spawn in self.spawn_list:
             spawn_entity(spawn[1], spawn[0], self.map)
 
     def build(self):
@@ -61,17 +60,7 @@ class PrefabBuilder(MapBuilder):
                 self.map.tiles[best_exit] = TileType.EXIT_PORTAL
 
     def apply_sectionnal(self):
-        prev_builder = self.previous_builder
-        prev_builder.build_map()
-        self.starting_position = prev_builder.get_starting_position()
-        self.map = deepcopy(prev_builder.get_map())
-        self.take_snapshot()
-
-        string_vec = self.template.template
-        string_vec = string_vec.replace('\n', '').replace('\r', '')
-
-        print(f'sectionnal: template is : \n{self.template.template}')
-
+        # New section coords
         chunk_x = 0
         if type(self.template.placement[0]) is not HorizontalPlacement:
             print(f'placement should be a tuple, with Horizontal as first option')
@@ -94,7 +83,22 @@ class PrefabBuilder(MapBuilder):
         elif self.template.placement[1] == VerticalPlacement.BOTTOM:
             chunk_y = (self.map.height - 1) - self.template.height
 
-        print(f'chunk : {chunk_x}, {chunk_y}')
+        # build map
+        prev_builder = self.previous_builder
+        prev_builder.build_map()
+        self.starting_position = prev_builder.get_starting_position()
+        self.map = deepcopy(prev_builder.get_map())
+        for entity in prev_builder.get_spawn_list():
+            idx = entity[0]
+            x, y = self.map.index_to_point2d(idx)
+            if chunk_x > x > (chunk_x + self.template.width) and chunk_y > y > (chunk_y + self.template.height):
+                self.spawn_list.append((idx, entity[1]))
+        self.take_snapshot()
+
+        string_vec = self.template.template
+        string_vec = string_vec.replace('\n', '').replace('\r', '')
+
+        print(f'sectionnal: template is : \n{self.template.template}')
 
         i = 0
         for y in range(0, self.template.height):
@@ -118,19 +122,19 @@ class PrefabBuilder(MapBuilder):
             self.map.tiles[idx] = TileType.DOWN_STAIRS
         elif char == 'g':
             self.map.tiles[idx] = TileType.FLOOR
-            self.spawns.append((idx, "MORBLIN"))
+            self.spawn_list.append((idx, "MORBLIN"))
         elif char == 'o':
             self.map.tiles[idx] = TileType.FLOOR
-            self.spawns.append((idx, "OOGLOTH"))
+            self.spawn_list.append((idx, "OOGLOTH"))
         elif char == '^':
             self.map.tiles[idx] = TileType.FLOOR
-            self.spawns.append((idx, "TRAP"))
+            self.spawn_list.append((idx, "TRAP"))
         elif char == '%':
             self.map.tiles[idx] = TileType.FLOOR
-            self.spawns.append((idx, "DAGGER"))
+            self.spawn_list.append((idx, "DAGGER"))
         elif char == '!':
             self.map.tiles[idx] = TileType.FLOOR
-            self.spawns.append((idx, "HEALTH_POTION"))
+            self.spawn_list.append((idx, "HEALTH_POTION"))
         else:
             if char == '\n' or char == '\r':
                 self.map.tiles[idx] = TileType.EXIT_PORTAL

@@ -1,6 +1,7 @@
 import copy
 
 from map_builders.map_model import Gmap
+from gmap.spawner import spawn_entity
 import config
 
 
@@ -11,9 +12,13 @@ class MapBuilder:
         self.depth = depth
         self.history = list()
         self.map.create_fov_map()
+        self.spawn_list = list()
 
     def reset(self):
         self.history = list()
+
+    def get_spawn_list(self):
+        return self.spawn_list
 
     def get_snapshot_history(self):
         return self.history
@@ -32,7 +37,8 @@ class MapBuilder:
         self.map.create_fov_map()
 
     def spawn_entities(self):
-        raise NotImplementedError
+        for spawn in self.spawn_list:
+            spawn_entity(spawn[1], spawn[0], self.map)
 
     def get_map(self):
         return self.map

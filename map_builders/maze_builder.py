@@ -18,10 +18,6 @@ class MazeBuilder(MapBuilder):
         super().__init__(depth)
         self.noise_areas = list()
 
-    def spawn_entities(self):
-        for area in self.noise_areas:
-            spawn_region(self.noise_areas[area], self.map)
-
     def build(self):
         print(f'---- Maze builder in action! -----')
 
@@ -47,6 +43,8 @@ class MazeBuilder(MapBuilder):
             self.take_snapshot()
 
             self.noise_areas = generate_voronoi_spawn_points(self.map)
+            for area in self.noise_areas:
+                spawn_region(self.noise_areas[area], self.map, self.spawn_list)
 
 
 class Cell:
