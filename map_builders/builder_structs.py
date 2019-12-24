@@ -12,7 +12,7 @@ class DLAAlgorithm(Enum):
     CENTRAL_ATTRACTOR = 2
 
 
-class DLASymmetry(Enum):
+class Symmetry(Enum):
     NONE = 0
     HORIZONTAL = 1
     VERTICAL = 2

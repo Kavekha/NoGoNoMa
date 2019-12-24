@@ -1,6 +1,7 @@
 import tcod
 
 from gmap.gmap_enums import TileType
+from map_builders.builder_structs import Symmetry
 
 
 def apply_room_to_map(room, map):
@@ -77,3 +78,49 @@ def generate_voronoi_spawn_points(gmap):
     print(f'number of areas : {count}')
 
     return noise_areas
+
+
+def paint(x, y, gmap, symmetry=Symmetry.NONE, brush_size=1):
+    if symmetry == Symmetry.NONE:
+        apply_paint(x, y, gmap, brush_size)
+    elif symmetry == Symmetry.HORIZONTAL:
+        center_x = gmap.width // 2
+        if x == center_x:
+            apply_paint(x, y, gmap, brush_size)
+        else:
+            dist_x = abs(center_x - x)
+            apply_paint(center_x + dist_x, y, gmap, brush_size)
+            apply_paint(center_x - dist_x, y, gmap, brush_size)
+    elif symmetry == Symmetry.VERTICAL:
+        center_y = gmap.height // 2
+        if y == center_y:
+            apply_paint(x, y, gmap, brush_size)
+        else:
+            dist_y = abs(center_y - y)
+            apply_paint(x, center_y + dist_y, gmap, brush_size)
+            apply_paint(x, center_y - dist_y, gmap, brush_size)
+    elif symmetry == Symmetry.BOTH:
+        center_x = gmap.width // 2
+        center_y = gmap.height // 2
+        if x == center_x and y == center_y:
+            apply_paint(x, y, gmap, brush_size)
+        else:
+            dist_x = abs(center_x - x)
+            apply_paint(center_x + dist_x, y, gmap, brush_size)
+            apply_paint(center_x - dist_x, y, gmap, brush_size)
+            dist_y = abs(center_y - y)
+            apply_paint(x, center_y + dist_y, gmap, brush_size)
+            apply_paint(x, center_y - dist_y, gmap, brush_size)
+
+
+def apply_paint(x, y, gmap, brush_size=1):
+    if brush_size == 1:
+        digger_idx = gmap.xy_idx(x, y)
+        gmap.tiles[digger_idx] = TileType.FLOOR
+    else:
+        half_brush_size = int(brush_size // 2)
+        for brush_y in range(y - half_brush_size, y + half_brush_size):
+            for brush_x in range(x - half_brush_size, x + half_brush_size):
+                if 1 < brush_x < gmap.width - 1 and 1 < brush_y < gmap.height - 1:
+                    idx = gmap.xy_idx(brush_x, brush_y)
+                    gmap.tiles[idx] = TileType.FLOOR

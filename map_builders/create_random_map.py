@@ -10,7 +10,7 @@ from map_builders.diffusion_limited_aggregation_builder import DLABuilder
 
 
 def random_builder(depth):
-    rand = randint(0, 11)
+    rand = randint(0, 13)
     if rand == 0:
         return BspInteriorMapBuilder(depth)
     elif rand == 1:
@@ -35,6 +35,10 @@ def random_builder(depth):
         return DLABuilder(depth).central_attractor()
     elif rand == 11:
         return DLABuilder(depth).insectoid()
+    elif rand == 12:
+        return DrunkardsWalkBuilder(depth).fat_passages()
+    elif rand == 13:
+        return DrunkardsWalkBuilder(depth).fearfull_symmetry()
     else:
         return DLABuilder(depth)
 
