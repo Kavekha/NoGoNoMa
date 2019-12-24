@@ -1,6 +1,5 @@
 from enum import Enum
 
-from map_builders.create_random_map import build_random_map
 from components.in_backpack_component import InBackPackComponent
 from components.equipped_component import EquippedComponent
 from player_systems.game_system import player_gain_xp, xp_for_next_depth
