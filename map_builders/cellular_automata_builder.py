@@ -1,54 +1,56 @@
-import tcod
-
 import copy
 from random import randint
 
-from map_builders.map_builders import MapBuilder
+from map_builders.builder_map import InitialMapBuilder
 from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
 from gmap.gmap_enums import TileType
-from gmap.spawner import spawn_region
 import config
+from gmap.spawner import spawn_region
 
 
-class CellularAutomataBuilder(MapBuilder):
-    def __init__(self, depth):
-        super().__init__(depth)
+
+class CellularAutomataBuilder(InitialMapBuilder):
+    def __init__(self):
+        super().__init__()
         self.noise_areas = dict()
 
-    def build(self):
-        for y in range(1, self.map.height - 2):
-            for x in range(1, self.map.width - 2):
-                rand = randint(1, 100)
-                idx = self.map.xy_idx(x, y)
-                if rand > 55:
-                    self.map.tiles[idx] = TileType.FLOOR
-                else:
-                    self.map.tiles[idx] = TileType.WALL
+    def build_map(self, build_data):
+        self.build(build_data)
 
-        self.take_snapshot()
+    def build(self, build_data):
+        for y in range(1, build_data.map.height - 2):
+            for x in range(1, build_data.map.width - 2):
+                rand = randint(1, 100)
+                idx = build_data.map.xy_idx(x, y)
+                if rand > 55:
+                    build_data.map.tiles[idx] = TileType.FLOOR
+                else:
+                    build_data.map.tiles[idx] = TileType.WALL
+
+        build_data.take_snapshot()
 
         for _i in range(0, 15):
-            newtiles = copy.deepcopy(self.map.tiles)
+            newtiles = copy.deepcopy(build_data.map.tiles)
 
-            for y in range(1, self.map.height -2):
-                for x in range(1, self.map.width - 2):
-                    idx = self.map.xy_idx(x, y)
+            for y in range(1, build_data.map.height -2):
+                for x in range(1, build_data.map.width - 2):
+                    idx = build_data.map.xy_idx(x, y)
                     neighbors = 0
-                    if self.map.tiles[idx - 1] == TileType.WALL:
+                    if build_data.map.tiles[idx - 1] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx + 1] == TileType.WALL:
+                    if build_data.map.tiles[idx + 1] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx - self.map.width] == TileType.WALL:
+                    if build_data.map.tiles[idx - build_data.map.width] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx + self.map.width] == TileType.WALL:
+                    if build_data.map.tiles[idx + build_data.map.width] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx - (self.map.width + 1)] == TileType.WALL:
+                    if build_data.map.tiles[idx - (build_data.map.width + 1)] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx - (self.map.width - 1)] == TileType.WALL:
+                    if build_data.map.tiles[idx - (build_data.map.width - 1)] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx + (self.map.width + 1)] == TileType.WALL:
+                    if build_data.map.tiles[idx + (build_data.map.width + 1)] == TileType.WALL:
                         neighbors += 1
-                    if self.map.tiles[idx + (self.map.width - 1)] == TileType.WALL:
+                    if build_data.map.tiles[idx + (build_data.map.width - 1)] == TileType.WALL:
                         neighbors += 1
 
                     if neighbors > 4 or neighbors == 0:
@@ -56,9 +58,11 @@ class CellularAutomataBuilder(MapBuilder):
                     else:
                         newtiles[idx] = TileType.FLOOR
 
-            self.map.tiles = copy.deepcopy(newtiles)
-            self.take_snapshot()
+            build_data.map.tiles = copy.deepcopy(newtiles)
+            build_data.take_snapshot()
 
+    '''
+    def old(self):
         # starting point
         x, y = self.map.width // 2, self.map.height // 2
         start_idx = self.map.xy_idx(x, y)
@@ -92,3 +96,4 @@ class CellularAutomataBuilder(MapBuilder):
             print('WARNING: Cellula Automata - No exit found. Re-doing.')
             self.reset()
             self.build()
+    '''

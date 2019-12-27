@@ -11,6 +11,9 @@ class InitialMapBuilder:
 
 
 class MetaMapbuilder:
+    def __init__(self, *args):
+        self.args = args
+
     def build_map(self, build_data):
         raise NotImplementedError
 

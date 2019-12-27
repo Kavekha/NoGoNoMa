@@ -2,7 +2,6 @@ from systems.system import System
 from world import World
 from components.position_component import PositionComponent
 from components.blocktile_component import BlockTileComponent
-from gmap.utils import xy_idx
 
 
 class MapIndexingSystem(System):
@@ -16,7 +15,7 @@ class MapIndexingSystem(System):
         current_map.clear_content_index()
 
         for entity, (position, *args) in subjects:
-            idx = xy_idx(position.x, position.y)
+            idx = current_map.xy_idx(position.x, position.y)
 
             if World.get_entity_component(entity, BlockTileComponent):
                 current_map.blocked_tiles[idx] = True

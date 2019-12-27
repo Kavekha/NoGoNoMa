@@ -2,10 +2,6 @@ from bearlibterminal import terminal
 
 from ui_system.ui_enums import Layers
 from gmap.gmap_enums import TileType
-from gmap.utils import xy_idx
-from world import World
-from components.player_component import PlayerComponent
-from components.viewshed_component import ViewshedComponent
 from ui_system.interface import Interface, GraphicalModes
 import config
 
@@ -59,8 +55,8 @@ def draw_map_tiles(map_to_draw, tiles):
     x = 0
     y = 0
     for tile in range(len(tiles)):
-        if map_to_draw.revealed_tiles[xy_idx(x, y)]:
-            if map_to_draw.visible_tiles[xy_idx(x, y)]:
+        if map_to_draw.revealed_tiles[map_to_draw.xy_idx(x, y)]:
+            if map_to_draw.visible_tiles[map_to_draw.xy_idx(x, y)]:
                 terminal.composition(terminal.TK_ON)
                 if tiles[tile] == TileType.FLOOR:
                     terminal.color('dark yellow')

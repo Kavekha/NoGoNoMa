@@ -8,7 +8,6 @@ from components.skills_component import Skills
 from texts import Texts
 from ui_system.render_functions import get_obfuscate_name
 from player_systems.game_system import skill_roll_against_difficulty
-from gmap.utils import xy_idx
 import config
 
 
@@ -34,7 +33,7 @@ class VisibilitySystem(System):
                 for row in viewshed.visible_tiles:
                     for tile in row:
                         if tile:
-                            idx = xy_idx(x, y)
+                            idx = current_map.xy_idx(x, y)
                             current_map.revealed_tiles[idx] = True
                             current_map.visible_tiles[idx] = True
 

@@ -1,7 +1,33 @@
 import tcod
 
+import math
+
 from gmap.gmap_enums import TileType
 from map_builders.builder_structs import Symmetry
+
+
+def distance_to(self_position_x, self_position_y, other_position_x, other_position_y):
+    dx = other_position_x - self_position_x
+    dy = other_position_y - self_position_y
+    return math.sqrt(dx ** 2 + dy ** 2)
+
+
+def draw_corridor(gmap, x1, y1, x2, y2):
+    x = x1
+    y = y1
+
+    while x != x2 or y != y2:
+        if x < x2:
+            x += 1
+        elif x > x2:
+            x -= 1
+        elif y < y2:
+            y += 1
+        elif y > y2:
+            y -= 1
+
+        idx = gmap.xy_idx(x, y)
+        gmap.tiles[idx] = TileType.FLOOR
 
 
 def apply_room_to_map(room, map):

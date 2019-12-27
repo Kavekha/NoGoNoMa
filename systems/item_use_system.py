@@ -15,7 +15,6 @@ from components.in_backpack_component import InBackPackComponent
 from components.position_component import PositionComponent
 from systems.particule_system import ParticuleBuilder
 from components.identified_component import IdentifiedItemComponent
-from gmap.utils import xy_idx, index_to_point2d
 from world import World
 from texts import Texts
 import config
@@ -29,6 +28,8 @@ class ItemUseSystem(System):
 
         player = World.fetch('player')
         logs = World.fetch('logs')
+        current_map = World.fetch('current_map')
+
         for entity, (wants_to_use, pools, *args) in subjects:
 
             item_inflicts_dmg = World.get_entity_component(wants_to_use.item, InflictsDamageComponent)
@@ -40,8 +41,7 @@ class ItemUseSystem(System):
             targets = []
             if wants_to_use.target:
                 target_x, target_y = wants_to_use.target
-                idx = xy_idx(target_x, target_y)
-                current_map = World.fetch('current_map')
+                idx = current_map.xy_idx(target_x, target_y)
                 aoe = World.get_entity_component(wants_to_use.item, AreaOfEffectComponent)
 
                 if aoe:
@@ -53,12 +53,12 @@ class ItemUseSystem(System):
                             radius_x = target_x + x
                             radius_y = target_y + y
                             if view.visible_tiles[radius_y][radius_x]:
-                                new_idx = xy_idx(radius_x, radius_y)
+                                new_idx = current_map.xy_idx(radius_x, radius_y)
                                 blast_tiles_idx.append(new_idx)
                     for tile in blast_tiles_idx:
                         for mob in current_map.tile_content[tile]:
                             targets.append(mob)
-                        pos_x, pos_y = index_to_point2d(tile)
+                        pos_x, pos_y = current_map.index_to_point2d(tile)
                         ParticuleBuilder.request(pos_x, pos_y, 'orange', '░', 'particules/fire.png')
                 else:
                     for mob in current_map.tile_content[idx]:

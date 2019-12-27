@@ -12,7 +12,7 @@ from components.confusion_component import ConfusionComponent
 from components.triggers_components import EntityMovedComponent
 from systems.particule_system import ParticuleBuilder
 from state import States
-from gmap.utils import distance_to, xy_idx
+from map_builders.commons import distance_to
 from world import World
 import config
 
@@ -73,7 +73,7 @@ class MonsterAi(System):
 
     def can_move(self, x, y):
         current_map = World.fetch('current_map')
-        if not current_map.blocked_tiles[xy_idx(x, y)]:
+        if not current_map.blocked_tiles[current_map.xy_idx(x, y)]:
             return True
         return False
 

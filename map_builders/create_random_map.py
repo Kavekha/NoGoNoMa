@@ -5,9 +5,15 @@ from map_builders.simple_map_builder import SimpleMapBuilder
 from map_builders.room_based_spawner import RoomBasedSpawner
 from map_builders.room_based_stairs import RoomBasedStairs
 from map_builders.room_based_starting_position import RoomBasedStartingPosition
-
 from map_builders.bsp_map_builder import BspMapBuilder
 from map_builders.bps_interior_map_builder import BspInteriorMapBuilder
+from map_builders.area_starting_position import AreaStartingPosition
+from map_builders.cull_unreachable import CullUnreachable
+from map_builders.voronoi_spawning import VoronoiSpawning
+from map_builders.distant_exit import DistantExit
+from gmap.gmap_enums import StartX, StartY
+
+
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
 from map_builders.maze_builder import MazeBuilder
@@ -17,7 +23,7 @@ from map_builders.builder_structs import RIGHT_FORT, TOTALY_NOT_A_TRAP, \
     VerticalPlacement, HorizontalPlacement
 
 
-def random_builder(depth):
+def old_random_builder(depth):
     rand = randint(0, 13)
     if rand == 0:
         result = BspInteriorMapBuilder(depth)
@@ -62,17 +68,40 @@ def random_builder(depth):
     return result
 
 
+def random_build(depth):
+    rand = 3   # randint(0, 2)
+    if rand == 0:
+        builder = BuilderChain(depth)
+        builder.start_with(SimpleMapBuilder())
+        builder.build_with(RoomBasedSpawner())
+        builder.build_with(RoomBasedStartingPosition())
+        builder.build_with(RoomBasedStairs())
+        return builder
+    elif rand == 1:
+        builder = BuilderChain(depth)
+        builder.start_with(BspMapBuilder())
+        builder.build_with(RoomBasedSpawner())
+        builder.build_with(RoomBasedStartingPosition())
+        builder.build_with(RoomBasedStairs())
+        return builder
+    elif rand == 2:
+        builder = BuilderChain(depth)
+        builder.start_with(BspInteriorMapBuilder())
+        builder.build_with(RoomBasedSpawner())
+        builder.build_with(RoomBasedStartingPosition())
+        builder.build_with(RoomBasedStairs())
+        return builder
+    elif rand == 3:
+        builder = BuilderChain(depth)
+        builder.start_with(CellularAutomataBuilder())
+        builder.build_with(AreaStartingPosition(StartX.CENTER, StartY.CENTER))
+        builder.build_with(CullUnreachable())
+        builder.build_with(VoronoiSpawning())
+        builder.build_with(DistantExit())
+        return builder
+
+
 def build_random_map(depth):
-    builder = BuilderChain(depth)
-    builder.start_with(SimpleMapBuilder())
-    builder.build_with(RoomBasedSpawner())
-    builder.build_with(RoomBasedStartingPosition())
-    builder.build_with(RoomBasedStairs())
-    return builder
+    return random_build(depth)
 
-
-def old_build_random_map(depth):
-    map_builder = random_builder(depth)
-    map_builder.build_map()
-    return map_builder
 
