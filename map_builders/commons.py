@@ -27,12 +27,13 @@ def draw_corridor(gmap, x1, y1, x2, y2):
         idx = gmap.xy_idx(x, y)
         gmap.tiles[idx] = TileType.FLOOR
 
-
+'''
 def apply_room_to_map(room, map):
     print(f'apply room : {room}, with {room.x1}, {room.x2}, {room.y1, room.y2}')
     for y in range(room.y1, room.y2 + 1):
         for x in range(room.x1, room.x2 + 1):
             map.tiles[map.xy_idx(x, y)] = TileType.FLOOR
+'''
 
 
 def apply_horizontal_tunnel(x1, x2, y, map):

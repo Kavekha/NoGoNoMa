@@ -3,7 +3,6 @@ from random import randint
 
 from map_builders.builder_map import InitialMapBuilder
 from map_builders.map_builders import Rect
-from map_builders.commons import apply_room_to_map
 from gmap.gmap_enums import TileType
 
 
@@ -26,11 +25,11 @@ class BspMapBuilder(InitialMapBuilder):
             rect = self.get_random_rect()
             candidate = self.get_random_sub_rect(rect)
 
-            if self.is_possible(candidate, build_data.map):
-                apply_room_to_map(candidate, build_data.map)
+            if self.is_possible(candidate, build_data.map, rooms):
+                # apply_room_to_map(candidate, build_data.map)
                 rooms.append(candidate)
                 self.add_subrects(rect)
-                build_data.take_snapshot()
+                # build_data.take_snapshot()
 
             n_rooms += 1
 
@@ -68,13 +67,17 @@ class BspMapBuilder(InitialMapBuilder):
 
         return result
 
-    def is_possible(self, rect, gmap):
+    def is_possible(self, rect, gmap, rooms):
         expanded = copy.deepcopy(rect)
         expanded.x1 -= 2
         expanded.x2 += 2
         expanded.y1 -= 2
         expanded.y2 += 2
         can_build = True
+
+        for room in rooms:
+            if room.intersect(rect):
+                can_build = False
 
         for y in range(expanded.y1, expanded.y2):
             for x in range(expanded.x1, expanded.x2):

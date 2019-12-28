@@ -17,6 +17,7 @@ from map_builders.rooms_corridors_dogleg import DogLegCorridors
 from map_builders.bsp_corridors import BSPCorridors
 from map_builders.room_sorter import RoomSorter
 from map_builders.builder_structs import StartX, StartY, RoomSort
+from map_builders.room_drawer import RoomDrawer
 
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
@@ -233,6 +234,8 @@ def random_room_builder(builder):
         elif sort_roll == 5:
             builder.build_with(RoomSorter(RoomSort.CENTRAL))
 
+    builder.build_with(RoomDrawer)
+
     corridor_roll = randint(1, 2)
     print(f'corridor rand is {corridor_roll}')
     if corridor_roll == 1:
@@ -356,4 +359,14 @@ def build_random_map(depth):
     # return random_build_example(depth)
     return random_builder(depth)
 
+'''
+    builder = BuilderChain(depth)
+    builder.start_with(SimpleMapBuilder())
+    builder.build_with(RoomDrawer())
+    builder.build_with(DogLegCorridors())
+    builder.build_with(RoomBasedSpawner())
+    builder.build_with(RoomBasedStartingPosition())
+    builder.build_with(RoomBasedStairs())
 
+    return builder
+'''
