@@ -1,47 +1,53 @@
 import copy
 from random import randint
 
-from map_builders.map_builders import MapBuilder, Rect
+from map_builders.builder_map import InitialMapBuilder
+from map_builders.commons import draw_corridor
+from map_builders.map_builders import Rect
 from gmap.gmap_enums import TileType
-from data.load_raws import RawsMaster
-from gmap.spawner import spawn_room
 import config
 
 
-class BspInteriorMapBuilder(MapBuilder):
-    def __init__(self, depth):
-        super().__init__(depth)
-        self.rooms = list()
+class BspInteriorMapBuilder(InitialMapBuilder):
+    def __init__(self):
         self.rects = list()
 
-    def build(self):
+    def build_map(self, build_data):
+        self.build(build_data)
+
+    def build(self, build_data):
         self.rects.clear()
-        self.rects.append(Rect(1, 1, self.map.width - 2, self.map.height - 2))
+        self.rects.append(Rect(1, 1, build_data.map.width - 2, build_data.map.height - 2))
         first_room = self.rects[0]
         self.add_subrects(first_room)
 
-        rooms = copy.deepcopy(self.rects)
-        for room in rooms:
-            self.rooms.append(room)
+        rooms = list()
+        rooms_copy = copy.deepcopy(self.rects)
+        for room in rooms_copy:
+            rooms.append(room)
             for y in range(room.y1, room.y2):
                 for x in range(room.x1, room.x2):
-                    idx = self.map.xy_idx(x, y)
-                    if 0 < idx < ((self.map.width * self.map.height) - 1):
-                        self.map.tiles[idx] = TileType.FLOOR
-            self.take_snapshot()
+                    idx = build_data.map.xy_idx(x, y)
+                    if 0 < idx < ((build_data.map.width * build_data.map.height) - 1):
+                        build_data.map.tiles[idx] = TileType.FLOOR
+            build_data.take_snapshot()
 
-        for i in range(0, len(self.rooms) - 1):
-            room = self.rooms[i]
-            next_room = self.rooms[i + 1]
+        for i in range(0, len(rooms) - 1):
+            room = rooms[i]
+            next_room = rooms[i + 1]
 
             start_x = room.x1 + randint(1, abs(room.x1 - room.x2) - 1)
             start_y = room.y1 + randint(1, abs(room.y1 - room.y2) - 1)
             end_x = next_room.x1 + randint(1, abs(next_room.x1 - next_room.x2) - 1)
             end_y = next_room.y1 + randint(1, abs(next_room.y1 - next_room.y2) - 1)
 
-            self.draw_corridor(start_x, start_y, end_x, end_y)
-            self.take_snapshot()
+            draw_corridor(build_data.map, start_x, start_y, end_x, end_y)
+            build_data.take_snapshot()
 
+        build_data.rooms = rooms
+
+    '''
+    def old(self):
         self.starting_position = self.rooms[0].center()
 
         stair_position_x, stair_position_y = self.rooms[len(self.rooms) - 1].center()
@@ -59,23 +65,7 @@ class BspInteriorMapBuilder(MapBuilder):
         for room in self.rooms:
             if len(self.rooms) > 0 and room != self.rooms[0]:
                 spawn_room(room, self.map, self.spawn_list)
-
-    def draw_corridor(self, x1, y1, x2, y2):
-        x = x1
-        y = y1
-
-        while x != x2 or y != y2:
-            if x < x2:
-                x += 1
-            elif x > x2:
-                x -= 1
-            elif y < y2:
-                y += 1
-            elif y > y2:
-                y -= 1
-
-            idx = self.map.xy_idx(x, y)
-            self.map.tiles[idx] = TileType.FLOOR
+    '''
 
     def add_subrects(self, rect):
         if self.rects:

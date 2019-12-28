@@ -8,7 +8,7 @@ from components.viewshed_component import ViewshedComponent
 from components.position_component import PositionComponent
 from ui_system.ui_enums import Layers
 from ui_system.interface import Interface, GraphicalModes
-from gmap.utils import distance_to
+from map_builders.commons import distance_to
 from player_systems.player_input import targeting_input
 
 

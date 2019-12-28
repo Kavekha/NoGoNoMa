@@ -2,7 +2,6 @@ from bearlibterminal import terminal
 
 import config
 from world import World
-from gmap.utils import xy_idx
 from ui_system.ui_enums import Layers
 from ui_system.render_functions import get_item_display_name
 from components.position_component import PositionComponent
@@ -21,7 +20,7 @@ def draw_tooltip():
         return
 
     # current_map.revealed_tiles[xy_idx(mouse_pos_x, mouse_pos_y)] (Pour les revealed. Mais on voit pas les items)
-    if current_map.visible_tiles[xy_idx(mouse_pos_x, mouse_pos_y)]:
+    if current_map.visible_tiles[current_map.xy_idx(mouse_pos_x, mouse_pos_y)]:
         old_tooltip, old_mouse_x, old_mouse_y = World.fetch('tooltip')
 
         tooltip = []

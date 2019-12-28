@@ -13,18 +13,22 @@ Release 3 - Done
     Traps
     Diffusion limited aggregation
     Symetry and brushes as librairy
-    > Prefabs
+    Prefabs : maps
+    Prefabs : sections
+    Prefabs : Rooms
 
 Release 3 - To Do
-    Raw particules
+    Builder chaining
+    Layers
+    Rooms builders
+    Corridors
+    Doors
+    Initiative & turn lost fix.
     Effects
     Cursed items
     More Items
-    Rooms builders
-    Better corridors
     Room building & props
-    Doors
-    * Raws: particules.
+    Raws: particules.
 
 
 

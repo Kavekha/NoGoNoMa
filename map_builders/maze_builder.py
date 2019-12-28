@@ -1,50 +1,24 @@
 from random import randint
 
-from map_builders.map_builders import MapBuilder
+from map_builders.builder_map import InitialMapBuilder
 from gmap.gmap_enums import TileType
-from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
-from gmap.spawner import spawn_region
-
-import config
 
 
-class MazeBuilder(MapBuilder):
+class MazeBuilder(InitialMapBuilder):
     TOP = 0
     RIGHT = 1
     BOTTOM = 2
     LEFT = 3
 
-    def __init__(self, depth):
-        super().__init__(depth)
+    def __init__(self):
+        super().__init__()
         self.noise_areas = list()
 
-    def build(self):
+    def build_map(self, build_data):
         print(f'---- Maze builder in action! -----')
 
-        print(f'self map is  : {self.map}')
-        maze = Grid((self.map.width // 2) - 2, (self.map.height // 2) - 2)
-        maze.generate_maze(self.map, self)
-
-        # starting point
-        x, y = 2, 2
-        start_idx = self.map.xy_idx(x, y)
-
-        best_exit = return_most_distant_reachable_area(self.map, start_idx)
-        self.take_snapshot()
-
-        if best_exit:
-            if self.depth != config.MAX_DEPTH:
-                self.map.tiles[best_exit] = TileType.DOWN_STAIRS
-            else:
-                self.map.tiles[best_exit] = TileType.EXIT_PORTAL
-
-            # we can add starting position for player
-            self.starting_position = x, y
-            self.take_snapshot()
-
-            self.noise_areas = generate_voronoi_spawn_points(self.map)
-            for area in self.noise_areas:
-                spawn_region(self.noise_areas[area], self.map, self.spawn_list)
+        maze = Grid((build_data.map.width // 2) - 2, (build_data.map.height // 2) - 2)
+        maze.generate_maze(build_data.map, build_data)
 
 
 class Cell:
@@ -112,18 +86,15 @@ class Grid:
 
     def find_next_cell(self):
         neighbors = self.get_available_neighbors()
-        print(f'Find next cell : available : {neighbors}')
         if neighbors:
             if len(neighbors) == 1:
-                print(f'one neighbor : {neighbors[0]}')
                 return neighbors[0]
             else:
                 rand = randint(0, len(neighbors) - 1)
-                print(f'several neighbors : chosen is {neighbors[rand]}')
                 return neighbors[rand]
         return None
 
-    def generate_maze(self, gmap, builder):
+    def generate_maze(self, gmap, build_data):
         iteration = 0
         while True:
             self.cells[self.current].visited = True
@@ -145,11 +116,10 @@ class Grid:
 
             if iteration % 50 == 0:
                 self.copy_to_map(gmap)
-                builder.take_snapshot()
+                build_data.take_snapshot()
             iteration += 1
 
     def copy_to_map(self, gmap):
-        print(f'copy to map : map is {gmap}')
         for i, tile in enumerate(gmap.tiles):
             gmap.tiles[i] = TileType.WALL
 
