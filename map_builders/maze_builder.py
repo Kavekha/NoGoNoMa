@@ -14,7 +14,7 @@ class MazeBuilder(InitialMapBuilder):
         super().__init__()
         self.noise_areas = list()
 
-    def build_map(self, build_data):
+    def build_initial_map(self, build_data):
         print(f'---- Maze builder in action! -----')
 
         maze = Grid((build_data.map.width // 2) - 2, (build_data.map.height // 2) - 2)

@@ -1,5 +1,3 @@
-import tcod
-
 import math
 
 from gmap.gmap_enums import TileType

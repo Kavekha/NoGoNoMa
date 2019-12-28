@@ -36,6 +36,27 @@ class VerticalPlacement(Enum):
     BOTTOM = 2
 
 
+class StartX(Enum):
+    LEFT = 0
+    CENTER = 1
+    RIGHT = 2
+
+
+class StartY(Enum):
+    TOP = 0
+    CENTER = 1
+    BOTTOM = 2
+
+
+class RoomSort(Enum):
+    LEFTMOST = 0
+    RIGHTMOST = 1
+    TOPMOST = 2
+    BOTTOMMOST = 3
+    CENTRAL = 4
+    NONE = 5
+
+
 SILLY_SMILE_MAP = """
       
  ^  ^ 

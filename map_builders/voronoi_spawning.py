@@ -6,7 +6,7 @@ from gmap.spawner import spawn_region
 
 
 class VoronoiSpawning(MetaMapbuilder):
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
         noise = tcod.noise.Noise(
             dimensions=2,
             algorithm=tcod.NOISE_SIMPLEX,
