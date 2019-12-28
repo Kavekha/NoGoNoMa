@@ -13,8 +13,9 @@ class InitialMapBuilder:
 class MetaMapbuilder:
     def __init__(self, *args):
         self.args = args
+        print(f'args is {self.args}')
 
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
         raise NotImplementedError
 
 
@@ -54,10 +55,13 @@ class BuilderChain:
         if not self.starter:
             print('Cant build map without a starter builder!')
             raise NotImplementedError
-        self.starter.build_map(self.build_data)
+        print(f'build map from InitialMap : starter is {self.starter}')
+        print(f'build map from initialmap : build data is {self.build_data}')
+        self.starter.build_initial_map(self.build_data)
 
         for metabuilder in self.builders:
-            metabuilder.build_map(self.build_data)
+            print(f'playing : {metabuilder}, from {self.builders}')
+            metabuilder.build_meta_map(self.build_data)
 
         # mandatory to work
         self.build_data.map.populate_blocked()

@@ -4,7 +4,7 @@ from gmap.spawner import spawn_room
 
 
 class RoomBasedSpawner(MetaMapbuilder):
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
         if not build_data.rooms:
             print(f'Room based spawning only work after rooms have been created.')
             raise ProcessLookupError

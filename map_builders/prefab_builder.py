@@ -38,7 +38,10 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
         self.template = template
         self.previous_builder = previous_builder
 
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
+        self.build_initial_map(build_data)
+
+    def build_initial_map(self, build_data):
         if not self.template:
             print(f'no valid template given for Prefab')
             raise NotImplementedError
@@ -54,8 +57,8 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
             print(f'This object is not valid as a template : {self.template} : {type(self.template)}')
             raise NotImplementedError
 
-        build_data.map.revealed_tiles = [True] * (build_data.map.height * build_data.map.width)
-        build_data.map.visible_tiles = [True] * (build_data.map.height * build_data.map.width)
+        #build_data.map.revealed_tiles = [True] * (build_data.map.height * build_data.map.width)
+        #build_data.map.visible_tiles = [True] * (build_data.map.height * build_data.map.width)
 
     def apply_room_vaults(self, build_data):
         x = y = 0

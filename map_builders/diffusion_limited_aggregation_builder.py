@@ -2,15 +2,15 @@ from random import randint
 
 import tcod as tcod
 
-from map_builders.builder_map import InitialMapBuilder
+from map_builders.builder_map import InitialMapBuilder, MetaMapbuilder
 
 from map_builders.builder_structs import DLAAlgorithm, Symmetry
 from gmap.gmap_enums import TileType
 from map_builders.commons import paint
 
 
-class DLABuilder(InitialMapBuilder):
-    def __init__(self, ):
+class DLABuilder(InitialMapBuilder, MetaMapbuilder):
+    def __init__(self):
         super().__init__()
         self.noise_areas = dict()
         self.algorithm = DLAAlgorithm.WALK_INWARDS
@@ -18,7 +18,10 @@ class DLABuilder(InitialMapBuilder):
         self.brush_size = 1
         self.floor_percent = 0.25
 
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
+        self.build_map(build_data)
+
+    def build_initial_map(self, build_data):
         # starting point
         x, y = build_data.map.width // 2, build_data.map.height // 2
         start_idx = build_data.map.xy_idx(x, y)
@@ -97,6 +100,13 @@ class DLABuilder(InitialMapBuilder):
             floor_tile_count = build_data.map.tiles.count(TileType.FLOOR)
             if randint(0, 10) == 1:
                 build_data.take_snapshot()
+
+    def heavy_erosion(self):
+        self.algorithm = DLAAlgorithm.WALK_INWARDS
+        self.brush_size = 2
+        self.symmetry = Symmetry.NONE
+        self.floor_percent = 0.35
+        return self
 
     def walk_inwards(self):
         self.algorithm = DLAAlgorithm.WALK_INWARDS

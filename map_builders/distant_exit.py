@@ -8,7 +8,7 @@ import config
 
 
 class DistantExit(MetaMapbuilder):
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
         x, y = deepcopy(build_data.starting_position)
         print(f'distant exit : starting position : {build_data.starting_position}. X, y  : {x, y}')
 

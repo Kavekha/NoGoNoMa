@@ -1,13 +1,13 @@
 from random import randint
 
-from map_builders.builder_map import InitialMapBuilder
+from map_builders.builder_map import InitialMapBuilder, MetaMapbuilder
 
 from gmap.gmap_enums import TileType
 from map_builders.builder_structs import DrunkSpawnMode, Symmetry
 from map_builders.commons import paint
 
 
-class DrunkardsWalkBuilder(InitialMapBuilder):
+class DrunkardsWalkBuilder(InitialMapBuilder, MetaMapbuilder):
     def __init__(self, mode=DrunkSpawnMode.STARTING_POINT, lifetime=400, floor_percent=0.5):
         super().__init__()
         self.mode = mode
@@ -21,7 +21,10 @@ class DrunkardsWalkBuilder(InitialMapBuilder):
             print(f'floor percent at {self.floor_percent} : too high.')
             raise ValueError
 
-    def build_map(self, build_data):
+    def build_meta_map(self, build_data):
+        self.build_map(build_data)
+
+    def build_initial_map(self, build_data):
         # starting point
         x, y = build_data.map.width // 2, build_data.map.height // 2
         start_idx = build_data.map.xy_idx(x, y)
