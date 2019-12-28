@@ -2,11 +2,7 @@ import copy
 from random import randint
 
 from map_builders.builder_map import InitialMapBuilder
-from map_builders.commons import return_most_distant_reachable_area, generate_voronoi_spawn_points
 from gmap.gmap_enums import TileType
-import config
-from gmap.spawner import spawn_region
-
 
 
 class CellularAutomataBuilder(InitialMapBuilder):
@@ -60,40 +56,3 @@ class CellularAutomataBuilder(InitialMapBuilder):
 
             build_data.map.tiles = copy.deepcopy(newtiles)
             build_data.take_snapshot()
-
-    '''
-    def old(self):
-        # starting point
-        x, y = self.map.width // 2, self.map.height // 2
-        start_idx = self.map.xy_idx(x, y)
-        while self.map.tiles[start_idx] != TileType.FLOOR:
-            x += 1
-            y += 1
-            start_idx = self.map.xy_idx(x, y)
-        print(f'starting point is {start_idx}, {x, y}')
-
-        # Found an exit
-        best_exit = return_most_distant_reachable_area(self.map, start_idx)
-
-        if best_exit:
-            if self.depth != config.MAX_DEPTH:
-                self.map.tiles[best_exit] = TileType.DOWN_STAIRS
-            else:
-                self.map.tiles[best_exit] = TileType.EXIT_PORTAL
-
-            # we can add starting position for player
-            self.starting_position = x, y
-            self.take_snapshot()
-
-            # simili voronoi with noise for spawn
-
-            self.noise_areas = generate_voronoi_spawn_points(self.map)
-            for area in self.noise_areas:
-                spawn_region(self.noise_areas[area], self.map, self.spawn_list)
-
-
-        else:
-            print('WARNING: Cellula Automata - No exit found. Re-doing.')
-            self.reset()
-            self.build()
-    '''
