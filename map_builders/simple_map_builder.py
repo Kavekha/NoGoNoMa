@@ -2,7 +2,6 @@ from random import randint
 
 from map_builders.builder_map import InitialMapBuilder
 from map_builders.map_builders import Rect
-from map_builders.commons import apply_room_to_map, apply_horizontal_tunnel, apply_vertical_tunnel
 
 
 class SimpleMapBuilder(InitialMapBuilder):
@@ -25,7 +24,7 @@ class SimpleMapBuilder(InitialMapBuilder):
                     can_be_add = False
 
             if can_be_add:
-                apply_room_to_map(new_room, build_data.map)
+                # apply_room_to_map(new_room, build_data.map)
                 rooms.append(new_room)
-                build_data.take_snapshot()
+                # build_data.take_snapshot()
         build_data.rooms = rooms

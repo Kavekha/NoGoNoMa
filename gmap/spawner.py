@@ -51,6 +51,7 @@ def spawn_region(areas, current_map, spawn_list):
     current_map.spawn_table = RawsMaster.get_spawn_table_for_depth(current_map.depth)
     spawn_points = dict()
 
+    print(f'spawn region : area type : {type(areas)} content : {areas}')
     num_spawn = min(len(areas) - 1, randint(1, config.MAX_MONSTERS_ROOM + 3)) + (current_map.depth - 1) - 3
     if not num_spawn:
         return

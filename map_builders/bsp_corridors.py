@@ -13,6 +13,7 @@ class BSPCorridors(MetaMapbuilder):
             print(f'BSP corridors require a building with room structures')
             raise SystemError
 
+        corridors = list()
         for i in range(0, len(rooms) - 1):
             room = rooms[i]
             next_room = rooms[i + 1]
@@ -22,5 +23,7 @@ class BSPCorridors(MetaMapbuilder):
             end_x = next_room.x1 + randint(1, abs(next_room.x1 - next_room.x2) - 1)
             end_y = next_room.y1 + randint(1, abs(next_room.y1 - next_room.y2) - 1)
 
-            draw_corridor(build_data.map, start_x, start_y, end_x, end_y)
+            corridor = draw_corridor(build_data.map, start_x, start_y, end_x, end_y)
+            corridors.append(corridor)
             build_data.take_snapshot()
+        build_data.corridors = corridors

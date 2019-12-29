@@ -18,13 +18,13 @@ Release 3 - Done
     Prefabs : Rooms
     Builder chaining
     Layers
+    Rooms builders
+    > Corridors
 
 Release 3 - To Do
     TO FIX:
         Vault Position : Si pas de Vault, crash.
         Room Corner: OK pour SimpleMap, pas pour BPS Interior
-    Rooms builders
-    Corridors
     Doors
 
 
