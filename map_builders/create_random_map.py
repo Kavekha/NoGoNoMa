@@ -20,6 +20,7 @@ from map_builders.builder_structs import StartX, StartY, RoomSort
 from map_builders.room_drawer import RoomDrawer
 from map_builders.nearest_room_corridors import NearestCorridor
 from map_builders.room_corridor_lines import CorridorLines
+from map_builders.room_corridor_spawner import CorridorSpawner
 
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
@@ -273,12 +274,14 @@ def random_room_builder(builder):
     elif exit_roll == 2:
         builder.build_with(DistantExit())
 
-    spawn_roll = randint(1, 2)
+    spawn_roll = randint(1, 3)
     print(f'spawn roll is {spawn_roll}')
     if spawn_roll == 1:
         builder.build_with(RoomBasedSpawner())
     elif spawn_roll == 2:
         builder.build_with(VoronoiSpawning())
+    elif spawn_roll == 3:
+        builder.build_with(CorridorSpawner())
 
 
 def random_shape_builder(builder):
@@ -371,7 +374,7 @@ def build_random_map(depth):
     builder.build_with(RoomDrawer())
     builder.build_with(RoomSorter(RoomSort.LEFTMOST))
     builder.build_with(CorridorLines())
-    builder.build_with(RoomBasedSpawner())
+    builder.build_with(CorridorSpawner())
     builder.build_with(RoomBasedStartingPosition())
     builder.build_with(RoomBasedStairs())
 

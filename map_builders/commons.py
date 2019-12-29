@@ -11,6 +11,7 @@ def distance_to(self_position_x, self_position_y, other_position_x, other_positi
 
 
 def draw_corridor(gmap, x1, y1, x2, y2):
+    corridors = list()
     x = x1
     y = y1
 
@@ -26,28 +27,28 @@ def draw_corridor(gmap, x1, y1, x2, y2):
 
         idx = gmap.xy_idx(x, y)
         gmap.tiles[idx] = TileType.FLOOR
-
-'''
-def apply_room_to_map(room, map):
-    print(f'apply room : {room}, with {room.x1}, {room.x2}, {room.y1, room.y2}')
-    for y in range(room.y1, room.y2 + 1):
-        for x in range(room.x1, room.x2 + 1):
-            map.tiles[map.xy_idx(x, y)] = TileType.FLOOR
-'''
+        corridors.append(idx)
+    return corridors
 
 
 def apply_horizontal_tunnel(x1, x2, y, map):
+    corridors = list()
     for x in range(min(x1, x2), max(x1, x2) + 1):
         idx = map.xy_idx(x, y)
         if 0 < idx < map.width * map.height:
             map.tiles[idx] = TileType.FLOOR
+            corridors.append(idx)
+    return corridors
 
 
 def apply_vertical_tunnel(y1, y2, x, map):
+    corridors = list()
     for y in range(min(y1, y2), max(y1, y2) + 1):
         idx = map.xy_idx(x, y)
         if 0 < idx < map.width * map.height:
             map.tiles[idx] = TileType.FLOOR
+            corridors.append(idx)
+    return corridors
 
 
 def paint(x, y, gmap, symmetry=Symmetry.NONE, brush_size=1):

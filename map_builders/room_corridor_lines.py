@@ -16,11 +16,12 @@ class CorridorLines(MetaMapbuilder):
         else:
             rooms = deepcopy(build_data.rooms)
             connected = dict()
+            corridors = list()
+
             for i, room in enumerate(rooms):
                 room_distance = list()
                 room_x, room_y = room.center()
                 for j, other_room in enumerate(rooms):
-                    print(f'corridor: i {i}, {j}, {room}, {other_room}')
                     if i != j and not connected.get(j):
                         other_x, other_y = other_room.center()
                         distance = distance_to(room_x, room_y, other_x, other_y)
@@ -34,6 +35,8 @@ class CorridorLines(MetaMapbuilder):
                     cell_y = lines[1]
                     last_x = cell_x[0]
                     last_y = cell_y[0]
+
+                    corridor = list()
                     for cell in range(0, len(cell_y) - 1):
                         if last_x != cell_x[cell] and last_y != cell_y[cell]:
                             if randint(1, 2) == 1:
@@ -42,10 +45,14 @@ class CorridorLines(MetaMapbuilder):
                             else:
                                 idx = build_data.map.xy_idx(last_x, cell_y[cell])
                                 build_data.map.tiles[idx] = TileType.FLOOR
-                        idx = build_data.map.xy_idx(cell_x[cell], cell_y[cell])
+                        idx = int(build_data.map.xy_idx(cell_x[cell], cell_y[cell]))
                         build_data.map.tiles[idx] = TileType.FLOOR
                         last_x = cell_x[cell]
                         last_y = cell_y[cell]
+                        corridor.append(idx)
 
+                    corridors.append(corridor)
                     connected[i] = True
                     build_data.take_snapshot()
+
+            build_data.corridors = corridors

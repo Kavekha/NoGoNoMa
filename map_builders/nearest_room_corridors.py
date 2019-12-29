@@ -12,6 +12,8 @@ class NearestCorridor(MetaMapbuilder):
         else:
             rooms = deepcopy(build_data.rooms)
             connected = dict()
+
+            corridors = list()
             for i, room in enumerate(rooms):
                 room_distance = list()
                 room_x, room_y = room.center()
@@ -25,6 +27,9 @@ class NearestCorridor(MetaMapbuilder):
                 if room_distance:
                     room_distance = sorted(room_distance, key=lambda room_to_sort: room_to_sort[1])
                     dest_center_x, dest_center_y = rooms[room_distance[0][0]].center()
-                    draw_corridor(build_data.map, room_x, room_y, dest_center_x, dest_center_y)
+                    corridor = draw_corridor(build_data.map, room_x, room_y, dest_center_x, dest_center_y)
                     connected[i] = True
                     build_data.take_snapshot()
+                    corridors.append(corridor)
+
+            build_data.corridors = corridors

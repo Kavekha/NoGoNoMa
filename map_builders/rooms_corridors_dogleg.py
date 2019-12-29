@@ -13,14 +13,20 @@ class DogLegCorridors(MetaMapbuilder):
             print(f'DogLeg Corridors require a building with room structures')
             raise SystemError
 
+        corridors = list()
         for i, room in enumerate(rooms):
             if i > 0:
                 new_x, new_y = room.center()
                 prev_x, prev_y = rooms[i - 1].center()
                 if randint(0, 1) == 1:
-                    apply_horizontal_tunnel(prev_x, new_x, prev_y, build_data.map)
-                    apply_vertical_tunnel(prev_y, new_y, new_x, build_data.map)
+                    c1 = apply_horizontal_tunnel(prev_x, new_x, prev_y, build_data.map)
+                    c2 = apply_vertical_tunnel(prev_y, new_y, new_x, build_data.map)
+                    c1.extend(c2)
+                    corridors.append(c1)
                 else:
-                    apply_vertical_tunnel(prev_y, new_y, prev_x, build_data.map)
-                    apply_horizontal_tunnel(prev_x, new_x, new_y, build_data.map)
+                    c1 = apply_vertical_tunnel(prev_y, new_y, prev_x, build_data.map)
+                    c2 = apply_horizontal_tunnel(prev_x, new_x, new_y, build_data.map)
+                    c1.extend(c2)
+                    corridors.append(c1)
                 build_data.take_snapshot()
+        build_data.corridors = corridors

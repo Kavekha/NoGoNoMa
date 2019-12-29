@@ -25,6 +25,7 @@ class BuilderMap:
         self.map = Gmap(depth)
         self.starting_position = (0, 0)
         self.rooms = None
+        self.corridors = None
         self.history = list()
 
     def take_snapshot(self):
