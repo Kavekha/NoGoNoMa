@@ -13,7 +13,7 @@ from components.confusion_component import ConfusionComponent
 from components.items_component import ItemComponent, MeleeWeaponComponent, WearableComponent
 from components.equippable_component import EquippableComponent
 from components.monster_component import MonsterComponent
-from components.blocktile_component import BlockTileComponent
+from components.blocktile_component import BlockTileComponent, BlockVisibilityComponent
 from components.viewshed_component import ViewshedComponent
 from components.attributes_component import AttributesComponent
 from components.skills_component import Skills, SkillsComponent
@@ -23,6 +23,7 @@ from components.magic_item_component import MagicItemComponent
 from components.obfuscated_name_component import ObfuscatedNameComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import EntryTriggerComponent, ActivationComponent
+from components.door_component import DoorComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
@@ -75,7 +76,7 @@ class RawsMaster:
     @staticmethod
     def load_raw(file):
         # full_path = '../raws/' + file   # load raws
-        full_path = os.getcwd() + config.RAW_FILES + '/' + file # game
+        full_path = os.getcwd() + config.RAW_FILES + '/' + file  # game
         with open(full_path, 'r') as json_file:
             print(f'--- loading raw {file} ----')
             datas = json.load(json_file)
@@ -107,6 +108,12 @@ class RawsMaster:
                 elif component == 'hidden':
                     props[component] = prop_raw[component]
                 elif component == 'entry_trigger':
+                    props[component] = prop_raw[component]
+                elif component == 'blocks_tile':
+                    props[component] = prop_raw[component]
+                elif component == 'blocks_visibility':
+                    props[component] = prop_raw[component]
+                elif component == 'door_open':
                     props[component] = prop_raw[component]
                 else:
                     print(f'prop component {component} is not implemented for props')
@@ -161,7 +168,7 @@ class RawsMaster:
                     object_entry[info] = int(spawn_entry[info])
                 elif info == 'max_depth' and name:
                     object_entry[info] = int(spawn_entry[info])
-                elif info == 'add_map_depth_to_weight'and name:
+                elif info == 'add_map_depth_to_weight' and name:
                     object_entry[info] = spawn_entry[info]
                 else:
                     print(f'spawn table raw: info is {info} and spawn entry is {spawn_entry}')
@@ -284,7 +291,8 @@ class RawsMaster:
                     magic_attributes[attribute] = magic_component[attribute]
                 else:
                     magic_attributes[attribute] = magic_component[attribute]
-                    print(f'WARNING: In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
+                    print(
+                        f'WARNING: In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
             else:
                 print(f'magic attribute {attribute} not implemented in magic item raw')
                 raise NotImplementedError
@@ -470,6 +478,15 @@ class RawsMaster:
                     activations = ActivationComponent(int(to_create['entry_trigger']['effects'].get('activations')))
                     components_for_entity.append(activations)
 
+        if to_create.get("blocks_tile"):
+            components_for_entity.append(BlockTileComponent())
+
+        if to_create.get('blocks_visibility'):
+            components_for_entity.append(BlockVisibilityComponent())
+
+        if to_create.get('door_open'):
+            components_for_entity.append(DoorComponent(to_create.get('door_open')))
+
         prop_id = World.create_entity(PositionComponent(x, y))
 
         for component in components_for_entity:
@@ -590,7 +607,7 @@ class RawsMaster:
             weap_hit_bonus = to_create.weapon.get('hit_bonus')
 
             components_for_entity.append(MeleeWeaponComponent(weap_attribute, weap_min_dmg,
-                                                     weap_max_dmg, weap_dmg_bonus, weap_hit_bonus))
+                                                              weap_max_dmg, weap_dmg_bonus, weap_hit_bonus))
 
         if to_create.wearable:
             components_for_entity.append(EquippableComponent(to_create.wearable.get('slot')))

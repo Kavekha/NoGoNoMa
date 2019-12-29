@@ -5,6 +5,7 @@ from components.viewshed_component import ViewshedComponent
 from components.player_component import PlayerComponent
 from components.hidden_component import HiddenComponent
 from components.skills_component import Skills
+from components.blocktile_component import BlockVisibilityComponent
 from texts import Texts
 from ui_system.render_functions import get_obfuscate_name
 from player_systems.game_system import skill_roll_against_difficulty
@@ -16,6 +17,12 @@ class VisibilitySystem(System):
         subjects = World.get_components(PositionComponent, ViewshedComponent)
 
         current_map = World.fetch('current_map')
+        current_map.view_blocked.clear()
+        for entity, (block_pos, _block) in World.get_components(PositionComponent, BlockVisibilityComponent):
+            idx = current_map.xy_idx(block_pos.x, block_pos.y)
+            current_map.view_blocked[idx] = True
+        current_map.create_fov_map()
+
         for entity, (position, viewshed) in subjects:
             viewshed.dirty = False
             viewshed.visible_tiles = []
