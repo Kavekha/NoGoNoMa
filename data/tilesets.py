@@ -51,10 +51,12 @@ PARTICULES = [
 
 
 PROPS = [
-    '/props/blood1.png',
-    '/props/blood2.png',
-    '/props/blood3.png',
-    '/props/blood4.png',
-    '/props/blood5.png',
-    '/props/trap.png'
+    'props/blood1.png',
+    'props/blood2.png',
+    'props/blood3.png',
+    'props/blood4.png',
+    'props/blood5.png',
+    'props/trap.png',
+    'props/door.png',
+    'props/door_open.png'
 ]

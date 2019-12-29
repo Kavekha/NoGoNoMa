@@ -54,8 +54,6 @@ def init_game(master_seed=None):
     particule_spawn_system = ParticuleSpawnSystem()
     World.add_system(particule_spawn_system)
 
-
-
     # add player position to ressources
     player = spawn_player(0, 0)
     World.insert('player', player)

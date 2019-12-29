@@ -15,6 +15,7 @@ class Gmap:
         self.revealed_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.visible_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
         self.blocked_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
+        self.view_blocked = dict()
 
         self.tile_content = [[None] for x in range(config.MAP_HEIGHT * config.MAP_WIDTH)]
         self.depth = depth
@@ -22,6 +23,11 @@ class Gmap:
 
         self.fov_map = None
         self.spawn_table = None
+
+    def is_opaque(self, idx):
+        print(f'is opaque: {idx} : tile : {self.tiles[idx]} and get blocked: {self.view_blocked.get(idx)}')
+        if self.tiles[idx] == TileType.WALL or self.view_blocked.get(idx):
+            return True
 
     def index_to_point2d(self, idx):
         # Transform an idx 1D array to a x, y format for 2D array
@@ -39,7 +45,10 @@ class Gmap:
             if tile != TileType.WALL:
                 fov_map.walkable[
                     y, x] = True  # Like the rest of the tcod modules, all arrays here are in row-major order and are addressed with [y,x]
-                fov_map.transparent[y, x] = True
+                if self.is_opaque(i):
+                    fov_map.transparent[y, x] = False
+                else:
+                    fov_map.transparent[y, x] = True
             else:
                 fov_map.walkable[y, x] = False
                 fov_map.transparent[y, x] = False

@@ -6,6 +6,8 @@ from components.viewshed_component import ViewshedComponent
 from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.triggers_components import EntityMovedComponent
+from components.door_component import DoorComponent
+from player_systems.game_system import opening_door
 from gmap.gmap_enums import TileType
 from ui_system.ui_enums import NextLevelResult
 from texts import Texts
@@ -26,10 +28,13 @@ def try_move_player(delta_x, delta_y):
                 want_to_melee = WantsToMeleeComponent(potential_target)
                 World.add_component(want_to_melee, entity)
                 return
+            door = World.get_entity_component(potential_target, DoorComponent)
+            if door:
+                opening_door(potential_target, door)
 
         if not current_map.blocked_tiles[destination_idx]:
-            position.x = min(config.MAP_WIDTH -1, max(0, position.x + delta_x))
-            position.y = min(config.MAP_HEIGHT -1, max(0, position.y + delta_y))
+            position.x = min(config.MAP_WIDTH - 1, max(0, position.x + delta_x))
+            position.y = min(config.MAP_HEIGHT - 1, max(0, position.y + delta_y))
             player_viewshed = World.get_entity_component(entity, ViewshedComponent)
             player_viewshed.dirty = True
             has_moved = EntityMovedComponent()

@@ -19,7 +19,8 @@ Release 3 - Done
     Builder chaining
     Layers
     Rooms builders
-    > Corridors
+    Corridors
+    > Doors
 
 Release 3 - To Do
     TO FIX:
@@ -37,6 +38,8 @@ Release 4 - Planning
         Options à l'usage de l'item
     Tiles personnalisées selon niveau
     Forme de la tile selon placement.
+    mouse support
+    detection menaces & nouveaux evenements
     Initiative & turn lost fix.
     Room building & props
     NPC talking

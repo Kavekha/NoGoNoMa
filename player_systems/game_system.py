@@ -5,8 +5,18 @@ from world import World
 from texts import Texts
 from components.pools_component import Pools
 from components.attributes_component import AttributesComponent
-from components.skills_component import SkillsComponent, Skills
+from components.skills_component import SkillsComponent
+from components.blocktile_component import BlockVisibilityComponent, BlockTileComponent
+from components.renderable_component import RenderableComponent
 
+
+def opening_door(door_id, door_component):
+    door_component.open = False
+    World.remove_component(BlockVisibilityComponent, door_id)
+    World.remove_component(BlockTileComponent, door_id)
+    renderable = World.get_entity_component(door_id, RenderableComponent)
+    renderable.glyph = '/'
+    renderable.sprite = 'props/door_open.png'
 
 
 def player_gain_xp(xp_gain):

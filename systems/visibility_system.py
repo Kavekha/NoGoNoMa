@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from systems.system import System
 from world import World
 from components.position_component import PositionComponent
@@ -5,6 +7,7 @@ from components.viewshed_component import ViewshedComponent
 from components.player_component import PlayerComponent
 from components.hidden_component import HiddenComponent
 from components.skills_component import Skills
+from components.blocktile_component import BlockVisibilityComponent
 from texts import Texts
 from ui_system.render_functions import get_obfuscate_name
 from player_systems.game_system import skill_roll_against_difficulty
@@ -16,6 +19,20 @@ class VisibilitySystem(System):
         subjects = World.get_components(PositionComponent, ViewshedComponent)
 
         current_map = World.fetch('current_map')
+        old_view_blocked = deepcopy(current_map.view_blocked)
+        current_map.view_blocked.clear()
+        for entity, (block_pos, _block) in World.get_components(PositionComponent, BlockVisibilityComponent):
+            idx = current_map.xy_idx(block_pos.x, block_pos.y)
+            current_map.view_blocked[idx] = True
+        old_view_blocked = set(old_view_blocked.keys())
+        new_view_blocked = set(deepcopy(current_map.view_blocked).keys())
+        same_entries = new_view_blocked.intersection(old_view_blocked)
+        if len(old_view_blocked) - len(same_entries) != len(new_view_blocked) - len(same_entries):
+            # change in view blocked
+            current_map.create_fov_map()
+            print(f'old view blocked changed')
+
+
         for entity, (position, viewshed) in subjects:
             viewshed.dirty = False
             viewshed.visible_tiles = []

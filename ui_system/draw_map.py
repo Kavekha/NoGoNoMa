@@ -75,7 +75,7 @@ def draw_map_tiles(map_to_draw, tiles):
                 if map_to_draw.stains[tile]:
                     terminal.layer(Layers.STAINS.value)
                     terminal.color('dark red')
-                    terminal.put(x, y, Interface.get_code(f'/props/blood{map_to_draw.stains[tile]}.png'))
+                    terminal.put(x, y, Interface.get_code(f'props/blood{map_to_draw.stains[tile]}.png'))
                 terminal.composition(terminal.TK_OFF)
             else:
                 if tiles[tile] == TileType.FLOOR:

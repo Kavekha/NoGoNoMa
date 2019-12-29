@@ -4,9 +4,9 @@
       "name": "TRAP",
       "renderable": {
         "glyph": "^",
-        "fg": "#FFFF00",
+        "fg": "#00FF00",
         "order": "ITEM",
-        "sprite": "/props/trap.png"
+        "sprite": "props/trap.png"
       },
       "hidden": true,
       "entry_trigger": {
@@ -15,6 +15,18 @@
           "activations": "1"
         }
       }
+    },
+    {
+      "name": "DOOR",
+      "renderable": {
+        "glyph": "+",
+        "fg": "chocolate",
+        "order": "MONSTER",
+        "sprite": "props/door.png"
+      },
+      "blocks_tile": true,
+      "blocks_visibility": true,
+      "door_open": true
     }
   ]
 }

@@ -21,6 +21,7 @@ from map_builders.room_drawer import RoomDrawer
 from map_builders.nearest_room_corridors import NearestCorridor
 from map_builders.room_corridor_lines import CorridorLines
 from map_builders.room_corridor_spawner import CorridorSpawner
+from map_builders.door_placement import DoorPlacement
 
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
@@ -337,6 +338,7 @@ def random_builder(depth):
         builder.build_with(PrefabBuilder(
             PrefabSection(RIGHT_FORT, 15, 43, (HorizontalPlacement.RIGHT, VerticalPlacement.TOP))))
 
+    builder.build_with(DoorPlacement())
     # builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100))) # TO FIX
 
     return builder
@@ -369,14 +371,18 @@ def build_random_map(depth):
     return random_builder(depth)
 
 '''
+
     builder = BuilderChain(depth)
     builder.start_with(SimpleMapBuilder())
     builder.build_with(RoomDrawer())
     builder.build_with(RoomSorter(RoomSort.LEFTMOST))
-    builder.build_with(CorridorLines())
+    builder.build_with(NearestCorridor())
+    builder.build_with(DoorPlacement())
     builder.build_with(CorridorSpawner())
-    builder.build_with(RoomBasedStartingPosition())
     builder.build_with(RoomBasedStairs())
+    builder.build_with(RoomBasedStartingPosition())
+
+
 
     return builder
 '''
