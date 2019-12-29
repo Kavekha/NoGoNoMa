@@ -18,11 +18,13 @@ from data.load_raws import RawsMaster
 import config
 
 
+'''
 def spawn_world(current_map):
     current_map.spawn_table = RawsMaster.get_spawn_table_for_depth(current_map.depth)
     for room in current_map.rooms:
         if len(current_map.rooms) > 0 and room != current_map.rooms[0]:
             spawn_room(room, current_map)
+'''
 
 
 def spawn_entity(spawn_name, spawn_point, current_map):

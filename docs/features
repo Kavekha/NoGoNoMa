@@ -19,12 +19,14 @@ Release 3 - Done
     Builder chaining
     Layers
     Rooms builders
-    > Corridors
+    Corridors
+    > Doors
 
 Release 3 - To Do
     TO FIX:
         Vault Position : Si pas de Vault, crash.
         Room Corner: OK pour SimpleMap, pas pour BPS Interior
+        !!! visibility system : recreate fov coute TRES cher (prise en compte transparence)
     Doors
 
 
