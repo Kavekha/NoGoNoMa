@@ -14,9 +14,9 @@ class RoomCornerRounding(MetaMapbuilder):
 
         for room in rooms:
             self.fill_it_corner(room.x1, room.y1, build_data)
-            self.fill_it_corner(room.x2, room.y1, build_data)
-            self.fill_it_corner(room.x1, room.y2, build_data)
-            self.fill_it_corner(room.x2, room.y2, build_data)
+            self.fill_it_corner(room.x2 - 1, room.y1, build_data)
+            self.fill_it_corner(room.x1, room.y2 - 1, build_data)
+            self.fill_it_corner(room.x2 - 1, room.y2 - 1, build_data)
 
             build_data.take_snapshot()
 
@@ -39,5 +39,3 @@ class RoomCornerRounding(MetaMapbuilder):
         if neighbor_walls == 2:
             print(f'{corner_x, corner_y} corner x, corner y has been rounder !')
             build_data.map.tiles[idx] = TileType.WALL
-        else:
-            print(f'no rounding for {corner_x, corner_y}')

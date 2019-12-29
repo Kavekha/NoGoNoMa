@@ -24,6 +24,12 @@ class Gmap:
         self.fov_map = None
         self.spawn_table = None
 
+    def out_of_bound(self, idx):
+        x, y = self.index_to_point2d(idx)
+        if 0 > x > self.width - 1 or 0 > y > self.height - 1:
+            return True
+        return False
+
     def is_opaque(self, idx):
         print(f'is opaque: {idx} : tile : {self.tiles[idx]} and get blocked: {self.view_blocked.get(idx)}')
         if self.tiles[idx] == TileType.WALL or self.view_blocked.get(idx):

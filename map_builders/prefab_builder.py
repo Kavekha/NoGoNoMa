@@ -85,7 +85,7 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
         nb_vaults = randint(1, 3)
         for j in range(0, nb_vaults):
             if not possible_vaults:
-                break
+                return
             if len(possible_vaults) == 1:
                 vault_index = 0
             else:
