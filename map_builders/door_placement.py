@@ -1,10 +1,7 @@
-import tcod as tcod
-
 from copy import deepcopy
 from random import randint
 
 from map_builders.builder_map import MetaMapbuilder
-from map_builders.commons import distance_to
 from gmap.gmap_enums import TileType
 
 
@@ -31,12 +28,16 @@ class DoorPlacement(MetaMapbuilder):
         else:
             tiles = deepcopy(build_data.map.tiles)
             for i, tile in enumerate(tiles):
-                if tile == TileType.FLOOR and self.door_possible(build_data, i):
+                if tile == TileType.FLOOR and self.door_possible(build_data, i) and randint(1, 3) == 1:
                     build_data.spawn_list.append((i, "DOOR"))
 
     def door_possible(self, build_data, idx):
         x = idx % build_data.map.width
         y = idx // build_data.map.width
+
+        for spawn in build_data.spawn_list:
+            if spawn[0] == idx:
+                return False
 
         # East West door possibility
         if build_data.map.tiles[idx] == TileType.FLOOR and (x > 1 and build_data.map.tiles[idx - 1] == TileType.FLOOR) \

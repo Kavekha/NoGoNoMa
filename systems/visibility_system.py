@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from systems.system import System
 from world import World
 from components.position_component import PositionComponent
@@ -17,11 +19,19 @@ class VisibilitySystem(System):
         subjects = World.get_components(PositionComponent, ViewshedComponent)
 
         current_map = World.fetch('current_map')
+        old_view_blocked = deepcopy(current_map.view_blocked)
         current_map.view_blocked.clear()
         for entity, (block_pos, _block) in World.get_components(PositionComponent, BlockVisibilityComponent):
             idx = current_map.xy_idx(block_pos.x, block_pos.y)
             current_map.view_blocked[idx] = True
-        current_map.create_fov_map()
+        old_view_blocked = set(old_view_blocked.keys())
+        new_view_blocked = set(deepcopy(current_map.view_blocked).keys())
+        same_entries = new_view_blocked.intersection(old_view_blocked)
+        if len(old_view_blocked) - len(same_entries) != len(new_view_blocked) - len(same_entries):
+            # change in view blocked
+            current_map.create_fov_map()
+            print(f'old view blocked changed')
+
 
         for entity, (position, viewshed) in subjects:
             viewshed.dirty = False

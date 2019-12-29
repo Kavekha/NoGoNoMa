@@ -46,10 +46,7 @@ class Gmap:
                 fov_map.walkable[
                     y, x] = True  # Like the rest of the tcod modules, all arrays here are in row-major order and are addressed with [y,x]
                 if self.is_opaque(i):
-                    print(f'is opaque!')
                     fov_map.transparent[y, x] = False
-                    if self.view_blocked.get(i):
-                        self.tiles[i] = TileType.EXIT_PORTAL
                 else:
                     fov_map.transparent[y, x] = True
             else:

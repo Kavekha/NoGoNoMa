@@ -368,7 +368,9 @@ def random_start_position():
 
 def build_random_map(depth):
     # return random_build_example(depth)
-    # return random_builder(depth)
+    return random_builder(depth)
+
+'''
 
     builder = BuilderChain(depth)
     builder.start_with(SimpleMapBuilder())
@@ -383,3 +385,4 @@ def build_random_map(depth):
 
 
     return builder
+'''

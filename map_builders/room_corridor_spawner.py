@@ -2,7 +2,6 @@ from copy import deepcopy
 
 from map_builders.builder_map import MetaMapbuilder
 from gmap.spawner import spawn_region
-from map_builders.commons import distance_to, draw_corridor
 
 
 class CorridorSpawner(MetaMapbuilder):

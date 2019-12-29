@@ -57,5 +57,6 @@ PROPS = [
     'props/blood4.png',
     'props/blood5.png',
     'props/trap.png',
-    'props/door.png'
+    'props/door.png',
+    'props/door_open.png'
 ]
