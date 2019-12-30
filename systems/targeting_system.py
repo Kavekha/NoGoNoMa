@@ -9,6 +9,7 @@ from ui_system.ui_enums import Layers
 from ui_system.render_camera import get_screen_bounds, draw_tile, render_entities_camera
 from map_builders.commons import distance_to
 from player_systems.player_input import targeting_input
+from ui_system.interface import Interface, GraphicalModes
 
 
 def show_targeting():
@@ -29,7 +30,14 @@ def show_targeting():
                 screen_x = x - min_x
                 screen_y = y - min_y
                 if 1 < screen_x < (max_x - min_x) - 1 and 1 < screen_y < (max_y - min_y):
-                    draw_tile(screen_x, screen_y, ' ', 'system/grid.png', 'light blue', Layers.INTERFACE)
+                    if Interface.mode == GraphicalModes.TILES:
+                        draw_tile(screen_x, screen_y, ' ', 'system/grid.png', 'light blue', Layers.INTERFACE)
+                    elif Interface.mode == GraphicalModes.ASCII:
+                        draw_tile(screen_x, screen_y, ' ',
+                                  'system/grid.png', 'light blue', Layers.BACKGROUND, 'light blue')
+                    else:
+                        print(f'Targeting system: {Interface.mode} not supported')
+                        raise NotImplementedError
                     available_cells.append(current_map.xy_idx(x, y))
             x += 1
         y += 1

@@ -8,6 +8,7 @@ Release 4 - WIP
     > Camera
     > To fix: Prefabs vault sectionnal
     > To fix: Stains visibles hors visibility
+    > to fix: Pour certains map builders, la camera ignore 1 tile Ouest / Nord.
     Cleanup dead code
     Zoom
     Interface

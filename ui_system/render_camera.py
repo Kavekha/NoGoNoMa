@@ -76,7 +76,7 @@ def render_entities_camera():
                 if Interface.mode == GraphicalModes.ASCII:
                     terminal.printf(entity_screen_x,
                                     entity_screen_y,
-                                    f'[color={renderable.char_color}]{renderable.glyph}[/color]')
+                                    f'[color={renderable.fg}]{renderable.glyph}[/color]')
                 elif Interface.mode == GraphicalModes.TILES:
                     terminal.color(f'{renderable.fg}')
                     terminal.put(entity_screen_x, entity_screen_y, Interface.get_code(renderable.sprite))
@@ -85,11 +85,11 @@ def render_entities_camera():
                     raise NotImplementedError
 
 
-def draw_tile(x, y, glyph, sprite, char_color, render_order=None):
+def draw_tile(x, y, glyph, sprite, char_color, render_order=None, background=None):
     if render_order:
         terminal.layer(render_order.value)
     if Interface.mode == GraphicalModes.ASCII:
-        terminal.printf(x, y, f'[color={char_color}]{glyph}[/color]')
+        terminal.printf(x, y, f'[bkcolor={background}][color={char_color}]{glyph}[/color][/bkcolor]')
     elif Interface.mode == GraphicalModes.TILES:
         terminal.color(f'{char_color}')
         terminal.put(x, y, Interface.get_code(sprite))
