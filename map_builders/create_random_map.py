@@ -339,7 +339,7 @@ def random_builder(depth):
             PrefabSection(RIGHT_FORT, 15, 43, (HorizontalPlacement.RIGHT, VerticalPlacement.TOP))))
 
     builder.build_with(DoorPlacement())
-    builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100))) # TO FIX
+    builder.build_with(PrefabBuilder(PrefabRoom('', 1, 1, 1, 100))) # TO FIX
 
     return builder
 
