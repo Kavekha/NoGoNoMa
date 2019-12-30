@@ -9,17 +9,23 @@ from gmap.gmap_enums import TileType
 import config
 
 
-def render_map_camera():
-    current_map = World.fetch('current_map')
+def get_screen_bounds():
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
     center_x = config.SCREEN_WIDTH // 2
     center_y = config.SCREEN_HEIGHT // 2
-    min_x = player_pos.x - center_x - 1
+    min_x = player_pos.x - center_x
     max_x = min_x + config.SCREEN_WIDTH
-    min_y = player_pos.y - center_y - 1
+    min_y = player_pos.y - center_y
     max_y = min_y + config.SCREEN_HEIGHT
+
+    return min_x, max_x, min_y, max_y
+
+
+def render_map_camera():
+    current_map = World.fetch('current_map')
+    min_x, max_x, min_y, max_y = get_screen_bounds()
     map_width = current_map.width
     map_height = current_map.height
 
@@ -54,15 +60,7 @@ def render_map_camera():
 
 def render_entities_camera():
     current_map = World.fetch('current_map')
-    player = World.fetch('player')
-    player_pos = World.get_entity_component(player, PositionComponent)
-
-    center_x = config.SCREEN_WIDTH // 2
-    center_y = config.SCREEN_HEIGHT // 2
-    min_x = player_pos.x - center_x - 1
-    max_x = min_x + config.SCREEN_WIDTH
-    min_y = player_pos.y - center_y - 1
-    max_y = min_y + config.SCREEN_HEIGHT
+    min_x, max_x, min_y, max_y = get_screen_bounds()
     map_width = current_map.width
     map_height = current_map.height
 
