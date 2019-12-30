@@ -1,8 +1,14 @@
 Release 4 - Done
-    > Camera
+    Camera: rendering
+    Camera: tooltip
+    Camera: targeting system
+
     
 Release 4 - WIP
-    Camera
+    > Camera
+    > To fix: Prefabs vault sectionnal
+    > To fix: Stains visibles hors visibility
+    Cleanup dead code
     Zoom
     Interface
         26 items +

@@ -1,60 +1,51 @@
 from bearlibterminal import terminal
 
 from systems.inventory_system import use_item
-from systems.render_system import render_system
 from world import World
 from components.targeting_component import TargetingComponent
 from components.viewshed_component import ViewshedComponent
 from components.position_component import PositionComponent
 from ui_system.ui_enums import Layers
-from ui_system.interface import Interface, GraphicalModes
+from ui_system.render_camera import get_screen_bounds, draw_tile, render_entities_camera
 from map_builders.commons import distance_to
 from player_systems.player_input import targeting_input
 
 
 def show_targeting():
-    subjects = World.get_components(TargetingComponent, ViewshedComponent)
-    player_pos = World.get_entity_component(World.fetch('player'), PositionComponent)
+    player = World.fetch('player')
+    player_pos = World.get_entity_component(player, PositionComponent)
+    min_x, max_x, min_y, max_y = get_screen_bounds()
+    current_map = World.fetch('current_map')
 
-    for entity, (targeter, viewshed) in subjects:
-        mouse_pos_x = terminal.state(terminal.TK_MOUSE_X)
-        mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y)
-        valid_target = False
+    viewshed = World.get_entity_component(player, ViewshedComponent)
+    targeter = World.get_entity_component(player, TargetingComponent)
+    available_cells = list()
+    x = 0
+    y = 0
 
+    for row in viewshed.visible_tiles:
+        for tile in row:
+            if tile and distance_to(player_pos.x, player_pos.y, x, y) < targeter.range:
+                screen_x = x - min_x
+                screen_y = y - min_y
+                if 1 < screen_x < (max_x - min_x) - 1 and 1 < screen_y < (max_y - min_y):
+                    draw_tile(screen_x, screen_y, ' ', 'system/grid.png', 'light blue', Layers.INTERFACE)
+                    available_cells.append(current_map.xy_idx(x, y))
+            x += 1
+        y += 1
         x = 0
-        y = 0
-        for row in viewshed.visible_tiles:
-            for tile in row:
-                if tile and distance_to(player_pos.x, player_pos.y, x, y) < targeter.range:
-                    if x == mouse_pos_x and y == mouse_pos_y:
-                        if Interface.mode == GraphicalModes.ASCII:
-                            terminal.layer(Layers.BACKGROUND.value)
-                            terminal.printf(x, y, f'[bkcolor=light blue] [/color]')
-                        elif Interface.mode == GraphicalModes.TILES:
-                            terminal.color('light blue')
-                            terminal.put(x, y, Interface.get_code('system/grid.png'))
-                        else:
-                            print(f'targeting system: graphical mode not implemented.')
-                            raise NotImplementedError
-                        valid_target = True
-                    else:
-                        if Interface.mode == GraphicalModes.ASCII:
-                            terminal.layer(Layers.BACKGROUND.value)
-                            terminal.printf(x, y, f'[bkcolor=dark blue] [/color]')
-                        elif Interface.mode == GraphicalModes.TILES:
-                            terminal.color('light blue')
-                            terminal.put(x, y, Interface.get_code('system/grid.png'))
-                        else:
-                            print(f'targeting system: graphical mode not implemented.')
-                            raise NotImplementedError
-                x += 1
-            y += 1
-            x = 0
 
-        render_system()
-        terminal.refresh()
+    mouse_pos_x = terminal.state(terminal.TK_MOUSE_X) + min_x
+    mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y) + min_y
+    valid_target = False
+    for idx in available_cells:
+        cell_x, cell_y = current_map.index_to_point2d(idx)
+        if mouse_pos_x == cell_x and mouse_pos_y == cell_y:
+            valid_target = True
 
-        return targeting_input(targeter.item, (mouse_pos_x, mouse_pos_y), valid_target)
+    render_entities_camera()
+    terminal.refresh()
+    return targeting_input(targeter.item, (mouse_pos_x, mouse_pos_y), valid_target)
 
 
 def select_target(item_id, target_position):

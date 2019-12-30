@@ -34,19 +34,19 @@ def render_map_camera():
         x = 0
         for tx in range(min_x, max_x):
             if 0 < tx < map_width and 0 < ty < map_height:
-                terminal.layer(Layers.MAP.value)
+                # terminal.layer(Layers.MAP.value)
                 terminal.composition(terminal.TK_ON)
                 idx = current_map.xy_idx(tx, ty)
                 if current_map.revealed_tiles[idx]:
                     glyph, sprite, char_color = get_tile_glyph(idx, current_map)
-                    draw_tile(x, y, glyph, sprite, char_color)
+                    draw_tile(x, y, glyph, sprite, char_color, Layers.MAP)
 
                     if current_map.stains[idx]:
-                        terminal.layer(Layers.STAINS.value)
+                        # terminal.layer(Layers.STAINS.value)
                         char_color = 'dark red'
                         sprite = f'props/blood{current_map.stains[idx]}.png'
                         glyph = ' '
-                        draw_tile(x, y, glyph, sprite, char_color)
+                        draw_tile(x, y, glyph, sprite, char_color, Layers.STAINS)
                 elif config.SHOW_BOUNDARIES:
                     if Interface.mode == GraphicalModes.ASCII or Interface.mode == GraphicalModes.TILES:
                         terminal.printf(x, y, f'[color=gray]-[/color]')
@@ -85,7 +85,9 @@ def render_entities_camera():
                     raise NotImplementedError
 
 
-def draw_tile(x, y, glyph, sprite, char_color):
+def draw_tile(x, y, glyph, sprite, char_color, render_order=None):
+    if render_order:
+        terminal.layer(render_order.value)
     if Interface.mode == GraphicalModes.ASCII:
         terminal.printf(x, y, f'[color={char_color}]{glyph}[/color]')
     elif Interface.mode == GraphicalModes.TILES:
