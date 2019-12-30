@@ -20,14 +20,11 @@ Release 3 - Done
     Layers
     Rooms builders
     Corridors
-    > Doors
-
-Release 3 - To Do
-    TO FIX:
-        Vault Position : Si pas de Vault, crash.
-        Room Corner: OK pour SimpleMap, pas pour BPS Interior
     Doors
-
+    fix: Vaults.
+    fix: Room Corner.
+    fix: Sortie de map.
+    fix: Room exploder ne laisse plus de traces.
 
 Release 4 - Planning
     Camera
@@ -40,23 +37,23 @@ Release 4 - Planning
     Forme de la tile selon placement.
     mouse support
     detection menaces & nouveaux evenements
+    Menus plus informatifs
     Initiative & turn lost fix.
     Room building & props
     NPC talking
+    Lore via npc & items.
+
+Release 5 - Items, monstres & maps : Contenu.
     Generic effects & items
     Loot tables for rooms & mobs.
-    Lore via npc & items.
+    Map buildings
     Scores & better morgue files
 
 
 Raws:
     Particules
 
-Map algorithms:
-    Reparer le placement de la sortie sur Cellula Automata (Seulement la partie Ouest de la map ????)
-
 Feature Items:
-    Traps
     Magic items.
     Identification
     Effects.
@@ -109,7 +106,6 @@ Feature generation map:
     Master dungeon map: scenarisation.
     Teleporteurs
     "Pont / Reconstruction de ponts" : Zones bloquées, necessitant quetes / items pour ouvrir zone.
-
 
 Feature Entités:
     Code de conduite

@@ -22,7 +22,7 @@ class DrunkardsWalkBuilder(InitialMapBuilder, MetaMapbuilder):
             raise ValueError
 
     def build_meta_map(self, build_data):
-        self.build_map(build_data)
+        self.build_initial_map(build_data)
 
     def build_initial_map(self, build_data):
         # starting point
@@ -79,6 +79,10 @@ class DrunkardsWalkBuilder(InitialMapBuilder, MetaMapbuilder):
                     build_data.map.tiles[i] = TileType.FLOOR
 
             floor_tile_count = build_data.map.tiles.count(TileType.FLOOR)
+        # securité
+        for i, tile in enumerate(build_data.map.tiles):
+            if tile == TileType.DOWN_STAIRS:
+                build_data.map.tiles[i] = TileType.FLOOR
 
     def open_area(self):
         self.mode = DrunkSpawnMode.STARTING_POINT

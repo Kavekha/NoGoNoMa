@@ -52,3 +52,8 @@ class RoomExploder(MetaMapbuilder):
                         for i, tile in enumerate(build_data.map.tiles):
                             if tile == TileType.DOWN_STAIRS:
                                 build_data.map.tiles[i] = TileType.FLOOR
+
+                    # pour le dernier batch
+                    for i, tile in enumerate(build_data.map.tiles):
+                        if tile == TileType.DOWN_STAIRS:
+                            build_data.map.tiles[i] = TileType.FLOOR

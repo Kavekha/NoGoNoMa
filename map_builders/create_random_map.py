@@ -339,7 +339,7 @@ def random_builder(depth):
             PrefabSection(RIGHT_FORT, 15, 43, (HorizontalPlacement.RIGHT, VerticalPlacement.TOP))))
 
     builder.build_with(DoorPlacement())
-    # builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100))) # TO FIX
+    builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100))) # TO FIX
 
     return builder
 
@@ -370,19 +370,18 @@ def build_random_map(depth):
     # return random_build_example(depth)
     return random_builder(depth)
 
-'''
-
+"""
     builder = BuilderChain(depth)
-    builder.start_with(SimpleMapBuilder())
+    builder.start_with(BspInteriorMapBuilder())
     builder.build_with(RoomDrawer())
+    builder.build_with(RoomCornerRounding())
     builder.build_with(RoomSorter(RoomSort.LEFTMOST))
+    builder.build_with(RoomExploder())
     builder.build_with(NearestCorridor())
     builder.build_with(DoorPlacement())
     builder.build_with(CorridorSpawner())
     builder.build_with(RoomBasedStairs())
     builder.build_with(RoomBasedStartingPosition())
-
-
-
+    builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100)))
     return builder
-'''
+"""
