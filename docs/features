@@ -1,38 +1,21 @@
-Release 3 - Done
-    Refactor Map Building
-    Map building Harness
-    BSP Algorithm.
-    BSP Interior Algorithm
-    Raws: Attaques Naturelles
-    Fix : BSP, apply rooms, etc.
-    Cellula automata - fix
-    Objets non identifiés
-    Systeme d'identification.
-    Drunkard's walk
-    Maze
-    Traps
-    Diffusion limited aggregation
-    Symetry and brushes as librairy
-    Prefabs : maps
-    Prefabs : sections
-    Prefabs : Rooms
-    Builder chaining
-    Layers
-    Rooms builders
-    Corridors
-    Doors
-    fix: Vaults.
-    fix: Room Corner.
-    fix: Sortie de map.
-    fix: Room exploder ne laisse plus de traces.
+Release 4 - Done
+    Camera: rendering
+    Camera: tooltip
+    Camera: targeting system
 
-Release 4 - Planning
-    Camera
+    
+Release 4 - WIP
+    > Camera
+    > To fix: Prefabs vault sectionnal
+    > To fix: Stains visibles hors visibility
+    > to fix: Pour certains map builders, la camera ignore 1 tile Ouest / Nord.
+    Cleanup dead code
     Zoom
     Interface
         26 items +
         Recuperation automatique
         Options à l'usage de l'item
+        highlight option menu
     Tiles personnalisées selon niveau
     Forme de la tile selon placement.
     mouse support

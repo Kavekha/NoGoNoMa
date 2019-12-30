@@ -127,8 +127,13 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
                 chunk_x, chunk_y = position
 
                 # char to map incoming
-                string_vec = self.template.template
-                string_vec = string_vec.replace('\n', '').replace('\r', '')
+                if self.template.template:
+                    print(f'prefab vault : {self.template}')
+                    print(f'prefab vault : template : {self.template.template}')
+                    string_vec = self.template.template
+                    string_vec = string_vec.replace('\n', '').replace('\r', '')
+                else:
+                    return
 
                 i = 0
                 for y in range(0, vault.height - 1):
