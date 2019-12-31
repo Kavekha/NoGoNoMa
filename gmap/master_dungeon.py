@@ -27,5 +27,3 @@ class MasterDungeon:
         if result:
             return result
         return False
-
-

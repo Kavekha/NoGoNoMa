@@ -35,7 +35,5 @@ class RoomCornerRounding(MetaMapbuilder):
         if corner_y < height - 2 and build_data.map.tiles[idx + width] == TileType.WALL:
             neighbor_walls += 1
 
-        print(f'fill requested for {corner_x, corner_y}')
         if neighbor_walls == 2:
-            print(f'{corner_x, corner_y} corner x, corner y has been rounder !')
             build_data.map.tiles[idx] = TileType.WALL

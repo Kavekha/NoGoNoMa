@@ -30,7 +30,6 @@ class Gmap:
         return False
 
     def is_opaque(self, idx):
-        print(f'is opaque: {idx} : tile : {self.tiles[idx]} and get blocked: {self.view_blocked.get(idx)}')
         if self.tiles[idx] == TileType.WALL or self.view_blocked.get(idx):
             return True
 
@@ -91,7 +90,6 @@ class Gmap:
         print(f'\n{map_string}')
 
     def print_fov_map(self):
-        print(f'FOV MAP TO PRINT !')
         map_string = ''
         for x in range(0, self.height - 1):
             map_x = ''

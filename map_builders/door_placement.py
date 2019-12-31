@@ -24,7 +24,6 @@ class DoorPlacement(MetaMapbuilder):
                             count += 1
                             if count > len(corridor) - 1:
                                 break
-            print(f'DOOR : {build_data.spawn_list}')
         else:
             tiles = deepcopy(build_data.map.tiles)
             for i, tile in enumerate(tiles):

@@ -87,7 +87,6 @@ def targeting_input(item, mouse_coords, valid_target=False):
             sys.exit()
 
     if cancel:
-        print('targeting input: cancel targeting.')
         World.remove_component(TargetingComponent, World.fetch('player'))
         return ItemMenuResult.CANCEL, None, None
     return ItemMenuResult.NO_RESPONSE, None, None
@@ -180,4 +179,3 @@ def character_sheet_input():
             save_game(World)
             terminal.close()
             sys.exit()
-

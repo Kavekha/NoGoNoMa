@@ -25,7 +25,6 @@ def mana_point_at_level(wits, lvl):
 
 
 def skill_level(skill_component, skill):
-    print(f'skill level for {skill}, in skills {skill_component.skills}')
     if skill in skill_component.skills:
         return skill_component.skills[skill]
     return config.DEFAULT_NO_SKILL_VALUE

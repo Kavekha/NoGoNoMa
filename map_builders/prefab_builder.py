@@ -73,8 +73,6 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
                              PrefabRoom(SILLY_SMILE_MAP, 6, 6, 0, 100),
                              PrefabRoom(CHECKERBOARD_MAP, 6, 6, 0, 100)]
 
-        print(f'VAULT : master vault list is {master_vault_list}')
-
         # looking for a valid available vault
         possible_vaults = list()
         for vault in master_vault_list:
@@ -147,14 +145,11 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
 
                 # remove spawn in spawn list where spawn in our vault
                 spawn_list_to_keep = deepcopy(build_data.spawn_list)
-                print(f'SPAWN LIST REMOVAL = {spawn_list_to_keep}')
                 for i, (spawn_idx, spawn_name) in enumerate(build_data.spawn_list):
                     x, y = build_data.map.index_to_point2d(spawn_idx)
                     # if x and y in vault
                     if chunk_x < x < chunk_x + vault.width and chunk_y < y < chunk_y + vault.height:
                         spawn_list_to_keep.remove(build_data.spawn_list[i])
-                        print(f'original: {build_data.spawn_list}')
-                        print(f'copie: {spawn_list_to_keep}')
 
                 build_data.spawn_list = spawn_list_to_keep
 
@@ -199,8 +194,6 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
 
         string_vec = self.template.template
         string_vec = string_vec.replace('\n', '').replace('\r', '')
-
-        print(f'sectionnal: template is : \n{self.template.template}')
 
         i = 0
         for y in range(0, self.template.height):

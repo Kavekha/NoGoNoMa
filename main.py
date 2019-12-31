@@ -7,18 +7,17 @@ import config
 from world import World
 from data.load_raws import RawsMaster
 from player_systems.player_input import player_input
-from systems.render_system import render_system
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
 from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input
-from ui_system.draw_map import draw_map
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
 from systems.inventory_system import get_items_in_user_backpack
 from systems.particule_system import cull_dead_particules
 from ui_system.interface import Interface
 from ui_system.menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
     show_item_screen, show_option_menu
+from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 from state import States, State
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
@@ -104,8 +103,7 @@ def tick():
             run_state.change_state(States.PRE_RUN)
         else:
             terminal.clear()
-            draw_map(run_state.mapgen_history[run_state.mapgen_index])
-            print(f'state mapgen timer is {run_state.mapgen_timer}')
+            render_debug_map(run_state.mapgen_history[run_state.mapgen_index])
             run_state.mapgen_timer += 1
             if run_state.mapgen_timer > config.MAPGEN_VISUALIZER_TIMER:
                 run_state.mapgen_timer = 0
@@ -175,8 +173,8 @@ def run_systems():
     print(f'--- run systems ---')
     terminal.clear()
     World.update()
-    draw_map(World.fetch('current_map'))
-    render_system()
+    render_map_camera()
+    render_entities_camera()
     draw_tooltip()
     terminal.refresh()
 
