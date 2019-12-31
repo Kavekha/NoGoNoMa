@@ -20,9 +20,9 @@ class MetaMapbuilder:
 
 
 class BuilderMap:
-    def __init__(self, depth):
+    def __init__(self, depth, width, height):
         self.spawn_list = list()
-        self.map = Gmap(depth)
+        self.map = Gmap(depth, width, height)
         self.starting_position = (0, 0)
         self.rooms = None
         self.corridors = None
@@ -37,10 +37,10 @@ class BuilderMap:
 
 
 class BuilderChain:
-    def __init__(self, depth):
+    def __init__(self, depth, width, height):
         self.starter = None
         self.builders = list()
-        self.build_data = BuilderMap(depth)
+        self.build_data = BuilderMap(depth, width, height)
 
     def start_with(self, initial_map_builder):
         if self.starter:

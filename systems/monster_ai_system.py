@@ -54,6 +54,7 @@ class MonsterAi(System):
                 print(f'{name.name} is confused.')
 
     def move_towards(self, entity, position_component, target_x, target_y):
+        current_map = World.fetch('current_map')
         dx = target_x - position_component.x
         dy = target_y - position_component.y
         distance = math.sqrt(dx ** 2 + dy ** 2)
@@ -63,8 +64,8 @@ class MonsterAi(System):
         if dy != 0:
             dy = int(round(dy // distance))
 
-        new_pos_x = min(config.MAP_WIDTH - 1, max(0, position_component.x + dx))
-        new_pos_y = min(config.MAP_HEIGHT - 1, max(0, position_component.y + dy))
+        new_pos_x = min(current_map.width - 1, max(0, position_component.x + dx))
+        new_pos_y = min(current_map.height - 1, max(0, position_component.y + dy))
         if self.can_move(new_pos_x, new_pos_y):
             position_component.x = new_pos_x
             position_component.y = new_pos_y
@@ -84,15 +85,6 @@ class MonsterAi(System):
         # Create a FOV map that has the dimensions of the map
         fov = viewshed.visible_tiles
         current_map = World.fetch('current_map')
-
-        '''
-        # Scan the current map each turn and set all the walls as unwalkable
-        for y1 in range(config.MAP_HEIGHT):
-            for x1 in range(config.MAP_WIDTH):
-                # print(f'a star blocked tiles : {current_map.blocked_tiles}')
-                tcod.map_set_properties(fov, y1, x1, True,
-                                           not current_map.blocked_tiles[xy_idx(x1, y1)])
-        '''
 
         # Allocate a A* path
         # The 1.41 is the normal diagonal cost of moving, it can be set as 0.0 if diagonal moves are prohibited

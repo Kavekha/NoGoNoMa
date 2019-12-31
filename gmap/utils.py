@@ -7,20 +7,6 @@ from components.position_component import PositionComponent
 from components.viewshed_component import ViewshedComponent
 
 
-
-
-
-'''
-def index_to_point2d(idx):
-    # Transform an idx 1D array to a x, y format for 2D array
-    return int(idx % config.MAP_WIDTH), idx // config.MAP_WIDTH
-
-
-def xy_idx(x, y):
-    # Return the map tile (x, y). Avoid List in list [x][y]
-    return (y * config.MAP_WIDTH) + x
-'''
-
 def level_transition(new_depth):
     master_dungeon = World.fetch('master_dungeon')
     if master_dungeon.get_map(new_depth):
@@ -30,7 +16,7 @@ def level_transition(new_depth):
 
 
 def transition_to_new_map(new_depth):
-    builder = build_random_map(new_depth)
+    builder = build_random_map(new_depth, 80, 50)
     builder.build_map()
 
     current_map = builder.build_data.map
@@ -76,17 +62,3 @@ def old_transition_to_new_map(new_depth):
 def transition_to_existing_map(new_depth):
     print(f'Backtracking not implemented')
     raise NotImplementedError
-
-'''
-    dungeon_master = World.fetch('dungeon_master')
-    current_map = dungeon_master.get_map(new_depth)
-    World.insert('current_map', current_map)
-
-    # Reperer le Upstair et placer le joueur dessus.
-
-    player = World.fetch('player')
-    player_pos = World.get_entity_component(player, PositionComponent)
-    player_pos.x, player_pos.y = x, y
-    player_viewshed = World.get_entity_component(player, ViewshedComponent)
-    player_viewshed.dirty = True
-    '''

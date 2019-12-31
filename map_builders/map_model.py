@@ -1,25 +1,24 @@
 from tcod import tcod
 
 from gmap.gmap_enums import TileType
-import config
 
 
 class Gmap:
-    def __init__(self, depth):
-        self.tiles = [TileType.WALL] * (config.MAP_HEIGHT * config.MAP_WIDTH)
+    def __init__(self, depth, width, height):
+        self.width = width
+        self.height = height
+
+        self.tiles = [TileType.WALL] * (self.height * self.width)
         self.rooms = []
 
-        self.width = config.MAP_WIDTH
-        self.height = config.MAP_HEIGHT
-
-        self.revealed_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
-        self.visible_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
-        self.blocked_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
+        self.revealed_tiles = [False] * (self.height * self.width)
+        self.visible_tiles = [False] * (self.height * self.width)
+        self.blocked_tiles = [False] * (self.height * self.width)
         self.view_blocked = dict()
 
-        self.tile_content = [[None] for x in range(config.MAP_HEIGHT * config.MAP_WIDTH)]
+        self.tile_content = [[None] for x in range(self.height * self.width)]
         self.depth = depth
-        self.stains = [0] * (config.MAP_HEIGHT * config.MAP_WIDTH)
+        self.stains = [0] * (self.height * self.width)
 
         self.fov_map = None
         self.spawn_table = None
@@ -37,11 +36,11 @@ class Gmap:
 
     def index_to_point2d(self, idx):
         # Transform an idx 1D array to a x, y format for 2D array
-        return int(idx % config.MAP_WIDTH), idx // config.MAP_WIDTH
+        return int(idx % self.width), idx // self.width
 
     def xy_idx(self, x, y):
         # Return the map tile (x, y). Avoid List in list [x][y]
-        return (y * config.MAP_WIDTH) + x
+        return (y * self.width) + x
 
     def create_fov_map(self):
         fov_map = tcod.tcod.map.Map(self.width, self.height)
@@ -113,5 +112,5 @@ class Gmap:
                 self.blocked_tiles[i] = False
 
     def clear_content_index(self):
-        self.tile_content = [[] for x in range(config.MAP_HEIGHT * config.MAP_WIDTH)]
+        self.tile_content = [[] for x in range(self.height * self.width)]
 

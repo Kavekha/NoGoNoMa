@@ -33,8 +33,8 @@ def try_move_player(delta_x, delta_y):
                 opening_door(potential_target, door)
 
         if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
-            position.x = min(config.MAP_WIDTH - 1, max(0, position.x + delta_x))
-            position.y = min(config.MAP_HEIGHT - 1, max(0, position.y + delta_y))
+            position.x = min(current_map.width - 1, max(0, position.x + delta_x))
+            position.y = min(current_map.height - 1, max(0, position.y + delta_y))
             player_viewshed = World.get_entity_component(entity, ViewshedComponent)
             player_viewshed.dirty = True
             has_moved = EntityMovedComponent()
