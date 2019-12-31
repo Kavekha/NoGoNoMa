@@ -197,7 +197,7 @@ def main():
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)
 
-    FPS = config.FPS
+    FPS = 200    #config.FPS
 
     while True:
         start_time = time.perf_counter()  # limit fps
