@@ -8,7 +8,6 @@ from ui_system.ui_enums import Layers
 from components.particule_component import ParticuleLifetimeComponent
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
-# from systems.render_system import render_system
 from ui_system.render_camera import render_entities_camera
 import config
 
@@ -70,5 +69,4 @@ def cull_dead_particules():
         terminal.layer(Layers.PARTICULE.value)
         terminal.clear_area(0, 0, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
         render_entities_camera()
-        # render_system()
         terminal.refresh()

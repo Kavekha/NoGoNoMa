@@ -33,7 +33,7 @@ def render_map_camera():
     for ty in range(min_y, max_y):
         x = 0
         for tx in range(min_x, max_x):
-            if 0 < tx < map_width and 0 < ty < map_height:
+            if 0 <= tx < map_width and 0 <= ty < map_height:
                 # terminal.layer(Layers.MAP.value)
                 terminal.composition(terminal.TK_ON)
                 idx = current_map.xy_idx(tx, ty)
@@ -72,7 +72,7 @@ def render_entities_camera():
         if current_map.visible_tiles[idx] and not hidden:
             entity_screen_x = position.x - min_x
             entity_screen_y = position.y - min_y
-            if 0 < entity_screen_x < map_width and 0 < entity_screen_y < map_height:
+            if 0 <= entity_screen_x <= map_width and 0 <= entity_screen_y <= map_height:
                 if Interface.mode == GraphicalModes.ASCII:
                     terminal.printf(entity_screen_x,
                                     entity_screen_y,
@@ -124,3 +124,43 @@ def get_tile_glyph(idx, gmap):
         char_color = 'dark gray'
 
     return glyph, sprite, char_color
+
+
+def render_debug_map(gmap):
+    player = World.fetch('player')
+    player_pos = World.get_entity_component(player, PositionComponent)
+
+    center_x = config.SCREEN_WIDTH // 2
+    center_y = config.SCREEN_HEIGHT // 2
+    player_pos.x = center_x
+    player_pos.y = center_y
+
+    min_x, max_x, min_y, max_y = get_screen_bounds()
+
+    map_width = gmap.width - 1
+    map_height = gmap.height - 1
+
+    y = 0
+    for ty in range(min_y, max_y):
+        x = 0
+        for tx in range(min_x, max_x):
+            if 0 <= tx <= map_width and 0 <= ty <= map_height:
+                idx = gmap.xy_idx(tx, ty)
+                if gmap.revealed_tiles[idx]:
+                    glyph, sprite, char_color = get_tile_glyph(idx, gmap)
+                    draw_tile(tx, ty, glyph, sprite, char_color, render_order=Layers.MAP)
+            elif config.SHOW_BOUNDARIES:
+                if Interface.mode == GraphicalModes.ASCII or Interface.mode == GraphicalModes.TILES:
+                    terminal.printf(x, y, f'[color=gray]-[/color]')
+                else:
+                    print(f'render camera: graphical mode {Interface.mode} not implemented.')
+                    raise NotImplementedError
+            x += 1
+        y += 1
+
+    draw_tile(0, 0, 'X', 'map/wall1.png', 'pink', render_order=Layers.MAP)
+    draw_tile(gmap.width - 1, 0, 'X', 'map/wall1.png', 'pink', render_order=Layers.MAP)
+    draw_tile(0, gmap.height - 1, 'X', 'map/wall1.png', 'pink', render_order=Layers.MAP)
+    draw_tile(gmap.width - 1, gmap.height - 1, 'X', 'map/wall1.png', 'pink', render_order=Layers.MAP)
+
+    terminal.refresh()

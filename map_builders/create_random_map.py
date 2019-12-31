@@ -323,8 +323,8 @@ def random_shape_builder(builder):
     builder.build_with(DistantExit())
 
 
-def random_builder(depth):
-    builder = BuilderChain(depth)
+def random_builder(depth, width, height):
+    builder = BuilderChain(depth, width, height)
     type_roll = randint(1, 2)
     print(f'random builder : type is {type_roll}')
     if type_roll == 1:
@@ -366,9 +366,9 @@ def random_start_position():
     return result_x, result_y
 
 
-def build_random_map(depth):
+def build_random_map(depth, width, height):
     # return random_build_example(depth)
-    return random_builder(depth)
+    return random_builder(depth, width, height)
 
 """
     builder = BuilderChain(depth)

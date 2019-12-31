@@ -32,7 +32,6 @@ class VisibilitySystem(System):
             current_map.create_fov_map()
             print(f'old view blocked changed')
 
-
         for entity, (position, viewshed) in subjects:
             viewshed.dirty = False
             viewshed.visible_tiles = []
@@ -44,7 +43,7 @@ class VisibilitySystem(System):
             viewshed.visible_tiles = current_map.fov_map.fov.copy()
 
             if World.entity_has_component(entity, PlayerComponent):
-                current_map.visible_tiles = [False] * (config.MAP_HEIGHT * config.MAP_WIDTH)
+                current_map.visible_tiles = [False] * (current_map.height * current_map.width)
                 x = 0
                 y = 0
                 for row in viewshed.visible_tiles:
