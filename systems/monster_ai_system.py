@@ -14,16 +14,13 @@ from systems.particule_system import ParticuleBuilder
 from state import States
 from map_builders.commons import distance_to
 from world import World
-import config
 
 
 class MonsterAi(System):
     def update(self, *args, **kwargs):
         run_state = World.fetch('state')
         if not run_state.current_state == States.MONSTER_TURN:
-            print(f'not monster turn')
             return
-        print(f'monster turn!')
 
         subjects = World.get_components(NameComponent, MonsterComponent, ViewshedComponent, PositionComponent)
 
@@ -50,8 +47,6 @@ class MonsterAi(System):
                         World.add_component(want_to_melee, entity)
                     else:
                         self.move_astar(entity, viewshed, position_component, player_position.x, player_position.y)
-            else:
-                print(f'{name.name} is confused.')
 
     def move_towards(self, entity, position_component, target_x, target_y):
         current_map = World.fetch('current_map')

@@ -60,8 +60,6 @@ def init_game(master_seed=None):
 
     master_dungeon = MasterDungeon()
     World.insert('master_dungeon', master_dungeon)
-    print(f'INITIALIZE : master dungeon is : {master_dungeon}')
-    print(f'INITIALIZE : World fetch master dungeon is : {World.fetch("master_dungeon")}')
     state = World.fetch('state')
     state.generate_world_map(1)
 

@@ -52,7 +52,6 @@ class ItemDropSystem(System):
             World.remove_component(InBackPackComponent, wants_to_drop.item)
 
             if entity == player:
-                item_name = World.get_entity_component(wants_to_drop.item, NameComponent)
                 logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("YOU_DROP_UP")}'
                                 f'{get_obfuscate_name(wants_to_drop.item)}[/color]')
 

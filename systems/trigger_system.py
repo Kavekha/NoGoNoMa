@@ -15,7 +15,6 @@ import config
 
 class TriggerSystem(System):
     def update(self, *args, **kwargs):
-        print(f'TRIGGER: update')
         subjects = World.get_components(EntityMovedComponent, PositionComponent)
         current_map = World.fetch('current_map')
         remove_entities = []
@@ -23,9 +22,7 @@ class TriggerSystem(System):
             idx = current_map.xy_idx(position.x, position.y)
             for entity_id in current_map.tile_content[idx]:
                 if entity is not entity_id:
-                    print(f'entity {entity} is not {entity_id}')
                     maybe_trigger = World.get_entity_component(entity_id, EntryTriggerComponent)
-                    print(f'entity id {entity_id} has maybe a trigger : {maybe_trigger}')
                     if not maybe_trigger:
                         continue
                     else:
@@ -44,17 +41,17 @@ class TriggerSystem(System):
                         else:
                             # effects werent dodge
                             final_log_consequence = Texts.get_text('IT_HITS_YOU')
-                            logs.appendleft(f"[color={config.COLOR_MAJOR_INFO}]"
-                                            f"{final_log_trigger} {final_log_consequence}"
-                                            f"[/color]")
 
                             inflict_dmg = World.get_entity_component(entity_id, InflictsDamageComponent)
                             if inflict_dmg:
-                                print(f'trigger: inflict dmg : {inflict_dmg} with dmg : {inflict_dmg.damage}')
                                 ParticuleBuilder.request(position.x, position.y,
                                                          config.COLOR_PARTICULE_HIT, '!!', 'particules/attack.png')
                                 suffer_dmg = SufferDamageComponent(inflict_dmg.damage, from_player=False)
                                 World.add_component(suffer_dmg, entity)
+
+                        logs.appendleft(f"[color={config.COLOR_MAJOR_INFO}]"
+                                        f"{final_log_trigger} {final_log_consequence}"
+                                        f"[/color]")
 
                         activation = World.get_entity_component(entity_id, ActivationComponent)
                         if activation:

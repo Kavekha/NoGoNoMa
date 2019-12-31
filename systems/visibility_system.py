@@ -30,7 +30,6 @@ class VisibilitySystem(System):
         if len(old_view_blocked) - len(same_entries) != len(new_view_blocked) - len(same_entries):
             # change in view blocked
             current_map.create_fov_map()
-            print(f'old view blocked changed')
 
         for entity, (position, viewshed) in subjects:
             viewshed.dirty = False
@@ -44,9 +43,9 @@ class VisibilitySystem(System):
 
             if World.entity_has_component(entity, PlayerComponent):
                 current_map.visible_tiles = [False] * (current_map.height * current_map.width)
-                x = 0
                 y = 0
                 for row in viewshed.visible_tiles:
+                    x = 0
                     for tile in row:
                         if tile:
                             idx = current_map.xy_idx(x, y)
@@ -61,18 +60,13 @@ class VisibilitySystem(System):
                                     if skill_roll_against_difficulty(entity,
                                                                      Skills.FOUND_TRAPS,
                                                                      config.DEFAULT_TRAP_DETECTION_DIFFICULTY):
-                                        print(f'visibility check trap : sucess')
                                         # found it!
                                         entity_name = get_obfuscate_name(entity_tile_content)
-                                        print(f'visibility: obfuscate name :{entity_name}')
                                         logs = World.fetch('logs')
                                         logs.appendleft(
                                             f'[color={config.COLOR_MAJOR_INFO}]'
                                             f'{Texts.get_text("YOU_SPOTTED_").format(Texts.get_text(entity_name))}'
                                             f'[/color]')
                                         World.remove_component(HiddenComponent, entity_tile_content)
-                                    else:
-                                        print(f'failure to found.')
                         x += 1
                     y += 1
-                    x = 0

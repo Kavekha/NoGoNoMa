@@ -18,7 +18,6 @@ class NearestCorridor(MetaMapbuilder):
                 room_distance = list()
                 room_x, room_y = room.center()
                 for j, other_room in enumerate(rooms):
-                    print(f'corridor: i {i}, {j}, {room}, {other_room}')
                     if i != j and not connected.get(j):
                         other_x, other_y = other_room.center()
                         distance = distance_to(room_x, room_y, other_x, other_y)

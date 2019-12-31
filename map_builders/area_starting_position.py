@@ -41,4 +41,3 @@ class AreaStartingPosition(MetaMapbuilder):
 
         new_x, new_y = build_data.map.index_to_point2d(available_floors[0][0])
         build_data.starting_position = new_x, new_y
-        print(f'area: starting pos is {build_data.starting_position} and tile is {build_data.map.tiles[available_floors[0][0]]}')

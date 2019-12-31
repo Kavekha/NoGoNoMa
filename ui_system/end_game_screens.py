@@ -1,7 +1,7 @@
 from bearlibterminal import terminal
 
 from texts import Texts
-from player_systems.player_input import any_input_for_quit
+from player_systems.player_input import input_escape_to_quit
 
 
 def show_game_over():
@@ -9,7 +9,7 @@ def show_game_over():
     terminal.printf(15, 20, f'{Texts.get_text("PRESS_ANY_KEY")}')
 
     terminal.refresh()
-    return any_input_for_quit()
+    return input_escape_to_quit()
 
 
 def show_victory_screen():
@@ -20,4 +20,4 @@ def show_victory_screen():
     terminal.refresh()
 
     terminal.refresh()
-    return any_input_for_quit()
+    return input_escape_to_quit()

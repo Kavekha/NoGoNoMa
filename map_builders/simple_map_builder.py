@@ -24,7 +24,5 @@ class SimpleMapBuilder(InitialMapBuilder):
                     can_be_add = False
 
             if can_be_add:
-                # apply_room_to_map(new_room, build_data.map)
                 rooms.append(new_room)
-                # build_data.take_snapshot()
         build_data.rooms = rooms

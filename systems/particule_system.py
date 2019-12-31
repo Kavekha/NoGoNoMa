@@ -57,10 +57,7 @@ def cull_dead_particules():
     now = perf_counter()
     for entity, (particule, *args) in subjects:
         if now - particule.start_time > particule.lifetime:
-            print(f'dead particule: {entity}')
             dead_particules.append(entity)
-        else:
-            print(f'still alive : {entity}')
 
     if dead_particules:
         for dead_particule in dead_particules:

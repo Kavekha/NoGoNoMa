@@ -1,6 +1,5 @@
 from bearlibterminal import terminal
 
-import config
 from world import World
 from ui_system.ui_enums import Layers
 from ui_system.render_functions import get_item_display_name
@@ -24,7 +23,6 @@ def draw_tooltip():
     if mouse_pos_x > current_map.width - 1 or mouse_pos_y > current_map.height - 1:
         return
 
-    # current_map.revealed_tiles[xy_idx(mouse_pos_x, mouse_pos_y)] (Pour les revealed. Mais on voit pas les items)
     if current_map.visible_tiles[current_map.xy_idx(mouse_pos_x, mouse_pos_y)]:
         old_tooltip, old_mouse_x, old_mouse_y = World.fetch('tooltip')
 
@@ -34,7 +32,6 @@ def draw_tooltip():
                 continue
             if position.x == mouse_pos_x and position.y == mouse_pos_y:
                 tooltip.append(get_item_display_name(entity))
-                # print(f'tooltip camera: entity in tooltip is {name.name} : position {position.x, position.y}')
 
         # identique, on ne change rien.
         if tooltip == old_tooltip and mouse_pos_x == old_mouse_x and mouse_pos_y == old_mouse_y:
@@ -43,7 +40,6 @@ def draw_tooltip():
         terminal.layer(Layers.TOOLTIP.value)
         terminal.clear_area(0, 0, current_map.width, current_map.height)
 
-        # plus de tooltip a afficher
         if tooltip:
             terminal.color('white')
             width = 0

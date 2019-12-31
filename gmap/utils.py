@@ -1,6 +1,3 @@
-import math
-
-import config
 from world import World
 from map_builders.create_random_map import build_random_map
 from components.position_component import PositionComponent
@@ -54,8 +51,6 @@ def old_transition_to_new_map(new_depth):
     master_dungeon.store_map(new_depth, current_map)
 
     map_gen_history = builder.get_snapshot_history()
-    print(f'transition: map gen history is {map_gen_history}')
-    print(f'transition : map gen history type is {type(map_gen_history)}')
     return map_gen_history
 
 

@@ -1,3 +1,4 @@
+'''
 from components.monster_component import MonsterComponent
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
@@ -44,3 +45,4 @@ def create_monster_orcish(x, y):
     combat_stats = CombatStatsComponent(hp=18, defense=2, power=5)
     monster_id = World.create_entity(position, renderable, viewshed, name, monster_component, block, combat_stats)
     return monster_id
+'''
