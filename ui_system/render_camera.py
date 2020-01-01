@@ -59,8 +59,8 @@ def render_map_camera():
                         raise NotImplementedError
 
                 terminal.composition(terminal.TK_OFF)
-            x += 1
-        y += 1
+            x += (1 * Interface.zoom)
+        y += (1 * Interface.zoom)
 
     delta_time = (time.perf_counter() - start) * 1000
     print(f'delta time: for render map : {delta_time}')
@@ -80,8 +80,8 @@ def render_entities_camera():
         idx = current_map.xy_idx(position.x, position.y)
         terminal.layer(renderable.render_order.value)
         if current_map.visible_tiles[idx] and not hidden:
-            entity_screen_x = position.x - min_x
-            entity_screen_y = position.y - min_y
+            entity_screen_x = ((position.x - min_x) * Interface.zoom)
+            entity_screen_y = ((position.y - min_y) * Interface.zoom)
             if 0 <= entity_screen_x <= map_width and 0 <= entity_screen_y <= map_height:
                 if Interface.mode == GraphicalModes.ASCII:
                     terminal.printf(entity_screen_x,
@@ -127,8 +127,8 @@ def render_debug_map(gmap):
                 else:
                     print(f'render camera: graphical mode {Interface.mode} not implemented.')
                     raise NotImplementedError
-            x += 1
-        y += 1
+            x += (1 * Interface.zoom)
+        y += (1 * Interface.zoom)
 
     draw_tile(0, 0, 'X', 'map/wall1.png', 'pink', render_order=Layers.MAP)
     draw_tile(gmap.width - 1, 0, 'X', 'map/wall1.png', 'pink', render_order=Layers.MAP)

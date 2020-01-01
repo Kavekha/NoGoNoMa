@@ -27,7 +27,7 @@ class Interface:
 
     @staticmethod
     def initialize():
-        Interface.set_zoom(2)
+        Interface.set_zoom(1)
 
     @staticmethod
     def change_graphical_mode(mode):
@@ -63,6 +63,7 @@ class Interface:
         options = f'{Interface.current_code}:{real_path}'
 
         cell_width = terminal.state(terminal.TK_CELL_WIDTH)
+        print(f'get new code: cell width is {cell_width}')
         font_options = '{}: {}, resize={}x{}'.format(str(Interface.current_code), real_path,
                                                      str(cell_width * Interface.zoom), str(cell_width * Interface.zoom))
 
@@ -79,22 +80,36 @@ class Interface:
     @staticmethod
     def set_zoom(zoom=2):
         old_zoom = Interface.zoom
-        if 1 <= zoom <= 4:
+        print(f'old zoom is : {old_zoom}')
+        if 1 <= zoom <= 2:
             Interface.zoom = zoom
         elif zoom < 1:
             Interface.zoom = 1
         else:
-            Interface.zoom = 4
+            Interface.zoom = 2
+
+        print(f'new zoom is : {Interface.zoom}')
+        if old_zoom == Interface.zoom:
+            return
 
         cell_width = terminal.state(terminal.TK_CELL_WIDTH)
+        print(f'SET ZOOM : cell width before resize {cell_width}')
+        print(
+            f'zoom: before cell resize, terminal screens are {terminal.state(terminal.TK_WIDTH), terminal.state(terminal.TK_HEIGHT)}')
         Interface.resize_tiles(cell_width * Interface.zoom)
         Interface.screen_width = config.SCREEN_WIDTH // Interface.zoom
         Interface.screen_height = config.SCREEN_HEIGHT // Interface.zoom
+        terminal.set(f'window: cellsize={cell_width * Interface.zoom}*{cell_width * Interface.zoom}')
+        terminal.set(f'window: size={Interface.screen_width}*{Interface.screen_height}')
+        print(f'zoom: after terminal cell size {terminal.state(terminal.TK_CELL_WIDTH)}')
+        print(f'zoom: after cell resize, terminal screens are {terminal.state(terminal.TK_WIDTH), terminal.state(terminal.TK_HEIGHT)}')
 
     @staticmethod
     def resize_tiles(resize):
+        print(f'zoom : resize tile request a resize at {resize}')
         for path in Interface.list_of_tilesets:
             real_path = '/'.join([config.TILE_DIR, path])
+            print(f'zoom: resize: real path is {real_path}')
             code = Interface.path_to_code[real_path]
             Interface.set_tile(path, code, resize)
 
