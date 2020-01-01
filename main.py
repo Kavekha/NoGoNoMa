@@ -193,6 +193,7 @@ def main():
 
     # Interface
     interface = Interface()
+    Interface.initialize()
 
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)
@@ -202,7 +203,7 @@ def main():
     while True:
         start_time = time.perf_counter()  # limit fps
         tick()
-        cull_dead_particules()
+        cull_dead_particules(start_time)
         delta_time = (time.perf_counter() - start_time) * 1000
         terminal.delay(max(int(1000.0 / FPS - delta_time), 0))
 

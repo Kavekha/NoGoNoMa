@@ -8,15 +8,12 @@ Release 4 - Done
     Clean dead code
     fix: Stains visibles hors visibility
     tiles: Forme de la tile selon placement.
+    zoom: set zoom in maps & tilesets
+    zoom: interface & ascii limitation.
 
 Release 4 - WIP
-    tiles:
-        Tiles personnalisées selon niveau
-    camera:
-        Zoom
-    mouse support
-        deplacement
-        menus
+    optim:
+        itertool product for map & co : https://realpython.com/python-itertools/
     Interface
         26 items +
         Recuperation automatique
@@ -27,6 +24,11 @@ Release 4 - WIP
         Tooltip
         Items équipés visibles
     light : round vision instead of square
+    tiles:
+        Tiles personnalisées selon niveau
+    mouse support
+        deplacement
+        menus
     detection menaces & nouveaux evenements
     Room building & props
     NPC talking

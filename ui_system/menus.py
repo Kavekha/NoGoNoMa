@@ -162,4 +162,3 @@ def show_option_menu():
     else:
         draw_ascii_menu(window_x, window_y, window_end_x, window_end_y, header, text)
     terminal.refresh()
-

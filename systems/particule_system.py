@@ -50,13 +50,17 @@ class ParticuleBuilder:
         ParticuleBuilder._requests.clear()
 
 
-def cull_dead_particules():
+def cull_dead_particules(tick_time):
+    # print(f'---cull dead particule : {tick_time}')
     dead_particules = []
     subjects = World.get_components(ParticuleLifetimeComponent)
 
     now = perf_counter()
     for entity, (particule, *args) in subjects:
+        print(
+            f'now : {now} : particule {entity}: {now - particule.start_time} vs {particule.lifetime}')
         if now - particule.start_time > particule.lifetime:
+            print(f'DEAD!')
             dead_particules.append(entity)
 
     if dead_particules:
