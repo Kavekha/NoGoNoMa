@@ -1,11 +1,14 @@
 from bearlibterminal import terminal
+
+import time
+
 from world import World
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
 from components.hidden_component import HiddenComponent
 from ui_system.interface import Interface, GraphicalModes
 from ui_system.ui_enums import Layers
-from gmap.gmap_enums import TileType
+from ui_system.draw_tiles import draw_tile, get_tile_glyph
 import config
 
 
@@ -13,17 +16,19 @@ def get_screen_bounds():
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
-    center_x = config.SCREEN_WIDTH // 2
-    center_y = config.SCREEN_HEIGHT // 2
+    center_x = Interface.screen_width // 2
+    center_y = Interface.screen_height // 2
     min_x = player_pos.x - center_x
-    max_x = min_x + config.SCREEN_WIDTH
+    max_x = min_x + Interface.screen_width
     min_y = player_pos.y - center_y
-    max_y = min_y + config.SCREEN_HEIGHT
+    max_y = min_y + Interface.screen_height
 
     return min_x, max_x, min_y, max_y
 
 
 def render_map_camera():
+    start = time.perf_counter()
+
     current_map = World.fetch('current_map')
     min_x, max_x, min_y, max_y = get_screen_bounds()
     map_width = current_map.width
@@ -52,12 +57,18 @@ def render_map_camera():
                     else:
                         print(f'render camera: graphical mode {Interface.mode} not implemented.')
                         raise NotImplementedError
+
                 terminal.composition(terminal.TK_OFF)
             x += 1
         y += 1
 
+    delta_time = (time.perf_counter() - start) * 1000
+    print(f'delta time: for render map : {delta_time}')
+
 
 def render_entities_camera():
+    start = time.perf_counter()
+
     current_map = World.fetch('current_map')
     min_x, max_x, min_y, max_y = get_screen_bounds()
     map_width = current_map.width
@@ -83,54 +94,16 @@ def render_entities_camera():
                     print(f'render camera: graphical mode {Interface.mode} not implemented.')
                     raise NotImplementedError
 
-
-def draw_tile(x, y, glyph, sprite, char_color, render_order=None, background=None):
-    if render_order:
-        terminal.layer(render_order.value)
-    if Interface.mode == GraphicalModes.ASCII:
-        terminal.printf(x, y, f'[bkcolor={background}][color={char_color}]{glyph}[/color][/bkcolor]')
-    elif Interface.mode == GraphicalModes.TILES:
-        terminal.color(f'{char_color}')
-        terminal.put(x, y, Interface.get_code(sprite))
-    else:
-        print(f'render camera: graphical mode {Interface.mode} not implemented.')
-        raise NotImplementedError
-
-
-def get_tile_glyph(idx, gmap):
-    glyph = None
-    char_color = None
-    sprite = None
-
-    if gmap.tiles[idx] == TileType.FLOOR:
-        glyph = '.'
-        char_color = 'dark yellow'
-        sprite = 'map/ground.png'
-    elif gmap.tiles[idx] == TileType.WALL:
-        glyph = '#'
-        char_color = 'darker yellow'
-        sprite = 'map/wall1.png'
-    elif gmap.tiles[idx] == TileType.DOWN_STAIRS:
-        glyph = '>'
-        char_color = 'lighter blue'
-        sprite = 'map/stairs_down.png'
-    elif gmap.tiles[idx] == TileType.EXIT_PORTAL:
-        glyph = 'O'
-        char_color = 'lighter cyan'
-        sprite = 'map/stairs_down.png'
-
-    if not gmap.visible_tiles[idx]:
-        char_color = 'dark gray'
-
-    return glyph, sprite, char_color
+    delta_time = (time.perf_counter() - start) * 1000
+    print(f'delta time: for render entities : {delta_time}')
 
 
 def render_debug_map(gmap):
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
-    center_x = config.SCREEN_WIDTH // 2
-    center_y = config.SCREEN_HEIGHT // 2
+    center_x = Interface.screen_width // 2
+    center_y = Interface.screen_height // 2
     player_pos.x = center_x
     player_pos.y = center_y
 

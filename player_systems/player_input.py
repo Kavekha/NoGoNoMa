@@ -173,7 +173,7 @@ def character_sheet_input():
     if terminal.has_input():
         key = terminal.read()
         if key == terminal.TK_ESCAPE:
-            terminal.clear_area(0, 0, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
+            terminal.clear_area(0, 0, Interface.screen_width, Interface.screen_height)
             terminal.refresh()
         elif key == terminal.TK_CLOSE:
             save_game(World)

@@ -49,7 +49,7 @@ class UiSystem(System):
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE
         for line in log:
-            if y < config.SCREEN_HEIGHT:
+            if y < Interface.screen_height:
                 terminal.printf(2, y, line)
                 y += 1
 
@@ -85,6 +85,6 @@ class UiSystem(System):
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE
         for line in log:
-            if y < config.SCREEN_HEIGHT:
+            if y < Interface.screen_height:
                 print_shadow(2, y, line)
                 y += 1

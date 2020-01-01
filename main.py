@@ -193,6 +193,7 @@ def main():
 
     # Interface
     interface = Interface()
+    Interface.initialize()
 
     run_state = State(States.MAIN_MENU)
     World.insert('state', run_state)

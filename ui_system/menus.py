@@ -20,8 +20,8 @@ def show_character_sheet():
     player_attributes = World.get_entity_component(player, AttributesComponent)
     player_pools = World.get_entity_component(player, Pools)
 
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_x = Interface.screen_width // 4  # 20
+    window_y = Interface.screen_height // 4  # 10
     window_end_x = window_x * 3  # 60
     window_end_y = window_y * 3  # 40
 
@@ -47,8 +47,8 @@ def show_character_sheet():
 def show_main_menu():
     terminal.layer(Layers.MENU.value)
 
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_x = Interface.screen_width // 4  # 20
+    window_y = Interface.screen_height // 4  # 10
     window_end_x = window_x * 3  # 60
     window_end_y = window_y * 3  # 40
 
@@ -71,8 +71,8 @@ def show_main_menu():
 
 
 def show_game_over_screen():
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_x = Interface.screen_width // 4  # 20
+    window_y = Interface.screen_height // 4  # 10
     window_end_x = window_x * 3  # 60
     window_end_y = window_y * 3  # 40
 
@@ -97,8 +97,8 @@ def show_game_over_screen():
 
 
 def show_victory_screen():
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_x = Interface.screen_width // 4  # 20
+    window_y = Interface.screen_height // 4  # 10
     window_end_x = window_x * 3  # 60
     window_end_y = window_y * 3  # 40
 
@@ -115,8 +115,8 @@ def show_victory_screen():
 
 
 def show_item_screen(header):
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_x = Interface.screen_width // 4  # 20
+    window_y = Interface.screen_height // 4  # 10
     window_end_x = window_x * 3  # 60
     window_end_y = window_y * 3  # 40
 
@@ -143,8 +143,8 @@ def show_item_screen(header):
 def show_option_menu():
     terminal.layer(Layers.MENU.value)
 
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
+    window_x = Interface.screen_width // 4  # 20
+    window_y = Interface.screen_height // 4  # 10
     window_end_x = window_x * 3  # 60
     window_end_y = window_y * 3  # 40
 

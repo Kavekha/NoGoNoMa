@@ -9,7 +9,7 @@ from components.particule_component import ParticuleLifetimeComponent
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
 from ui_system.render_camera import render_entities_camera
-import config
+from ui_system.interface import Interface
 
 
 class ParticuleSpawnSystem(System):
@@ -64,6 +64,6 @@ def cull_dead_particules():
             World.delete_entity(dead_particule)
 
         terminal.layer(Layers.PARTICULE.value)
-        terminal.clear_area(0, 0, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
+        terminal.clear_area(0, 0, Interface.screen_width, Interface.screen_height)
         render_entities_camera()
         terminal.refresh()
