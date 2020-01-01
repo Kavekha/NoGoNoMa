@@ -15,7 +15,24 @@ SYSTEM = [
 MAP = [
     'map/ground.png',
     'map/wall1.png',
-    'map/stairs_down.png'
+    'map/stairs_down.png',
+    # release 4 better walls
+    'map/wall_solo.png',
+    'map/wall_north_w.png',  # aucun mur autour
+    'map/wall_south_w.png',
+    'map/wall_north_south_w.png',
+    'map/wall_west_w.png',
+    'map/wall_west_north_w.png',
+    'map/wall_west_south_w.png',
+    'map/wall_north_west_south_w.png',
+    'map/wall_east_w.png',
+    'map/wall_east_north_w.png',
+    'map/wall_east_south_w.png',
+    'map/wall_east_north_south_w.png',
+    'map/wall_east_west_w.png',
+    'map/wall_east_west_north_w.png',
+    'map/wall_east_west_south_w.png',
+    'map/wall_full.png'
 ]
 
 

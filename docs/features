@@ -6,13 +6,14 @@ Release 4 - Done
     fix: Partie de la map coupée à l'affichage.
     map : taille width & height lié à l'instance de la map.
     Clean dead code
+    fix: Stains visibles hors visibility
+    tiles: Forme de la tile selon placement.
 
 Release 4 - WIP
-    To fix: Stains visibles hors visibility
-    Optimize : rendering
-    Forme de la tile selon placement.
-    Tiles personnalisées selon niveau
-    Zoom
+    tiles:
+        Tiles personnalisées selon niveau
+    camera:
+        Zoom
     mouse support
         deplacement
         menus
@@ -21,18 +22,45 @@ Release 4 - WIP
         Recuperation automatique
         Options à l'usage de l'item
         highlight option menu
+        Menus plus informatifs
+        Raccourcis clavier
+        Tooltip
+        Items équipés visibles
+    light : round vision instead of square
     detection menaces & nouveaux evenements
-    Menus plus informatifs
-    Initiative & turn lost fix.
     Room building & props
     NPC talking
     Lore via npc & items.
+    Mapbuild checker:
+        Sortie éloignée
+        Reset si necessaire: save avant process.
 
-Release 5 - Items, monstres & maps : Contenu.
+Release 5 - Systems & items
+    Initiative & turn lost fix.
+    Combat.
+    Progression leveling
     Generic effects & items
     Loot tables for rooms & mobs.
     Map buildings
     Scores & better morgue files
+
+Release 6 - Story statique
+    Scenario standard: maps, monstres & items.
+    Gestion des lumieres & stealth
+    Attaques à distance.
+    Crochetage & events.
+    Selection de personnages.
+    Sauvegardes independantes / profils.
+
+Release 7 - Branches & moteur d'histoire de base.
+    Thematique de donjon.
+    Branches alternatives.
+    Constructeurs d'histoires simples.
+
+Release 8 - Magie.
+Release 9 - Backtrack donjon, Castelvania like.
+Release 10 - Divinités & codes de conduite.
+Release 11 - Moteur histoire complexe.
 
 
 Raws:
