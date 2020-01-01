@@ -1,5 +1,6 @@
 import copy
 from random import randint
+from itertools import product as it_product
 
 from map_builders.builder_map import InitialMapBuilder
 from map_builders.map_builders import Rect
@@ -79,6 +80,7 @@ class BspMapBuilder(InitialMapBuilder):
             if room.intersect(rect):
                 can_build = False
 
+        '''
         for y in range(expanded.y1, expanded.y2):
             for x in range(expanded.x1, expanded.x2):
                 if x > gmap.width - 2 or y > gmap.height - 2 or x < 1 or y < 1:
@@ -88,5 +90,14 @@ class BspMapBuilder(InitialMapBuilder):
                     idx = gmap.xy_idx(x, y)
                     if gmap.tiles[idx] != TileType.WALL:
                         can_build = False
+        '''
+        for x, y in it_product(range(expanded.x1, expanded.x2), range(expanded.y1, expanded.y2)):
+            if x > gmap.width - 2 or y > gmap.height - 2 or x < 1 or y < 1:
+                can_build = False
+
+            if can_build:
+                idx = gmap.xy_idx(x, y)
+                if gmap.tiles[idx] != TileType.WALL:
+                    can_build = False
 
         return can_build

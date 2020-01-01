@@ -370,9 +370,9 @@ def build_random_map(depth, width, height):
     # return random_build_example(depth)
     return random_builder(depth, width, height)
 
-"""
-    builder = BuilderChain(depth)
-    builder.start_with(BspInteriorMapBuilder())
+'''
+    builder = BuilderChain(depth, 80, 50)
+    builder.start_with(SimpleMapBuilder())
     builder.build_with(RoomDrawer())
     builder.build_with(RoomCornerRounding())
     builder.build_with(RoomSorter(RoomSort.LEFTMOST))
@@ -384,4 +384,4 @@ def build_random_map(depth, width, height):
     builder.build_with(RoomBasedStartingPosition())
     builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100)))
     return builder
-"""
+'''
