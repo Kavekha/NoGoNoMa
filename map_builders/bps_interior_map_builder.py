@@ -1,5 +1,6 @@
 import copy
 from random import randint
+from itertools import product as it_product
 
 from map_builders.builder_map import InitialMapBuilder
 from map_builders.map_builders import Rect
@@ -22,6 +23,7 @@ class BspInteriorMapBuilder(InitialMapBuilder):
 
         rooms = list()
         rooms_copy = copy.deepcopy(self.rects)
+        '''
         for room in rooms_copy:
             rooms.append(room)
             for y in range(room.y1, room.y2):
@@ -29,6 +31,14 @@ class BspInteriorMapBuilder(InitialMapBuilder):
                     idx = build_data.map.xy_idx(x, y)
                     if 0 < idx < ((build_data.map.width * build_data.map.height) - 1):
                         build_data.map.tiles[idx] = TileType.FLOOR
+            build_data.take_snapshot()
+        '''
+        for room in rooms_copy:
+            rooms.append(room)
+            for x, y in it_product(range(room.x1, room.x2), range(room.y1, room.y2)):
+                idx = build_data.map.xy_idx(x, y)
+                if 0 < idx < ((build_data.map.width * build_data.map.height) - 1):
+                    build_data.map.tiles[idx] = TileType.FLOOR
             build_data.take_snapshot()
 
         build_data.rooms = rooms

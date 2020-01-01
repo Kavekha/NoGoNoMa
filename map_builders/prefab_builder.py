@@ -1,5 +1,6 @@
 from random import randint
 from copy import deepcopy
+from itertools import product as it_product
 
 from map_builders.builder_map import InitialMapBuilder, MetaMapbuilder
 from gmap.gmap_enums import TileType
@@ -133,6 +134,7 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
                 else:
                     return
 
+                '''
                 i = 0
                 for y in range(0, vault.height - 1):
                     for x in range(0, vault.width - 1):
@@ -141,6 +143,15 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
                         # print(f'string vec is {string_vec} and i - 1 is : {string_vec[i - 1]}')
                         used_tiles[idx] = True
                         i += 1
+                build_data.take_snapshot()
+                '''
+                i = 0
+                for x, y in it_product(range(0, vault.width - 1), range(0, vault.width - 1)):
+                    idx = build_data.map.xy_idx(x + chunk_x, y + chunk_y)
+                    self.char_to_map(string_vec[i], idx, build_data)
+                    # print(f'string vec is {string_vec} and i - 1 is : {string_vec[i - 1]}')
+                    used_tiles[idx] = True
+                    i += 1
                 build_data.take_snapshot()
 
                 # remove spawn in spawn list where spawn in our vault
@@ -195,6 +206,7 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
         string_vec = self.template.template
         string_vec = string_vec.replace('\n', '').replace('\r', '')
 
+        '''
         i = 0
         for y in range(0, self.template.height):
             for x in range(0, self.template.width):
@@ -202,7 +214,14 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
                     idx = build_data.map.xy_idx(x + chunk_x, y + chunk_y)
                     self.char_to_map(string_vec[i], idx, build_data)
                 i += 1
-
+        build_data.take_snapshot()
+        '''
+        i = 0
+        for x, y in it_product(range(0, self.template.width), range(0, self.template.height)):
+            if x < build_data.map.width and y < build_data.map.height:
+                idx = build_data.map.xy_idx(x + chunk_x, y + chunk_y)
+                self.char_to_map(string_vec[i], idx, build_data)
+            i += 1
         build_data.take_snapshot()
 
     def char_to_map(self, char, idx, build_data):
@@ -241,6 +260,7 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
         string_vec = self.template.template
         string_vec = string_vec.replace('\n', '').replace('\r', '')
 
+        '''
         i = 0
         for y in range(0, self.template.height):
             for x in range(0, self.template.width):
@@ -248,5 +268,15 @@ class PrefabBuilder(InitialMapBuilder, MetaMapbuilder):
                     idx = build_data.map.xy_idx(x, y)
                     self.char_to_map(string_vec[i], idx, build_data)
                 i += 1
+            if randint(1, 10) == 1:
+                build_data.take_snapshot()
+        '''
+
+        i = 0
+        for x, y in it_product(range(0, self.template.width), range(0, self.template.height)):
+            if x < build_data.map.width and y < build_data.map.height:
+                idx = build_data.map.xy_idx(x, y)
+                self.char_to_map(string_vec[i], idx, build_data)
+            i += 1
             if randint(1, 10) == 1:
                 build_data.take_snapshot()

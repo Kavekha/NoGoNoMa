@@ -10,10 +10,9 @@ Release 4 - Done
     tiles: Forme de la tile selon placement.
     zoom: set zoom in maps & tilesets
     zoom: interface & ascii limitation.
+    Optim : itertool
 
 Release 4 - WIP
-    optim:
-        itertool product for map & co : https://realpython.com/python-itertools/
     Interface
         26 items +
         Recuperation automatique
@@ -36,6 +35,7 @@ Release 4 - WIP
     Mapbuild checker:
         Sortie éloignée
         Reset si necessaire: save avant process.
+        Casser les passages diagonales only entre deux rooms
 
 Release 5 - Systems & items
     Initiative & turn lost fix.

@@ -99,6 +99,7 @@ def tick():
 
     # map gen
     elif run_state.current_state == States.MAP_GENERATION:
+        Interface.set_zoom(1)
         if not config.SHOW_MAPGEN_VISUALIZER:
             run_state.change_state(States.PRE_RUN)
         else:
