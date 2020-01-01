@@ -35,9 +35,11 @@ class Interface:
         if mode not in GraphicalModes:
             print(f'I am not graphical mode, stupid')
             return
-        if mode == GraphicalModes.TILES:
+        elif mode == GraphicalModes.TILES:
             print(f'> Please load assets')
             Interface.load_graphical_assets()
+        elif mode == GraphicalModes.ASCII:
+            Interface.set_zoom(1)
         else:
             print(f'> Mode {mode} was not TILES')
         Interface.mode = mode
@@ -45,7 +47,9 @@ class Interface:
     @staticmethod
     def load_graphical_assets():
         print(f'----- ASSETS LOADING ------')
-        for path in Interface.list_of_tilesets:
+        list_of_tilesets = tilesets.SYSTEM + tilesets.CHARS + tilesets.MAP + tilesets.ITEMS + \
+                       tilesets.PARTICULES + tilesets.PROPS
+        for path in list_of_tilesets:
             Interface.get_new_code_for_path(path)
 
     @staticmethod
@@ -78,13 +82,15 @@ class Interface:
 
     @staticmethod
     def set_zoom(zoom=2):
-        old_zoom = Interface.zoom
-        if 1 <= zoom <= 4:
-            Interface.zoom = zoom
-        elif zoom < 1:
+        if Interface.mode == GraphicalModes.ASCII:
             Interface.zoom = 1
         else:
-            Interface.zoom = 4
+            if 1 <= zoom <= 4:
+                Interface.zoom = zoom
+            elif zoom < 1:
+                Interface.zoom = 1
+            else:
+                Interface.zoom = 4
 
         cell_width = terminal.state(terminal.TK_CELL_WIDTH)
         Interface.resize_tiles(cell_width * Interface.zoom)
@@ -93,7 +99,10 @@ class Interface:
 
     @staticmethod
     def resize_tiles(resize):
-        for path in Interface.list_of_tilesets:
+        # Tous, sauf ceux interface
+        list_of_tilesets = tilesets.CHARS + tilesets.MAP + tilesets.ITEMS + \
+                           tilesets.PARTICULES + tilesets.PROPS
+        for path in list_of_tilesets:
             real_path = '/'.join([config.TILE_DIR, path])
             code = Interface.path_to_code[real_path]
             Interface.set_tile(path, code, resize)

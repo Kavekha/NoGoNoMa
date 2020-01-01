@@ -46,10 +46,10 @@ class UiSystem(System):
                                                        f'{info_to_display.get("player_current_xp", "??")} / '
                                                        f'{info_to_display.get("player_next_level_xp", "??")}[/color]')
 
-        log = World.fetch('logs')
+        logs = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE
-        for line in log:
-            if y < Interface.screen_height:
+        for line in logs:
+            if y < config.SCREEN_HEIGHT:
                 terminal.printf(2, y, line)
                 y += 1
 
@@ -85,6 +85,6 @@ class UiSystem(System):
         log = World.fetch('logs')
         y = config.UI_LOG_FIRST_LINE
         for line in log:
-            if y < Interface.screen_height:
+            if y < config.SCREEN_HEIGHT:
                 print_shadow(2, y, line)
                 y += 1

@@ -9,7 +9,7 @@ from components.particule_component import ParticuleLifetimeComponent
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
 from ui_system.render_camera import render_entities_camera
-from ui_system.interface import Interface
+import config
 
 
 class ParticuleSpawnSystem(System):
@@ -50,13 +50,17 @@ class ParticuleBuilder:
         ParticuleBuilder._requests.clear()
 
 
-def cull_dead_particules():
+def cull_dead_particules(tick_time):
+    # print(f'---cull dead particule : {tick_time}')
     dead_particules = []
     subjects = World.get_components(ParticuleLifetimeComponent)
 
     now = perf_counter()
     for entity, (particule, *args) in subjects:
+        print(
+            f'now : {now} : particule {entity}: {now - particule.start_time} vs {particule.lifetime}')
         if now - particule.start_time > particule.lifetime:
+            print(f'DEAD!')
             dead_particules.append(entity)
 
     if dead_particules:
@@ -64,6 +68,6 @@ def cull_dead_particules():
             World.delete_entity(dead_particule)
 
         terminal.layer(Layers.PARTICULE.value)
-        terminal.clear_area(0, 0, Interface.screen_width, Interface.screen_height)
+        terminal.clear_area(0, 0, config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
         render_entities_camera()
         terminal.refresh()
