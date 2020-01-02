@@ -60,13 +60,16 @@ class ItemDropSystem(System):
 
 def get_item(user):
     subjects = World.get_components(PositionComponent, ItemComponent)
-    if not subjects:
-        return
 
     logs = World.fetch('logs')
     user_position = World.get_entity_component(user, PositionComponent)
     player = World.fetch('player')
     target_item = ''
+
+    items_in_backpack = get_items_in_user_backpack(player)
+    if len(items_in_backpack) > 25:
+        logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("INVENTORY_FULL")}[/color]')
+        return
 
     for entity, (position, item) in subjects:
         if position.x == user_position.x and position.y == user_position.y:

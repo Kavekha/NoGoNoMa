@@ -16,7 +16,7 @@ class Gmap:
         self.blocked_tiles = [False] * (self.height * self.width)
         self.view_blocked = dict()
 
-        self.tile_content = [[None] for x in range(self.height * self.width)]
+        self.tile_content = [list() for x in range(self.height * self.width)]
         self.depth = depth
         self.stains = [0] * (self.height * self.width)
 

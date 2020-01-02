@@ -6,6 +6,8 @@ from components.viewshed_component import ViewshedComponent
 from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.triggers_components import EntityMovedComponent
+from components.wants_to_pickup_component import WantsToPickUpComponent
+from components.name_component import NameComponent
 from components.door_component import DoorComponent
 from player_systems.game_system import opening_door
 from gmap.gmap_enums import TileType
@@ -35,10 +37,23 @@ def try_move_player(delta_x, delta_y):
         if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
             position.x = min(current_map.width - 1, max(0, position.x + delta_x))
             position.y = min(current_map.height - 1, max(0, position.y + delta_y))
+
             player_viewshed = World.get_entity_component(entity, ViewshedComponent)
             player_viewshed.dirty = True
+
             has_moved = EntityMovedComponent()
             World.add_component(has_moved, entity)
+
+            # autopickup
+            auto_pickup(entity, current_map, destination_idx)
+
+
+def auto_pickup(pickuper, current_map, idx):
+    for content in current_map.tile_content[idx]:
+        content_name = World.get_entity_component(content, NameComponent)
+        if content_name:
+            autopickup = WantsToPickUpComponent(pickuper, content)
+            World.add_component(autopickup, pickuper)
 
 
 def try_next_level():

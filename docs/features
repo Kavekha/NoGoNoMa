@@ -11,11 +11,12 @@ Release 4 - Done
     zoom: set zoom in maps & tilesets
     zoom: interface & ascii limitation.
     Optim : itertool
+    inventaire : Limite de 26 objets.
+    logs: mise en avant des entités devoilées.
+    qol : auto pickup.
 
 Release 4 - WIP
     Interface
-        26 items +
-        Recuperation automatique
         Options à l'usage de l'item
         highlight option menu
         Menus plus informatifs
