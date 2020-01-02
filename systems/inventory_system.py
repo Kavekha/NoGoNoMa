@@ -6,6 +6,7 @@ from components.position_component import PositionComponent
 from components.items_component import ItemComponent
 from components.wants_use_item_component import WantsToUseComponent
 from components.wants_to_drop_component import WantsToDropComponent
+from components.autopickup_component import AutopickupComponent
 from components.name_component import NameComponent
 from components.in_backpack_component import InBackPackComponent
 from components.ranged_component import RangedComponent
@@ -58,6 +59,13 @@ class ItemDropSystem(System):
             World.remove_component(WantsToDropComponent, entity)
 
 
+def is_inventory_full(user):
+    items_in_backpack = get_items_in_user_backpack(user)
+    if len(items_in_backpack) > 25:
+        return True
+    return False
+
+
 def get_item(user):
     subjects = World.get_components(PositionComponent, ItemComponent)
 
@@ -66,17 +74,16 @@ def get_item(user):
     player = World.fetch('player')
     target_item = ''
 
-    items_in_backpack = get_items_in_user_backpack(player)
-    if len(items_in_backpack) > 25:
-        logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("INVENTORY_FULL")}[/color]')
-        return
-
     for entity, (position, item) in subjects:
         if position.x == user_position.x and position.y == user_position.y:
-            target_item = entity
+            if not is_inventory_full(entity):
+                target_item = entity
+            else:
+                if user == player:
+                    logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("INVENTORY_FULL")}[/color]')
 
     if user == player:
-        if not target_item:
+        if not target_item and not World.get_entity_component(player, AutopickupComponent):
             logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOTHING_TO_PICK_UP")}[/color]')
         else:
             pickup = WantsToPickUpComponent(user, target_item)

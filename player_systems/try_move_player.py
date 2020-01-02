@@ -1,7 +1,7 @@
 from world import World
 import config
 from components.position_component import PositionComponent
-from components.player_component import PlayerComponent
+from components.autopickup_component import AutopickupComponent
 from components.viewshed_component import ViewshedComponent
 from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
@@ -12,48 +12,39 @@ from components.door_component import DoorComponent
 from player_systems.game_system import opening_door
 from gmap.gmap_enums import TileType
 from ui_system.ui_enums import NextLevelResult
+from systems.inventory_system import get_item
 from texts import Texts
 
 
 def try_move_player(delta_x, delta_y):
-    subjects = World.get_components(PositionComponent, PlayerComponent)
-    if not subjects:
-        return
+    player = World.fetch('player')
+    player_pos = World.get_entity_component(player, PositionComponent)
 
     current_map = World.fetch('current_map')
-    for entity, (position, player) in subjects:
-        destination_idx = current_map.xy_idx(position.x + delta_x, position.y + delta_y)
+    destination_idx = current_map.xy_idx(player_pos.x + delta_x, player_pos.y + delta_y)
 
-        for potential_target in current_map.tile_content[destination_idx]:
-            target = World.get_entity_component(potential_target, Pools)
-            if target:
-                want_to_melee = WantsToMeleeComponent(potential_target)
-                World.add_component(want_to_melee, entity)
-                return
-            door = World.get_entity_component(potential_target, DoorComponent)
-            if door:
-                opening_door(potential_target, door)
+    for potential_target in current_map.tile_content[destination_idx]:
+        target = World.get_entity_component(potential_target, Pools)
+        if target:
+            want_to_melee = WantsToMeleeComponent(potential_target)
+            World.add_component(want_to_melee, player)
+            return
+        door = World.get_entity_component(potential_target, DoorComponent)
+        if door:
+            opening_door(potential_target, door)
 
-        if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
-            position.x = min(current_map.width - 1, max(0, position.x + delta_x))
-            position.y = min(current_map.height - 1, max(0, position.y + delta_y))
+    if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
+        player_pos.x = min(current_map.width - 1, max(0, player_pos.x + delta_x))
+        player_pos.y = min(current_map.height - 1, max(0, player_pos.y + delta_y))
 
-            player_viewshed = World.get_entity_component(entity, ViewshedComponent)
-            player_viewshed.dirty = True
+        player_viewshed = World.get_entity_component(player, ViewshedComponent)
+        player_viewshed.dirty = True
 
-            has_moved = EntityMovedComponent()
-            World.add_component(has_moved, entity)
+        has_moved = EntityMovedComponent()
+        World.add_component(has_moved, player)
 
-            # autopickup
-            auto_pickup(entity, current_map, destination_idx)
-
-
-def auto_pickup(pickuper, current_map, idx):
-    for content in current_map.tile_content[idx]:
-        content_name = World.get_entity_component(content, NameComponent)
-        if content_name:
-            autopickup = WantsToPickUpComponent(pickuper, content)
-            World.add_component(autopickup, pickuper)
+        if World.get_entity_component(player, AutopickupComponent):
+            get_item(player)
 
 
 def try_next_level():
