@@ -115,14 +115,14 @@ def show_victory_screen():
 
 
 def show_item_screen(header):
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
-    window_end_x = window_x * 3  # 60
-    window_end_y = window_y * 3  # 40
-
     user = World.fetch('player')
     items_to_display = get_items_in_user_backpack(user)
     letter_index = ord('a')
+
+    window_x = config.SCREEN_WIDTH // 4  # 20
+    window_y = config.SCREEN_HEIGHT // 6  # 10
+    window_end_x = window_x * 3  # 60
+    window_end_y = window_y * 5  # 40
 
     text = '\n'
     for index, item in enumerate(items_to_display):

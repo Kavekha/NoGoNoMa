@@ -1,0 +1,2 @@
+class AutopickupComponent:
+    pass

@@ -54,6 +54,11 @@ def player_input():
         elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
             return States.PLAYER_TURN
 
+        elif key == terminal.TK_PAGEUP:
+            Interface.set_zoom(Interface.zoom + 1)
+        elif key == terminal.TK_PAGEDOWN:
+            Interface.set_zoom(Interface.zoom - 1)
+
         elif key == terminal.TK_ESCAPE:
             return States.SAVE_GAME
 

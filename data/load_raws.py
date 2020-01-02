@@ -453,7 +453,7 @@ class RawsMaster:
     @staticmethod
     def create_prop(name, x, y):
         to_create = RawsMaster.props[RawsMaster.props_index[name] - 1]
-        components_for_entity = []
+        components_for_entity = list()
 
         if to_create.get("name"):
             components_for_entity.append(NameComponent(to_create.get("name")))
