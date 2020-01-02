@@ -31,6 +31,8 @@ from map_builders.prefab_builder import PrefabBuilder, PrefabSection, PrefabRoom
 from map_builders.builder_structs import RIGHT_FORT, TOTALY_NOT_A_TRAP, \
     VerticalPlacement, HorizontalPlacement, LEVEL_MAP
 
+from ui_system.interface import Interface
+
 
 def random_build_example(depth):
     rand = randint(0, 19)
@@ -368,6 +370,8 @@ def random_start_position():
 
 def build_random_map(depth, width, height):
     # return random_build_example(depth)
+    Interface.map_screen_width = width
+    Interface.map_screen_height = height
     return random_builder(depth, width, height)
 
 '''

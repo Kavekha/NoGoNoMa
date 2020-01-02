@@ -58,6 +58,9 @@ def player_input():
             Interface.set_zoom(Interface.zoom + 1)
         elif key == terminal.TK_PAGEDOWN:
             Interface.set_zoom(Interface.zoom - 1)
+        elif key == terminal.TK_ENTER:
+            current_map = World.fetch('current_map')
+            current_map.revealed_tiles = [True] * (current_map.height * current_map.width)
 
         elif key == terminal.TK_ESCAPE:
             return States.SAVE_GAME

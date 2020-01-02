@@ -34,7 +34,7 @@ class Tooltip:
     def render(self, x, y):
         terminal.layer(Layers.TOOLTIP.value)
         for i, line in enumerate(self.lines):
-            terminal.printf(x, y + i, line)
+            terminal.printf(x * Interface.zoom, y + i * Interface.zoom, line)
 
 
 def draw_tooltip():
@@ -43,15 +43,14 @@ def draw_tooltip():
 
     mouse_pos_x = terminal.state(terminal.TK_MOUSE_X)
     mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y)
-    mouse_map_pos_x = mouse_pos_x + min_x
-    mouse_map_pos_y = mouse_pos_y + min_y
+    mouse_map_pos_x = (mouse_pos_x // Interface.zoom) + min_x
+    mouse_map_pos_y = (mouse_pos_y // Interface.zoom) + min_y
 
-    if mouse_map_pos_x > Interface.map_screen_width - 1 or mouse_map_pos_y > Interface.map_screen_height - 1:
+    if 1 > mouse_map_pos_x > (Interface.map_screen_width * Interface.zoom) - 1 or 1 > mouse_map_pos_y > (Interface.map_screen_height * Interface.zoom) - 1:
         return
 
-    # On ne regarde que ce qui est visible.
+    # On ne regarde que ce qui est visible. !!! PLANTAGE AGAIN: index out of range.
     if current_map.visible_tiles[current_map.xy_idx(mouse_map_pos_x, mouse_map_pos_y)]:
-
         # est ce qu'on doit bien reconstruire le tooltip?
         old_tooltip, old_mouse_x, old_mouse_y = World.fetch('tooltip')
         tooltip = list()
@@ -109,17 +108,16 @@ def draw_tooltip():
 
         # render left or right of mouse
         arrow_y = mouse_pos_y
+        print(f'mouse pos x {mouse_map_pos_x}, interface screen: {Interface.screen_width // 2}')
         if mouse_pos_x < Interface.screen_width // 2:
-            # Left
-            arrow = '←'
-            arrow_x = mouse_pos_x + 1
-        else:
-            # right
             arrow = '→'
             arrow_x = mouse_pos_x - 1
+        else:
+            arrow = '←'
+            arrow_x = mouse_pos_x + 1
         terminal.layer(Layers.TOOLTIP.value)
         terminal.color('white')
-        terminal.printf(arrow_x, arrow_y, arrow)
+        terminal.printf(arrow_x * Interface.zoom, arrow_y * Interface.zoom, arrow)
 
         total_tip_height = 0
         for tooltip in tip_boxes:
@@ -131,11 +129,10 @@ def draw_tooltip():
 
         for tooltip in tip_boxes:
             if mouse_pos_x < Interface.screen_width // 2:
-                print(f'right tooltip')
-                x = mouse_pos_x + 1 #+ tooltip.width)
-            else:
-                print(f'left tooltip')
                 x = mouse_pos_x - (1 + tooltip.width)
+            else:
+                x = mouse_pos_x + 2
+
             tooltip.render(x, y)
             y += tooltip.height
         terminal.refresh()

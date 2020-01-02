@@ -16,12 +16,12 @@ def get_screen_bounds():
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
-    center_x = (Interface.map_screen_width // 2)
-    center_y = (Interface.map_screen_height // 2)
+    center_x = Interface.map_screen_width // 2
+    center_y = Interface.map_screen_height // 2
     min_x = player_pos.x - center_x
-    max_x = (min_x + Interface.map_screen_width)
+    max_x = min_x + Interface.map_screen_width
     min_y = player_pos.y - center_y
-    max_y = (min_y + Interface.map_screen_height)
+    max_y = min_y + Interface.map_screen_height
 
     return min_x, max_x, min_y, max_y
 
@@ -80,16 +80,16 @@ def render_entities_camera():
         idx = current_map.xy_idx(position.x, position.y)
         terminal.layer(renderable.render_order.value)
         if current_map.visible_tiles[idx] and not hidden:
-            entity_screen_x = position.x - min_x
-            entity_screen_y = position.y - min_y
+            entity_screen_x = ((position.x - min_x) * Interface.zoom)
+            entity_screen_y = ((position.y - min_y) * Interface.zoom)
             if 0 <= entity_screen_x <= map_width and 0 <= entity_screen_y <= map_height:
                 if Interface.mode == GraphicalModes.ASCII:
-                    terminal.printf(entity_screen_x * Interface.zoom,
-                                    entity_screen_y * Interface.zoom,
+                    terminal.printf(entity_screen_x,
+                                    entity_screen_y,
                                     f'[color={renderable.fg}]{renderable.glyph}[/color]')
                 elif Interface.mode == GraphicalModes.TILES:
                     terminal.color(f'{renderable.fg}')
-                    terminal.put(entity_screen_x * Interface.zoom, entity_screen_y * Interface.zoom, Interface.get_code(renderable.sprite))
+                    terminal.put(entity_screen_x, entity_screen_y, Interface.get_code(renderable.sprite))
                 else:
                     print(f'render camera: graphical mode {Interface.mode} not implemented.')
                     raise NotImplementedError
