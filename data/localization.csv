@@ -95,3 +95,4 @@ YOU_DODGE_IT;You dodge it!;Vous l'esquivez!
 IT_HITS_YOU;It hits you.;Il vous frappe.
 INVENTORY_FULL;Your inventory is full.;Votre inventaire est plein.
 DOOR;Door;Porte
+DEFAULT_MAP_NAME;An unknown place;Un lieu inconnu

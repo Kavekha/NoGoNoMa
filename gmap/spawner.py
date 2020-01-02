@@ -1,4 +1,5 @@
 from random import randint
+from itertools import product as it_product
 
 from components.position_component import PositionComponent
 from components.renderable_component import RenderableComponent
@@ -9,6 +10,7 @@ from components.player_component import PlayerComponent
 from components.attributes_component import AttributesComponent
 from components.skills_component import SkillsComponent, Skills
 from components.pools_component import Pools
+from components.autopickup_component import AutopickupComponent
 
 from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level
@@ -30,11 +32,10 @@ def spawn_entity(spawn_name, spawn_point, current_map):
 
 def spawn_room(room, current_map, spawn_list):
     possible_targets = []
-    for y in range(room.y1, room.y2 + 1):
-        for x in range(room.x1, room.x2 + 1):
-            idx = current_map.xy_idx(x, y)
-            if current_map.tiles[idx] == TileType.FLOOR:
-                possible_targets.append(idx)
+    for x, y in it_product(range(room.x1, room.x2 + 1), range(room.y1, room.y2 + 1)):
+        idx = current_map.xy_idx(x, y)
+        if current_map.tiles[idx] == TileType.FLOOR:
+            possible_targets.append(idx)
 
     spawn_region(possible_targets, current_map, spawn_list)
 
@@ -76,10 +77,13 @@ def spawn_player(x, y):
                                      body=config.DEFAULT_PLAYER_BODY_ATTRIBUTE,
                                      quickness=config.DEFAULT_PLAYER_QUICKNESS_ATTRIBUTE,
                                      wits=config.DEFAULT_PLAYER_WITS_ATTRIBUTE)
+    autopickup = AutopickupComponent()
     skills = SkillsComponent()
     skills.skills[Skills.MELEE] = 1
     skills.skills[Skills.DODGE] = 1
     skills.skills[Skills.FOUND_TRAPS] = 1
     player_pool = Pools(hits=player_hp_at_level(attributes.body, 1), mana=mana_point_at_level(attributes.wits, 1))
-    player_id = World.create_entity(pos, rend, name, player, viewshed, block, attributes, skills, player_pool)
+
+    player_id = World.create_entity(pos, rend, name, player, viewshed, block, attributes, skills, player_pool,
+                                    autopickup)
     return player_id

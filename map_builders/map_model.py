@@ -4,9 +4,11 @@ from gmap.gmap_enums import TileType
 
 
 class Gmap:
-    def __init__(self, depth, width, height):
+    def __init__(self, depth, width, height, name='DEFAULT_MAP_NAME'):
+        self.depth = depth
         self.width = width
         self.height = height
+        self.name = name
 
         self.tiles = [TileType.WALL] * (self.height * self.width)
         self.rooms = []
@@ -17,7 +19,6 @@ class Gmap:
         self.view_blocked = dict()
 
         self.tile_content = [list() for x in range(self.height * self.width)]
-        self.depth = depth
         self.stains = [0] * (self.height * self.width)
 
         self.fov_map = None

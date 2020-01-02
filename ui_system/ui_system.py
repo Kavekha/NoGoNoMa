@@ -35,9 +35,13 @@ class UiSystem(System):
 
     def draw_ui_ascii(self, info_to_display):
         terminal.layer(Layers.INTERFACE.value)
-
-        terminal.printf(1, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("DEPTH")}'
-                                                      f': {info_to_display["depth"]}[/color]')
+        # map name
+        map_name = World.fetch('current_map').name
+        map_name = f'{Texts.get_text(map_name)  + " - " + str(info_to_display["depth"])}'
+        center_x = (Interface.screen_width - len(map_name)) // 2
+        map_name = f'[color=yellow]{map_name}[/color]'
+        terminal.printf(center_x, Interface.ui_model.ui_map_name.start_y,
+                        f'[color=yellow]{map_name}[/color]')
 
         terminal.printf(20, config.UI_STATS_INFO_LINE, f'[color=light grey]{Texts.get_text("HP")}: '
                                                        f'{info_to_display.get("player_hp", "??")} / '
@@ -55,15 +59,19 @@ class UiSystem(System):
 
     def draw_ui_tiles(self, info_to_display):
         terminal.layer(Layers.INTERFACE.value)
-
-        # depth
-        print_shadow(1, config.UI_STATS_INFO_LINE,
-                     f'[color=light grey]{Texts.get_text("DEPTH")} : {info_to_display["depth"]}[/color]')
+        # map name
+        map_name = World.fetch('current_map').name
+        map_name = f'{Texts.get_text(map_name)  + " - " + str(info_to_display["depth"])}'
+        center_x = (Interface.screen_width - len(map_name)) // 2
+        map_name = f'[color=yellow]{map_name}[/color]'
+        terminal.printf(center_x, Interface.ui_model.ui_map_name.start_y,
+                        f'[color=yellow]{map_name}[/color]')
 
         # HP
-        render_bar(20,
-                   config.UI_STATS_INFO_LINE,
-                   config.UI_HP_BAR_WIDTH,
+        render_bar(Interface.ui_model.ui_player_bars.start_x,
+                   Interface.ui_model.ui_player_bars.start_y,
+                   config.UI_HP_BAR_WIDTH + min(info_to_display.get("player_max_hp", 0) // 2,
+                                                config.UI_HP_BAR_WIDTH * 3),
                    Texts.get_text("HP"),
                    info_to_display.get("player_hp", 0),
                    info_to_display.get("player_max_hp", 0),
@@ -72,9 +80,10 @@ class UiSystem(System):
                    config.COLOR_TEXT_HP_BAR)
 
         # XP
-        render_bar(45,
-                   config.UI_STATS_INFO_LINE,
-                   config.UI_XP_BAR_WIDTH,
+        render_bar(Interface.ui_model.ui_player_bars.start_x,
+                   Interface.ui_model.ui_player_bars.start_y + 1,
+                   config.UI_XP_BAR_WIDTH + min(info_to_display.get("player_next_level_xp", 0) // 10,
+                                                config.UI_XP_BAR_WIDTH * 3),
                    Texts.get_text("XP"),
                    info_to_display.get("player_current_xp", 0),
                    info_to_display.get("player_next_level_xp", 0),
@@ -83,7 +92,7 @@ class UiSystem(System):
                    config.COLOR_TEXT_XP_BAR)
 
         log = World.fetch('logs')
-        y = config.UI_LOG_FIRST_LINE
+        y = Interface.ui_model.ui_logs.start_y
         for line in log:
             if y < config.SCREEN_HEIGHT:
                 print_shadow(2, y, line)

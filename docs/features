@@ -16,19 +16,22 @@ Release 4 - Done
     qol : auto pickup.
 
 Release 4 - WIP
-    Interface
+    > Interface UI
+        > Reformatage general - 1
+        Tooltip
+        Items équipés visibles
+    Interface UX
         Options à l'usage de l'item
         highlight option menu
         Menus plus informatifs
         Raccourcis clavier
-        Tooltip
-        Items équipés visibles
     light : round vision instead of square
     tiles:
         Tiles personnalisées selon niveau
     mouse support
         deplacement
         menus
+    auto-explore
     detection menaces & nouveaux evenements
     Room building & props
     NPC talking
@@ -44,26 +47,29 @@ Release 5 - Systems & items
     Progression leveling
     Generic effects & items
     Loot tables for rooms & mobs.
-    Map buildings
     Scores & better morgue files
 
 Release 6 - Story statique
-    Scenario standard: maps, monstres & items.
+    Scenario standard: 4 regions.
+    Map buildings pour 4 regions & transitions.
+    Monstres & items sur les 4 regions / thematiques.
+
+Release 7 - Nouveaux systemes & personnages.
     Gestion des lumieres & stealth
-    Attaques à distance.
+    Attaques à distance, items & monstres associés.
     Crochetage & events.
     Selection de personnages.
     Sauvegardes independantes / profils.
 
-Release 7 - Branches & moteur d'histoire de base.
-    Thematique de donjon.
-    Branches alternatives.
-    Constructeurs d'histoires simples.
+Release 8 - Branches & moteur d'histoire de base.
+    Branches alternatives: nouvelles maps, monstres & items.
+    Thematiques de donjons & items, monstres, maps associées.
+    Constructeur d'histoires simples: variations.
 
-Release 8 - Magie.
-Release 9 - Backtrack donjon, Castelvania like.
-Release 10 - Divinités & codes de conduite.
-Release 11 - Moteur histoire complexe.
+Release 9 - Magie & personnages.
+Release 10 - Backtrack donjon, Castelvania like.
+Release 11 - Divinités & codes de conduite.
+Release 12 - Moteur histoire complexe.
 
 
 Raws:

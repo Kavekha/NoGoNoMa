@@ -16,12 +16,12 @@ def get_screen_bounds():
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
-    center_x = Interface.screen_width // 2
-    center_y = Interface.screen_height // 2
+    center_x = Interface.map_screen_width // 2
+    center_y = Interface.map_screen_height // 2
     min_x = player_pos.x - center_x
-    max_x = min_x + Interface.screen_width
+    max_x = min_x + Interface.map_screen_width
     min_y = player_pos.y - center_y
-    max_y = min_y + Interface.screen_height
+    max_y = min_y + Interface.map_screen_height
 
     return min_x, max_x, min_y, max_y
 
@@ -102,8 +102,8 @@ def render_debug_map(gmap):
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
-    center_x = Interface.screen_width // 2
-    center_y = Interface.screen_height // 2
+    center_x = Interface.map_screen_width // 2
+    center_y = Interface.map_screen_height // 2
     player_pos.x = center_x
     player_pos.y = center_y
 
