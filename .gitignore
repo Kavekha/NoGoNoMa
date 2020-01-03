@@ -1,6 +1,0 @@
-*.cpython-37
-__pycache__/
-*.bak
-*.dat
-*.dir
-.idea/
