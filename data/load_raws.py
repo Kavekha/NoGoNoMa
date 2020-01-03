@@ -660,26 +660,6 @@ class RawsMaster:
     def is_tag_magic(tag):
         magic_tag = RawsMaster.item_index.get(tag)
         if magic_tag:
-            item = RawsMaster.items[RawsMaster.item_index[tag]]
+            item = RawsMaster.items[RawsMaster.item_index[tag] - 1]
             return item.magic
         return False
-
-
-if __name__ == "__main__":
-    x = 0
-    y = 0
-    RawsMaster()
-    RawsMaster.load_raws()
-
-    to_test = ['HEALTH_POTION', 'CONFUSION_SCROLL', 'FIREBALL_SCROLL', 'MISSILE_MAGIC_SCROLL',
-               'DAGGER', "LONGSWORD", "BUCKLET", "TOWER_SHIELD", "MORBLIN", "OOGLOTH"]
-    for item in to_test:
-        RawsMaster.spawn_named_entity(item, x, y)
-        print(f'---------------')
-
-    print(f'world component is {World.get_all_entities()}')
-    print(f'self item index is {RawsMaster.item_index}')
-    print(f'self mob index is {RawsMaster.mob_index}')
-
-    print(f'------ spawn table -----')
-    RawsMaster.get_spawn_table_for_depth(1)

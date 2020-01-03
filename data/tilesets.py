@@ -8,8 +8,7 @@ SYSTEM = [
     'system/ui6.png',
     'system/ui7.png',
     'system/ui8.png',
-    'system/ui9.png',
-    'system/grid.png'
+    'system/ui9.png'
 ]
 
 MAP = [
@@ -63,7 +62,8 @@ PARTICULES = [
     'particules/heal.png',
     'particules/confusion.png',
     'particules/offensive_spell.png',
-    'particules/fire.png'
+    'particules/fire.png',
+    'particules/grid.png'
 ]
 
 

@@ -31,20 +31,22 @@ def show_targeting():
                 screen_y = y - min_y
                 if 1 < screen_x < (max_x - min_x) - 1 and 1 < screen_y < (max_y - min_y):
                     if Interface.mode == GraphicalModes.TILES:
-                        draw_tile(screen_x, screen_y, ' ', 'system/grid.png', 'light blue', Layers.INTERFACE)
+                        draw_tile(screen_x * Interface.zoom, screen_y * Interface.zoom, ' ', 'particules/grid.png', 'light blue', Layers.INTERFACE)
                     elif Interface.mode == GraphicalModes.ASCII:
-                        draw_tile(screen_x, screen_y, ' ',
+                        draw_tile(screen_x * Interface.zoom, screen_y * Interface.zoom, ' ',
                                   'system/grid.png', 'light blue', Layers.BACKGROUND, 'light blue')
                     else:
                         print(f'Targeting system: {Interface.mode} not supported')
                         raise NotImplementedError
                     available_cells.append(current_map.xy_idx(x, y))
+                    print(f'target: x,y : {x, y}. Mscreen : {screen_x, screen_y}, screenZoom: {screen_x * Interface.zoom, screen_y * Interface.zoom}')
             x += 1
         y += 1
         x = 0
 
-    mouse_pos_x = terminal.state(terminal.TK_MOUSE_X) + min_x
-    mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y) + min_y
+    mouse_pos_x = (terminal.state(terminal.TK_MOUSE_X) // Interface.zoom) + min_x
+    mouse_pos_y = (terminal.state(terminal.TK_MOUSE_Y) // Interface.zoom) + min_y
+    print(f'mouse : {mouse_pos_x, mouse_pos_y}')
     valid_target = False
     for idx in available_cells:
         cell_x, cell_y = current_map.index_to_point2d(idx)
