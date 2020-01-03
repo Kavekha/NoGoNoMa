@@ -18,10 +18,13 @@ Release 4 - Interface - Done
     tooltip: placement selon personnage.
     tooltip: fix Zoom.
     light : round vision instead of square
-    > Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
-    > Nouvel affichage menu inventaire.
+    Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
+    Nouvel affichage menu inventaire.
+
 
 Release 4 - WIP
+    to fix: target system zoom peté.
+    inventory: cas "No item in inventory"
     interface:
         Options à la selection item: use, equip, unequip, drop, etc.
             # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png

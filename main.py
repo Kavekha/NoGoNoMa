@@ -134,7 +134,6 @@ def tick():
 
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
-        show_item_screen(f'{Texts.get_text("INVENTORY")}')
         items_in_backpack = get_items_in_inventory(World.fetch('player'))
         result, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
