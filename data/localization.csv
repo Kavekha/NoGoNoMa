@@ -77,7 +77,7 @@ BROWN_COLOR;brown;marron
 INDIGO_COLOR;indigo;indigo
 VIOLET_COLOR;violet;violet
 VIOLET_COLOR_F;violet;violette
-SWIRLING_ADJ";swirling;swirling
+SWIRLING_ADJ;swirling;swirling
 EFFERVESCENT_ADJ;effervescent;effervescente
 SLIMEY_ADJ;slimey;gluante
 OILEY_ADJ;oiley;huileuse
@@ -96,3 +96,18 @@ IT_HITS_YOU;It hits you.;Il vous frappe.
 INVENTORY_FULL;Your inventory is full.;Votre inventaire est plein.
 DOOR;Door;Porte
 DEFAULT_MAP_NAME;An unknown place;Un lieu inconnu
+EQUIPPED;Equipped;Equipé
+UNIDENTIFIED_DAGGER;Unidentified dagger;Dague non-identifiée
+UNIDENTIFIED_SWORD;Unidentified sword;Epée non-identifiée
+UNIDENTIFIED_CHEST;Unidentified chest armor;Armure Torse non-identifiée
+UNIDENTIFIED_SHIELD;Unidentified shield;Bouclier non-identifié
+INVENTORY_USAGE_EXPLANATION;Select an item then choose how to use it.;Choisissez un objet puis comment l'utiliser.
+ITEM_INFO;Info;Informations
+CANT_KNOW_WITHOUT_USAGE_OR_IDENTIFICATION;You don't know anything about this item. You should found a mean to identify it or try to use it at your own risk.;Vous ne savez rien de cet objet. Vous devez trouver un moyen de l'identifier ou l'utiliser à vos risques et perils.
+ITEM_INFO_CONSUMMABLE;Will be consummed on use.;Sera consommé à l'usage.
+ITEM_INFO_HEALING;This is an healing item.;Cet objet soigne.
+ITEM_INFO_MELEE_WEAPON;This is a melee weapon.;C'est une arme de mélée.
+USE_ITEM;Use;Utiliser
+DROP_ITEM;Drop;Deposer
+EQUIP_ITEM;Equip;Equipper
+UNEQUIP_ITEM;Unequip;Déséquipper

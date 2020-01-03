@@ -6,7 +6,7 @@ from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.menus import show_option_menu
+from ui_system.menus import show_option_menu, show_item_screen
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -40,6 +40,7 @@ def player_input():
         elif key == terminal.TK_G:
             get_item(World.fetch('player'))
         elif key == terminal.TK_I:
+            show_item_screen(f'{Texts.get_text("INVENTORY")}')
             return States.SHOW_INVENTORY
         elif key == terminal.TK_D:
             return States.SHOW_DROP_ITEM

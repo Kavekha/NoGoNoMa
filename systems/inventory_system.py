@@ -11,6 +11,7 @@ from components.name_component import NameComponent
 from components.in_backpack_component import InBackPackComponent
 from components.ranged_component import RangedComponent
 from components.targeting_component import TargetingComponent
+from components.equipped_component import EquippedComponent
 from state import States
 from texts import Texts
 from ui_system.render_functions import get_obfuscate_name
@@ -60,13 +61,6 @@ class ItemDropSystem(System):
             World.remove_component(WantsToDropComponent, entity)
 
 
-def is_inventory_full(user):
-    items_in_backpack = get_items_in_user_backpack(user)
-    if len(items_in_backpack) > 25:
-        return True
-    return False
-
-
 def get_item(user):
     subjects = World.get_components(PositionComponent, ItemComponent)
 
@@ -76,9 +70,8 @@ def get_item(user):
     target_item = None
 
     for entity, (position, item) in subjects:
-        print(f'get item debug: item is {item} for entity {entity}')
         if position.x == user_position.x and position.y == user_position.y:
-            if not is_inventory_full(entity):
+            if not is_inventory_full(player):
                 target_item = entity
             else:
                 if user == player:
@@ -91,6 +84,14 @@ def get_item(user):
         else:
             pickup = WantsToPickUpComponent(user, target_item)
             World.add_component(pickup, user)
+
+
+def is_inventory_full(user):
+    items_in_backpack = get_items_in_inventory(user)
+    print(f'items in backpack : {len(items_in_backpack)}')
+    if len(items_in_backpack) > 25:
+        return True
+    return False
 
 
 def use_item(item_id, target_position=None):
@@ -122,9 +123,24 @@ def select_item_from_inventory(item_id):
 def get_items_in_user_backpack(user):
     subjects = World.get_components(NameComponent, InBackPackComponent)
 
-    items_in_user_backpack = []
+    items_in_user_backpack = list()
     for entity, (name, in_backpack, *args) in subjects:
         if in_backpack.owner == user:
             items_in_user_backpack.append(entity)
-
     return items_in_user_backpack
+
+
+def get_equipped_items(user):
+    subjects = World.get_components(NameComponent, EquippedComponent)
+    items_equipped_by_user = list()
+    for entity, (name, equipped, *args) in subjects:
+        if equipped.owner == user:
+            items_equipped_by_user.append(entity)
+
+    return items_equipped_by_user
+
+
+def get_items_in_inventory(user):
+    items_in_inventory = get_equipped_items(user)
+    items_in_inventory.extend(get_items_in_user_backpack(user))
+    return items_in_inventory

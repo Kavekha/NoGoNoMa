@@ -1,3 +1,18 @@
 * Layers:
     Prendre un layer de data.layersorder.
     Commencer toujours avec terminal.layer(layerorder.X)
+
+* Zoom:
+    En zoom 1: une case affichée = une case de la map.
+    En zoom 2: deux cases affichées = une case de la map.
+    Recuperer une coordonnée sur la map via mouse donne les cases affichées. Il faut la diviser par Zoom pour avoir celle de la map.
+
+* Textes, couleurs & trads.
+    Les couleurs sont en [] directement dans le texte. Elles comptent dans le len(text).
+    Pour eviter cela, il faut construire ainsi:
+    text1 = Text.get_text(KEY_TEXT_1)
+    text2 = Text.get_text(KEY_TEXT_2)
+    width = len(text1 + ' ' + text2)
+    final_text = f'[color={color_text1}]{text1}[/color] [color={color_text2}]{text2}[/color]'
+    Au moment du width, on a la taille à l'affichage.
+

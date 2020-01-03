@@ -91,7 +91,8 @@
               "dmg_bonus": 0
           },
           "magic": {
-              "class": "common"
+              "class": "common",
+              "naming": "UNIDENTIFIED_DAGGER"
           }
       },      {
           "name" : "DAGGER_ASSASSIN",
@@ -111,7 +112,7 @@
           },
           "magic": {
               "class": "uncommon",
-              "naming": "MAGIC_DAGGER_UNIDENTIFIED"
+              "naming": "UNIDENTIFIED_DAGGER"
           }
       },
       {
@@ -131,7 +132,8 @@
               "dmg_bonus": 2
           },
           "magic": {
-              "class": "common"
+              "class": "common",
+              "naming": "UNIDENTIFIED_SWORD"
           }
       },
       {
@@ -147,7 +149,8 @@
               "armor" : 1
           },
           "magic": {
-              "class": "common"
+              "class": "common",
+              "naming": "UNIDENTIFIED_SHIELD"
           }
       },
       {
@@ -163,7 +166,8 @@
               "armor" : 3
           },
           "magic": {
-              "class": "common"
+              "class": "common",
+              "naming": "UNIDENTIFIED_SHIELD"
           }
       },
             {
@@ -179,7 +183,8 @@
               "armor" : 2
           },
           "magic": {
-              "class": "common"
+              "class": "common",
+              "naming": "UNIDENTIFIED_CHEST"
           }
       }
   ]

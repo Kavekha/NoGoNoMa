@@ -6,8 +6,6 @@ from components.viewshed_component import ViewshedComponent
 from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.triggers_components import EntityMovedComponent
-from components.wants_to_pickup_component import WantsToPickUpComponent
-from components.name_component import NameComponent
 from components.door_component import DoorComponent
 from player_systems.game_system import opening_door
 from gmap.gmap_enums import TileType

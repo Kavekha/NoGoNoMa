@@ -18,18 +18,23 @@ Release 4 - Interface - Done
     tooltip: placement selon personnage.
     tooltip: fix Zoom.
     light : round vision instead of square
+    Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
+    Nouvel affichage menu inventaire.
+
 
 Release 4 - WIP
+    to fix: target system zoom peté.
+    inventory: cas "No item in inventory"
     interface:
-        # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
-        Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
         Options à la selection item: use, equip, unequip, drop, etc.
-        Infos objets (armes and co) visibles dans l'inventaire ou Item menu (avec options d'actions possibles)
+            # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
+            Selection d'un objet switch sur les options & description de l'item.
+            Options selon le type d'objet.
+            Refacto menu inventaire
             Suppression drop menu
         Highlight de l'entrée selectionnée / effet visuel.
+        Deplacement avec fleche dans les menus
         Raccourcis clavier : items (potions, parchos)
-    tiles:
-        Tiles personnalisées selon niveau
     mouse support
         deplacement
         menus
@@ -39,9 +44,11 @@ Release 4 - WIP
         Sortie éloignée
         Reset si necessaire: save avant process.
         Casser les passages diagonales only entre deux rooms
+        Tiles personnalisées selon niveau
 
 Release 5 - Systems & items
     Initiative & turn lost fix.
+    Pas d'enemi sur la meme case
     Combat.
     Progression leveling
     Generic effects & items
