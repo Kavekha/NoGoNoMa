@@ -17,16 +17,17 @@ Release 4 - Interface - Done
     tooltip: Nouveau tooltip.
     tooltip: placement selon personnage.
     tooltip: fix Zoom.
+    light : round vision instead of square
 
 Release 4 - WIP
+    interface:
+        # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
         Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
         Options à la selection item: use, equip, unequip, drop, etc.
         Infos objets (armes and co) visibles dans l'inventaire ou Item menu (avec options d'actions possibles)
             Suppression drop menu
         Highlight de l'entrée selectionnée / effet visuel.
         Raccourcis clavier : items (potions, parchos)
-
-    light : round vision instead of square
     tiles:
         Tiles personnalisées selon niveau
     mouse support

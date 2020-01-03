@@ -1,3 +1,5 @@
+import tcod as tcod
+
 from copy import deepcopy
 
 from systems.system import System
@@ -39,9 +41,11 @@ class VisibilitySystem(System):
             viewshed.visible_tiles = []
             if entity == World.fetch('player'):
                 # on enregistre les murs comme visibles
-                current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range, viewshed.light_wall)
+                current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range,
+                                                viewshed.light_wall, tcod.FOV_BASIC)
             else:
-                current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range, False)
+                current_map.fov_map.compute_fov(position.x, position.y, viewshed.visible_range,
+                                                False, tcod.FOV_BASIC)
             viewshed.visible_tiles = current_map.fov_map.fov.copy()
 
             things_discovered = list()
