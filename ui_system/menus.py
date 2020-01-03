@@ -6,7 +6,7 @@ from ui_system.render_functions import get_item_color, get_item_display_name
 from world import World
 from components.attributes_component import AttributesComponent
 from components.pools_component import Pools
-from systems.inventory_system import get_items_in_user_backpack
+from systems.inventory_system import get_equipped_items, get_items_in_user_backpack, get_items_in_inventory
 from ui_system.ui_enums import Layers
 from player_systems.game_system import xp_for_next_level
 import config
@@ -116,7 +116,8 @@ def show_victory_screen():
 
 def show_item_screen(header):
     user = World.fetch('player')
-    items_to_display = get_items_in_user_backpack(user)
+    items_to_display = get_items_in_inventory(user)
+    equipped = get_equipped_items(user)
     letter_index = ord('a')
 
     window_x = config.SCREEN_WIDTH // 4  # 20
@@ -126,8 +127,12 @@ def show_item_screen(header):
 
     text = '\n'
     for index, item in enumerate(items_to_display):
-        item_name = get_item_display_name(item)
-        text += f'[color={get_item_color(item)}]({chr(letter_index)}) {Texts.get_text(item_name)}[/color]' + '\n'
+        item_name = Texts.get_text(get_item_display_name(item))
+        if item in equipped:
+            equipped_info = f'({Texts.get_text("EQUIPPED")})'
+        else:
+            equipped_info = ''
+        text += f'[color={get_item_color(item)}]({chr(letter_index)}) {equipped_info} {item_name}[/color]' + '\n'
         letter_index += 1
 
     text += '\n'

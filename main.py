@@ -12,7 +12,7 @@ from systems.targeting_system import show_targeting, select_target
 from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
 from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from systems.inventory_system import get_items_in_user_backpack
+from systems.inventory_system import get_items_in_inventory
 from systems.particule_system import cull_dead_particules
 from ui_system.interface import Interface
 from ui_system.menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
@@ -135,7 +135,7 @@ def tick():
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
         show_item_screen(f'[color=yellow] {Texts.get_text("INVENTORY")} [/color]')
-        items_in_backpack = get_items_in_user_backpack(World.fetch('player'))
+        items_in_backpack = get_items_in_inventory(World.fetch('player'))
         result, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
             run_systems()
@@ -147,7 +147,7 @@ def tick():
 
     elif run_state.current_state == States.SHOW_DROP_ITEM:
         show_item_screen(f'[color=yellow] {Texts.get_text("DROP_WHICH_ITEM")}[/color]')
-        items_in_backpack = get_items_in_user_backpack(World.fetch('player'))
+        items_in_backpack = get_items_in_inventory(World.fetch('player'))
         result, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
             run_state.change_state(States.AWAITING_INPUT)
