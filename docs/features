@@ -1,4 +1,4 @@
-Release 4 - Done
+Release 4 - Interface - Done
     Camera: rendering
     Camera: tooltip
     Camera: targeting system
@@ -14,17 +14,18 @@ Release 4 - Done
     inventaire : Limite de 26 objets.
     logs: mise en avant des entités devoilées.
     qol : auto pickup.
+    tooltip: Nouveau tooltip.
+    tooltip: placement selon personnage.
+    tooltip: fix Zoom.
 
 Release 4 - WIP
-    > Interface UI
-        > Reformatage general - 1
-        Tooltip
-        Items équipés visibles
-    Interface UX
-        Options à l'usage de l'item
-        highlight option menu
-        Menus plus informatifs
-        Raccourcis clavier
+        Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
+        Options à la selection item: use, equip, unequip, drop, etc.
+        Infos objets (armes and co) visibles dans l'inventaire ou Item menu (avec options d'actions possibles)
+            Suppression drop menu
+        Highlight de l'entrée selectionnée / effet visuel.
+        Raccourcis clavier : items (potions, parchos)
+
     light : round vision instead of square
     tiles:
         Tiles personnalisées selon niveau
@@ -33,9 +34,6 @@ Release 4 - WIP
         menus
     auto-explore
     detection menaces & nouveaux evenements
-    Room building & props
-    NPC talking
-    Lore via npc & items.
     Mapbuild checker:
         Sortie éloignée
         Reset si necessaire: save avant process.
@@ -48,6 +46,10 @@ Release 5 - Systems & items
     Generic effects & items
     Loot tables for rooms & mobs.
     Scores & better morgue files
+    ???
+        Room building & props
+        NPC talking
+        Lore via npc & items.
 
 Release 6 - Story statique
     Scenario standard: 4 regions.
