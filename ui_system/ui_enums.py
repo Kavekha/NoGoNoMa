@@ -39,4 +39,5 @@ class Layers(Enum):
     PARTICULE = 7
     INTERFACE = 8
     TOOLTIP = 9
-    MENU = 10
+    BACKGROUND_MENU = 10
+    MENU = 11

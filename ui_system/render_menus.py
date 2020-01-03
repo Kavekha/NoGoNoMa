@@ -2,13 +2,14 @@ from bearlibterminal import terminal
 
 import itertools
 
+from ui_system.interface import Interface
 from ui_system.render_functions import print_shadow
 from ui_system.ui_enums import Layers
 
 
 def draw_background(window_x, window_y, window_end_x, window_end_y):
-    from ui_system.interface import Interface
     terminal.color('grey')
+    terminal.layer(Layers.BACKGROUND_MENU.value)
 
     for x, y in itertools.product(range(window_x, window_end_x + 1), range(window_y, window_end_y + 1)):
         # coins
