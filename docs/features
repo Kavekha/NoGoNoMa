@@ -14,12 +14,11 @@ Release 4 - Interface - Done
     inventaire : Limite de 26 objets.
     logs: mise en avant des entités devoilées.
     qol : auto pickup.
-    > tooltip: Nouveau tooltip.
-
+    tooltip: Nouveau tooltip.
+    tooltip: placement selon personnage.
+    tooltip: fix Zoom.
 
 Release 4 - WIP
-        > Tooltip : placement selon joueur?
-        > fix zoom tooltip
         Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
         Options à la selection item: use, equip, unequip, drop, etc.
         Infos objets (armes and co) visibles dans l'inventaire ou Item menu (avec options d'actions possibles)

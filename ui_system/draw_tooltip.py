@@ -10,6 +10,7 @@ from components.hidden_component import HiddenComponent
 from components.attributes_component import AttributesComponent
 from components.pools_component import Pools
 from ui_system.interface import Interface
+from ui_system.render_functions import print_shadow
 
 
 class Tooltip:
@@ -34,7 +35,7 @@ class Tooltip:
     def render(self, x, y):
         terminal.layer(Layers.TOOLTIP.value)
         for i, line in enumerate(self.lines):
-            terminal.printf(x * Interface.zoom, y + i * Interface.zoom, line)
+            print_shadow(x, y + i, line)
 
 
 def draw_tooltip():
@@ -46,10 +47,10 @@ def draw_tooltip():
     mouse_map_pos_x = (mouse_pos_x // Interface.zoom) + min_x
     mouse_map_pos_y = (mouse_pos_y // Interface.zoom) + min_y
 
-    if 1 > mouse_map_pos_x > (Interface.map_screen_width * Interface.zoom) - 1 or 1 > mouse_map_pos_y > (Interface.map_screen_height * Interface.zoom) - 1:
+    if 1 > mouse_map_pos_x or mouse_map_pos_x > ((Interface.map_screen_width * Interface.zoom) - 1) or\
+            1 > mouse_map_pos_y or mouse_map_pos_y > ((Interface.map_screen_height * Interface.zoom) - 1):
         return
 
-    # On ne regarde que ce qui est visible. !!! PLANTAGE AGAIN: index out of range.
     if current_map.visible_tiles[current_map.xy_idx(mouse_map_pos_x, mouse_map_pos_y)]:
         # est ce qu'on doit bien reconstruire le tooltip?
         old_tooltip, old_mouse_x, old_mouse_y = World.fetch('tooltip')
@@ -108,16 +109,16 @@ def draw_tooltip():
 
         # render left or right of mouse
         arrow_y = mouse_pos_y
-        print(f'mouse pos x {mouse_map_pos_x}, interface screen: {Interface.screen_width // 2}')
+        print(f'mouse pos x {mouse_pos_x}, interface screen: {Interface.screen_width // 2}')
         if mouse_pos_x < Interface.screen_width // 2:
             arrow = '→'
-            arrow_x = mouse_pos_x - 1
+            arrow_x = mouse_pos_x - (1 * Interface.zoom)
         else:
             arrow = '←'
-            arrow_x = mouse_pos_x + 1
+            arrow_x = mouse_pos_x + (1 * Interface.zoom)
         terminal.layer(Layers.TOOLTIP.value)
         terminal.color('white')
-        terminal.printf(arrow_x * Interface.zoom, arrow_y * Interface.zoom, arrow)
+        print_shadow(arrow_x, arrow_y, arrow)
 
         total_tip_height = 0
         for tooltip in tip_boxes:
@@ -129,75 +130,9 @@ def draw_tooltip():
 
         for tooltip in tip_boxes:
             if mouse_pos_x < Interface.screen_width // 2:
-                x = mouse_pos_x - (1 + tooltip.width)
+                x = mouse_pos_x - (Interface.zoom + tooltip.width)
             else:
-                x = mouse_pos_x + 2
-
+                x = mouse_pos_x + 1 + Interface.zoom
             tooltip.render(x, y)
             y += tooltip.height
-        terminal.refresh()
-
-
-def odraw_tooltip():
-    # render camera
-    min_x, max_x, min_y, max_y = get_screen_bounds()
-
-    # mouse & tooltip
-    mouse_pos_x = terminal.state(terminal.TK_MOUSE_X) + min_x
-    mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y) + min_y
-
-    current_map = World.fetch('current_map')
-    subjects = World.get_components(PositionComponent, NameComponent)
-
-    if mouse_pos_x > Interface.map_screen_width - 1 or mouse_pos_y > Interface.map_screen_height - 1:
-        return
-
-    if current_map.visible_tiles[current_map.xy_idx(mouse_pos_x, mouse_pos_y)]:
-        old_tooltip, old_mouse_x, old_mouse_y = World.fetch('tooltip')
-
-        tooltip = []
-        for entity, (position, name) in subjects:
-            if World.get_entity_component(entity, HiddenComponent):
-                continue
-            if position.x == mouse_pos_x and position.y == mouse_pos_y:
-                tooltip.append(get_item_display_name(entity))
-
-        # identique, on ne change rien.
-        if tooltip == old_tooltip and mouse_pos_x == old_mouse_x and mouse_pos_y == old_mouse_y:
-            return
-
-        terminal.layer(Layers.TOOLTIP.value)
-        terminal.clear_area(0, 0, current_map.width, current_map.height)
-
-        if tooltip:
-            terminal.color('white')
-            width = 0
-            for string in tooltip:
-                if width < len(string):
-                    width = len(string)
-                width += 3
-
-            if mouse_pos_x > 40:
-                arrow_pos = (mouse_pos_x - 2 - min_x, mouse_pos_y - min_y)
-                left_x = mouse_pos_x - width - min_x
-                y = mouse_pos_y - min_y
-                for string in tooltip:
-                    terminal.printf(left_x, y, f'[bkcolor=gray]{string}[/color]')
-                    padding = (width - len(string) - 1)
-                    for i in range(0, padding):
-                        terminal.printf(arrow_pos[0] - i, y, f'[bkcolor=gray] [/color]')
-                    y += 1
-                terminal.printf(arrow_pos[0], arrow_pos[1], f'[bkcolor=gray]->[/color]')
-            else:
-                arrow_pos = (mouse_pos_x + 1 - min_x, mouse_pos_y - min_y)
-                left_x = mouse_pos_x + 3 - min_x
-                y = mouse_pos_y - min_y
-                for string in tooltip:
-                    terminal.printf(left_x, y, f'[bkcolor=gray]{string}[/color]')
-                    padding = width - len(string) - 1
-                    for i in range(0, padding):
-                        terminal.printf(arrow_pos[0] + i, y, f'[bkcolor=gray] [/color]')
-                        y += 1
-                terminal.printf(arrow_pos[0], arrow_pos[1], f'[bkcolor=gray]<-[/color]')
-        World.insert('tooltip', (tooltip, mouse_pos_x, mouse_pos_y))
         terminal.refresh()

@@ -369,9 +369,11 @@ def random_start_position():
 
 
 def build_random_map(depth, width, height):
-    # return random_build_example(depth)
     Interface.map_screen_width = width
     Interface.map_screen_height = height
+    Interface.set_zoom(Interface.zoom)
+
+    # return random_build_example(depth)
     return random_builder(depth, width, height)
 
 '''
