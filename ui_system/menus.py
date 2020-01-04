@@ -19,6 +19,12 @@ def show_item_screen(header):
     inventory_menu.initialize()
 
 
+def show_selected_item_screen(header, item):
+    inventory_menu = InventoryMenu(header)
+    inventory_menu.selected_item = item
+    inventory_menu.initialize()
+
+
 def old_show_item_screen(header):
     # header (Traduction, sans couleurs)
     # top: item selectionné

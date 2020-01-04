@@ -27,6 +27,7 @@ class States(Enum):
     CHARACTER_SHEET = 14
     OPTION_MENU = 15
     MAP_GENERATION = 16
+    SHOW_SELECTED_ITEM_MENU = 17
 
 
 class State:

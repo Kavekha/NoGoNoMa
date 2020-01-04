@@ -49,10 +49,20 @@ class InventoryMenu:
         decorated_names_list = list()
         for item in items_to_display:
             item_name, equipped_info = self.reduce_item_option(item_list_max_width, item, equipped)
-            # on ajoute la couleur de l'item
-            final_msg = f'[color={get_item_color(item)}]({chr(self.letter_index)}) {equipped_info} {item_name}[/color]'
+            # on ajoute la couleur de l'item + letter_index si pas d'items selectionnés
+            if self.selected_item:
+                color = config.COLOR_INFO_UNSELECTABLE_ITEMS_INVENTORY
+                letter_index = '(-)'
+            else:
+                color = get_item_color(item)
+                letter_index = f'({chr(self.letter_index)})'
+
+            final_msg = f'[color={color}]{letter_index} {equipped_info} {item_name}[/color]'
             decorated_names_list.append(final_msg)
-            self.letter_index += 1
+
+            if not self.selected_item:
+                # on augmente l'index car on va choisir dans cette liste.
+                self.letter_index += 1
         return decorated_names_list
 
     def reduce_item_option(self, total_width, item, equipped):
@@ -82,16 +92,19 @@ class InventoryMenu:
                 break
         return item_name, equipped_info
 
-    def cut_name_line_by_line(self, text, width):
-        unknown_item_msg = text
-        full_text = list()
-        while len(unknown_item_msg) > width:
-            line = full_text[0: width - 2]
-            full_text.append(line)
-            unknown_item_msg = unknown_item_msg[width - 1:]
+    def cut_name_in_lines_according_width(self, full_text, width):
         if not full_text:
-            full_text.append(unknown_item_msg)
-        return full_text
+            lines_list = ['']
+            return lines_list
+
+        lines_list = list()
+        while len(full_text) > width:
+            line = full_text[: width - 2]
+            lines_list.append(line)
+            full_text = full_text[width - 2:]
+        if not lines_list:
+            lines_list.append(full_text)
+        return lines_list
 
     def get_item_available_options(self, item):
         available_options = [
@@ -115,8 +128,8 @@ class InventoryMenu:
         center_header_start = ((self.window_end_x - len(self.header)) // 2)  # + window_x
         header = f'[color={config.COLOR_SYS_MSG}] {self.header} [/color]'  # On ajoute la couleur après le len()
         menu_contents.append((center_header_start, mutable_y, header))
-        mutable_y += 2
-        mutable_y_right += 2
+        mutable_y += 3
+        mutable_y_right += 3
 
         # selected item
         if self.selected_item:
@@ -124,12 +137,14 @@ class InventoryMenu:
         else:
             selected_content = Texts.get_text('INVENTORY_USAGE_EXPLANATION')
         center_selected_item_start = ((self.window_end_x - len(selected_content)) // 2)  # + window_x
-        selected_content = f'[color={config.COLOR_SYS_MSG}] {selected_content} [/color]'
+        selected_content = f'[color={config.COLOR_INFO_INVENTORY_SELECTED_ITEM}] {selected_content} [/color]'
         menu_contents.append((center_selected_item_start, mutable_y, selected_content))
-        mutable_y += 2
-        mutable_y_right += 2
+        mutable_y += 3
+        mutable_y_right += 3
 
         # left: item list.
+        if not decorated_names_list:
+            menu_contents.append((self.window_x, mutable_y, Texts.get_text('NO_ITEM_INVENTORY')))
         for decorated_name in decorated_names_list:
             menu_contents.append((self.window_x, mutable_y, decorated_name))
             mutable_y += 1
@@ -155,11 +170,14 @@ class InventoryMenu:
             mutable_y_right += 2
 
             if item_obfuscate:
-                full_text = self.cut_name_line_by_line(Texts.get_text("INVENTORY_USAGE_EXPLANATION"),
-                                                       item_description_width_total)
+                print(f'menu: item obfuscate')
+                full_text = self.cut_name_in_lines_according_width(
+                    Texts.get_text("CANT_KNOW_WITHOUT_USAGE_OR_IDENTIFICATION"),
+                    item_description_width_total)
 
                 for line in full_text:
-                    menu_contents.append((item_description_width_start, mutable_y_right, line))
+                    menu_contents.append((item_description_width_start, mutable_y_right,
+                                          f'[color={config.COLOR_INFO_INVENTORY_TEXT}]{line}[/color]'))
                     mutable_y_right += 1
             else:
                 if item_consumable:
@@ -176,22 +194,27 @@ class InventoryMenu:
                     mutable_y_right += 1
 
             # bottom: options if any.
+            mutable_y = max(mutable_y, mutable_y_right)
+            mutable_y += 3
+
             if self.selected_item:
-                mutable_x = self.window_x
+                mutable_x = self.window_x + 2   # margin
                 available_options = self.get_item_available_options(self.selected_item)
 
                 large_width = 0
                 for option in available_options:
-                    if len(option) > large_width + 3:
+                    if len(option) > large_width:
                         large_width = len(option)
+                large_width += 3
 
                 for option in available_options:
-                    menu_contents.append((mutable_x, mutable_y, option))
+                    menu_contents.append((mutable_x, mutable_y,
+                                          f'[color={config.COLOR_INVENTORY_OPTION}]({option})[/color]'))
                     mutable_x += large_width
                     if mutable_x >= self.window_end_x:
-                        mutable_x = self.window_x
+                        mutable_x = self.window_x + 2   # margin
                         mutable_y += 1
-        mutable_y += 5
+        mutable_y += 3
 
         # end : how to quit.
         exit_text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
@@ -203,7 +226,7 @@ class InventoryMenu:
         self.window_end_y = mutable_y
 
     def render_menu(self):
-        print(f'inventory: render menu')
+        print(f'inventory: render menu: self menu contents : {self.menu_contents}')
         terminal.layer(Layers.MENU.value)
         for x, y, content in self.menu_contents:
             print(f'render menu : {x, y, content}')

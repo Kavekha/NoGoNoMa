@@ -112,3 +112,4 @@ DROP_ITEM;Drop;Deposer
 EQUIP_ITEM;Equip;Equipper
 UNEQUIP_ITEM;Unequip;Déséquipper
 TUNIC;Tunic;Tunique
+NO_ITEM_INVENTORY; Your inventory is empty.;Votre inventaire est vide.
