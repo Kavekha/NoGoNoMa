@@ -119,3 +119,4 @@ ITEM_INFO_EQUIPPABLE;Can be equipped.;Peut être équipé.
 ITEM_INFO_INFLICT_DMG;Inflict damages.;Inflige des degats.
 ITEM_INFO_MAGIC;Magic item.;Objet magique.
 ITEM_INFO_RANGED;Range: {0};Portée: {0}
+ESCAPE_TO_CHOOSE_OTHER_ITEM;ESCAP to choose another item.;ECHAP pour choisir un autre objet.

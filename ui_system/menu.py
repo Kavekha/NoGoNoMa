@@ -287,7 +287,10 @@ class InventoryMenu:
         mutable_y += 3
 
         # end : how to quit.
-        exit_text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
+        if self.selected_item:
+            exit_text = f' {Texts.get_text("ESCAPE_TO_CHOOSE_OTHER_ITEM")} '
+        else:
+            exit_text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
         center_exit_text_x = ((self.window_end_x - len(exit_text)) // 2)  # + window_x
         exit_text = f'[color=darker yellow]{exit_text}[/color]'
         menu_contents.append((center_exit_text_x, mutable_y, exit_text))
@@ -296,10 +299,8 @@ class InventoryMenu:
         self.window_end_y = mutable_y
 
     def render_menu(self):
-        print(f'inventory: render menu: self menu contents : {self.menu_contents}')
         terminal.layer(Layers.MENU.value)
         for x, y, content in self.menu_contents:
-            print(f'render menu : {x, y, content}')
             print_shadow(x, y, content)
 
         if Interface.mode == GraphicalModes.TILES:
