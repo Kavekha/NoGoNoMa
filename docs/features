@@ -27,12 +27,12 @@ Release 4 - Interface - Done
     > inventory: options display.
     > Info text découpé par mot plutot que lettres.
     > Options selectionnables via lettres index.
+    > Descriptions des items dans l'inventaire.
 
 
 Release 4 - WIP
     3.4
     Mettre en valeur dans le menu de gauche l'item selectionné.
-    Description de l'item s'il est identifié + infos basiques s'il ne l'est pas.
     Si identification a l'equipement, on reste dans le menu pour voir ce que c'est.
     Item names debordant sur la partie droite.
     tofix: si deux items, inventaire full -1, et autopick : freeze.

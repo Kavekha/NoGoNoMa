@@ -9,7 +9,13 @@ from components.consumable_component import ConsumableComponent
 from components.provides_healing_component import ProvidesHealingComponent
 from components.items_component import MeleeWeaponComponent
 from components.equipped_component import EquippedComponent
-from systems.inventory_system import get_equipped_items, get_items_in_inventory, drop_item_from_inventory, use_item
+from components.area_effect_component import AreaOfEffectComponent
+from components.confusion_component import ConfusionComponent
+from components.equippable_component import EquippableComponent
+from components.inflicts_damage_component import InflictsDamageComponent
+from components.magic_item_component import MagicItemComponent
+from components.ranged_component import RangedComponent
+from systems.inventory_system import get_equipped_items, get_items_in_inventory
 from ui_system.ui_enums import Layers
 import config
 from texts import Texts
@@ -133,6 +139,49 @@ class InventoryMenu:
 
         return available_options
 
+    def get_item_description(self, item, obfuscate=False):
+        item_description = list()
+
+        item_consumable = World.get_entity_component(item, ConsumableComponent)
+        item_provide_healing = World.get_entity_component(item, ProvidesHealingComponent)
+        item_melee_weapon = World.get_entity_component(item, MeleeWeaponComponent)
+        item_area_effect = World.get_entity_component(item, AreaOfEffectComponent)
+        item_confusion = World.get_entity_component(item, ConfusionComponent)
+        item_equippable = World.get_entity_component(item, EquippableComponent)
+        item_inflict_dmg = World.get_entity_component(item, InflictsDamageComponent)
+        item_magic = World.get_entity_component(item, MagicItemComponent)
+        item_ranged = World.get_entity_component(item, RangedComponent)
+
+        if item_magic:
+            item_description.append(Texts.get_text("ITEM_INFO_MAGIC"))
+
+        if item_inflict_dmg and not obfuscate:
+            item_description.append(Texts.get_text("ITEM_INFO_INFLICT_DMG"))
+
+        if item_provide_healing and not obfuscate:
+            item_description.append(Texts.get_text("ITEM_INFO_HEALING"))
+
+        if item_equippable:
+            # has equipment slot
+            item_description.append(Texts.get_text("ITEM_INFO_EQUIPPABLE"))
+
+        if item_ranged and not obfuscate:
+            item_description.append(Texts.get_text("ITEM_INFO_RANGED").format(item_ranged.range))
+
+        if item_area_effect and not obfuscate:
+            item_description.append(Texts.get_text("ITEM_INFO_AREA_EFFECT").format(item_area_effect.radius))
+
+        if item_confusion and not obfuscate:
+            item_description.append(Texts.get_text("ITEM_INFO_CONFUSION"))
+
+        if item_consumable:
+            item_description.append(Texts.get_text("ITEM_INFO_CONSUMABLE"))
+
+        if item_melee_weapon:
+            item_description.append(Texts.get_text("ITEM_INFO_MELEE_WEAPON"))
+
+        return item_description
+
     def create_menu_content(self, decorated_names_list):
         print(f'inventory: create menu content')
         # content = (x, y, text)
@@ -169,13 +218,6 @@ class InventoryMenu:
 
         # right: description
         if self.selected_item:
-
-            # on recupere les infos.
-            item_obfuscate = World.get_entity_component(self.selected_item, ObfuscatedNameComponent)
-            item_consumable = World.get_entity_component(self.selected_item, ConsumableComponent)
-            item_provide_healing = World.get_entity_component(self.selected_item, ProvidesHealingComponent)
-            item_melee_weapon = World.get_entity_component(self.selected_item, MeleeWeaponComponent)
-
             item_description_width_total = (self.window_end_x - self.window_x) // 2
             item_description_width_start = self.window_x + item_description_width_total
 
@@ -183,7 +225,15 @@ class InventoryMenu:
             menu_contents.append((item_description_width_start, mutable_y_right, info_title))
             mutable_y_right += 2
 
+            # on recupere les infos.
+            item_obfuscate = World.get_entity_component(self.selected_item, ObfuscatedNameComponent)
             if item_obfuscate:
+                obfuscate = True
+            else:
+                obfuscate = False
+            color = config.COLOR_INFO_INVENTORY_TEXT
+
+            if obfuscate:
                 print(f'menu: item obfuscate')
                 full_text = self.cut_text_in_lines_according_width(
                     Texts.get_text("CANT_KNOW_WITHOUT_USAGE_OR_IDENTIFICATION"),
@@ -191,21 +241,18 @@ class InventoryMenu:
 
                 for line in full_text:
                     menu_contents.append((item_description_width_start, mutable_y_right,
-                                          f'[color={config.COLOR_INFO_INVENTORY_TEXT}]{line}[/color]'))
+                                          f'[color={color}]{line}[/color]'))
                     mutable_y_right += 1
-            else:
-                if item_consumable:
-                    menu_contents.append((item_description_width_start, mutable_y_right,
-                                 f'{Texts.get_text("ITEM_INFO_CONSUMMABLE")}'))
-                    mutable_y_right += 1
-                if item_provide_healing:
-                    menu_contents.append((item_description_width_start, mutable_y_right,
-                                 f'{Texts.get_text("ITEM_INFO_HEALING")}'))
-                    mutable_y_right += 1
-                if item_melee_weapon:
-                    menu_contents.append((item_description_width_start, mutable_y_right,
-                                 f'{Texts.get_text("ITEM_INFO_MELEE_WEAPON")}'))
-                    mutable_y_right += 1
+            mutable_y_right += 2
+
+            # Some infos can be displayed, even if obfuscate
+            color = config.COLOR_INFO_ATTRIBUTE_INVENTORY_MENU
+            item_attribute_list = self.get_item_description(self.selected_item, obfuscate)
+            for item_attribute in item_attribute_list:
+                menu_contents.append((item_description_width_start,
+                                      mutable_y_right,
+                                      f'[color={color}]{item_attribute}[/color]'))
+                mutable_y_right += 1
 
             # bottom: options if any.
             mutable_y = max(mutable_y, mutable_y_right)
