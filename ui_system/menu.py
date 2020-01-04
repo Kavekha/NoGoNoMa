@@ -92,18 +92,27 @@ class InventoryMenu:
                 break
         return item_name, equipped_info
 
-    def cut_name_in_lines_according_width(self, full_text, width):
+    def cut_text_in_lines_according_width(self, full_text, width):
         if not full_text:
             lines_list = ['']
             return lines_list
 
+        full_text_width = len(full_text)
+        full_text = full_text.split()
         lines_list = list()
-        while len(full_text) > width:
-            line = full_text[: width - 2]
+        line = ''
+        while full_text_width >= width:
+            while len(line + full_text[0] + ' ') < width:
+                line += full_text[0] + ' '
+                full_text.remove(full_text[0])
+                full_text_width -= len(full_text[0] + ' ')
             lines_list.append(line)
-            full_text = full_text[width - 2:]
-        if not lines_list:
-            lines_list.append(full_text)
+            line = ''
+        # s'il reste du texte avec taille < width
+        for word in full_text:
+            line += word + ' '
+        lines_list.append(line)
+
         return lines_list
 
     def get_item_available_options(self, item):
@@ -111,7 +120,8 @@ class InventoryMenu:
             Texts.get_text('USE_ITEM'),
             Texts.get_text('DROP_ITEM'),
             Texts.get_text('EQUIP_ITEM'),
-            Texts.get_text('UNEQUIP_ITEM')
+            Texts.get_text('UNEQUIP_ITEM'),
+            'TEST_WITH_LONGEr_MESS'
         ]
         return available_options
 
@@ -171,7 +181,7 @@ class InventoryMenu:
 
             if item_obfuscate:
                 print(f'menu: item obfuscate')
-                full_text = self.cut_name_in_lines_according_width(
+                full_text = self.cut_text_in_lines_according_width(
                     Texts.get_text("CANT_KNOW_WITHOUT_USAGE_OR_IDENTIFICATION"),
                     item_description_width_total)
 
@@ -201,17 +211,23 @@ class InventoryMenu:
                 mutable_x = self.window_x + 2   # margin
                 available_options = self.get_item_available_options(self.selected_item)
 
-                large_width = 0
+                decorated_options = list()
                 for option in available_options:
+                    decorated_options.append(f'({chr(self.letter_index)}) {option}')
+                    self.letter_index += 1
+
+                # get the longest option
+                large_width = 0
+                for option in decorated_options:
                     if len(option) > large_width:
                         large_width = len(option)
                 large_width += 3
 
-                for option in available_options:
+                for option in decorated_options:
                     menu_contents.append((mutable_x, mutable_y,
-                                          f'[color={config.COLOR_INVENTORY_OPTION}]({option})[/color]'))
+                                          f'[color={config.COLOR_INVENTORY_OPTION}]{option}[/color]'))
                     mutable_x += large_width
-                    if mutable_x >= self.window_end_x:
+                    if mutable_x + large_width >= self.window_end_x:
                         mutable_x = self.window_x + 2   # margin
                         mutable_y += 1
         mutable_y += 3

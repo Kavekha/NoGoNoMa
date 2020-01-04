@@ -133,7 +133,7 @@ def inventory_input(item_list):
     return ItemMenuResult.NO_RESPONSE, None, None
 
 
-def inventory_selected_item_input():
+def inventory_selected_item_input(item_list):
     if terminal.has_input():
         key = terminal.read()
         if key != terminal.TK_MOUSE_MOVE:
@@ -145,11 +145,8 @@ def inventory_selected_item_input():
                 sys.exit()
             else:
                 index = terminal.state(terminal.TK_CHAR) - ord('a')
-                print(f'inventory selected item: index chosen.')
-                '''
-                if 0 <= index < len(item_list):
-                    return ItemMenuResult.SELECTED, item_list[index]
-                    '''
+                return ItemMenuResult.SELECTED, item_list[index]
+
     return ItemMenuResult.NO_RESPONSE, None
 
 

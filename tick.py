@@ -141,7 +141,8 @@ def tick():
 
     # menu inventory with item selected
     elif run_state.current_state == States.SHOW_SELECTED_ITEM_MENU:
-        result, item = inventory_selected_item_input()
+        items_in_backpack = get_items_in_inventory(World.fetch('player'))
+        result, item = inventory_selected_item_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
             run_systems()
             run_state.change_state(States.AWAITING_INPUT)

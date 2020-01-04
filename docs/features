@@ -20,36 +20,57 @@ Release 4 - Interface - Done
     light : round vision instead of square
     Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
     Nouvel affichage menu inventaire.
-    > fix: crash sur Tunic, traductions diverses.
-    > fix: target zoom.
+    fix: crash sur Tunic, traductions diverses.
+    fix: target zoom.
+    > inventory: cas "No item in inventory"
+    > inventory: select menu
+    > inventory: options display.
+    > Info text découpé par mot plutot que lettres.
+    > Options selectionnables via lettres index (Dummy option).
 
 
 Release 4 - WIP
-    inventory: cas "No item in inventory"
-    interface:
-        Options à la selection item: use, equip, unequip, drop, etc.
-            # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
-            Selection d'un objet switch sur les options & description de l'item.
-            Options selon le type d'objet.
-            Suppression drop menu
-        Highlight de l'entrée selectionnée / effet visuel.
-        Deplacement avec fleche dans les menus
-        Raccourcis clavier : items (potions, parchos)
+    3.4
+    > Options selectionnables via lettres index.
+    > Options de base fonctionnelles (USE, DROP).
+        # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
+    Mettre en valeur dans le menu de gauche l'item selectionné.
+    Item names debordant sur la partie droite.
+
+
+    3.5
+    inventory: Options selon le type d'objet. (EQUIP / UNEQUIP)
+    inventory: infos pertinentes selon l'objet. (Effets & ameliorations)
+    Suppression drop menu
+    Refacto des autres menus, plus simples.
+    Clean master.
+
+    3.6
+    Highlight de l'entrée selectionnée / effet visuel.
+    Deplacement avec fleche dans les menus
+    Raccourcis clavier : items (potions, parchos)
+
+    3.7
     mouse support
         deplacement
         menus
     auto-explore
     detection menaces & nouveaux evenements
+
+    3.8
     Mapbuild checker:
         Sortie éloignée
         Reset si necessaire: save avant process.
         Casser les passages diagonales only entre deux rooms
+        Distant exit: quasiment tjrs à Gauche
         Tiles personnalisées selon niveau
 
 Release 5 - Systems & items
+    Scroll: selectionner une case vide consomme le scroll sans message si dans zone valide?
     Initiative & turn lost fix.
     Pas d'enemi sur la meme case
     Combat.
+    fix combat diagonal IA
     Progression leveling
     Generic effects & items
     Loot tables for rooms & mobs.
