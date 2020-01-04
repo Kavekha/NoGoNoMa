@@ -20,36 +20,50 @@ Release 4 - Interface - Done
     light : round vision instead of square
     Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
     Nouvel affichage menu inventaire.
-    > fix: crash sur Tunic, traductions diverses.
-    > fix: target zoom.
-
+    fix: crash sur Tunic, traductions diverses.
+    fix: target zoom.
+    > inventory: cas "No item in inventory"
+    > inventory: select menu
+    > inventory: options display.
+    > Info text découpé par mot plutot que lettres.
+    > Options selectionnables via lettres index.
+    > Descriptions des items dans l'inventaire.
+    > Mettre en valeur dans le menu de gauche l'item selectionné.
+    > Fix item drop.
+    > Suppression drop menu
 
 Release 4 - WIP
-    inventory: cas "No item in inventory"
-    interface:
-        Options à la selection item: use, equip, unequip, drop, etc.
-            # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
-            Selection d'un objet switch sur les options & description de l'item.
-            Options selon le type d'objet.
-            Suppression drop menu
-        Highlight de l'entrée selectionnée / effet visuel.
-        Deplacement avec fleche dans les menus
-        Raccourcis clavier : items (potions, parchos)
+    3.5
+    Refacto des autres menus, plus simples.
+    Background plus joli, boxes.
+    Clean master.
+
+    3.6
+    Highlight de l'entrée selectionnée / effet visuel.
+    Deplacement avec fleche dans les menus
+    Raccourcis clavier : items (potions, parchos)
+
+    3.7
     mouse support
         deplacement
         menus
     auto-explore
     detection menaces & nouveaux evenements
+
+    3.8
     Mapbuild checker:
         Sortie éloignée
         Reset si necessaire: save avant process.
         Casser les passages diagonales only entre deux rooms
+        Distant exit: quasiment tjrs à Gauche
         Tiles personnalisées selon niveau
 
 Release 5 - Systems & items
+    Scroll: selectionner une case vide consomme le scroll sans message si dans zone valide?
     Initiative & turn lost fix.
     Pas d'enemi sur la meme case
     Combat.
+    fix combat diagonal IA
     Progression leveling
     Generic effects & items
     Loot tables for rooms & mobs.
@@ -71,13 +85,13 @@ Release 7 - Nouveaux systemes & personnages.
     Selection de personnages.
     Sauvegardes independantes / profils.
 
-Release 8 - Branches & moteur d'histoire de base.
+Release 8 - Branches & variantes du Boss final & univers.
     Branches alternatives: nouvelles maps, monstres & items.
     Thematiques de donjons & items, monstres, maps associées.
     Constructeur d'histoires simples: variations.
 
 Release 9 - Magie & personnages.
-Release 10 - Backtrack donjon, Castelvania like.
+Release 10 - Backtrack donjon, Castelvania like & autres boss.
 Release 11 - Divinités & codes de conduite.
 Release 12 - Moteur histoire complexe.
 

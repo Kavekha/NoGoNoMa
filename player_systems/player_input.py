@@ -4,9 +4,10 @@ import sys
 
 from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
+from systems.item_use_system import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.menus import show_option_menu, show_item_screen
+from ui_system.menus import show_option_menu, show_item_screen, show_selected_item_screen
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -42,8 +43,10 @@ def player_input():
         elif key == terminal.TK_I:
             show_item_screen(f'{Texts.get_text("INVENTORY")}')
             return States.SHOW_INVENTORY
-        elif key == terminal.TK_D:
-            return States.SHOW_DROP_ITEM
+            '''
+                elif key == terminal.TK_D:
+                    return States.SHOW_DROP_ITEM
+            '''
         elif key == terminal.TK_C:
             return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:
@@ -113,19 +116,41 @@ def input_escape_to_quit():
 
 
 def inventory_input(item_list):
+    # return ItemMenuResult, new_state, item selected
     if terminal.has_input():
         key = terminal.read()
-        if key == terminal.TK_ESCAPE:
-            return ItemMenuResult.CANCEL, None
-        elif key == terminal.TK_CLOSE:
-            save_game(World)
-            terminal.close()
-            sys.exit()
-        else:
-            index = terminal.state(terminal.TK_CHAR) - ord('a')
-            if 0 <= index < len(item_list):
-                return ItemMenuResult.SELECTED, item_list[index]
-            return ItemMenuResult.NO_RESPONSE, None
+        if key != terminal.TK_MOUSE_MOVE:
+            if key == terminal.TK_ESCAPE:
+                return ItemMenuResult.CANCEL, None, None
+            elif key == terminal.TK_CLOSE:
+                save_game(World)
+                terminal.close()
+                sys.exit()
+            else:
+                index = terminal.state(terminal.TK_CHAR) - ord('a')
+                if 0 <= index < len(item_list):
+                    print(f'inventory input: item {index} has been chosen.')
+                    # show_selected_item_screen(f'{Texts.get_text("INVENTORY")}', item_list[index])
+
+                    return ItemMenuResult.SELECTED, States.SHOW_SELECTED_ITEM_MENU, item_list[index]
+    return ItemMenuResult.NO_RESPONSE, None, None
+
+
+def inventory_selected_item_input(chosen_item):
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            if key == terminal.TK_ESCAPE:
+                return ItemMenuResult.CANCEL, None
+            elif key == terminal.TK_CLOSE:
+                save_game(World)
+                terminal.close()
+                sys.exit()
+            else:
+                index = terminal.state(terminal.TK_CHAR) - ord('a')
+                action_list = get_available_item_actions(chosen_item)
+                if 0 <= index < len(action_list):
+                    return ItemMenuResult.ACTION, action_list[index]
     return ItemMenuResult.NO_RESPONSE, None
 
 

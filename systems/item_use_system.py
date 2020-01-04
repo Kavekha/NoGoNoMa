@@ -17,6 +17,8 @@ from components.in_backpack_component import InBackPackComponent
 from components.position_component import PositionComponent
 from systems.particule_system import ParticuleBuilder
 from components.identified_component import IdentifiedItemComponent
+from components.items_component import MeleeWeaponComponent
+from systems.inventory_system import drop_item_from_inventory, select_item_from_inventory
 from world import World
 from texts import Texts
 import config
@@ -50,15 +52,7 @@ class ItemUseSystem(System):
                     blast_tiles_idx = []
                     view = World.get_entity_component(entity, ViewshedComponent)
                     radius = aoe.radius // 2
-                    '''
-                    for y in range(- radius, radius + 1):
-                        for x in range(- radius, radius + 1):
-                            radius_x = target_x + x
-                            radius_y = target_y + y
-                            if view.visible_tiles[radius_y][radius_x]:
-                                new_idx = current_map.xy_idx(radius_x, radius_y)
-                                blast_tiles_idx.append(new_idx)
-                    '''
+
                     for x, y in it_product(range(- radius, radius + 1), range(- radius, radius + 1)):
                         radius_x = target_x + x
                         radius_y = target_y + y
@@ -149,3 +143,24 @@ class ItemUseSystem(System):
                                     f'[/color]')
 
             World.remove_component(WantsToUseComponent, entity)
+
+
+def get_available_item_actions(item):
+    item_weapon = World.get_entity_component(item, MeleeWeaponComponent)
+    item_equipped = World.get_entity_component(item, EquippedComponent)
+
+    available_actions = list()
+    if item_weapon:
+        if item_equipped:
+            # equip
+            available_actions.append(select_item_from_inventory)
+        else:
+            # unequip
+            available_actions.append(select_item_from_inventory)
+    else:
+        # use
+        available_actions.append(select_item_from_inventory)
+    # drop
+    available_actions.append(drop_item_from_inventory)
+
+    return available_actions

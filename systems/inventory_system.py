@@ -104,9 +104,11 @@ def drop_item_from_inventory(item_id):
     drop_intent = WantsToDropComponent(item_id)
     player = World.fetch('player')
     World.add_component(drop_intent, player)
+    return States.PLAYER_TURN
 
 
 def select_item_from_inventory(item_id):
+    print(f'select item : item id {item_id}')
     player = World.fetch('player')
     ranged = World.get_entity_component(item_id, RangedComponent)
     if ranged:

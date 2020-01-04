@@ -104,11 +104,18 @@ UNIDENTIFIED_SHIELD;Unidentified shield;Bouclier non-identifié
 INVENTORY_USAGE_EXPLANATION;Select an item then choose how to use it.;Choisissez un objet puis comment l'utiliser.
 ITEM_INFO;Info;Informations
 CANT_KNOW_WITHOUT_USAGE_OR_IDENTIFICATION;You don't know anything about this item. You should found a mean to identify it or try to use it at your own risk.;Vous ne savez rien de cet objet. Vous devez trouver un moyen de l'identifier ou l'utiliser à vos risques et perils.
-ITEM_INFO_CONSUMMABLE;Will be consummed on use.;Sera consommé à l'usage.
-ITEM_INFO_HEALING;This is an healing item.;Cet objet soigne.
-ITEM_INFO_MELEE_WEAPON;This is a melee weapon.;C'est une arme de mélée.
+ITEM_INFO_CONSUMABLE;Consummed on use.;Consommé à l'usage.
+ITEM_INFO_HEALING;Healing effect.;Effet de soins.
+ITEM_INFO_MELEE_WEAPON;Melee weapon.;Arme de mélée.
 USE_ITEM;Use;Utiliser
 DROP_ITEM;Drop;Deposer
 EQUIP_ITEM;Equip;Equipper
 UNEQUIP_ITEM;Unequip;Déséquipper
 TUNIC;Tunic;Tunique
+NO_ITEM_INVENTORY; Your inventory is empty.;Votre inventaire est vide.
+ITEM_INFO_AREA_EFFECT;Area of effect: {0};Air d'effet: {0}
+ITEM_INFO_CONFUSION;Confuse the mind of its target.;Inflige la confusion dans les esprits.
+ITEM_INFO_EQUIPPABLE;Can be equipped.;Peut être équipé.
+ITEM_INFO_INFLICT_DMG;Inflict damages.;Inflige des degats.
+ITEM_INFO_MAGIC;Magic item.;Objet magique.
+ITEM_INFO_RANGED;Range: {0};Portée: {0}
