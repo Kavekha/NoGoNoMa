@@ -104,6 +104,7 @@ def drop_item_from_inventory(item_id):
     drop_intent = WantsToDropComponent(item_id)
     player = World.fetch('player')
     World.add_component(drop_intent, player)
+    return States.PLAYER_TURN
 
 
 def select_item_from_inventory(item_id):

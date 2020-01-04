@@ -28,21 +28,14 @@ Release 4 - Interface - Done
     > Info text découpé par mot plutot que lettres.
     > Options selectionnables via lettres index.
     > Descriptions des items dans l'inventaire.
-
+    > Mettre en valeur dans le menu de gauche l'item selectionné.
+    > Fix item drop.
+    > Suppression drop menu
 
 Release 4 - WIP
-    3.4
-    Mettre en valeur dans le menu de gauche l'item selectionné.
-    Si identification a l'equipement, on reste dans le menu pour voir ce que c'est.
-    Item names debordant sur la partie droite.
-    tofix: si deux items, inventaire full -1, et autopick : freeze.
-
-
     3.5
-    inventory: Options selon le type d'objet. (EQUIP / UNEQUIP)
-    inventory: infos pertinentes selon l'objet. (Effets & ameliorations)
-    Suppression drop menu
     Refacto des autres menus, plus simples.
+    Background plus joli, boxes.
     Clean master.
 
     3.6

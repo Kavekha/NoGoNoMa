@@ -43,8 +43,10 @@ def player_input():
         elif key == terminal.TK_I:
             show_item_screen(f'{Texts.get_text("INVENTORY")}')
             return States.SHOW_INVENTORY
-        elif key == terminal.TK_D:
-            return States.SHOW_DROP_ITEM
+            '''
+                elif key == terminal.TK_D:
+                    return States.SHOW_DROP_ITEM
+            '''
         elif key == terminal.TK_C:
             return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:

@@ -52,4 +52,5 @@ Changer State
 systems order
 
 Inventory
-    Max items, crash si letter index > 26
+    Si identification a l'equipement, on reste dans le menu pour voir ce que c'est.
+    Afficher difference equippé vs equippé pour aider au choix.

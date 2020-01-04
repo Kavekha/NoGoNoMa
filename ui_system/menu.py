@@ -59,7 +59,10 @@ class InventoryMenu:
             item_name, equipped_info = self.reduce_item_option(item_list_max_width, item, equipped)
             # on ajoute la couleur de l'item + letter_index si pas d'items selectionnés
             if self.selected_item:
-                color = config.COLOR_INFO_UNSELECTABLE_ITEMS_INVENTORY
+                if item == self.selected_item:
+                    color = config.COLOR_INFO_SELECTED_ITEM_IN_INVENTORY
+                else:
+                    color = config.COLOR_INFO_UNSELECTABLE_ITEMS_INVENTORY
                 letter_index = '(-)'
             else:
                 color = get_item_color(item)

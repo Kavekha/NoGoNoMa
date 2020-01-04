@@ -52,15 +52,7 @@ class ItemUseSystem(System):
                     blast_tiles_idx = []
                     view = World.get_entity_component(entity, ViewshedComponent)
                     radius = aoe.radius // 2
-                    '''
-                    for y in range(- radius, radius + 1):
-                        for x in range(- radius, radius + 1):
-                            radius_x = target_x + x
-                            radius_y = target_y + y
-                            if view.visible_tiles[radius_y][radius_x]:
-                                new_idx = current_map.xy_idx(radius_x, radius_y)
-                                blast_tiles_idx.append(new_idx)
-                    '''
+
                     for x, y in it_product(range(- radius, radius + 1), range(- radius, radius + 1)):
                         radius_x = target_x + x
                         radius_y = target_y + y

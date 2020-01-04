@@ -153,16 +153,17 @@ def tick():
             run_systems()
             run_state.change_state(new_state)
 
-    elif run_state.current_state == States.SHOW_DROP_ITEM:
-        show_item_screen(f'[color=yellow] {Texts.get_text("DROP_WHICH_ITEM")}[/color]')
-        items_in_backpack = get_items_in_inventory(World.fetch('player'))
-        result, item = inventory_input(items_in_backpack)
-        if result == ItemMenuResult.CANCEL:
-            run_state.change_state(States.AWAITING_INPUT)
-            run_systems()
-        elif result == ItemMenuResult.SELECTED:
-            drop_item_from_inventory(item)
-            run_state.change_state(States.PLAYER_TURN)
+        '''elif run_state.current_state == States.SHOW_DROP_ITEM:
+            show_item_screen(f'[color=yellow] {Texts.get_text("DROP_WHICH_ITEM")}[/color]')
+            items_in_backpack = get_items_in_inventory(World.fetch('player'))
+            result, item = inventory_input(items_in_backpack)
+            if result == ItemMenuResult.CANCEL:
+                run_state.change_state(States.AWAITING_INPUT)
+                run_systems()
+            elif result == ItemMenuResult.SELECTED:
+                drop_item_from_inventory(item)
+                run_state.change_state(States.PLAYER_TURN)
+        '''
 
     elif run_state.current_state == States.SHOW_TARGETING:
         result, item, target_pos = show_targeting()
