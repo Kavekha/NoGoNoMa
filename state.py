@@ -36,6 +36,7 @@ class State:
         self.mapgen_index = 0
         self.mapgen_history = list()
         self.mapgen_timer = 0
+        self.args = None
 
     def change_state(self, new_state):
         # if new_state != self.current_state:

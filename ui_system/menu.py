@@ -1,14 +1,16 @@
 from bearlibterminal import terminal
 
 from ui_system.interface import GraphicalModes, Interface
-from ui_system.render_menus import draw_tile_menu, draw_ascii_menu, draw_background
+from ui_system.render_menus import draw_background
 from ui_system.render_functions import get_item_color, get_item_display_name, print_shadow
 from world import World
-from components.attributes_component import AttributesComponent
-from components.pools_component import Pools
-from systems.inventory_system import get_equipped_items, get_items_in_inventory
+from components.obfuscated_name_component import ObfuscatedNameComponent
+from components.consumable_component import ConsumableComponent
+from components.provides_healing_component import ProvidesHealingComponent
+from components.items_component import MeleeWeaponComponent
+from components.equipped_component import EquippedComponent
+from systems.inventory_system import get_equipped_items, get_items_in_inventory, drop_item_from_inventory, use_item
 from ui_system.ui_enums import Layers
-from player_systems.game_system import xp_for_next_level
 import config
 from texts import Texts
 
@@ -116,13 +118,19 @@ class InventoryMenu:
         return lines_list
 
     def get_item_available_options(self, item):
-        available_options = [
-            Texts.get_text('USE_ITEM'),
-            Texts.get_text('DROP_ITEM'),
-            Texts.get_text('EQUIP_ITEM'),
-            Texts.get_text('UNEQUIP_ITEM'),
-            'TEST_WITH_LONGEr_MESS'
-        ]
+        item_weapon = World.get_entity_component(item, MeleeWeaponComponent)
+        item_equipped = World.get_entity_component(item, EquippedComponent)
+
+        available_options = list()
+        if item_weapon:
+            if item_equipped:
+                available_options.append(Texts.get_text('UNEQUIP_ITEM'))
+            else:
+                available_options.append(Texts.get_text('EQUIP_ITEM'))
+        else:
+            available_options.append(Texts.get_text('USE_ITEM'))
+        available_options.append(Texts.get_text('DROP_ITEM'))
+
         return available_options
 
     def create_menu_content(self, decorated_names_list):
@@ -161,10 +169,6 @@ class InventoryMenu:
 
         # right: description
         if self.selected_item:
-            from components.obfuscated_name_component import ObfuscatedNameComponent
-            from components.consumable_component import ConsumableComponent
-            from components.provides_healing_component import ProvidesHealingComponent
-            from components.items_component import MeleeWeaponComponent
 
             # on recupere les infos.
             item_obfuscate = World.get_entity_component(self.selected_item, ObfuscatedNameComponent)

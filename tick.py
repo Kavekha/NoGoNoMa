@@ -135,19 +135,21 @@ def tick():
             run_systems()
             run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
+            run_state.args = item
             run_state.change_state(new_state)
             run_systems()
             show_selected_item_screen(f'{Texts.get_text("INVENTORY")}', item)
 
     # menu inventory with item selected
     elif run_state.current_state == States.SHOW_SELECTED_ITEM_MENU:
-        items_in_backpack = get_items_in_inventory(World.fetch('player'))
-        result, item = inventory_selected_item_input(items_in_backpack)
+        chosen_item = run_state.args
+        result, action = inventory_selected_item_input(chosen_item)
         if result == ItemMenuResult.CANCEL:
             run_systems()
             run_state.change_state(States.AWAITING_INPUT)
-        elif result == ItemMenuResult.SELECTED:
-            new_state = select_item_from_inventory(item)
+        elif result == ItemMenuResult.ACTION:
+            print(f'action is : {action}')
+            new_state = action(chosen_item)
             run_systems()
             run_state.change_state(new_state)
 

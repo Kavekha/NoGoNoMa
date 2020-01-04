@@ -107,6 +107,7 @@ def drop_item_from_inventory(item_id):
 
 
 def select_item_from_inventory(item_id):
+    print(f'select item : item id {item_id}')
     player = World.fetch('player')
     ranged = World.get_entity_component(item_id, RangedComponent)
     if ranged:

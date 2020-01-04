@@ -5,7 +5,7 @@ class ItemMenuResult(Enum):
     CANCEL = 0
     NO_RESPONSE = 1
     SELECTED = 2
-
+    ACTION = 3
 
 class NextLevelResult(Enum):
     NO_EXIT = 0

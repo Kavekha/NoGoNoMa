@@ -26,16 +26,16 @@ Release 4 - Interface - Done
     > inventory: select menu
     > inventory: options display.
     > Info text découpé par mot plutot que lettres.
-    > Options selectionnables via lettres index (Dummy option).
+    > Options selectionnables via lettres index.
 
 
 Release 4 - WIP
     3.4
-    > Options selectionnables via lettres index.
-    > Options de base fonctionnelles (USE, DROP).
-        # check here: https://cdn.discordapp.com/attachments/509142267735310338/528339267651502099/unknown.png
     Mettre en valeur dans le menu de gauche l'item selectionné.
+    Description de l'item s'il est identifié + infos basiques s'il ne l'est pas.
+    Si identification a l'equipement, on reste dans le menu pour voir ce que c'est.
     Item names debordant sur la partie droite.
+    tofix: si deux items, inventaire full -1, et autopick : freeze.
 
 
     3.5
@@ -92,13 +92,13 @@ Release 7 - Nouveaux systemes & personnages.
     Selection de personnages.
     Sauvegardes independantes / profils.
 
-Release 8 - Branches & moteur d'histoire de base.
+Release 8 - Branches & variantes du Boss final & univers.
     Branches alternatives: nouvelles maps, monstres & items.
     Thematiques de donjons & items, monstres, maps associées.
     Constructeur d'histoires simples: variations.
 
 Release 9 - Magie & personnages.
-Release 10 - Backtrack donjon, Castelvania like.
+Release 10 - Backtrack donjon, Castelvania like & autres boss.
 Release 11 - Divinités & codes de conduite.
 Release 12 - Moteur histoire complexe.
 
