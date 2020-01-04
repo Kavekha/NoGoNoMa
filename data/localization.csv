@@ -37,7 +37,7 @@ FIREBALL_SCROLL;Fireball Scroll;Parchemin de Boule de Feu
 CONFUSION_SCROLL;Confusion Scroll;Parchemin de Confusion
 DAGGER;Dagger;Dague
 BUCKLER;Buckler;Rondache
-LONG_SWORD;Longsword;Grande épée
+LONGSWORD;Longsword;Grande épée
 TOWER_SHIELD;Tower Shield;Pavois
 WELCOME_MESSAGE;The opportunity is now! Escape the dungeon!;Vous avez une opportunité! Echappez-vous du donjon!
 CHANGE_LANGUAGE;Change language;Changez de langue
@@ -111,3 +111,4 @@ USE_ITEM;Use;Utiliser
 DROP_ITEM;Drop;Deposer
 EQUIP_ITEM;Equip;Equipper
 UNEQUIP_ITEM;Unequip;Déséquipper
+TUNIC;Tunic;Tunique

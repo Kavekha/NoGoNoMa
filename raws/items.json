@@ -137,7 +137,7 @@
           }
       },
       {
-          "name" : "BUCKLET",
+          "name" : "BUCKLER",
           "renderable": {
                 "glyph" : "[[",
                 "fg" : "#00AAFF",
