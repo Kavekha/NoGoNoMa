@@ -32,11 +32,12 @@ Release 4 - Interface - Done
     Fix item drop.
     Suppression drop menu
     > Escape pour deselectionner item de l'inventaire.
+    > Refacto Character sheet + ajout skills
 
 Release 4 - WIP
     3.5
-    Refacto des autres menus, plus simples.
-    Background plus joli, boxes.
+    > Refacto des autres menus, plus simples.
+    Background plus joli, boxes. Adaptés au menu.
     Highlight de l'entrée selectionnée / effet visuel.
     Deplacement avec fleche dans les menus
     Raccourcis clavier : items (potions, parchos)
@@ -66,15 +67,14 @@ Release 5 - Systems & items
     Generic effects & items
     Loot tables for rooms & mobs.
     Scores & better morgue files
-    ???
-        Room building & props
-        NPC talking
-        Lore via npc & items.
 
-Release 6 - Story statique
+Release 6 - Simple Dungeon progression
     Scenario standard: 4 regions.
     Map buildings pour 4 regions & transitions.
     Monstres & items sur les 4 regions / thematiques.
+    Room building & props
+    NPC talking
+    Lore via npc & items.
 
 Release 7 - Nouveaux systemes & personnages.
     Gestion des lumieres & stealth

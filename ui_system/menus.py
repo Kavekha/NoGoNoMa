@@ -6,7 +6,7 @@ from world import World
 from components.attributes_component import AttributesComponent
 from components.pools_component import Pools
 from ui_system.ui_enums import Layers
-from ui_system.menu import InventoryMenu
+from ui_system.menu import InventoryMenu, CharacterMenu
 from player_systems.game_system import xp_for_next_level
 import config
 from texts import Texts
@@ -21,6 +21,11 @@ def show_selected_item_screen(header, item):
     inventory_menu = InventoryMenu(header)
     inventory_menu.selected_item = item
     inventory_menu.initialize()
+
+
+def show_character_menu(header):
+    character_menu = CharacterMenu(header)
+    character_menu.initialize()
 
 
 def show_character_sheet():

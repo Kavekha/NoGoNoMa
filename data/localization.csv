@@ -45,7 +45,7 @@ FAIL_TO_HIT;{0} try to hit {1} but failed badly at it!;{0} tente de frapper {1} 
 MISS_HIT;{0} miss {1};{0} rate {1}
 CHARACTER_SHEET_CONTENT_LEVEL;Level : {0};Niveau: {0}
 CHARACTER_SHEET_CONTENT_XP;xp : {0} / {1};xp : {0} / {1}
-CHARACTER_SHEET_CONTENT_ATTRIBUTES;* Attributes *;* Attributs *
+CHARACTER_SHEET_CONTENT_ATTRIBUTES;Attributes;Attributs
 CHARACTER_SHEET_CONTENT_MIGHT;Might: {0};Puissance: {0}
 CHARACTER_SHEET_CONTENT_BODY;Body: {0};Corporel: {0}
 CHARACTER_SHEET_CONTENT_QUICKNESS;Quickness: {0};Rapidité: {0}
@@ -120,3 +120,9 @@ ITEM_INFO_INFLICT_DMG;Inflict damages.;Inflige des degats.
 ITEM_INFO_MAGIC;Magic item.;Objet magique.
 ITEM_INFO_RANGED;Range: {0};Portée: {0}
 ESCAPE_TO_CHOOSE_OTHER_ITEM;ESCAP to choose another item.;ECHAP pour choisir un autre objet.
+CHARACTER_SHEET_CONTENT_SKILLS;Skills;Competences
+Skills.MELEE;Melee combat;Combat Corps a Corps
+Skills.DODGE;Dodge;Esquive
+Skills.FOUND_TRAPS;Found traps;Trouver les Pieges
+
+

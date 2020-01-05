@@ -7,7 +7,7 @@ from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.menus import show_option_menu, show_item_screen, show_selected_item_screen
+from ui_system.menus import show_option_menu, show_item_screen, show_character_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -44,6 +44,7 @@ def player_input():
             show_item_screen(f'{Texts.get_text("INVENTORY")}')
             return States.SHOW_INVENTORY
         elif key == terminal.TK_C:
+            show_character_menu(f'{Texts.get_text("CHARACTER_SHEET_HEADER")}')
             return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:
             next_lvl = try_next_level()

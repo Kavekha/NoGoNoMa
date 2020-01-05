@@ -86,7 +86,6 @@ def tick():
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.CHARACTER_SHEET:
-        show_character_sheet()
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             run_state.change_state(States.AWAITING_INPUT)
