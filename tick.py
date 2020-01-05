@@ -7,13 +7,12 @@ from world import World
 from player_systems.player_input import player_input
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
-from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
 from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input, \
     inventory_selected_item_input
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
 from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
-from ui_system.menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
+from ui_system.menus import show_main_menu, show_game_over_screen, show_victory_screen, \
     show_item_screen, show_option_menu, show_selected_item_screen
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 from state import States
@@ -137,7 +136,7 @@ def tick():
             run_state.args = item
             run_state.change_state(new_state)
             run_systems()
-            show_selected_item_screen(f'{Texts.get_text("INVENTORY")}', item)
+            show_selected_item_screen(item)
 
     # menu inventory with item selected
     elif run_state.current_state == States.SHOW_SELECTED_ITEM_MENU:
@@ -147,7 +146,7 @@ def tick():
             run_systems()
             run_state.args = None
             run_state.change_state(States.SHOW_INVENTORY)
-            show_item_screen(f'{Texts.get_text("INVENTORY")}')
+            show_item_screen()
         elif result == ItemMenuResult.ACTION:
             print(f'action is : {action}')
             new_state = action(chosen_item)

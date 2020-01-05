@@ -41,10 +41,10 @@ def player_input():
         elif key == terminal.TK_G:
             get_item(World.fetch('player'))
         elif key == terminal.TK_I:
-            show_item_screen(f'{Texts.get_text("INVENTORY")}')
+            show_item_screen()
             return States.SHOW_INVENTORY
         elif key == terminal.TK_C:
-            show_character_menu(f'{Texts.get_text("CHARACTER_SHEET_HEADER")}')
+            show_character_menu()
             return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:
             next_lvl = try_next_level()
