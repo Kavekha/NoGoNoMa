@@ -58,7 +58,7 @@ Release 4 - WIP
         Distant exit: quasiment tjrs à Gauche
         Tiles personnalisées selon niveau
 
-Release 5 - Systems & items
+Release 5 - Systems & items + API
     Scroll: selectionner une case vide consomme le scroll sans message si dans zone valide?
     Initiative & turn lost fix.
     Pas d'enemi sur la meme case
@@ -68,6 +68,12 @@ Release 5 - Systems & items
     Generic effects & items
     Loot tables for rooms & mobs.
     Scores & better morgue files
+    API:
+        - get available actions / send actions (controles).
+        - get state + available actions / send action (controles des states : Main Menu > Jeu > Options > Quit).
+        - get state game (Stats, inventory) / display dans interface hors jeu (Inventaire, Character sheet)
+        - get state game 2 (Map, logs) / display dans interface
+        - Animations dans interface = Hors de la logique du jeu.
 
 Release 6 - Simple Dungeon progression
     Scenario standard: 4 regions.

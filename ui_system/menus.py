@@ -3,11 +3,8 @@ from bearlibterminal import terminal
 from ui_system.interface import GraphicalModes, Interface
 from ui_system.render_menus import draw_tile_menu, draw_ascii_menu
 from world import World
-from components.attributes_component import AttributesComponent
-from components.pools_component import Pools
 from ui_system.ui_enums import Layers
-from ui_system.menu import InventoryMenu, CharacterMenu, MainMenu
-from player_systems.game_system import xp_for_next_level
+from ui_system.menu import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu
 import config
 from texts import Texts
 
@@ -33,7 +30,13 @@ def show_main_menu():
     main_menu.initialize()
 
 
-def show_game_over_screen():
+def show_game_over_menu():
+    terminal.clear()
+    game_over_menu = GameOverMenu(Texts.get_text("GAME_OVER"))
+    game_over_menu.initialize()
+
+
+def old_show_game_over_screen():
     window_x = config.SCREEN_WIDTH // 4  # 20
     window_y = config.SCREEN_HEIGHT // 4  # 10
     window_end_x = window_x * 3  # 60

@@ -1,5 +1,7 @@
 from bearlibterminal import terminal
 
+import re
+
 from ui_system.interface import GraphicalModes, Interface
 from ui_system.render_menus import draw_background
 from ui_system.render_functions import get_item_color, get_item_display_name, print_shadow
@@ -78,6 +80,44 @@ class Menu:
         return center
 
 
+class GameOverMenu(Menu):
+    def initialize(self):
+        self.create_menu_content()
+        self.render_menu()
+
+    def create_menu_content(self):
+        menu_contents = list()
+        mutable_y = self.window_y + 1
+        mutable_x = self.window_x
+
+        # HEADER
+        color = config.COLOR_MAIN_MENU_TITLE
+        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
+        text = f'[color={color}] {self.header} [/color]'
+        menu_contents.append((center_start, mutable_y, text))
+        mutable_y += 5
+
+        terminal.color(config.COLOR_MENU_BASE)
+        logs = World.fetch('logs')
+        print(f'menu: logs are {logs}')
+        mutable_x += 5
+        for log in logs:
+            if mutable_y + 5 < self.window_end_y:
+                menu_contents.append((mutable_x, mutable_y, log))
+                mutable_y += 1
+            else:
+                break
+
+        # HOW TO QUIT?
+        mutable_y += 5
+        text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
+        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
+        text = f'[color=darker yellow]{text}[/color]'
+        menu_contents.append((center_start, self.window_end_y, text))
+
+        self.menu_contents = menu_contents
+
+
 class MainMenu(Menu):
     def initialize(self):
         self.create_content()
@@ -85,10 +125,8 @@ class MainMenu(Menu):
 
     def create_content(self):
         menu_contents = list()
-        mutable_x = self.window_x + 5
         mutable_y = self.window_y + 1
 
-        #header = f'[color=yellow]{Texts.get_text("GAME_TITLE")}[/color]'
         # HEADER
         color = config.COLOR_MAIN_MENU_TITLE
         center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
