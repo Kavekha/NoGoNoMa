@@ -38,7 +38,8 @@ Release 4 - Interface - Done
 
 Release 4 - WIP
     3.5
-    Background plus joli, boxes. Adaptés au menu.
+    > Menus adaptés en taille a leur contenu
+    Background plus joli, boxes. Adaptés au menu. Center / Top / Bottom etc.
     Highlight de l'entrée selectionnée / effet visuel.
     Deplacement avec fleche dans les menus
     Raccourcis clavier : items (potions, parchos)

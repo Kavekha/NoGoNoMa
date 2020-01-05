@@ -7,7 +7,7 @@ from world import World
 from data.load_raws import RawsMaster
 from systems.particule_system import cull_dead_particules
 from ui_system.interface import Interface
-from ui_system.menus import show_main_menu
+from ui_system.show_menus import show_main_menu
 from state import States, State
 from tick import tick
 

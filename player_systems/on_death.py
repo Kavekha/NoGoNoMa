@@ -2,7 +2,7 @@ from state import States
 from data.save_and_load import save_game
 from world import World
 from texts import Texts
-from ui_system.menus import show_game_over_menu
+from ui_system.show_menus import show_game_over_menu
 import config
 
 
