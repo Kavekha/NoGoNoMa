@@ -81,11 +81,61 @@ class Menu:
         return center
 
 
+class MainOptionsMenu(Menu):
+    def initialize(self):
+        self.create_menu_content()
+        self.render_menu()
+
+    def create_menu_content(self):
+        menu_contents = list()
+        mutable_y = self.window_y + 1
+        mutable_x = self.window_x
+
+        # HEADER
+        color = config.COLOR_MAIN_MENU_TITLE
+        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
+        text = f'[color={color}] {self.header} [/color]'
+        menu_contents.append((center_start, mutable_y, text))
+        mutable_y += 5
+
+        #header = f'[color=yellow]{Texts.get_text("OPTIONS_MENU")}[/color]'
+
+        available_options = list()
+        available_options.append(Texts.get_text("CHANGE_LANGUAGE"))
+        available_options.append(Texts.get_text("CHANGE_GRAPHICS"))
+        available_options.append(Texts.get_text("BACK_TO_MAIN_MENU"))
+
+        # REFACTO: TODO: modifier get_x_for_center_text avec len(text) au lieu de text directement.
+        # duplicate MainMenu - fonction Menu pour display des options? Utilisable aussi dans Item?
+        large_width = 0
+        large_option_len = ''
+        for option in available_options:
+            if len(option) > large_width:
+                large_width = len(option)
+                large_option_len = option
+        center_x = self.get_x_for_center_text(self.window_x, self.window_end_x, large_option_len)
+
+        color = config.COLOR_MAIN_MENU_OPTIONS
+        for option in available_options:
+            text = f'[color={color}]({chr(self.letter_index)}) {option}'
+            menu_contents.append((center_x, mutable_y, text))
+            self.letter_index += 1
+            mutable_y += 1
+
+        # HOW TO QUIT?
+        mutable_y += 5
+        text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
+        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
+        text = f'[color=darker yellow]{text}[/color]'
+        menu_contents.append((center_start, self.window_end_y, text))
+
+        self.menu_contents = menu_contents
+
+
 class VictoryMenu(Menu):
     def initialize(self):
         self.create_menu_content()
         self.render_menu()
-        print(f'victory menu new')
 
     def create_menu_content(self):
         menu_contents = list()

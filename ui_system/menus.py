@@ -4,7 +4,7 @@ from ui_system.interface import GraphicalModes, Interface
 from ui_system.render_menus import draw_tile_menu, draw_ascii_menu
 from world import World
 from ui_system.ui_enums import Layers
-from ui_system.menu import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu, VictoryMenu
+from ui_system.menu import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, MainOptionsMenu
 import config
 from texts import Texts
 
@@ -26,6 +26,7 @@ def show_character_menu():
 
 
 def show_main_menu():
+    terminal.clear()
     main_menu = MainMenu(Texts.get_text("GAME_TITLE"))
     main_menu.initialize()
 
@@ -42,7 +43,11 @@ def show_victory_menu():
     victory_menu.initialize()
 
 
-def show_option_menu():
+def show_main_options_menu():
+    terminal.clear()
+    main_options_menu = MainOptionsMenu(Texts.get_text("OPTIONS_MENU"))
+    main_options_menu.initialize()
+    """
     terminal.layer(Layers.MENU.value)
 
     window_x = config.SCREEN_WIDTH // 4  # 20
@@ -64,3 +69,4 @@ def show_option_menu():
     else:
         draw_ascii_menu(window_x, window_y, window_end_x, window_end_y, header, text)
     terminal.refresh()
+    """

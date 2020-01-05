@@ -7,7 +7,7 @@ from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.menus import show_option_menu, show_item_screen, show_character_menu, show_victory_menu
+from ui_system.menus import show_main_options_menu, show_item_screen, show_character_menu, show_victory_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -187,8 +187,7 @@ def option_menu_input():
                 Texts.set_language('en')
             else:
                 Texts.set_language('fr')
-            terminal.clear()
-            show_option_menu()
+            show_main_options_menu()
         elif index == 1:
             # graphical mode
             if Interface.mode == GraphicalModes.ASCII:
@@ -197,7 +196,7 @@ def option_menu_input():
             elif Interface.mode == GraphicalModes.TILES:
                 terminal.clear()
                 Interface.change_graphical_mode(GraphicalModes.ASCII)
-            show_option_menu()
+            show_main_options_menu()
     return MainMenuSelection.NO_RESPONSE
 
 
