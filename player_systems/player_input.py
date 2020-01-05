@@ -7,7 +7,7 @@ from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.menus import show_option_menu, show_item_screen, show_character_menu
+from ui_system.menus import show_option_menu, show_item_screen, show_character_menu, show_victory_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -51,6 +51,7 @@ def player_input():
             if next_lvl == NextLevelResult.NEXT_FLOOR:
                 return States.NEXT_LEVEL
             elif next_lvl == NextLevelResult.EXIT_DUNGEON:
+                show_victory_menu()
                 return States.VICTORY
         elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
             return States.PLAYER_TURN

@@ -12,13 +12,11 @@ from player_systems.player_input import main_menu_input, input_escape_to_quit, i
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
 from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
-from ui_system.menus import show_main_menu, show_victory_screen, \
-    show_item_screen, show_option_menu, show_selected_item_screen
+from ui_system.menus import show_item_screen, show_option_menu, show_selected_item_screen
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 from state import States
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
-from texts import Texts
 
 
 def tick():
@@ -73,8 +71,6 @@ def tick():
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.VICTORY:
-        terminal.clear()
-        show_victory_screen()
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()

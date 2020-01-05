@@ -62,6 +62,7 @@ class Menu:
         return lines_list
 
     def render_menu(self):
+        print(f'menu is {self}, menu contents is {self.menu_contents}')
         terminal.layer(Layers.MENU.value)
         for x, y, content in self.menu_contents:
             print_shadow(x, y, content)
@@ -78,6 +79,39 @@ class Menu:
         center = (width - len(text)) // 2
         center += x
         return center
+
+
+class VictoryMenu(Menu):
+    def initialize(self):
+        self.create_menu_content()
+        self.render_menu()
+        print(f'victory menu new')
+
+    def create_menu_content(self):
+        menu_contents = list()
+        mutable_y = self.window_y + 1
+        mutable_x = self.window_x
+
+        # HEADER
+        color = config.COLOR_MAIN_MENU_TITLE
+        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
+        text = f'[color={color}] {self.header} [/color]'
+        menu_contents.append((center_start, mutable_y, text))
+        mutable_y += 5
+
+        mutable_x += 2
+        color = config.COLOR_MENU_BASE
+        text = f'{Texts.get_text("YOU_ESCAPE_DUNGEON")}'
+        menu_contents.append((mutable_x, mutable_y, f'[color={color}]{text}[/color]'))
+
+        # HOW TO QUIT?
+        mutable_y += 5
+        text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
+        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
+        text = f'[color=darker yellow]{text}[/color]'
+        menu_contents.append((center_start, self.window_end_y, text))
+
+        self.menu_contents = menu_contents
 
 
 class GameOverMenu(Menu):
