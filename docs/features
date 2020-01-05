@@ -32,11 +32,13 @@ Release 4 - Interface - Done
     Fix item drop.
     Suppression drop menu
     > Escape pour deselectionner item de l'inventaire.
+    > Refacto Character sheet + ajout skills
+    > Refacto Main Menu, Character sheet, game over, victory, main options menu
+    > Quit confirm in game when ESC.
 
 Release 4 - WIP
     3.5
-    Refacto des autres menus, plus simples.
-    Background plus joli, boxes.
+    Background plus joli, boxes. Adaptés au menu.
     Highlight de l'entrée selectionnée / effet visuel.
     Deplacement avec fleche dans les menus
     Raccourcis clavier : items (potions, parchos)
@@ -56,7 +58,7 @@ Release 4 - WIP
         Distant exit: quasiment tjrs à Gauche
         Tiles personnalisées selon niveau
 
-Release 5 - Systems & items
+Release 5 - Systems & items + API
     Scroll: selectionner une case vide consomme le scroll sans message si dans zone valide?
     Initiative & turn lost fix.
     Pas d'enemi sur la meme case
@@ -66,15 +68,20 @@ Release 5 - Systems & items
     Generic effects & items
     Loot tables for rooms & mobs.
     Scores & better morgue files
-    ???
-        Room building & props
-        NPC talking
-        Lore via npc & items.
+    API:
+        - get available actions / send actions (controles).
+        - get state + available actions / send action (controles des states : Main Menu > Jeu > Options > Quit).
+        - get state game (Stats, inventory) / display dans interface hors jeu (Inventaire, Character sheet)
+        - get state game 2 (Map, logs) / display dans interface
+        - Animations dans interface = Hors de la logique du jeu.
 
-Release 6 - Story statique
+Release 6 - Simple Dungeon progression
     Scenario standard: 4 regions.
     Map buildings pour 4 regions & transitions.
     Monstres & items sur les 4 regions / thematiques.
+    Room building & props
+    NPC talking
+    Lore via npc & items.
 
 Release 7 - Nouveaux systemes & personnages.
     Gestion des lumieres & stealth

@@ -7,19 +7,16 @@ from world import World
 from player_systems.player_input import player_input
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
-from systems.inventory_system import select_item_from_inventory, drop_item_from_inventory
 from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input, \
-    inventory_selected_item_input
-from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
+    inventory_selected_item_input, yes_no_input
+from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
-from ui_system.menus import show_main_menu, show_character_sheet, show_game_over_screen, show_victory_screen, \
-    show_item_screen, show_option_menu, show_selected_item_screen
+from ui_system.menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 from state import States
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
-from texts import Texts
 
 
 def tick():
@@ -27,7 +24,6 @@ def tick():
 
     # Menus
     if run_state.current_state == States.MAIN_MENU:
-        show_main_menu()
         result = main_menu_input()
         if result == MainMenuSelection.NEWGAME:
             if config.SHOW_MAPGEN_VISUALIZER:
@@ -41,7 +37,7 @@ def tick():
         elif result == MainMenuSelection.QUIT:
             sys.exit()
         elif result == MainMenuSelection.OPTION:
-            terminal.clear()
+            show_main_options_menu()
             run_state.change_state(States.OPTION_MENU)
 
     elif run_state.current_state == States.LOAD_GAME:
@@ -54,22 +50,29 @@ def tick():
             print(f'no save file')  # TODO: Box to inform the player
             run_state.change_state(States.MAIN_MENU)
 
+    elif run_state.current_state == States.CONFIRM_QUIT:
+        result = yes_no_input()
+        if result == YesNoResult.NO:
+            # Je ne veux plus quitter
+            run_state.change_state(States.AWAITING_INPUT)
+            run_systems()
+        elif result == YesNoResult.YES:
+            run_state.change_state(States.SAVE_GAME)
+            run_systems()
+
     elif run_state.current_state == States.SAVE_GAME:
         run_state.change_state(States.MAIN_MENU)
         save_game(World)
         World.reset_all()
-        terminal.clear()
+        show_main_menu()
 
     elif run_state.current_state == States.OPTION_MENU:
-        show_option_menu()
         result = option_menu_input()
         if result == OptionMenuSelection.BACK_TO_MAIN_MENU:
-            terminal.clear()
+            show_main_menu()
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.GAME_OVER:
-        terminal.clear()
-        show_game_over_screen()
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
@@ -77,8 +80,6 @@ def tick():
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.VICTORY:
-        terminal.clear()
-        show_victory_screen()
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
@@ -86,7 +87,6 @@ def tick():
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.CHARACTER_SHEET:
-        show_character_sheet()
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             run_state.change_state(States.AWAITING_INPUT)
@@ -138,7 +138,7 @@ def tick():
             run_state.args = item
             run_state.change_state(new_state)
             run_systems()
-            show_selected_item_screen(f'{Texts.get_text("INVENTORY")}', item)
+            show_selected_item_screen(item)
 
     # menu inventory with item selected
     elif run_state.current_state == States.SHOW_SELECTED_ITEM_MENU:
@@ -148,7 +148,7 @@ def tick():
             run_systems()
             run_state.args = None
             run_state.change_state(States.SHOW_INVENTORY)
-            show_item_screen(f'{Texts.get_text("INVENTORY")}')
+            show_item_screen()
         elif result == ItemMenuResult.ACTION:
             print(f'action is : {action}')
             new_state = action(chosen_item)

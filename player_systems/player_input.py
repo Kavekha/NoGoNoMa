@@ -6,8 +6,9 @@ from player_systems.try_move_player import try_move_player, try_next_level
 from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
-from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection
-from ui_system.menus import show_option_menu, show_item_screen, show_selected_item_screen
+from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
+from ui_system.menus import show_main_options_menu, show_item_screen, show_character_menu, show_victory_menu, \
+    show_quit_game_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -41,15 +42,17 @@ def player_input():
         elif key == terminal.TK_G:
             get_item(World.fetch('player'))
         elif key == terminal.TK_I:
-            show_item_screen(f'{Texts.get_text("INVENTORY")}')
+            show_item_screen()
             return States.SHOW_INVENTORY
         elif key == terminal.TK_C:
+            show_character_menu()
             return States.CHARACTER_SHEET
         elif key == terminal.TK_SPACE:
             next_lvl = try_next_level()
             if next_lvl == NextLevelResult.NEXT_FLOOR:
                 return States.NEXT_LEVEL
             elif next_lvl == NextLevelResult.EXIT_DUNGEON:
+                show_victory_menu()
                 return States.VICTORY
         elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
             return States.PLAYER_TURN
@@ -63,7 +66,8 @@ def player_input():
             current_map.revealed_tiles = [True] * (current_map.height * current_map.width)
 
         elif key == terminal.TK_ESCAPE:
-            return States.SAVE_GAME
+            show_quit_game_menu()
+            return States.CONFIRM_QUIT
 
         elif key == terminal.TK_CLOSE:
             save_game(World)
@@ -109,6 +113,25 @@ def input_escape_to_quit():
             save_game(World)
             terminal.close()
     return ItemMenuResult.NO_RESPONSE
+
+
+def yes_no_input():
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            if key == terminal.TK_ESCAPE:
+                return YesNoResult.NO
+            elif key == terminal.TK_CLOSE:
+                save_game(World)
+                terminal.close()
+                sys.exit()
+            else:
+                index = terminal.state(terminal.TK_CHAR) - ord('a')
+                if index == 0:
+                    return YesNoResult.NO
+                elif index == 1:
+                    return YesNoResult.YES
+    return YesNoResult.NO_RESPONSE
 
 
 def inventory_input(item_list):
@@ -185,8 +208,7 @@ def option_menu_input():
                 Texts.set_language('en')
             else:
                 Texts.set_language('fr')
-            terminal.clear()
-            show_option_menu()
+            show_main_options_menu()
         elif index == 1:
             # graphical mode
             if Interface.mode == GraphicalModes.ASCII:
@@ -195,7 +217,7 @@ def option_menu_input():
             elif Interface.mode == GraphicalModes.TILES:
                 terminal.clear()
                 Interface.change_graphical_mode(GraphicalModes.ASCII)
-            show_option_menu()
+            show_main_options_menu()
     return MainMenuSelection.NO_RESPONSE
 
 

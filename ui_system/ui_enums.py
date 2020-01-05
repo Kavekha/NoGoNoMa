@@ -8,10 +8,17 @@ class ItemMenuResult(Enum):
     ACTION = 3
     DESELECT = 4
 
+
 class NextLevelResult(Enum):
     NO_EXIT = 0
     NEXT_FLOOR = 1
     EXIT_DUNGEON = 2
+
+
+class YesNoResult(Enum):
+    NO = 0
+    YES = 1
+    NO_RESPONSE = 2
 
 
 class MainMenuSelection(Enum):

@@ -1,4 +1,4 @@
-from bearlibterminal import terminal
+'''from bearlibterminal import terminal
 
 from ui_system.ui_enums import Layers
 from player_systems.player_input import main_menu_input
@@ -20,3 +20,4 @@ def main_menu():
     terminal.refresh()
 
     return main_menu_input()
+'''
