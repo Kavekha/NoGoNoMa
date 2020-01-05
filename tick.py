@@ -8,8 +8,8 @@ from player_systems.player_input import player_input
 from ui_system.draw_tooltip import draw_tooltip
 from systems.targeting_system import show_targeting, select_target
 from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input, \
-    inventory_selected_item_input
-from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection
+    inventory_selected_item_input, yes_no_input
+from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
 from ui_system.menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
@@ -49,6 +49,16 @@ def tick():
         else:
             print(f'no save file')  # TODO: Box to inform the player
             run_state.change_state(States.MAIN_MENU)
+
+    elif run_state.current_state == States.CONFIRM_QUIT:
+        result = yes_no_input()
+        if result == YesNoResult.NO:
+            # Je ne veux plus quitter
+            run_state.change_state(States.AWAITING_INPUT)
+            run_systems()
+        elif result == YesNoResult.YES:
+            run_state.change_state(States.SAVE_GAME)
+            run_systems()
 
     elif run_state.current_state == States.SAVE_GAME:
         run_state.change_state(States.MAIN_MENU)

@@ -124,5 +124,6 @@ CHARACTER_SHEET_CONTENT_SKILLS;Skills;Competences
 Skills.MELEE;Melee combat;Combat Corps a Corps
 Skills.DODGE;Dodge;Esquive
 Skills.FOUND_TRAPS;Found traps;Trouver les Pieges
-
-
+QUIT_GAME_QUESTION;Quit game?;Quitter le jeu?
+YES;Yes;Oui
+NO;No;Non

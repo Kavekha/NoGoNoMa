@@ -34,10 +34,10 @@ Release 4 - Interface - Done
     > Escape pour deselectionner item de l'inventaire.
     > Refacto Character sheet + ajout skills
     > Refacto Main Menu, Character sheet, game over, victory, main options menu
+    > Quit confirm in game when ESC.
 
 Release 4 - WIP
     3.5
-    > Refacto des autres menus, plus simples.
     Background plus joli, boxes. Adaptés au menu.
     Highlight de l'entrée selectionnée / effet visuel.
     Deplacement avec fleche dans les menus

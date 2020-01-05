@@ -1,11 +1,7 @@
 from bearlibterminal import terminal
 
-from ui_system.interface import GraphicalModes, Interface
-from ui_system.render_menus import draw_tile_menu, draw_ascii_menu
-from world import World
-from ui_system.ui_enums import Layers
-from ui_system.menu import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, MainOptionsMenu
-import config
+from ui_system.menu import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, MainOptionsMenu, \
+    QuitGameMenu
 from texts import Texts
 
 
@@ -47,26 +43,8 @@ def show_main_options_menu():
     terminal.clear()
     main_options_menu = MainOptionsMenu(Texts.get_text("OPTIONS_MENU"))
     main_options_menu.initialize()
-    """
-    terminal.layer(Layers.MENU.value)
 
-    window_x = config.SCREEN_WIDTH // 4  # 20
-    window_y = config.SCREEN_HEIGHT // 4  # 10
-    window_end_x = window_x * 3  # 60
-    window_end_y = window_y * 3  # 40
 
-    header = f'[color=yellow]{Texts.get_text("OPTIONS_MENU")}[/color]'
-
-    letter_index = ord('a')
-    text = f'[color=orange]({chr(letter_index)}) {Texts.get_text("CHANGE_LANGUAGE")}[/color]' + '\n'
-    letter_index += 1
-    text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("CHANGE_GRAPHICS")}[/color]' + '\n'
-    letter_index += 1
-    text += f'[color=orange]({chr(letter_index)}) {Texts.get_text("BACK_TO_MAIN_MENU")}[/color]'
-
-    if Interface.mode == GraphicalModes.TILES:
-        draw_tile_menu(window_x, window_y, window_end_x, window_end_y, header, text)
-    else:
-        draw_ascii_menu(window_x, window_y, window_end_x, window_end_y, header, text)
-    terminal.refresh()
-    """
+def show_quit_game_menu():
+    quit_game_menu = QuitGameMenu(Texts.get_text("QUIT_GAME_QUESTION"))
+    quit_game_menu.initialize()

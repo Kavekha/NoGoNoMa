@@ -26,6 +26,7 @@ class States(Enum):
     CHARACTER_SHEET = 13
     OPTION_MENU = 14
     MAP_GENERATION = 15
+    CONFIRM_QUIT = 16
 
 
 class State:
