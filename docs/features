@@ -41,16 +41,14 @@ Release 4 - Interface - Done
 
 Release 4 - WIP
     3.5
-    Raccourcis clavier : items (potions, parchos)?
-
-    3.6
-    mouse support
-        deplacement
-        menus?
-    auto-explore?
+    > Cleanup again.
+    > mouse support: se deplacer d'une case dans la direction du clic.
+    > mouse support: se deplacer d'une case, en ignorant la visibilité
+    > mouse support: enregistrer plusieurs deplacements, en ignorant la visibilité.
+    > annuler le deplacement automatique s'il y a une menace?
     detection menaces & nouveaux evenements
 
-    3.7
+    3.6
     Mapbuild checker:
         Sortie éloignée
         Reset si necessaire: save avant process.
