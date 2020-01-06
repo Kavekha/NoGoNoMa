@@ -40,7 +40,7 @@ Release 4 - Interface - Done
 
 Release 4 - WIP
     3.5
-    > Background plus joli, boxes. Adaptés au menu.
+    > Refacto Inventaire : item selected => pas d affichage des autres items.
     Raccourcis clavier : items (potions, parchos)?
 
     3.6

@@ -1,5 +1,6 @@
 from bearlibterminal import terminal
 
+from itertools import product as it_product
 from enum import Enum
 
 from ui_system.render_menus import draw_background
@@ -34,13 +35,24 @@ class MenuAlignement(Enum):
 
 
 class BoxMenu:
-    def __init__(self, render_order=100, linebreak=1):
+    def __init__(self, render_order=100, linebreak=0):
         self.content = list()
         self.render_order = render_order
         self.linebreak = linebreak
 
     def get_height(self):
-        return len(self.content)
+        height = 0
+        for _content in self.content:
+            height += 1
+        return height
+
+    def get_total_height(self):
+        # with line break
+        height = 0
+        for _content in self.content:
+            height += 1
+        height += self.linebreak
+        return height
 
     def add(self, text, alignement):
         self.content.append((text, alignement))
@@ -53,7 +65,7 @@ class BoxMenu:
         mut_y = y
         max_y = len(self.content)
         previous_color = terminal.color(terminal.TK_COLOR)
-        draw_background(x, y - 1, width + x, y + max_y, 'blue')
+        draw_background(x, y - 1, width + x, y + max_y, config.COLOR_MENU_BACKGROUND_BASE)
         terminal.color(previous_color)
         for content, alignement in self.content:
             cx = 0
@@ -111,15 +123,16 @@ class Menu:
 
     def render_menu(self):
         terminal.layer(Layers.MENU.value)
-
         self.menu_placement()
-        draw_background(self.window_x, self.window_y, self.window_end_x, self.window_end_y, color='gray')
+        height = 0
+        for content in self.menu_contents:
+            height += content.get_total_height()
+        draw_background(self.window_x, self.window_y, self.window_end_x, self.window_y + height, color='gray')
         y = self.window_y
 
         self.menu_contents = sorted(self.menu_contents, key=lambda cont: cont.render_order)
         for content in self.menu_contents:
             width = self.window_end_x - self.window_x
-            height = self.window_end_y - self.window_y
             content.paste_on_window(self.window_x, y, width)
             y += content.get_height()
             y += content.linebreak
@@ -321,7 +334,7 @@ class VictoryMenu(Menu):
 
         # HOW TO QUIT?
         mutable_y += 5
-        box = BoxMenu(render_order, linebreak=3)
+        box = BoxMenu(render_order, linebreak=0)
         render_order += 1
         text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
         text = f'[color=darker yellow]{text}[/color]'
@@ -368,7 +381,7 @@ class GameOverMenu(Menu):
 
         # HOW TO QUIT?
         mutable_y += 5
-        box = BoxMenu(render_order)
+        box = BoxMenu(render_order, linebreak=0)
         render_order += 1
         text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
         text = f'[color=darker yellow]{text}[/color]'
@@ -473,7 +486,7 @@ class CharacterMenu(Menu):
         mutable_y += 5
 
         # HOW TO QUIT?
-        box = BoxMenu(render_order, linebreak=3)
+        box = BoxMenu(render_order, linebreak=0)
         render_order += 1
         text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
         text = f'[color=darker yellow]{text}[/color]'
@@ -605,7 +618,8 @@ class InventoryMenu(Menu):
                 large_width += 3
 
                 for option in decorated_options:
-                    box.add(f'[color={config.COLOR_INVENTORY_OPTION}]{option}[/color]', MenuAlignement.CENTER)
+                    box.add(f'[color={config.COLOR_INVENTORY_OPTION}]{option}[/color]',
+                            MenuAlignement.CENTER)
                     mutable_x += large_width
                     if mutable_x + large_width >= self.window_end_x:
                         mutable_x = self.window_x + 2   # margin
