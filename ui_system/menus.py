@@ -34,9 +34,10 @@ class MenuAlignement(Enum):
 
 
 class BoxMenu:
-    def __init__(self, render_order=100):
+    def __init__(self, render_order=100, linebreak=1):
         self.content = list()
         self.render_order = render_order
+        self.linebreak = linebreak
 
     def get_height(self):
         return len(self.content)
@@ -48,10 +49,12 @@ class BoxMenu:
         center_x = (width - len_text) // 2
         return center_x
 
-    def paste_on_window(self, x, y, width, height):
+    def paste_on_window(self, x, y, width):
         mut_y = y
         max_y = len(self.content)
-        draw_background(x, y, width + x, height + y + max_y, 'blue')
+        previous_color = terminal.color(terminal.TK_COLOR)
+        draw_background(x, y - 1, width + x, y + max_y, 'blue')
+        terminal.color(previous_color)
         for content, alignement in self.content:
             cx = 0
             if alignement == MenuAlignement.CENTER:
@@ -117,8 +120,9 @@ class Menu:
         for content in self.menu_contents:
             width = self.window_end_x - self.window_x
             height = self.window_end_y - self.window_y
-            content.paste_on_window(self.window_x, y, width, height)
+            content.paste_on_window(self.window_x, y, width)
             y += content.get_height()
+            y += content.linebreak
 
         terminal.refresh()
 
@@ -141,7 +145,7 @@ class MainMenu(Menu):
         render_order = 1
 
         # HEADER
-        box = BoxMenu(render_order)
+        box = BoxMenu(render_order, linebreak=5)
         color = config.COLOR_MAIN_MENU_TITLE
         center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
         text = f'[color={color}] {self.header} [/color]'
@@ -187,13 +191,11 @@ class QuitGameMenu(Menu):
         render_order = 1
         menu_contents = list()
         mutable_y = self.window_y + 1
-        mutable_x = self.window_x
 
         # HEADER
         color = config.COLOR_MAIN_MENU_TITLE
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
         text = f'[color={color}] {self.header} [/color]'
-        box = BoxMenu(render_order)
+        box = BoxMenu(render_order, linebreak=2)
         render_order += 1
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -206,29 +208,25 @@ class QuitGameMenu(Menu):
         # REFACTO: TODO: modifier get_x_for_center_text avec len(text) au lieu de text directement.
         # duplicate MainMenu - fonction Menu pour display des options? Utilisable aussi dans Item?
         large_width = 0
-        large_option_len = ''
         for option in available_options:
             if len(option) > large_width:
                 large_width = len(option)
-                large_option_len = option
-        center_x = self.get_x_for_center_text(self.window_x, self.window_end_x, large_option_len)
 
         color = config.COLOR_MAIN_MENU_OPTIONS
-        box = BoxMenu(render_order)
+        box = BoxMenu(render_order, linebreak=2)
+        render_order += 1
         for option in available_options:
             text = f'[color={color}]({chr(self.letter_index)}) {option}'
             box.add(text, MenuAlignement.CENTER)
             self.letter_index += 1
             mutable_y += 1
         menu_contents.append(box)
-        render_order += 1
 
         # HOW TO QUIT?
         mutable_y += 5
-        box=BoxMenu(render_order)
+        box = BoxMenu(render_order)
         render_order += 1
         text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
         text = f'[color=darker yellow]{text}[/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -243,12 +241,14 @@ class MainOptionsMenu(Menu):
         self.render_menu()
 
     def create_menu_content(self):
+        render_order = 1
         menu_contents = list()
         mutable_y = self.window_y + 1
         mutable_x = self.window_x
 
         # HEADER
-        box = BoxMenu()
+        box = BoxMenu(render_order=1, linebreak=3)
+        render_order += 1
         color = config.COLOR_MAIN_MENU_TITLE
         center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
         text = f'[color={color}] {self.header} [/color]'
@@ -264,14 +264,12 @@ class MainOptionsMenu(Menu):
         # REFACTO: TODO: modifier get_x_for_center_text avec len(text) au lieu de text directement.
         # duplicate MainMenu - fonction Menu pour display des options? Utilisable aussi dans Item?
         large_width = 0
-        large_option_len = ''
         for option in available_options:
             if len(option) > large_width:
                 large_width = len(option)
-                large_option_len = option
-        center_x = self.get_x_for_center_text(self.window_x, self.window_end_x, large_option_len)
 
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         color = config.COLOR_MAIN_MENU_OPTIONS
         for option in available_options:
             text = f'[color={color}]({chr(self.letter_index)}) {option}'
@@ -282,9 +280,9 @@ class MainOptionsMenu(Menu):
 
         # HOW TO QUIT?
         mutable_y += 5
-        box = BoxMenu()
+        box = BoxMenu(render_order)
+        render_order += 1
         text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
         text = f'[color=darker yellow]{text}[/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -299,21 +297,23 @@ class VictoryMenu(Menu):
         self.render_menu()
 
     def create_menu_content(self):
+        render_order = 1
         menu_contents = list()
         mutable_y = self.window_y + 1
         mutable_x = self.window_x
 
         # HEADER
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         color = config.COLOR_MAIN_MENU_TITLE
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
         text = f'[color={color}] {self.header} [/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
         mutable_y += 5
 
         mutable_x += 2
-        box = BoxMenu()
+        box = BoxMenu(render_order)
+        render_order += 1
         color = config.COLOR_MENU_BASE
         text = Texts.get_text("YOU_ESCAPE_DUNGEON")
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
@@ -321,9 +321,9 @@ class VictoryMenu(Menu):
 
         # HOW TO QUIT?
         mutable_y += 5
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
-        center_start = self.get_x_for_center_text(self.window_x, mutable_y, text)
         text = f'[color=darker yellow]{text}[/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -338,14 +338,15 @@ class GameOverMenu(Menu):
         self.render_menu()
 
     def create_menu_content(self):
+        render_order = 1
         menu_contents = list()
         mutable_y = self.window_y + 1
         mutable_x = self.window_x
 
         # HEADER
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         color = config.COLOR_MAIN_MENU_TITLE
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
         text = f'[color={color}] {self.header} [/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -355,7 +356,8 @@ class GameOverMenu(Menu):
         logs = World.fetch('logs')
         print(f'menu: logs are {logs}')
         mutable_x += 5
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         count = 0
         for log in logs:
             if count < config.LOG_LIMIT_DEATH_SCREEN:
@@ -366,9 +368,9 @@ class GameOverMenu(Menu):
 
         # HOW TO QUIT?
         mutable_y += 5
-        box = BoxMenu()
+        box = BoxMenu(render_order)
+        render_order += 1
         text = f' {Texts.get_text("PRESS_ESCAPE_TO_MAIN_MENU")} '
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
         text = f'[color=darker yellow]{text}[/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -384,6 +386,7 @@ class CharacterMenu(Menu):
 
     def create_menu_content(self):
         # header = Texts.get_text('CHARACTER_SHEET_HEADER')
+        render_order = 1
         menu_contents = list()
         player = World.fetch('player')
         player_attributes = World.get_entity_component(player, AttributesComponent)
@@ -391,14 +394,12 @@ class CharacterMenu(Menu):
         player_skills = World.get_entity_component(player, SkillsComponent)
 
         # variables
-        mutable_x = self.window_x + 5
-        mutable_x_right = ((self.window_end_x - self.window_x) // 2) + self.window_x + 5
         mutable_y = self.window_y + 1
         mutable_y_right = self.window_y + 1
 
         # header
-        box = BoxMenu()
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, self.header)
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         header = f'[color={config.COLOR_SYS_MSG}] {self.header} [/color]'
         box.add(header, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -408,9 +409,9 @@ class CharacterMenu(Menu):
         # CENTER TOP
         # level
         color = config.COLOR_MENU_BASE
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         text = Texts.get_text('CHARACTER_SHEET_CONTENT_LEVEL').format(player_pools.level)
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
 
         mutable_y += 1
@@ -418,7 +419,6 @@ class CharacterMenu(Menu):
 
         text = Texts.get_text('CHARACTER_SHEET_CONTENT_XP').format(player_pools.xp,
                                                                     xp_for_next_level(player_pools.level))
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
         mutable_y += 5
         mutable_y_right += 5
@@ -426,7 +426,8 @@ class CharacterMenu(Menu):
 
         # LEFT
         # attributes
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         color = config.COLOR_MENU_SUBTITLE_BASE
         text = Texts.get_text('CHARACTER_SHEET_CONTENT_ATTRIBUTES')
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
@@ -452,7 +453,8 @@ class CharacterMenu(Menu):
 
         # RIGHT
         # skills
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         color = config.COLOR_MENU_SUBTITLE_BASE
         text = Texts.get_text('CHARACTER_SHEET_CONTENT_SKILLS')
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
@@ -471,9 +473,9 @@ class CharacterMenu(Menu):
         mutable_y += 5
 
         # HOW TO QUIT?
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
-        center_start = self.get_x_for_center_text(self.window_x, self.window_end_x, text)
         text = f'[color=darker yellow]{text}[/color]'
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -505,14 +507,15 @@ class InventoryMenu(Menu):
         print(f'inventory: create menu content')
         # content = (x, y, text)
         menu_contents = list()
+        render_order = 1
 
         # variables
         mutable_y = self.window_y
         mutable_y_right = self.window_y
 
         # header
-        box = BoxMenu()
-        center_header_start = ((self.window_end_x - len(self.header)) // 2)  # + window_x
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         header = f'[color={config.COLOR_SYS_MSG}] {self.header} [/color]'  # On ajoute la couleur après le len()
         box.add(header, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -520,12 +523,12 @@ class InventoryMenu(Menu):
         mutable_y_right += 3
 
         # selected item
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=3)
+        render_order += 1
         if self.selected_item:
             selected_content = Texts.get_text(get_item_display_name(self.selected_item))
         else:
             selected_content = Texts.get_text('INVENTORY_USAGE_EXPLANATION')
-        center_selected_item_start = ((self.window_end_x - len(selected_content)) // 2)  # + window_x
         selected_content = f'[color={config.COLOR_INFO_INVENTORY_SELECTED_ITEM}] {selected_content} [/color]'
         box.add(selected_content, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -533,7 +536,8 @@ class InventoryMenu(Menu):
         mutable_y_right += 3
 
         # left: item list.
-        box = BoxMenu()
+        box = BoxMenu(render_order, linebreak=2)
+        render_order += 1
         if not decorated_names_list:
             box.add(Texts.get_text('NO_ITEM_INVENTORY'), MenuAlignement.CENTER)
         for decorated_name in decorated_names_list:
@@ -542,10 +546,10 @@ class InventoryMenu(Menu):
         menu_contents.append(box)
 
         # right: description
-        box = BoxMenu()
+        box = BoxMenu(render_order)
+        render_order += 1
         if self.selected_item:
             item_description_width_total = (self.window_end_x - self.window_x) // 2
-            item_description_width_start = self.window_x + item_description_width_total
 
             info_title = f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("ITEM_INFO")}[/color]'
             box.add(info_title, MenuAlignement.CENTER)
@@ -581,7 +585,8 @@ class InventoryMenu(Menu):
             # bottom: options if any.
             mutable_y = max(mutable_y, mutable_y_right)
             mutable_y += 3
-            box = BoxMenu()
+            box = BoxMenu(render_order, linebreak=3)
+            render_order += 1
 
             if self.selected_item:
                 mutable_x = self.window_x + 2   # margin
@@ -609,12 +614,12 @@ class InventoryMenu(Menu):
         mutable_y += 3
 
         # end : how to quit.
-        box = BoxMenu()
+        box = BoxMenu(render_order)
+        render_order += 1
         if self.selected_item:
             exit_text = f' {Texts.get_text("ESCAPE_TO_CHOOSE_OTHER_ITEM")} '
         else:
             exit_text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
-        center_exit_text_x = ((self.window_end_x - len(exit_text)) // 2)  # + window_x
         exit_text = f'[color=darker yellow]{exit_text}[/color]'
         box.add(exit_text, MenuAlignement.CENTER)
         menu_contents.append(box)
