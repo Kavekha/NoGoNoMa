@@ -41,6 +41,10 @@ Release 4 - Interface - Done
 Release 4 - WIP
     3.5
     > Refacto Inventaire : item selected => pas d affichage des autres items.
+    tofix: victory: si texte milieu est à break 0, non visible. Gestion du break vs taille du content pour le display.
+    tofix: background global
+    tofix: crop text (unidentified item)
+
     Raccourcis clavier : items (potions, parchos)?
 
     3.6
