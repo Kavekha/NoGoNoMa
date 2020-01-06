@@ -7,7 +7,7 @@ from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
-from ui_system.menus import show_main_options_menu, show_item_screen, show_character_menu, show_victory_menu, \
+from ui_system.show_menus import show_main_options_menu, show_item_screen, show_character_menu, show_victory_menu, \
     show_quit_game_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World

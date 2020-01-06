@@ -35,19 +35,19 @@ Release 4 - Interface - Done
     > Refacto Character sheet + ajout skills
     > Refacto Main Menu, Character sheet, game over, victory, main options menu
     > Quit confirm in game when ESC.
+    > Menus adaptés en taille a leur contenu
+    > Menu placement: center
+    > Refacto Inventaire : item selected => pas d affichage des autres items.
 
 Release 4 - WIP
     3.5
-    Background plus joli, boxes. Adaptés au menu.
-    Highlight de l'entrée selectionnée / effet visuel.
-    Deplacement avec fleche dans les menus
-    Raccourcis clavier : items (potions, parchos)
+    Raccourcis clavier : items (potions, parchos)?
 
     3.6
     mouse support
         deplacement
         menus?
-    auto-explore
+    auto-explore?
     detection menaces & nouveaux evenements
 
     3.7
@@ -56,7 +56,7 @@ Release 4 - WIP
         Reset si necessaire: save avant process.
         Casser les passages diagonales only entre deux rooms
         Distant exit: quasiment tjrs à Gauche
-        Tiles personnalisées selon niveau
+        Tiles personnalisées selon niveau?
 
 Release 5 - Systems & items + API
     Scroll: selectionner une case vide consomme le scroll sans message si dans zone valide?

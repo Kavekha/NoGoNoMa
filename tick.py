@@ -12,7 +12,7 @@ from player_systems.player_input import main_menu_input, input_escape_to_quit, i
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
-from ui_system.menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
+from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 from state import States
 from data.save_and_load import load_game, save_game, has_saved_game
@@ -77,6 +77,7 @@ def tick():
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
+            show_main_menu()
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.VICTORY:
@@ -84,6 +85,7 @@ def tick():
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
+            show_main_menu()
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.CHARACTER_SHEET:
