@@ -78,9 +78,10 @@ class BoxMenu:
 
     def paste_on_window(self, x, y, width):
         mut_y = y
-        max_y = len(self.content)
+        max_y = self.get_total_height() + 1
+
         previous_color = terminal.color(terminal.TK_COLOR)
-        draw_background(x, y - 1, width + x, y + max_y, 'blue')
+        draw_background(x - 1, y - 1, width + x + 2, y + max_y, 'blue')
         terminal.color(previous_color)
         best_cx = 0
         for content, alignement in self.content:
@@ -139,7 +140,9 @@ class Menu:
         window_width = 0
         window_height = 0
         for content in self.menu_contents:
-            window_width += content.get_total_width()
+            content_width = content.get_total_width()
+            if content_width > window_width:
+                window_width = content_width
             window_height += content.get_total_height()
         x1, y1 = self.menu_placement(window_width, window_height)
 
