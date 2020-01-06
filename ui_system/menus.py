@@ -42,13 +42,14 @@ class MenuPlacement(Enum):
 
 
 class BoxMenu:
-    def __init__(self, render_order=100, linebreak=0):
+    def __init__(self, render_order=100, linebreak=0, margin=1):
         self.content = list()
         self.render_order = render_order
         self.linebreak = linebreak
+        self.margin = margin
 
     def get_height(self):
-        height = 0
+        height = -1
         for _content in self.content:
             height += 1
         return height
@@ -59,6 +60,7 @@ class BoxMenu:
         for _content in self.content:
             height += 1
         height += self.linebreak
+        height += self.margin
         return height
 
     def get_total_width(self):
@@ -70,18 +72,52 @@ class BoxMenu:
         return width
 
     def add(self, text, alignement):
-        self.content.append((text, alignement))
+        cropped_text = self.crop_text(text)
+        if type(cropped_text) == list:
+            # c'est un groupe de lignes
+            print(f'cropped text is line : {cropped_text}')
+            for cropped_line in cropped_text:
+                self.content.append((cropped_line, alignement))
+        else:
+            self.content.append((text, alignement))
 
     def get_center_point(self, width, len_text):
         center_x = (width - len_text) // 2
         return center_x
 
+    def crop_text(self, text):
+        width = config.MAX_MENU_SIZE_WIDTH
+        # on perds la couleur
+        no_color_content = remove_color_tag(text)
+        if len(no_color_content) > width:
+            words = no_color_content.split()
+            new_content = list()
+            line = ""
+            while words:
+                if len(line) < width:
+                    # print(f'line is {line}, len {len(line)} vs width {width}')
+                    to_add = words[0]
+                    # print(f'to add {to_add}')
+                    line += to_add + ' '
+                    words.remove(to_add)
+                    # print(f'after removing add : {words}')
+                else:
+                    new_content.append(f'[color={config.COLOR_MENU_BASE}]{line}[/color]')
+                    line = ''
+            if line:
+                new_content.append(f'[color={config.COLOR_MENU_BASE}]{line}[/color]')
+            return new_content
+        else:
+            return text
+
     def paste_on_window(self, x, y, width):
         mut_y = y
-        max_y = self.get_total_height() + 1
+        max_y = self.get_height()
 
         previous_color = terminal.color(terminal.TK_COLOR)
-        draw_background(x - 1, y - 1, width + x + 2, y + max_y, 'blue')
+        draw_background(x - self.margin, y - self.margin,
+                        width + x + (2 * self.margin), y + max_y + self.margin,
+                        'gray', bordure=False)
         terminal.color(previous_color)
         best_cx = 0
         for content, alignement in self.content:
@@ -93,7 +129,9 @@ class BoxMenu:
                 else:
                     if cx < best_cx:
                         best_cx = cx
+
         for content, alignement in self.content:
+            print(f'content is {content} with {best_cx + x}, mut_y {mut_y}')
             print_shadow(best_cx + x, mut_y, content)
             mut_y += 1
 
@@ -146,12 +184,16 @@ class Menu:
             window_height += content.get_total_height()
         x1, y1 = self.menu_placement(window_width, window_height)
 
-        draw_background(x1, y1, window_width, window_height, color='gray')
+        draw_background(x1 - 1, y1 - 1, x1 + window_width + 2, y1 + window_height + 1, color='gray')
+        print(f'menu background : {x1, y1, x1 + window_width, y1 + window_height}')
         self.menu_contents = sorted(self.menu_contents, key=lambda cont: cont.render_order)
         for content in self.menu_contents:
+            print(f'render menu: content {content}: paste on window {x1, y1}')
+            y1 += content.margin
             content.paste_on_window(x1, y1, window_width)
             y1 += content.get_height()
             y1 += content.linebreak
+            y1 += content.margin
 
         terminal.refresh()
 
@@ -169,7 +211,7 @@ class MainMenu(Menu):
         render_order = 1
 
         # HEADER
-        box = BoxMenu(render_order, linebreak=5)
+        box = BoxMenu(render_order, linebreak=5, margin=1)
         color = config.COLOR_MAIN_MENU_TITLE
         text = f'[color={color}] {self.header} [/color]'
         box.add(text, MenuAlignement.CENTER)
@@ -188,7 +230,7 @@ class MainMenu(Menu):
             if len(option) > large_width:
                 large_width = len(option)
 
-        box = BoxMenu(render_order)
+        box = BoxMenu(render_order, margin=1)
         color = config.COLOR_MAIN_MENU_OPTIONS
         for option in available_options:
             text = f'[color={color}]({chr(self.letter_index)}) {option}'
@@ -211,7 +253,7 @@ class QuitGameMenu(Menu):
         # HEADER
         color = config.COLOR_MAIN_MENU_TITLE
         text = f'[color={color}] {self.header} [/color]'
-        box = BoxMenu(render_order, linebreak=2)
+        box = BoxMenu(render_order, linebreak=2, margin=1)
         render_order += 1
         box.add(text, MenuAlignement.CENTER)
         menu_contents.append(box)
@@ -221,7 +263,7 @@ class QuitGameMenu(Menu):
         available_options.append(Texts.get_text("YES"))
 
         color = config.COLOR_MAIN_MENU_OPTIONS
-        box = BoxMenu(render_order, linebreak=2)
+        box = BoxMenu(render_order, linebreak=2, margin=1)
         render_order += 1
         for option in available_options:
             text = f'[color={color}]({chr(self.letter_index)}) {option}'
@@ -230,7 +272,7 @@ class QuitGameMenu(Menu):
         menu_contents.append(box)
 
         # HOW TO QUIT?
-        box = BoxMenu(render_order)
+        box = BoxMenu(render_order, margin=1)
         render_order += 1
         text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
         text = f'[color=darker yellow]{text}[/color]'
@@ -426,7 +468,7 @@ class CharacterMenu(Menu):
 
         color = config.COLOR_MENU_BASE
         for skill in player_skills.skills:
-            text = Texts.get_text(f'{skill}') + f':{player_skills.skills[skill]}'
+            text = Texts.get_text(f'{skill}') + f': {player_skills.skills[skill]}'
             box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
         menu_contents.append(box)
 
@@ -469,14 +511,14 @@ class InventoryMenu(Menu):
         render_order = 1
 
         # header
-        box = BoxMenu(render_order, linebreak=3)
+        box = BoxMenu(render_order, linebreak=3, margin=1)
         render_order += 1
         header = f'[color={config.COLOR_SYS_MSG}] {self.header} [/color]'  # On ajoute la couleur après le len()
         box.add(header, MenuAlignement.CENTER)
         menu_contents.append(box)
 
         # selected item
-        box = BoxMenu(render_order, linebreak=3)
+        box = BoxMenu(render_order)
         render_order += 1
         if self.selected_item:
             selected_content = Texts.get_text(get_item_display_name(self.selected_item))
@@ -488,7 +530,7 @@ class InventoryMenu(Menu):
 
         # left: item list.
         if not self.selected_item:
-            box = BoxMenu(render_order, linebreak=2)
+            box = BoxMenu(render_order)
             render_order += 1
             if not decorated_names_list:
                 box.add(Texts.get_text('NO_ITEM_INVENTORY'), MenuAlignement.CENTER)
@@ -497,9 +539,10 @@ class InventoryMenu(Menu):
             menu_contents.append(box)
 
         # right: description
-        box = BoxMenu(render_order)
-        render_order += 1
         if self.selected_item:
+            box = BoxMenu(render_order)
+            render_order += 1
+
             info_title = f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("ITEM_INFO")}[/color]'
             box.add(info_title, MenuAlignement.CENTER)
 
@@ -523,7 +566,10 @@ class InventoryMenu(Menu):
                 """
                 full_text = Texts.get_text("CANT_KNOW_WITHOUT_USAGE_OR_IDENTIFICATION")
                 box.add(f'[color={color}]{full_text}[/color]', MenuAlignement.CENTER)
+            menu_contents.append(box)
 
+            box = BoxMenu(render_order)
+            render_order += 1
             # Some infos can be displayed, even if obfuscate
             color = config.COLOR_INFO_ATTRIBUTE_INVENTORY_MENU
             item_attribute_list = self.get_item_description(self.selected_item, obfuscate)
@@ -553,7 +599,7 @@ class InventoryMenu(Menu):
                 for option in decorated_options:
                     box.add(f'[color={config.COLOR_INVENTORY_OPTION}]{option}[/color]',
                             MenuAlignement.CENTER)
-                menu_contents.append(box)
+            menu_contents.append(box)
 
         # end : how to quit.
         box = BoxMenu(render_order)
@@ -597,33 +643,6 @@ class InventoryMenu(Menu):
             equipped_info = f'({Texts.get_text("EQUIPPED")})'
         else:
             equipped_info = ''
-        return item_name, equipped_info
-
-    def reduce_item_option(self, total_width, item, equipped):
-        chars_to_cut = 0
-        # we need : letter_index + equipped_info + item_name
-        item_name = Texts.get_text(get_item_display_name(item))
-        if item in equipped:
-            equipped_info = f'({Texts.get_text("EQUIPPED")})'
-        else:
-            equipped_info = ''
-        final_msg = f'{chr(self.letter_index)}) {equipped_info} {item_name}'
-        if len(final_msg) > total_width:
-            chars_to_cut = total_width - len(final_msg)
-
-        while chars_to_cut > 0:
-            # on coupe d'abord equipped info:
-            if len(equipped_info) > 3:
-                equipped_info = {Texts.get_text("EQUIPPED")}[:1]
-                equipped_info = f'({equipped_info})'
-                final_msg = f'{self.letter_index}){equipped_info}{item_name}'
-                if len(final_msg) > total_width:
-                    chars_to_cut = total_width - len(final_msg)
-            elif len(item_name) > 6:
-                item_name = item_name[:6]
-            else:
-                # plus rien a faire possible.
-                break
         return item_name, equipped_info
 
     def get_item_available_options(self, item):

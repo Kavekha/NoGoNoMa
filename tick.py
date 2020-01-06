@@ -85,6 +85,7 @@ def tick():
         if result == ItemMenuResult.SELECTED:
             World.reset_all()
             terminal.clear()
+            show_main_menu()
             run_state.change_state(States.MAIN_MENU)
 
     elif run_state.current_state == States.CHARACTER_SHEET:
