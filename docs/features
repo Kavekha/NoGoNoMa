@@ -35,14 +35,13 @@ Release 4 - Interface - Done
     > Refacto Character sheet + ajout skills
     > Refacto Main Menu, Character sheet, game over, victory, main options menu
     > Quit confirm in game when ESC.
+    > Menus adaptés en taille a leur contenu
+    > Menu placement: center
 
 Release 4 - WIP
     3.5
-    > Menus adaptés en taille a leur contenu
-    Background plus joli, boxes. Adaptés au menu. Center / Top / Bottom etc.
-    Highlight de l'entrée selectionnée / effet visuel.
-    Deplacement avec fleche dans les menus
-    Raccourcis clavier : items (potions, parchos)
+    > Background plus joli, boxes. Adaptés au menu.
+    Raccourcis clavier : items (potions, parchos)?
 
     3.6
     mouse support
