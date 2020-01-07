@@ -26,6 +26,27 @@ def get_screen_bounds():
     return min_x, max_x, min_y, max_y
 
 
+def get_map_coord_with_zoom(coord):
+    """coord = an x or y : got on the screen, with zoom.
+    return : What Coord x or y the coord was pointing on the map.
+    !! : x or y can be out of map, and crash if used has is."""
+    if coord % Interface.zoom == 0:
+        return coord // Interface.zoom
+    else:
+        return int(coord // Interface.zoom - (1 // Interface.zoom))
+
+
+def get_map_coord_with_mouse_when_zooming():
+    min_x, max_x, min_y, max_y = get_screen_bounds()
+    mouse_pos_x = terminal.state(terminal.TK_MOUSE_X)
+    mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y)
+
+    x = get_map_coord_with_zoom(mouse_pos_x) + min_x
+    y = get_map_coord_with_zoom(mouse_pos_y) + min_y
+
+    return x, y
+
+
 def render_map_camera():
     start = time.perf_counter()
 

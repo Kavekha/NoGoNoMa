@@ -3,6 +3,7 @@ from bearlibterminal import terminal
 from world import World
 from ui_system.ui_enums import Layers
 from ui_system.render_functions import get_item_display_name
+from ui_system.render_camera import get_screen_bounds
 from components.position_component import PositionComponent
 from components.name_component import NameComponent
 from components.hidden_component import HiddenComponent
@@ -10,7 +11,7 @@ from components.attributes_component import AttributesComponent
 from components.pools_component import Pools
 from ui_system.interface import Interface
 from ui_system.render_functions import print_shadow
-from ui_system.render_camera import get_map_coord_with_mouse_when_zooming, get_map_coord_with_zoom
+from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
 
 
 class Tooltip:
@@ -39,19 +40,18 @@ class Tooltip:
 
 
 def draw_tooltip():
+    min_x, max_x, min_y, max_y = get_screen_bounds()
     current_map = World.fetch('current_map')
 
-    # mouse x,y on screen
     mouse_pos_x = terminal.state(terminal.TK_MOUSE_X)
     mouse_pos_y = terminal.state(terminal.TK_MOUSE_Y)
-    # mouse x, y relative to map, taken "out of map" margin into account
-    mouse_map_pos_x, mouse_map_pos_y = get_map_coord_with_mouse_when_zooming()
-    # the mouse is on this map coords. May be out of bound!
-    mouse_on_map_x = get_map_coord_with_zoom(mouse_map_pos_x)
-    mouse_on_map_y = get_map_coord_with_zoom(mouse_map_pos_y)
+    mouse_map_pos_x = (mouse_pos_x // Interface.zoom) + min_x
+    mouse_map_pos_y = (mouse_pos_y // Interface.zoom) + min_y
+    mouse_map_pos_x = get_map_coord_with_mouse_when_zooming()
+    mouse_map_pos_y = get_map_coord_with_mouse_when_zooming()
 
-    if 1 > mouse_on_map_x or mouse_on_map_x > Interface.map_screen_width - 1\
-            or 1 > mouse_on_map_y or mouse_on_map_y > Interface.map_screen_height - 1:
+    if 1 > mouse_map_pos_x or mouse_map_pos_x > ((Interface.map_screen_width * Interface.zoom) - 1) or\
+            1 > mouse_map_pos_y or mouse_map_pos_y > ((Interface.map_screen_height * Interface.zoom) - 1):
         return
 
     if current_map.visible_tiles[current_map.xy_idx(mouse_map_pos_x, mouse_map_pos_y)]:

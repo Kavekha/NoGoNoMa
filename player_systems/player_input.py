@@ -2,7 +2,7 @@ from bearlibterminal import terminal
 
 import sys
 
-from player_systems.try_move_player import try_move_player, try_next_level
+from player_systems.try_move_player import try_move_player, try_next_level, move_order_player, move_on_click_player
 from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
@@ -15,13 +15,19 @@ from texts import Texts
 from components.targeting_component import TargetingComponent
 import config
 from data.save_and_load import save_game
+from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
 
 
 def player_input():
     if terminal.has_input():
         key = terminal.read()
 
-        if key == terminal.TK_LEFT or key == terminal.TK_KP_4 or key == terminal.TK_H:
+        if key == terminal.TK_MOUSE_LEFT:
+            mouse_map_pos_x, mouse_map_pos_y = get_map_coord_with_mouse_when_zooming()
+            # move_order_player(mouse_map_pos_x, mouse_map_pos_y)
+            move_on_click_player(mouse_map_pos_x, mouse_map_pos_y)
+
+        elif key == terminal.TK_LEFT or key == terminal.TK_KP_4 or key == terminal.TK_H:
             try_move_player(-1, 0)
         elif key == terminal.TK_RIGHT or key == terminal.TK_KP_6 or key == terminal.TK_L:
             try_move_player(1, 0)

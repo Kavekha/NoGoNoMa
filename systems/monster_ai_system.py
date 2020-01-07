@@ -110,7 +110,7 @@ class MonsterAi(System):
             # (for example another monster blocks a corridor)
             # it will still try to move towards the player (closer to the corridor opening)
             print(f'astar didnt work. Move towards instead.')
-            self.move_towards(position_component, player_x, player_y)
+            self.move_towards(entity, position_component, player_x, player_y)
 
             # Delete the path to free memory
         tcod.path_delete(my_path)

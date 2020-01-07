@@ -1,3 +1,5 @@
+import tcod as tcod
+
 from world import World
 import config
 from components.position_component import PositionComponent
@@ -14,9 +16,60 @@ from systems.inventory_system import get_item
 from texts import Texts
 
 
+def can_move_on_tile(x, y):
+    current_map = World.fetch('current_map')
+    if not current_map.blocked_tiles[current_map.xy_idx(x, y)]:
+        return True
+    return False
+
+
+def move_on_click_player(dx, dy):
+    player = World.fetch('player')
+    player_position = World.get_entity_component(player, PositionComponent)
+    x, y = 0, 0
+    if dx - player_position.x > 0:
+        x += 1
+    elif dx - player_position.x < 0:
+        x -= 1
+    if dy - player_position.y > 0:
+        y += 1
+    elif dy - player_position.y < 0:
+        y -= 1
+    try_move_player(x, y)
+
+
+def move_order_player(dx, dy):
+    player = World.fetch('player')
+    player_position = World.get_entity_component(player, PositionComponent)
+    viewshed = World.get_entity_component(player, ViewshedComponent)
+    fov = viewshed.visible_tiles
+
+    my_path = tcod.path_new_using_map(fov, 1)
+    tcod.path_compute(my_path, player_position.y, player_position.x, dy, dx)
+
+    if not tcod.path_is_empty(my_path) and tcod.path_size(my_path) < 25:
+        y, x = tcod.path_walk(my_path, True)  # tcod : [y][x]
+        if x or y:
+            destination_x = x - player_position.x
+            destination_y = y - player_position.y
+            try_move_player(destination_x, destination_y)
+    else:
+        logs = World.fetch('logs')
+        logs.appendleft("Can't move here.")
+        pass
+
+        # Delete the path to free memory
+    tcod.path_delete(my_path)
+
+
 def try_move_player(delta_x, delta_y):
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
+
+    # anti auto kill si clic sur soit meme avec move by click
+    print(f'player_pos x, delta {player_pos.x, delta_x} and player y, delta {player_pos.y, delta_y}')
+    if not delta_x and not delta_y:
+        return
 
     current_map = World.fetch('current_map')
     destination_idx = current_map.xy_idx(player_pos.x + delta_x, player_pos.y + delta_y)
