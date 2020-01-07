@@ -15,6 +15,7 @@ from ui_system.ui_enums import NextLevelResult
 from systems.inventory_system import get_item
 from texts import Texts
 
+
 def can_move_on_tile(x, y):
     current_map = World.fetch('current_map')
     if not current_map.blocked_tiles[current_map.xy_idx(x, y)]:
@@ -34,7 +35,6 @@ def move_on_click_player(dx, dy):
         y += 1
     elif dy - player_position.y < 0:
         y -= 1
-    print(f'x, y : {x, y}')
     try_move_player(x, y)
 
 

@@ -41,12 +41,13 @@ Release 4 - Interface - Done
     > mouse support: se deplacer d'une case dans la direction du clic, ignorant la visibilité.
     > mouse support: capture de la tile map plus efficace sous zoom.
     > fix: autokill si clic sur soit-même.
+    > fix: target map tile when zoom: tooltip & co.
 
 Release 4 - WIP
     3.5
     > logs: si message identique, "<message> * <x>"
-    > mouse support: enregistrer plusieurs deplacements, en ignorant la visibilité.
-    > annuler le deplacement automatique s'il y a une menace?
+    > mouse support: enregistrer plusieurs deplacements, en ignorant la visibilité. Doit être revealed.
+    > annuler le deplacement automatique s'il y a une menace
     detection menaces & nouveaux evenements
 
     3.6
