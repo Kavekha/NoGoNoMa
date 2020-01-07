@@ -15,12 +15,27 @@ from ui_system.ui_enums import NextLevelResult
 from systems.inventory_system import get_item
 from texts import Texts
 
-
 def can_move_on_tile(x, y):
     current_map = World.fetch('current_map')
     if not current_map.blocked_tiles[current_map.xy_idx(x, y)]:
         return True
     return False
+
+
+def move_on_click_player(dx, dy):
+    player = World.fetch('player')
+    player_position = World.get_entity_component(player, PositionComponent)
+    x, y = 0, 0
+    if dx - player_position.x > 0:
+        x += 1
+    elif dx - player_position.x < 0:
+        x -= 1
+    if dy - player_position.y > 0:
+        y += 1
+    elif dy - player_position.y < 0:
+        y -= 1
+    print(f'x, y : {x, y}')
+    try_move_player(x, y)
 
 
 def move_order_player(dx, dy):
@@ -50,6 +65,11 @@ def move_order_player(dx, dy):
 def try_move_player(delta_x, delta_y):
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
+
+    # anti auto kill si clic sur soit meme avec move by click
+    print(f'player_pos x, delta {player_pos.x, delta_x} and player y, delta {player_pos.y, delta_y}')
+    if not delta_x and not delta_y:
+        return
 
     current_map = World.fetch('current_map')
     destination_idx = current_map.xy_idx(player_pos.x + delta_x, player_pos.y + delta_y)

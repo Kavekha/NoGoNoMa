@@ -38,12 +38,13 @@ Release 4 - Interface - Done
     > Menus adaptés en taille a leur contenu
     > Menu placement: center
     > Refacto Inventaire : item selected => pas d affichage des autres items.
+    > mouse support: se deplacer d'une case dans la direction du clic, ignorant la visibilité.
+    > mouse support: capture de la tile map plus efficace sous zoom.
+    > fix: autokill si clic sur soit-même.
 
 Release 4 - WIP
     3.5
-    > Cleanup again.
-    > mouse support: se deplacer d'une case dans la direction du clic.
-    > mouse support: se deplacer d'une case, en ignorant la visibilité
+    > logs: si message identique, "<message> * <x>"
     > mouse support: enregistrer plusieurs deplacements, en ignorant la visibilité.
     > annuler le deplacement automatique s'il y a une menace?
     detection menaces & nouveaux evenements
