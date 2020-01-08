@@ -104,7 +104,7 @@ def drop_item_from_inventory(item_id):
     drop_intent = WantsToDropComponent(item_id)
     player = World.fetch('player')
     World.add_component(drop_intent, player)
-    return States.PLAYER_TURN
+    return States.TICKING
 
 
 def select_item_from_inventory(item_id):
@@ -119,7 +119,7 @@ def select_item_from_inventory(item_id):
                         f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
         return States.SHOW_TARGETING
     use_item(item_id)
-    return States.PLAYER_TURN
+    return States.TICKING
 
 
 def get_items_in_user_backpack(user):

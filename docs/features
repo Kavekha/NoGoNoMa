@@ -1,64 +1,10 @@
-Release 4 - Interface - Done
-    Camera: rendering
-    Camera: tooltip
-    Camera: targeting system
-    fix: Prefabs vault sectionnal
-    fix: Partie de la map coupée à l'affichage.
-    map : taille width & height lié à l'instance de la map.
-    Clean dead code
-    fix: Stains visibles hors visibility
-    tiles: Forme de la tile selon placement.
-    zoom: set zoom in maps & tilesets
-    zoom: interface & ascii limitation.
-    Optim : itertool
-    inventaire : Limite de 26 objets.
-    logs: mise en avant des entités devoilées.
-    qol : auto pickup.
-    tooltip: Nouveau tooltip.
-    tooltip: placement selon personnage.
-    tooltip: fix Zoom.
-    light : round vision instead of square
-    Items équipés visibles dans inventaire : items équipés comptent dans l'inventaire
-    Nouvel affichage menu inventaire.
-    fix: crash sur Tunic, traductions diverses.
-    fix: target zoom.
-    inventory: cas "No item in inventory"
-    inventory: select menu
-    inventory: options display.
-    Info text découpé par mot plutot que lettres.
-    Options selectionnables via lettres index.
-    Descriptions des items dans l'inventaire.
-    Mettre en valeur dans le menu de gauche l'item selectionné.
-    Fix item drop.
-    Suppression drop menu
-    Escape pour deselectionner item de l'inventaire.
-    Refacto Character sheet + ajout skills
-    Refacto Main Menu, Character sheet, game over, victory, main options menu
-    Quit confirm in game when ESC.
-    Menus adaptés en taille a leur contenu
-    Menu placement: center
-    Refacto Inventaire : item selected => pas d affichage des autres items.
-    mouse support: se deplacer d'une case dans la direction du clic, ignorant la visibilité.
-    mouse support: capture de la tile map plus efficace sous zoom.
-    fix: autokill si clic sur soit-même.
-    fix: target map tile when zoom: tooltip & co.
-    > DistantExit: A bit more random to found the best exit.
-    >> Casser les passages diagonales only entre deux tiles
-
-Release 4 - WIP
-    3.6
-    Mapbuild checker:
-        > Casser les passages diagonales only entre deux tiles
-        > Reset si builder fail.
-        > Test du build final. Reset si ne corresponds pas a la qualité voulu.
-            > Sortie non atteignable depuis point de depart.
-            > Distance trop courte.
-
+Release 5 - Done.
+    > Initiative & Initiative system. Refacto cycle tick & states.
 
 Release 5 - Systems & items + API
     4.1 - Gestion du tour par tour.
-        Initiative, modificateur d'initiative, refacto cycle tick & states.
-            devrait fixer "Enemi sur la meme case"
+        fix: optimisation cycle Ticking.
+        devrait fixer "Enemi sur la meme case"
         Annuler scroll, selectionner case vide, se deplacer dans un mur : Ne coute plus le tour.
         Action coute de l'initiative?
 
