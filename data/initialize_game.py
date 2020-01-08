@@ -41,6 +41,7 @@ def init_game(master_seed=None):
 
     visibility_system = VisibilitySystem()
     World.add_system(visibility_system)
+
     map_indexing_system = MapIndexingSystem()
     World.add_system(map_indexing_system)
     trigger_system = TriggerSystem()
