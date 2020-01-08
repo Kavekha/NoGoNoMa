@@ -24,9 +24,30 @@ class Gmap:
         self.fov_map = None
         self.spawn_table = None
 
+    def reset(self):
+        self.tiles = [TileType.WALL] * (self.height * self.width)
+        self.rooms = []
+
+        self.revealed_tiles = [False] * (self.height * self.width)
+        self.visible_tiles = [False] * (self.height * self.width)
+        self.blocked_tiles = [False] * (self.height * self.width)
+        self.view_blocked = dict()
+
+        self.tile_content = [list() for x in range(self.height * self.width)]
+        self.stains = [0] * (self.height * self.width)
+
+        self.fov_map = None
+        self.spawn_table = None
+
     def out_of_bound(self, idx):
         x, y = self.index_to_point2d(idx)
         if 0 > x > self.width - 1 or 0 > y > self.height - 1:
+            return True
+        return False
+
+    def is_constructible_tile(self, idx):
+        x, y = self.index_to_point2d(idx)
+        if 1 < x < self.width - 2 or 1 < y < self.height - 2:
             return True
         return False
 

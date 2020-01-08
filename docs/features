@@ -43,14 +43,16 @@ Release 4 - Interface - Done
     fix: autokill si clic sur soit-même.
     fix: target map tile when zoom: tooltip & co.
     > DistantExit: A bit more random to found the best exit.
+    >> Casser les passages diagonales only entre deux tiles
 
 Release 4 - WIP
     3.6
     Mapbuild checker:
         > Distant exit: quasiment tjrs à Gauche (Cellula automata)
-        Reset si necessaire: save avant process.
+        > Casser les passages diagonales only entre deux tiles
+        > Reset si builder fail.
+        Tests de tous les builders. Return True if tests OK, sinon False.
         Sortie éloignée pas toujours éloignée.
-        Casser les passages diagonales only entre deux rooms
         Tiles personnalisées selon niveau?
 
 
