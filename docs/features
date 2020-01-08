@@ -31,66 +31,162 @@ Release 4 - Interface - Done
     Mettre en valeur dans le menu de gauche l'item selectionné.
     Fix item drop.
     Suppression drop menu
-    > Escape pour deselectionner item de l'inventaire.
-    > Refacto Character sheet + ajout skills
-    > Refacto Main Menu, Character sheet, game over, victory, main options menu
-    > Quit confirm in game when ESC.
-    > Menus adaptés en taille a leur contenu
-    > Menu placement: center
-    > Refacto Inventaire : item selected => pas d affichage des autres items.
-    > mouse support: se deplacer d'une case dans la direction du clic, ignorant la visibilité.
-    > mouse support: capture de la tile map plus efficace sous zoom.
-    > fix: autokill si clic sur soit-même.
-    > fix: target map tile when zoom: tooltip & co.
+    Escape pour deselectionner item de l'inventaire.
+    Refacto Character sheet + ajout skills
+    Refacto Main Menu, Character sheet, game over, victory, main options menu
+    Quit confirm in game when ESC.
+    Menus adaptés en taille a leur contenu
+    Menu placement: center
+    Refacto Inventaire : item selected => pas d affichage des autres items.
+    mouse support: se deplacer d'une case dans la direction du clic, ignorant la visibilité.
+    mouse support: capture de la tile map plus efficace sous zoom.
+    fix: autokill si clic sur soit-même.
+    fix: target map tile when zoom: tooltip & co.
+    > DistantExit: A bit more random to found the best exit.
 
 Release 4 - WIP
-    3.5
-    > logs: si message identique, "<message> * <x>"
-    > mouse support: enregistrer plusieurs deplacements, en ignorant la visibilité. Doit être revealed.
-    > annuler le deplacement automatique s'il y a une menace
-    detection menaces & nouveaux evenements
-
     3.6
     Mapbuild checker:
-        Sortie éloignée
+        > Distant exit: quasiment tjrs à Gauche (Cellula automata)
         Reset si necessaire: save avant process.
+        Sortie éloignée pas toujours éloignée.
         Casser les passages diagonales only entre deux rooms
-        Distant exit: quasiment tjrs à Gauche
         Tiles personnalisées selon niveau?
 
+
 Release 5 - Systems & items + API
-    Scroll: selectionner une case vide consomme le scroll sans message si dans zone valide?
-    Initiative & turn lost fix.
-    Pas d'enemi sur la meme case
-    Combat.
-    fix combat diagonal IA
-    Progression leveling
-    Generic effects & items
-    Loot tables for rooms & mobs.
-    Scores & better morgue files
-    API:
-        - get available actions / send actions (controles).
-        - get state + available actions / send action (controles des states : Main Menu > Jeu > Options > Quit).
-        - get state game (Stats, inventory) / display dans interface hors jeu (Inventaire, Character sheet)
-        - get state game 2 (Map, logs) / display dans interface
-        - Animations dans interface = Hors de la logique du jeu.
+    4.1 - Gestion du tour par tour.
+        Annuler scroll, selectionner case vide, se deplacer dans un mur : Ne coute plus le tour.
+        Initiative, cout d'une action & modif cycle de states.
+        Pas d'ennemi sur la même case.
+        Modificateur d'initiative / cout d'action.
+    4.2 - Effets generiques.
+        Generic effects & items
+        Loot tables for rooms & mobs.
+        API: Separation Interface / Jeu. MainMenu/Options & controles MainMenu / Options hors du jeu.
+    4.3 - Combat.
+        Fix du combat en diagonal - IA.
+        Nouveau systeme de combat plus clair & skills.
+        Items pour prendre en compte le systeme de combat.
+        API: Tous les menus & les controles associés.
+    4.4 - Progression level.
+        Generation d'objets & monstres basés sur des traits.
+        Gain au level up & distributions via Interface API.
+        Particules dans l'API Interface.
+    4.5 - Affichage Map / API & controles.
+        API: affichage de la map dans l'interface: le jeu communique la map visible & contents + map revelée.
+        API: Affichage de la zone de target.
+        API: Modification des controles niveau interface: Les controles sont configurables via l'interface.
+        API: Affichage des logs dans l'interface.
+        API: Modification de la resolution.
+    4.6 - Scores, Morgue files & animations interface.
+        A la fin d'une partie, on calcule le score selon niveau perso, depth & modificateur de fin de partie (game over ou victoire).
+        Au game over, creer un fichier texte avec les details de la mort, le score, les stats du perso, la carte(?).
+        Au game over, un bref resumé de la partie avec les informations majeures ("A vaincu pour la premiere fois BLA", "A atteint Depth 2", etc.
+        API: Animations de l'interface (Barre de vie qui se reduit, changement de Depth, endroit où l'on clique).
+
 
 Release 6 - Simple Dungeon progression
-    Scenario standard: 4 regions.
-    Map buildings pour 4 regions & transitions.
-    Monstres & items sur les 4 regions / thematiques.
-    Room building & props
-    NPC talking
-    Lore via npc & items.
+    5.1 - Region 1: "Prison": map building.
+        MapBuilding "Prison", "Sousterrain", "Tunnels", etc.
+        Differentes rooms.
+        Spawn selon le thème des corridors, rooms.
+        Des passages secrets.
+        La taille de la carte augmente. Très petite au debut (tutoriel like).
+    5.2 - Region 2: "Ferme": map building.
+        MapBuilding "Ferme": champs ouverts, silos, ecuries, etc.
+        Lieux ouverts.
+        Spawn selon les regions.
+    5.3 - Transition Region 1 / 2 & contenus de base.
+        Melange des morceaux de chaque Builder.
+        Monstres & items selon thematique de chaque Region.
+    5.4 - Region 3: "Abbatoir".
+        Mapbuilding. A demi ouvert, melange de prison & pieges.
+        Un Vault pour le boss "final" de la Region.
+        Items & monstres.
+        Transition Region 2 à 3.
+    5.5 - Region 4: "Le Ventre de la Bete"
+        Mapbuilding. Zone "vivante", "changeante".
+        Transition brutale avec la Region 3.
+        Items & monstres violents.
+    5.6 - Correctifs & ameliorations.
+        Room building & props
+        NPC talking
+        Lore via npc & items.
+    5.7 - IA.
+        Better IA.
+        Factions.
+        IA Chaining.
+        NPC neutres.
 
 Release 7 - Nouveaux systemes & personnages.
-    Gestion des lumieres & stealth
-    Attaques à distance, items & monstres associés.
-    Crochetage & events.
-    Selection de personnages.
-    Sauvegardes independantes / profils.
+    6.1 - Lumière, vision & champs de vision.
+        Vision nocturne du personnage.
+        Sources de lumiere sur la map, & affichage avec haute visibilité.
+        Modification tooltip, clic, etc.
+        Sources de lumière portables.
+    6.2 - Gestion de la lumière.
+        Visibilité & radius de lumière: items associés & ameliorations.
+        Deplacement stealth & IA.
+        Attaques surprises du PJ: conditions.
+    6.3 - Competences & contenus liés à la lumière.
+        Competence Stealth & detection invisibilité / stealth.
+        Monstres avec attaques surprises ou profitant de l'ombre / genés par la lumière & vice versa.
+        Items profitant / gené par la lumière ombre.
+        Objets / loots cachés dans l'ombre.
+    6.4 - Attaques à distance.
+        Combat à distance.
+        Competences associés.
+        Armes liées à l'attaque à distance.
+        Attaques surprises & attaques à distance.
+        Monstres avec attaques à distance.
+    6.5 - Crochetages & events.
+        Mapbuilding: Doors a crocheter, avec loot garanti derrière. Pas sur le chemin critique.
+        Competence liée au crochetage.
+        Mapbuilding: Doors à ouvrir avec clé. Clé & Door verouillée sur chemin critique.
+        Spawner: Monstres gardiens à coté de certains items, clés comprises.
+        Spawner: Pieges associés à des tresors, rooms ou autres.
+    6.6 - Selection de personnages.
+        Raw: Personnages avec stats, skills & items.
+        Skill passive pour chaque personnage.
+        Interface: Menu Choix de personnage & infos.
+        Morgue file: Precision du personnage joué.
+        Victory: Precision du personnage joué.
+        NPC dialogues: Adaptés au personnage?
+    6.7 - Sauvegardes independantes & profils.
+        Creer une nouvelle partie: un profil est créé avec Seed, Personnage, Date.
+        Charger une nouvelle partie: Si plus de un profil, les sauvegardes des autres profils sont proposés.
+        Game over: Propose de rejouer la partie avec le même personnage. Nouveau profil avec Seed, Date.
+        Creer une nouvelle partie avec un personnage déjà sauvegarder: Previens qu'on ecrasera?
+
 
 Release 8 - Branches & variantes du Boss final & univers.
+    7.1 - La Ville Prison.
+        Building: Sorte de ville abandonnée, pourrie, detruite. Prison "à ciel ouvert".
+        NPC "se pensant libre" & Ennemis "Force de l'ordre".
+        Lieux secrets.
+    7.2 - Structure du Donjon basique.
+        Builder "Transition" entre deux types de region, peu importe lesquelles.
+        Generation aleatoire: Prison ou Ville Prison en depart.
+        Generation aleatoire: Region 2: Si Prison: Ferme ou Ville Prison. Si Ville Prison: Ferme ou Prison.?
+    7.3 - La Mine.
+        Building: Mine où l'on recupere des minerais pour le Dieu / Seigneur.
+        Evenements: Corruption, eboulements, ennemis hors faction.
+        NPC esclaves & contremaitres.
+        Integration à la structure basique du donjon.
+    7.4 - Le Manoir.
+        Building: Grande maison où vivent les artistocrates / Vampires.
+        Nombreux lieux secrets.
+        Salles ouvertes ou petits couloirs.
+        Pieges divers.
+        Integration à la structure basique du donjon.
+    7.5 - La Fontaine de Sang.
+        Building: Marecage de sang, ponts, etc.
+        Domaine du Dieu vampire, assoiffé de sang.
+        Branche de la Region 4.
+    7.6 - Complexification de la structure.
+        Tiers par Region: Determine leur place dans la structure globale. Peut être de un ou plusieurs tiers.
+        Tables de mobs selon la Region & le niveau de la Region.
     Branches alternatives: nouvelles maps, monstres & items.
     Thematiques de donjons & items, monstres, maps associées.
     Constructeur d'histoires simples: variations.
@@ -136,14 +232,10 @@ Feature Combat / tour:
 
 Feature Interface:
     HUD: pause du jeu + affichage du tooltip quand apparition.
-    Camera vs Screen
-    Zoom camera
     Tooltip graphique
-    Mouse support.
-    Menus de confirmation.
+    > Mouse support.
     Animations des tiles.
     Icones des items
-    Items équipés.
     Etats du personnage.
     Raccourcis clavier
     Affichage "full screen" du nom nouvelle region
