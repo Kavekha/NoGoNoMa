@@ -51,37 +51,57 @@ Release 4 - WIP
         > Distant exit: quasiment tjrs à Gauche (Cellula automata)
         > Casser les passages diagonales only entre deux tiles
         > Reset si builder fail.
-        Tests de tous les builders. Return True if tests OK, sinon False.
-        Sortie éloignée pas toujours éloignée.
+        Test du build final. Reset si ne corresponds pas a la qualité voulu.
+            Sortie non atteignable depuis point de depart.
+            Distance trop courte.
         Tiles personnalisées selon niveau?
 
 
 Release 5 - Systems & items + API
     4.1 - Gestion du tour par tour.
+        Initiative, modificateur d'initiative, refacto cycle tick & states.
+            devrait fixer "Enemi sur la meme case"
         Annuler scroll, selectionner case vide, se deplacer dans un mur : Ne coute plus le tour.
-        Initiative, cout d'une action & modif cycle de states.
-        Pas d'ennemi sur la même case.
-        Modificateur d'initiative / cout d'action.
+        Action coute de l'initiative?
+
     4.2 - Effets generiques.
-        Generic effects & items
+        Generic effects & refacto.
+        Cursed items
+        Remove curse
+        Identified items
+        Attribute modifier items
+        Items with charges
+        Status effects
+        Proc effects
+        Magic spell / special attack.
+        Learning special attacks
+        Special attack NPC cast.
+
+    4.3 - Loot tables & API bases
         Loot tables for rooms & mobs.
-        API: Separation Interface / Jeu. MainMenu/Options & controles MainMenu / Options hors du jeu.
-    4.3 - Combat.
+        API: Separation Interface / Jeu.
+        API: Communication UI / Jeu : menus.
+
+    4.4 - Combat.
         Fix du combat en diagonal - IA.
         Nouveau systeme de combat plus clair & skills.
         Items pour prendre en compte le systeme de combat.
-        API: Tous les menus & les controles associés.
-    4.4 - Progression level.
+        API: Controles & Options graphiques / Langues.
+
+    4.5 - Progression level.
+        Traits de monstres.
         Generation d'objets & monstres basés sur des traits.
         Gain au level up & distributions via Interface API.
-        Particules dans l'API Interface.
-    4.5 - Affichage Map / API & controles.
+        API: Particules dans l'API Interface.
+
+    4.6 - Affichage Map / API & controles.
         API: affichage de la map dans l'interface: le jeu communique la map visible & contents + map revelée.
         API: Affichage de la zone de target.
         API: Modification des controles niveau interface: Les controles sont configurables via l'interface.
         API: Affichage des logs dans l'interface.
         API: Modification de la resolution.
-    4.6 - Scores, Morgue files & animations interface.
+
+    4.7 - Scores, Morgue files & animations interface.
         A la fin d'une partie, on calcule le score selon niveau perso, depth & modificateur de fin de partie (game over ou victoire).
         Au game over, creer un fichier texte avec les details de la mort, le score, les stats du perso, la carte(?).
         Au game over, un bref resumé de la partie avec les informations majeures ("A vaincu pour la premiere fois BLA", "A atteint Depth 2", etc.
