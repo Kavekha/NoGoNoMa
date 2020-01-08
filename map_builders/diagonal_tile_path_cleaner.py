@@ -14,10 +14,13 @@ class DiagonalTilePathCleaner(MetaMapbuilder):
                 We check then if x + 1 tile and y + 1 tile are wall.
                 If both are wall: then we have a diagonal floor
                 We do a randint(0, 1) and choose one of the tile to make it a floor."""
+
                 south_east_tile = i + 1 + gmap.width
                 if gmap.is_constructible_tile(south_east_tile):
-                    if gmap.tiles[i + 1] == TileType.WALL and gmap.tiles[i + gmap.width] == TileType.WALL:
+                    south_wall = i + gmap.width
+                    east_wall = i + 1
+                    if gmap.tiles[south_wall] == TileType.WALL and gmap.tiles[east_wall] == TileType.WALL:
                         if randint(0, 1) == 1:
-                            gmap.tiles[i + 1] = TileType.FLOOR
+                            gmap.tiles[south_wall] = TileType.FLOOR
                         else:
-                            gmap.tiles[i + gmap.width] = TileType.FLOOR
+                            gmap.tiles[east_wall] = TileType.FLOOR

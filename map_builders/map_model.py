@@ -47,7 +47,7 @@ class Gmap:
 
     def is_constructible_tile(self, idx):
         x, y = self.index_to_point2d(idx)
-        if 1 < x < self.width - 2 or 1 < y < self.height - 2:
+        if 1 > x > self.width - 2 or 1 > y > self.height - 2:
             return True
         return False
 

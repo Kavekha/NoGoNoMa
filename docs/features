@@ -48,13 +48,11 @@ Release 4 - Interface - Done
 Release 4 - WIP
     3.6
     Mapbuild checker:
-        > Distant exit: quasiment tjrs à Gauche (Cellula automata)
         > Casser les passages diagonales only entre deux tiles
         > Reset si builder fail.
-        Test du build final. Reset si ne corresponds pas a la qualité voulu.
-            Sortie non atteignable depuis point de depart.
-            Distance trop courte.
-        Tiles personnalisées selon niveau?
+        > Test du build final. Reset si ne corresponds pas a la qualité voulu.
+            > Sortie non atteignable depuis point de depart.
+            > Distance trop courte.
 
 
 Release 5 - Systems & items + API
@@ -87,6 +85,7 @@ Release 5 - Systems & items + API
         Nouveau systeme de combat plus clair & skills.
         Items pour prendre en compte le systeme de combat.
         API: Controles & Options graphiques / Langues.
+        API: Mouse support.
 
     4.5 - Progression level.
         Traits de monstres.
