@@ -55,10 +55,10 @@ def tick():
         if result == YesNoResult.NO:
             # Je ne veux plus quitter
             run_state.change_state(States.AWAITING_INPUT)
-            run_systems()
+            run_game_systems()
         elif result == YesNoResult.YES:
             run_state.change_state(States.SAVE_GAME)
-            run_systems()
+            run_game_systems()
 
     elif run_state.current_state == States.SAVE_GAME:
         run_state.change_state(States.MAIN_MENU)
@@ -92,7 +92,7 @@ def tick():
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             run_state.change_state(States.AWAITING_INPUT)
-            run_systems()
+            run_game_systems()
 
     # map gen
     elif run_state.current_state == States.MAP_GENERATION:
@@ -113,14 +113,17 @@ def tick():
     # Game State
     elif run_state.current_state == States.PRE_RUN:
         run_state.change_state(States.AWAITING_INPUT)
-        run_systems()
+        run_game_systems()
+        run_render_systems()
 
     elif run_state.current_state == States.AWAITING_INPUT:
         run_state.change_state(player_input())
         draw_tooltip()
 
     elif run_state.current_state == States.TICKING:
-        run_systems()
+        run_game_systems()
+        if run_state.current_state == States.AWAITING_INPUT:
+            run_render_systems()
 
         '''
         elif run_state.current_state == States.PLAYER_TURN:
@@ -139,12 +142,12 @@ def tick():
         items_in_backpack = get_items_in_inventory(World.fetch('player'))
         result, new_state, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
-            run_systems()
+            run_game_systems()
             run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             run_state.args = item
             run_state.change_state(new_state)
-            run_systems()
+            run_game_systems()
             show_selected_item_screen(item)
 
     # menu inventory with item selected
@@ -152,14 +155,14 @@ def tick():
         chosen_item = run_state.args
         result, action = inventory_selected_item_input(chosen_item)
         if result == ItemMenuResult.DESELECT:
-            run_systems()
+            run_game_systems()
             run_state.args = None
             run_state.change_state(States.SHOW_INVENTORY)
             show_item_screen()
         elif result == ItemMenuResult.ACTION:
             print(f'action is : {action}')
             new_state = action(chosen_item)
-            run_systems()
+            run_game_systems()
             run_state.change_state(new_state)
 
     elif run_state.current_state == States.SHOW_TARGETING:
@@ -175,8 +178,20 @@ def tick():
         run_state.go_next_level()
         run_state.change_state(States.PRE_RUN)
     else:
-        run_systems()
+        run_game_systems()
         run_state.change_state(States.TICKING)
+
+
+def run_game_systems():
+    World.update()
+
+
+def run_render_systems():
+    terminal.clear()
+    render_map_camera()
+    render_entities_camera()
+    draw_tooltip()
+    terminal.refresh()
 
 
 def run_systems():
