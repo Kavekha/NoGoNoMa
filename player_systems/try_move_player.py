@@ -38,31 +38,15 @@ def move_on_click_player(dx, dy):
     try_move_player(x, y)
 
 
-def move_order_player(dx, dy):
-    player = World.fetch('player')
-    player_position = World.get_entity_component(player, PositionComponent)
-    viewshed = World.get_entity_component(player, ViewshedComponent)
-    fov = viewshed.visible_tiles
-
-    my_path = tcod.path_new_using_map(fov, 1)
-    tcod.path_compute(my_path, player_position.y, player_position.x, dy, dx)
-
-    if not tcod.path_is_empty(my_path) and tcod.path_size(my_path) < 25:
-        y, x = tcod.path_walk(my_path, True)  # tcod : [y][x]
-        if x or y:
-            destination_x = x - player_position.x
-            destination_y = y - player_position.y
-            try_move_player(destination_x, destination_y)
-    else:
-        logs = World.fetch('logs')
-        logs.appendleft("Can't move here.")
-        pass
-
-        # Delete the path to free memory
-    tcod.path_delete(my_path)
+def available_tile_for_move(destination_idx):
+    current_map = World.fetch('current_map')
+    if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
+        return True
+    return False
 
 
 def try_move_player(delta_x, delta_y):
+    print(f'MOVING!')
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
@@ -84,7 +68,8 @@ def try_move_player(delta_x, delta_y):
         if door:
             opening_door(potential_target, door)
 
-    if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
+    # if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
+    if available_tile_for_move(destination_idx):
         player_pos.x = min(current_map.width - 1, max(0, player_pos.x + delta_x))
         player_pos.y = min(current_map.height - 1, max(0, player_pos.y + delta_y))
 

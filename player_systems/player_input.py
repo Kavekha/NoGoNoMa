@@ -2,7 +2,7 @@ from bearlibterminal import terminal
 
 import sys
 
-from player_systems.try_move_player import try_move_player, try_next_level, move_order_player, move_on_click_player
+from player_systems.try_move_player import try_move_player, try_next_level, move_on_click_player
 from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
@@ -16,6 +16,8 @@ from components.targeting_component import TargetingComponent
 import config
 from data.save_and_load import save_game
 from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
+
+from random import randint
 
 
 def player_input():
