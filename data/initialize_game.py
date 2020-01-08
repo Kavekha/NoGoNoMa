@@ -13,6 +13,7 @@ from systems.inventory_system import ItemCollectionSystem, ItemDropSystem
 from systems.item_use_system import ItemUseSystem
 from systems.item_identification_system import ItemIdentificationSystem
 from systems.trigger_system import TriggerSystem
+from systems.initiative_system import InitiativeSystem
 from gmap.master_dungeon import MasterDungeon
 from gmap.spawner import spawn_player
 
@@ -36,9 +37,6 @@ def init_game(master_seed=None):
     identification_system = ItemIdentificationSystem()
     World.add_system(identification_system)
 
-    monster_ai_system = MonsterAi()
-    World.add_system(monster_ai_system)
-
     visibility_system = VisibilitySystem()
     World.add_system(visibility_system)
 
@@ -46,6 +44,11 @@ def init_game(master_seed=None):
     World.add_system(map_indexing_system)
     trigger_system = TriggerSystem()
     World.add_system(trigger_system)
+
+    monster_ai_system = MonsterAi()
+    World.add_system(monster_ai_system)
+    initiative_system = InitiativeSystem()
+    World.add_system(initiative_system)
 
     melee_combat_system = MeleeCombatSystem()
     World.add_system(melee_combat_system)

@@ -24,6 +24,7 @@ from components.obfuscated_name_component import ObfuscatedNameComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import EntryTriggerComponent, ActivationComponent
 from components.door_component import DoorComponent
+from components.initiative import InitiativeComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
@@ -496,6 +497,8 @@ class RawsMaster:
     def create_mob(name, x, y):
         to_create = RawsMaster.mobs[RawsMaster.mob_index[name] - 1]
         components_for_entity = [MonsterComponent()]
+
+        components_for_entity.append(InitiativeComponent(config.BASE_MONSTER_INITIATIVE))
 
         if to_create.name:
             components_for_entity.append(NameComponent(to_create.name))

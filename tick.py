@@ -119,15 +119,20 @@ def tick():
         run_state.change_state(player_input())
         draw_tooltip()
 
-    elif run_state.current_state == States.PLAYER_TURN:
+    elif run_state.current_state == States.TICKING:
         run_systems()
-        if run_state.current_state == States.PLAYER_TURN:
-            run_state.change_state(States.MONSTER_TURN)
 
-    elif run_state.current_state == States.MONSTER_TURN:
-        run_systems()
-        if run_state.current_state == States.MONSTER_TURN:
-            run_state.change_state(States.AWAITING_INPUT)
+        '''
+        elif run_state.current_state == States.PLAYER_TURN:
+            run_systems()
+            if run_state.current_state == States.PLAYER_TURN:
+                run_state.change_state(States.MONSTER_TURN)
+        
+        elif run_state.current_state == States.MONSTER_TURN:
+            run_systems()
+            if run_state.current_state == States.MONSTER_TURN:
+                run_state.change_state(States.AWAITING_INPUT)
+        '''
 
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
@@ -160,19 +165,23 @@ def tick():
     elif run_state.current_state == States.SHOW_TARGETING:
         result, item, target_pos = show_targeting()
         if result == ItemMenuResult.CANCEL:
-            run_state.change_state(States.PLAYER_TURN)
+            run_state.change_state(States.TICKING)
         elif result == ItemMenuResult.SELECTED:
             select_target(item, target_pos)
-            run_state.change_state(States.PLAYER_TURN)
+            run_state.change_state(States.TICKING)
 
     # Mecanisms
     elif run_state.current_state == States.NEXT_LEVEL:
         run_state.go_next_level()
         run_state.change_state(States.PRE_RUN)
+    else:
+        run_systems()
+        run_state.change_state(States.TICKING)
 
 
 def run_systems():
-    print(f'--- run systems ---')
+    run_state = World.fetch('state')
+    print(f'--- run systems : {run_state.current_state}---')
     terminal.clear()
     World.update()
     render_map_camera()

@@ -11,6 +11,7 @@ from components.attributes_component import AttributesComponent
 from components.skills_component import SkillsComponent, Skills
 from components.pools_component import Pools
 from components.autopickup_component import AutopickupComponent
+from components.initiative import InitiativeComponent
 
 from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level
@@ -83,7 +84,8 @@ def spawn_player(x, y):
     skills.skills[Skills.DODGE] = 1
     skills.skills[Skills.FOUND_TRAPS] = 1
     player_pool = Pools(hits=player_hp_at_level(attributes.body, 1), mana=mana_point_at_level(attributes.wits, 1))
+    player_initiative = InitiativeComponent(0)
 
     player_id = World.create_entity(pos, rend, name, player, viewshed, block, attributes, skills, player_pool,
-                                    autopickup)
+                                    autopickup, player_initiative)
     return player_id

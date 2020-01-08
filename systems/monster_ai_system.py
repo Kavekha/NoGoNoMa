@@ -10,25 +10,21 @@ from components.name_component import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
 from components.triggers_components import EntityMovedComponent
+from components.initiative import MyTurn
 from systems.particule_system import ParticuleBuilder
-from state import States
 from map_builders.commons import distance_to
 from world import World
 
 
 class MonsterAi(System):
     def update(self, *args, **kwargs):
-        run_state = World.fetch('state')
-        if not run_state.current_state == States.MONSTER_TURN:
-            return
-
-        subjects = World.get_components(NameComponent, MonsterComponent, ViewshedComponent, PositionComponent)
+        subjects = World.get_components(NameComponent, MonsterComponent, ViewshedComponent, PositionComponent, MyTurn)
 
         player = World.fetch('player')
         player_position = World.get_entity_component(player, PositionComponent)
         x, y = player_position.x, player_position.y
 
-        for entity, (name, monster, viewshed, position_component, *args) in subjects:
+        for entity, (name, monster, viewshed, position_component, _myturn, *args) in subjects:
             can_act = True
             is_confused = World.get_entity_component(entity, ConfusionComponent)
             if is_confused:

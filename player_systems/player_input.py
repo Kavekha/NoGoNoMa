@@ -17,8 +17,6 @@ import config
 from data.save_and_load import save_game
 from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
 
-from random import randint
-
 
 def player_input():
     if terminal.has_input():
@@ -63,7 +61,7 @@ def player_input():
                 show_victory_menu()
                 return States.VICTORY
         elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
-            return States.PLAYER_TURN
+            return States.TICKING
 
         elif key == terminal.TK_PAGEUP:
             Interface.set_zoom(Interface.zoom + 1)
@@ -83,7 +81,7 @@ def player_input():
             sys.exit()
         else:
             return States.AWAITING_INPUT
-        return States.PLAYER_TURN
+        return States.TICKING
     return States.AWAITING_INPUT
 
 
