@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+from map_builders.build_map_integrity_check import test_builded_map
 from map_builders.map_model import Gmap
 from gmap.spawner import spawn_entity
 import config
@@ -24,9 +25,18 @@ class BuilderMap:
         self.spawn_list = list()
         self.map = Gmap(depth, width, height)
         self.starting_position = (0, 0)
+        self.exit_position = (0, 0)
         self.rooms = None
         self.corridors = None
         self.history = list()
+
+    def reset(self):
+        self.spawn_list = list()
+        self.starting_position = (0, 0)
+        self.rooms = None
+        self.corridors = None
+        self.history = list()
+        self.map.reset()
 
     def take_snapshot(self):
         if config.SHOW_MAPGEN_VISUALIZER:
@@ -41,6 +51,7 @@ class BuilderChain:
         self.starter = None
         self.builders = list()
         self.build_data = BuilderMap(depth, width, height)
+        self.nb_tries = 0
 
     def start_with(self, initial_map_builder):
         if self.starter:
@@ -52,24 +63,41 @@ class BuilderChain:
     def build_with(self, metabuilder):
         self.builders.append(metabuilder)
 
+    def reset_all(self):
+        print(f'WARNING: Reset BuilderChain!')
+        print(f'Current buildChain try: {self.nb_tries} / {config.BUILDER_MAX_NB_TRIES}')
+        self.build_data.reset()
+        self.build_map()
+
     def build_map(self):
         if not self.starter:
             print('Cant build map without a starter builder!')
             raise NotImplementedError
-        print(f'build map from InitialMap : starter is {self.starter}')
-        print(f'build map from initialmap : build data is {self.build_data}')
+
         self.starter.build_initial_map(self.build_data)
 
         for metabuilder in self.builders:
-            print(f'playing : {metabuilder}, from {self.builders}')
             metabuilder.build_meta_map(self.build_data)
 
         # mandatory to work
         self.build_data.map.populate_blocked()
         self.build_data.map.create_fov_map()
 
+        # check map integrity
+        success = test_builded_map(self.build_data)
+        if success:
+            self.nb_tries = 0
+        else:
+            self.nb_tries += 1
+            if not self.nb_tries < config.BUILDER_MAX_NB_TRIES:
+                print(f'WARNING: This map has failed some tests. Try limit has been reached. Degraded map created.')
+            else:
+                self.reset_all()
+                return
+
     def spawn_entities(self):
         for spawn in self.build_data.spawn_list:
             spawn_entity(spawn[1], spawn[0], self.build_data.map)
+
 
 

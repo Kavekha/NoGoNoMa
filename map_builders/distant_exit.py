@@ -32,9 +32,10 @@ class DistantExit(MetaMapbuilder):
                         best_exit = i
                         best_distance = len(my_path)
 
-
         if best_exit:
             print(f'best exit is : {best_exit} with distance {best_distance}')
+            x, y = build_data.map.index_to_point2d(best_exit)
+            build_data.exit_position = (x, y)
             if build_data.map.depth != config.MAX_DEPTH:
                 build_data.map.tiles[best_exit] = TileType.DOWN_STAIRS
             else:

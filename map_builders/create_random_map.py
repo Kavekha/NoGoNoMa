@@ -22,6 +22,7 @@ from map_builders.nearest_room_corridors import NearestCorridor
 from map_builders.room_corridor_lines import CorridorLines
 from map_builders.room_corridor_spawner import CorridorSpawner
 from map_builders.door_placement import DoorPlacement
+from map_builders.diagonal_tile_path_cleaner import DiagonalTilePathCleaner
 
 from map_builders.cellular_automata_builder import CellularAutomataBuilder
 from map_builders.drunkard_builder import DrunkardsWalkBuilder
@@ -340,6 +341,7 @@ def random_builder(depth, width, height):
         builder.build_with(PrefabBuilder(
             PrefabSection(RIGHT_FORT, 15, 43, (HorizontalPlacement.RIGHT, VerticalPlacement.TOP))))
 
+    builder.build_with(DiagonalTilePathCleaner())
     builder.build_with(DoorPlacement())
     builder.build_with(PrefabBuilder(PrefabRoom('', 1, 1, 1, 100))) # TO FIX
 
@@ -376,7 +378,6 @@ def build_random_map(depth, width, height):
     # return random_build_example(depth)
     # return random_builder(depth, width, height)
 
-    '''
     builder = BuilderChain(depth, width, height)
     builder.start_with(SimpleMapBuilder())
     builder.build_with(RoomDrawer())
@@ -390,13 +391,15 @@ def build_random_map(depth, width, height):
     builder.build_with(RoomBasedStartingPosition())
     builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100)))
     return builder
-    '''
 
+    """
     builder = BuilderChain(depth, width, height)
     builder.start_with(DLABuilder().insectoid())
     builder.build_with(AreaStartingPosition(StartX.CENTER, StartY.CENTER))
     builder.build_with(CullUnreachable())
+    builder.build_with(DiagonalTilePathCleaner())
     builder.build_with(VoronoiSpawning())
     builder.build_with(DistantExit())
     return builder
+    """
 
