@@ -162,8 +162,8 @@ def tick():
         elif result == ItemMenuResult.ACTION:
             print(f'action is : {action}')
             new_state = action(chosen_item)
-            run_game_systems()
             run_state.change_state(new_state)
+            run_render_systems()
 
     elif run_state.current_state == States.SHOW_TARGETING:
         result, item, target_pos = show_targeting()
@@ -188,6 +188,7 @@ def run_game_systems():
 
 def run_render_systems():
     terminal.clear()
+    World.update()
     render_map_camera()
     render_entities_camera()
     draw_tooltip()
