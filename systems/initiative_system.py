@@ -22,13 +22,18 @@ class InitiativeSystem(System):
         # subjects = sorted(subjects, key=lambda entry: entry[1][0].current)
 
         for entity, (initiative, position) in subjects:
+            print(f'INITIATIVE: {entity} initiative is : {initiative.current}')
+
             initiative_cost = World.get_entity_component(entity, InitiativeCostComponent)
             if initiative_cost:
                 initiative.current += initiative_cost.cost
                 World.remove_component(InitiativeCostComponent, entity)
             else:
                 if entity != player and distance_to(player_pos.x, player_pos.y, position.x, position.y) > config.MIN_DISTANCE_TO_BE_ACTIVE:
+                    print(f'INITIATIVE: {entity} is not active. Initiative is : {initiative.current}')
                     continue
+
+                print(f'INITIATIVE: {entity} is active, with : {initiative.current}')
 
                 initiative.current -= config.DEFAULT_INITIATIVE_TICK
                 if initiative.current < 1:

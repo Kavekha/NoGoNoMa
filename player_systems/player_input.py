@@ -47,8 +47,10 @@ def player_input():
             has_act = try_move_player(-1, 1)
 
         # others
-        elif key == terminal.TK_G:
-            get_item(World.fetch('player'))
+            '''
+            elif key == terminal.TK_G:
+                get_item(World.fetch('player'))
+            '''
         elif key == terminal.TK_I:
             show_item_screen()
             return States.SHOW_INVENTORY

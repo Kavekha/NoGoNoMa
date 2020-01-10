@@ -154,7 +154,7 @@ def tick():
     elif run_state.current_state == States.SHOW_TARGETING:
         result, item, target_pos = show_targeting()
         if result == ItemMenuResult.CANCEL:
-            run_state.change_state(States.TICKING)
+            run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             select_target(item, target_pos)
             run_state.change_state(States.TICKING)
