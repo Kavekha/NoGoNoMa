@@ -1,23 +1,20 @@
 from bearlibterminal import terminal
 
-from itertools import product as it_product
 from enum import Enum
 
 from ui_system.render_menus import draw_background
 from ui_system.render_functions import get_item_color, get_item_display_name, print_shadow
 from world import World
-from components.obfuscated_name_component import ObfuscatedNameComponent
-from components.consumable_component import ConsumableComponent
+from components.name_components import ObfuscatedNameComponent
 from components.provides_healing_component import ProvidesHealingComponent
-from components.items_component import MeleeWeaponComponent
-from components.equipped_component import EquippedComponent
+from components.items_component import MeleeWeaponComponent, ConsumableComponent
+from components.equip_components import EquippedComponent, EquippableComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
-from components.equippable_component import EquippableComponent
 from components.inflicts_damage_component import InflictsDamageComponent
-from components.magic_item_component import MagicItemComponent
+from components.magic_item_components import MagicItemComponent
 from components.ranged_component import RangedComponent
-from components.attributes_component import AttributesComponent
+from components.character_components import AttributesComponent
 from components.pools_component import Pools
 from components.skills_component import SkillsComponent, Skills
 from systems.inventory_system import get_equipped_items, get_items_in_inventory

@@ -1,6 +1,6 @@
 from world import World
 from map_builders.create_random_map import build_random_map
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from components.viewshed_component import ViewshedComponent
 
 

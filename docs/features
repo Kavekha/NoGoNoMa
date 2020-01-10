@@ -1,10 +1,13 @@
 Release 5 - Done.
     > Initiative & Initiative system. Refacto cycle tick & states.
     > fix: optimisation cycle Ticking.
+    > Systeme de mouvement, logique au même endroit.
+
 
 Release 5 - Systems & items + API
     4.1 - Gestion du tour par tour.
-        to fix: "Enemi sur la meme case"
+        > Refacto Mouvement: clean up à faire.
+        Fix: "Enemi sur la meme case"
         Annuler scroll, selectionner case vide, se deplacer dans un mur : Ne coute plus le tour.
         Action coute de l'initiative?
 

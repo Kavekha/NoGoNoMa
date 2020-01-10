@@ -3,7 +3,7 @@ from bearlibterminal import terminal
 import time
 
 from world import World
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from components.renderable_component import RenderableComponent
 from components.hidden_component import HiddenComponent
 from ui_system.interface import Interface, GraphicalModes
