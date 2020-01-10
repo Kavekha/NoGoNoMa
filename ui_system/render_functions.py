@@ -3,9 +3,8 @@ from bearlibterminal import terminal
 import re
 
 from ui_system.interface import Interface
-from components.magic_item_component import MagicItemComponent
-from components.name_component import NameComponent
-from components.obfuscated_name_component import ObfuscatedNameComponent
+from components.magic_item_components import MagicItemComponent
+from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.items_component import ItemComponent
 from data.items_enum import MagicItemClass
 from texts import Texts

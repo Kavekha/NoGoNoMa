@@ -1,7 +1,7 @@
 from enum import Enum
 
-from components.in_backpack_component import InBackPackComponent
-from components.equipped_component import EquippedComponent
+from components.items_component import InBackPackComponent
+from components.equip_components import EquippedComponent
 from player_systems.game_system import player_gain_xp, xp_for_next_depth
 from world import World
 import config

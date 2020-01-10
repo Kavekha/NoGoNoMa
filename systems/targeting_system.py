@@ -4,7 +4,7 @@ from systems.inventory_system import use_item
 from world import World
 from components.targeting_component import TargetingComponent
 from components.viewshed_component import ViewshedComponent
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from ui_system.ui_enums import Layers
 from ui_system.render_camera import get_screen_bounds, draw_tile, render_entities_camera
 from map_builders.commons import distance_to

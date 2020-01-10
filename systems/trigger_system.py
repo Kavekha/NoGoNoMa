@@ -1,7 +1,7 @@
 from systems.system import System
 from world import World
-from components.triggers_components import EntityMovedComponent, EntryTriggerComponent, ActivationComponent
-from components.position_component import PositionComponent
+from components.triggers_components import EntryTriggerComponent, ActivationComponent
+from components.position_components import PositionComponent, EntityMovedComponent
 from components.hidden_component import HiddenComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.suffer_damage_component import SufferDamageComponent

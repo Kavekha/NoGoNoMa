@@ -1,17 +1,15 @@
 from random import randint
 from itertools import product as it_product
 
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from components.renderable_component import RenderableComponent
 from components.viewshed_component import ViewshedComponent
-from components.name_component import NameComponent
+from components.name_components import NameComponent
 from components.blocktile_component import BlockTileComponent
-from components.player_component import PlayerComponent
-from components.attributes_component import AttributesComponent
+from components.character_components import AttributesComponent, AutopickupComponent, PlayerComponent
 from components.skills_component import SkillsComponent, Skills
 from components.pools_component import Pools
-from components.autopickup_component import AutopickupComponent
-from components.initiative import InitiativeComponent
+from components.initiative_components import InitiativeComponent
 
 from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level

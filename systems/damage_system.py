@@ -5,8 +5,8 @@ from world import World
 import config
 from components.pools_component import Pools
 from components.suffer_damage_component import SufferDamageComponent
-from components.name_component import NameComponent
-from components.position_component import PositionComponent
+from components.name_components import NameComponent
+from components.position_components import PositionComponent
 from player_systems.game_system import player_gain_xp, calculate_xp_from_entity
 from player_systems.on_death import on_player_death
 from texts import Texts

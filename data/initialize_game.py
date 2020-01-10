@@ -28,6 +28,7 @@ def init_game(master_seed=None):
     # create systems.
     ui_system = UiSystem()
     World.add_system(ui_system)
+
     inventory_system = ItemCollectionSystem()
     World.add_system(inventory_system)
     drop_system = ItemDropSystem()
@@ -42,13 +43,12 @@ def init_game(master_seed=None):
 
     map_indexing_system = MapIndexingSystem()
     World.add_system(map_indexing_system)
+
     trigger_system = TriggerSystem()
     World.add_system(trigger_system)
 
     monster_ai_system = MonsterAi()
     World.add_system(monster_ai_system)
-    initiative_system = InitiativeSystem()
-    World.add_system(initiative_system)
 
     melee_combat_system = MeleeCombatSystem()
     World.add_system(melee_combat_system)
@@ -57,6 +57,9 @@ def init_game(master_seed=None):
 
     particule_spawn_system = ParticuleSpawnSystem()
     World.add_system(particule_spawn_system)
+
+    initiative_system = InitiativeSystem()
+    World.add_system(initiative_system)
 
     # add player position to ressources
     player = spawn_player(0, 0)

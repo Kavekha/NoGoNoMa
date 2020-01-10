@@ -4,7 +4,7 @@ import config
 from world import World
 from texts import Texts
 from components.pools_component import Pools
-from components.attributes_component import AttributesComponent
+from components.character_components import AttributesComponent
 from components.skills_component import SkillsComponent
 from components.blocktile_component import BlockVisibilityComponent, BlockTileComponent
 from components.renderable_component import RenderableComponent

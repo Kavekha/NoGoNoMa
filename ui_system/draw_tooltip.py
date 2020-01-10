@@ -3,10 +3,10 @@ from bearlibterminal import terminal
 from world import World
 from ui_system.ui_enums import Layers
 from ui_system.render_functions import get_item_display_name
-from components.position_component import PositionComponent
-from components.name_component import NameComponent
+from components.position_components import PositionComponent
+from components.name_components import NameComponent
 from components.hidden_component import HiddenComponent
-from components.attributes_component import AttributesComponent
+from components.character_components import AttributesComponent
 from components.pools_component import Pools
 from ui_system.interface import Interface
 from ui_system.render_functions import print_shadow

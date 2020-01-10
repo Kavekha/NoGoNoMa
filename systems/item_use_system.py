@@ -5,19 +5,16 @@ from components.wants_use_item_component import WantsToUseComponent
 from components.pools_component import Pools
 from components.provides_healing_component import ProvidesHealingComponent
 from components.inflicts_damage_component import InflictsDamageComponent
-from components.name_component import NameComponent
-from components.consumable_component import ConsumableComponent
+from components.name_components import NameComponent
 from components.suffer_damage_component import SufferDamageComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.viewshed_component import ViewshedComponent
 from components.confusion_component import ConfusionComponent
-from components.equippable_component import EquippableComponent
-from components.equipped_component import EquippedComponent
-from components.in_backpack_component import InBackPackComponent
-from components.position_component import PositionComponent
+from components.equip_components import EquippedComponent, EquippableComponent
+from components.position_components import PositionComponent
 from systems.particule_system import ParticuleBuilder
-from components.identified_component import IdentifiedItemComponent
-from components.items_component import MeleeWeaponComponent
+from components.magic_item_components import IdentifiedItemComponent
+from components.items_component import MeleeWeaponComponent, ConsumableComponent, InBackPackComponent
 from systems.inventory_system import drop_item_from_inventory, select_item_from_inventory
 from world import World
 from texts import Texts
@@ -142,7 +139,7 @@ class ItemUseSystem(System):
                                     f'{Texts.get_text("YOU_EQUIP").format(Texts.get_text(item_name))}'
                                     f'[/color]')
 
-            World.remove_component(WantsToUseComponent, entity)
+        World.remove_component_for_all_entities(WantsToUseComponent)
 
 
 def get_available_item_actions(item):
