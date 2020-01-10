@@ -1,5 +1,5 @@
 from systems.system import System
-
+from components.character_components import PlayerComponent
 
 class World:
     _next_available_id = 1  # If 0, will return False when checking entity :D
@@ -186,7 +186,6 @@ class World:
             cls.insert(ressource_name, ressource_content)
 
         # Player has to be updated, because entity player is not the same since we recreate everything.
-        from components.player_component import PlayerComponent
         player_comp_list = cls.get_components(PlayerComponent)
         for entity, player in player_comp_list:
             # should have only one
@@ -200,7 +199,7 @@ class World:
             cls.add_system(system)
 
         print('----- END RELOAD -------')
-        from components.position_component import PositionComponent
+        from components.position_components import PositionComponent
         player = cls.fetch('player')
         player_pos = cls.get_entity_component(player, PositionComponent)
         print(f'player is at {player_pos.x}, {player_pos.y} after reload')

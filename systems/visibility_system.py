@@ -4,7 +4,7 @@ from copy import deepcopy
 
 from systems.system import System
 from world import World
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from components.viewshed_component import ViewshedComponent
 from components.hidden_component import HiddenComponent
 from components.skills_component import Skills

@@ -1,18 +1,13 @@
-import tcod as tcod
-
 from world import World
 import config
-from components.position_component import PositionComponent
-from components.autopickup_component import AutopickupComponent
-from components.viewshed_component import ViewshedComponent
+from components.position_components import PositionComponent, ApplyMoveComponent
+
 from components.pools_component import Pools
 from components.wants_to_melee_component import WantsToMeleeComponent
-from components.triggers_components import EntityMovedComponent
 from components.door_component import DoorComponent
 from player_systems.game_system import opening_door
 from gmap.gmap_enums import TileType
 from ui_system.ui_enums import NextLevelResult
-from systems.inventory_system import get_item
 from texts import Texts
 
 
@@ -51,7 +46,6 @@ def try_move_player(delta_x, delta_y):
     player_pos = World.get_entity_component(player, PositionComponent)
 
     # anti auto kill si clic sur soit meme avec move by click
-    print(f'player_pos x, delta {player_pos.x, delta_x} and player y, delta {player_pos.y, delta_y}')
     if not delta_x and not delta_y:
         return
 
@@ -70,17 +64,7 @@ def try_move_player(delta_x, delta_y):
 
     # if not current_map.blocked_tiles[destination_idx] and not current_map.out_of_bound(destination_idx):
     if available_tile_for_move(destination_idx):
-        player_pos.x = min(current_map.width - 1, max(0, player_pos.x + delta_x))
-        player_pos.y = min(current_map.height - 1, max(0, player_pos.y + delta_y))
-
-        player_viewshed = World.get_entity_component(player, ViewshedComponent)
-        player_viewshed.dirty = True
-
-        has_moved = EntityMovedComponent()
-        World.add_component(has_moved, player)
-
-        if World.get_entity_component(player, AutopickupComponent):
-            get_item(player)
+        World.add_component(ApplyMoveComponent(destination_idx), player)
 
 
 def try_next_level():

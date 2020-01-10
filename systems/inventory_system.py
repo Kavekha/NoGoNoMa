@@ -2,16 +2,15 @@ from systems.system import System
 from world import World
 
 from components.wants_to_pickup_component import WantsToPickUpComponent
-from components.position_component import PositionComponent
-from components.items_component import ItemComponent
+from components.position_components import PositionComponent
+from components.items_component import ItemComponent, InBackPackComponent
 from components.wants_use_item_component import WantsToUseComponent
 from components.wants_to_drop_component import WantsToDropComponent
-from components.autopickup_component import AutopickupComponent
-from components.name_component import NameComponent
-from components.in_backpack_component import InBackPackComponent
+from components.character_components import AutopickupComponent
+from components.name_components import NameComponent
 from components.ranged_component import RangedComponent
 from components.targeting_component import TargetingComponent
-from components.equipped_component import EquippedComponent
+from components.equip_components import EquippedComponent
 from state import States
 from texts import Texts
 from ui_system.render_functions import get_obfuscate_name

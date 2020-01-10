@@ -3,17 +3,18 @@ from random import randint
 from systems.system import System
 from world import World
 from components.wants_to_melee_component import WantsToMeleeComponent
-from components.name_component import NameComponent
+from components.name_components import NameComponent
 from components.pools_component import Pools
-from components.attributes_component import AttributesComponent
+from components.character_components import AttributesComponent
 from components.suffer_damage_component import SufferDamageComponent
 from components.items_component import MeleeWeaponComponent, WearableComponent
-from components.equipped_component import EquippedComponent
+from components.equip_components import EquippedComponent
 from components.skills_component import SkillsComponent, Skills
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from systems.particule_system import ParticuleBuilder
 from player_systems.game_system import skill_level
+from player_systems.initiative_costs_mecanisms import calculate_fight_cost
 from texts import Texts
 from data.items_enum import EquipmentSlots, WeaponAttributes
 import config
@@ -126,4 +127,9 @@ class MeleeCombatSystem(System):
                         f'{Texts.get_text("UNABLE_TO_HURT").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name))}')
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_NO_HURT, '*', 'particules/miss.png')
-            World.remove_component(WantsToMeleeComponent, entity)
+
+                # initiative cost
+                World.add_component(calculate_fight_cost(entity), entity)
+
+        World.remove_component_for_all_entities(WantsToMeleeComponent)
+

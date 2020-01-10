@@ -6,7 +6,7 @@ from systems.system import System
 from world import World
 from ui_system.ui_enums import Layers
 from components.particule_component import ParticuleLifetimeComponent
-from components.position_component import PositionComponent
+from components.position_components import PositionComponent
 from components.renderable_component import RenderableComponent
 from ui_system.render_camera import render_entities_camera
 import config

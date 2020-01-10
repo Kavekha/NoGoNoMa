@@ -1,11 +1,10 @@
 from systems.system import System
 from world import World
 from data.load_raws import RawsMaster
-from components.player_component import PlayerComponent
-from components.identified_component import IdentifiedItemComponent
-from components.name_component import NameComponent
+from components.character_components import PlayerComponent
+from components.magic_item_components import IdentifiedItemComponent
+from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.items_component import ItemComponent
-from components.obfuscated_name_component import ObfuscatedNameComponent
 
 
 class ItemIdentificationSystem(System):

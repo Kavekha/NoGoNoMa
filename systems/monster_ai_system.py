@@ -3,15 +3,15 @@ import tcod as tcod
 import math
 
 from systems.system import System
-from components.monster_component import MonsterComponent
+from components.character_components import MonsterComponent
 from components.viewshed_component import ViewshedComponent
-from components.position_component import PositionComponent
-from components.name_component import NameComponent
+from components.position_components import PositionComponent, EntityMovedComponent, ApplyMoveComponent
+from components.name_components import NameComponent
 from components.wants_to_melee_component import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
-from components.triggers_components import EntityMovedComponent
-from components.initiative import MyTurn
+from components.initiative_components import MyTurn
 from systems.particule_system import ParticuleBuilder
+from player_systems.initiative_costs_mecanisms import wait_turn_cost
 from map_builders.commons import distance_to
 from world import World
 
@@ -37,12 +37,17 @@ class MonsterAi(System):
 
             if can_act:
                 if viewshed.visible_tiles[y][x]:
+                    print(f'me, monster {entity}, I see player position')
                     if distance_to(position_component.x, position_component.y,
                                    player_position.x, player_position.y) <= 1:
                         want_to_melee = WantsToMeleeComponent(player)
                         World.add_component(want_to_melee, entity)
                     else:
                         self.move_astar(entity, viewshed, position_component, player_position.x, player_position.y)
+                else:
+                    print(f'me, monster {entity}, I dont see player and wait.')
+                    # do nothing, pass its turn.
+                    World.add_component(wait_turn_cost(entity), entity)
 
     def move_towards(self, entity, position_component, target_x, target_y):
         current_map = World.fetch('current_map')
@@ -95,10 +100,14 @@ class MonsterAi(System):
             if x or y:
                 # Set self's coordinates to the next path tile
                 if self.can_move(x, y):
+                    destination_idx = current_map.xy_idx(x, y)
+                    World.add_component(ApplyMoveComponent(destination_idx), entity)
+                    """
                     position_component.x = x
                     position_component.y = y
                     has_moved = EntityMovedComponent()
                     World.add_component(has_moved, entity)
+                    """
                 else:
                     print('astar : cant move')
         else:

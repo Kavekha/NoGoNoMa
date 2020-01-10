@@ -1,30 +1,27 @@
 import json
 import os
 
-from components.position_component import PositionComponent
-from components.name_component import NameComponent
+from components.position_components import PositionComponent
+from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.renderable_component import RenderableComponent
-from components.consumable_component import ConsumableComponent
 from components.provides_healing_component import ProvidesHealingComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
-from components.items_component import ItemComponent, MeleeWeaponComponent, WearableComponent
-from components.equippable_component import EquippableComponent
-from components.monster_component import MonsterComponent
+from components.items_component import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent
+from components.equip_components import EquippableComponent
 from components.blocktile_component import BlockTileComponent, BlockVisibilityComponent
 from components.viewshed_component import ViewshedComponent
-from components.attributes_component import AttributesComponent
+from components.character_components import AttributesComponent, MonsterComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
-from components.magic_item_component import MagicItemComponent
-from components.obfuscated_name_component import ObfuscatedNameComponent
+from components.magic_item_components import MagicItemComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import EntryTriggerComponent, ActivationComponent
 from components.door_component import DoorComponent
-from components.initiative import InitiativeComponent
+from components.initiative_components import InitiativeComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
 from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
