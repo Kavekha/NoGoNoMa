@@ -21,29 +21,30 @@ from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
 def player_input():
     if terminal.has_input():
         key = terminal.read()
+        has_act = False
 
         if key == terminal.TK_MOUSE_LEFT:
             mouse_map_pos_x, mouse_map_pos_y = get_map_coord_with_mouse_when_zooming()
             # move_order_player(mouse_map_pos_x, mouse_map_pos_y)
-            move_on_click_player(mouse_map_pos_x, mouse_map_pos_y)
+            has_act = move_on_click_player(mouse_map_pos_x, mouse_map_pos_y)
 
         elif key == terminal.TK_LEFT or key == terminal.TK_KP_4 or key == terminal.TK_H:
-            try_move_player(-1, 0)
+            has_act = try_move_player(-1, 0)
         elif key == terminal.TK_RIGHT or key == terminal.TK_KP_6 or key == terminal.TK_L:
-            try_move_player(1, 0)
+            has_act = try_move_player(1, 0)
         elif key == terminal.TK_UP or key == terminal.TK_KP_8 or key == terminal.TK_K:
-            try_move_player(0, -1)
+            has_act = try_move_player(0, -1)
         elif key == terminal.TK_DOWN or key == terminal.TK_KP_2 or key == terminal.TK_J:
-            try_move_player(0, 1)
+            has_act = try_move_player(0, 1)
         #diagonal
         elif key == terminal.TK_KP_9 or key == terminal.TK_Y:
-            try_move_player(1, -1)
+            has_act = try_move_player(1, -1)
         elif key == terminal.TK_KP_7 or key == terminal.TK_U:
-            try_move_player(-1, -1)
+            has_act = try_move_player(-1, -1)
         elif key == terminal.TK_KP_3 or key == terminal.TK_N:
-            try_move_player(1, 1)
+            has_act = try_move_player(1, 1)
         elif key == terminal.TK_KP_1 or key == terminal.TK_B:
-            try_move_player(-1, 1)
+            has_act = try_move_player(-1, 1)
 
         # others
         elif key == terminal.TK_G:
@@ -82,6 +83,10 @@ def player_input():
             terminal.close()
             sys.exit()
         else:
+            return States.AWAITING_INPUT
+
+        # has not moved?
+        if not has_act:
             return States.AWAITING_INPUT
         return States.TICKING
     return States.AWAITING_INPUT

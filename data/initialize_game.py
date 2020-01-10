@@ -26,9 +26,6 @@ def init_game(master_seed=None):
         World.insert('seed', master_seed)
 
     # create systems.
-    ui_system = UiSystem()
-    World.add_system(ui_system)
-
     inventory_system = ItemCollectionSystem()
     World.add_system(inventory_system)
     drop_system = ItemDropSystem()
@@ -37,6 +34,9 @@ def init_game(master_seed=None):
     World.add_system(item_use_system)
     identification_system = ItemIdentificationSystem()
     World.add_system(identification_system)
+
+    ui_system = UiSystem()
+    World.add_system(ui_system)
 
     visibility_system = VisibilitySystem()
     World.add_system(visibility_system)
