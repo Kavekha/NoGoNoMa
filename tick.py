@@ -55,10 +55,10 @@ def tick():
         if result == YesNoResult.NO:
             # Je ne veux plus quitter
             run_state.change_state(States.AWAITING_INPUT)
-            run_game_systems()
+            run_render_systems()
         elif result == YesNoResult.YES:
             run_state.change_state(States.SAVE_GAME)
-            run_game_systems()
+            run_render_systems()
 
     elif run_state.current_state == States.SAVE_GAME:
         run_state.change_state(States.MAIN_MENU)
@@ -125,24 +125,12 @@ def tick():
         if run_state.current_state == States.AWAITING_INPUT:
             run_render_systems()
 
-        '''
-        elif run_state.current_state == States.PLAYER_TURN:
-            run_systems()
-            if run_state.current_state == States.PLAYER_TURN:
-                run_state.change_state(States.MONSTER_TURN)
-        
-        elif run_state.current_state == States.MONSTER_TURN:
-            run_systems()
-            if run_state.current_state == States.MONSTER_TURN:
-                run_state.change_state(States.AWAITING_INPUT)
-        '''
-
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
         items_in_backpack = get_items_in_inventory(World.fetch('player'))
         result, new_state, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
-            run_game_systems()
+            run_render_systems()
             run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             run_state.args = item
@@ -187,17 +175,6 @@ def run_game_systems():
 
 
 def run_render_systems():
-    terminal.clear()
-    World.update()
-    render_map_camera()
-    render_entities_camera()
-    draw_tooltip()
-    terminal.refresh()
-
-
-def run_systems():
-    run_state = World.fetch('state')
-    print(f'--- run systems : {run_state.current_state}---')
     terminal.clear()
     World.update()
     render_map_camera()
