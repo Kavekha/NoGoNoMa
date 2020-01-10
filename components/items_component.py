@@ -2,6 +2,15 @@ class ItemComponent:
     pass
 
 
+class ConsumableComponent:
+    pass
+
+
+class InBackPackComponent:
+    def __init__(self, owner):
+        self.owner = owner
+
+
 class MeleeWeaponComponent:
     def __init__(self, attribute, min_dmg, max_dmg, dmg_bonus, hit_bonus):
         self.attribute = attribute
