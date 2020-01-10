@@ -2,7 +2,7 @@ from bearlibterminal import terminal
 
 import sys
 
-from player_systems.try_move_player import try_move_player, try_next_level, move_on_click_player
+from player_systems.try_move_player import try_move_player, try_next_level, move_on_click_player, action_wait
 from systems.inventory_system import get_item
 from systems.item_use_system import get_available_item_actions
 from state import States
@@ -44,6 +44,7 @@ def player_input():
             try_move_player(1, 1)
         elif key == terminal.TK_KP_1 or key == terminal.TK_B:
             try_move_player(-1, 1)
+
         # others
         elif key == terminal.TK_G:
             get_item(World.fetch('player'))
@@ -61,6 +62,7 @@ def player_input():
                 show_victory_menu()
                 return States.VICTORY
         elif key == terminal.TK_KP_5 or key == terminal.TK_Z:
+            action_wait(World.fetch('player'))
             return States.TICKING
 
         elif key == terminal.TK_PAGEUP:

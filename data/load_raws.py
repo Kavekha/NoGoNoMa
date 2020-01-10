@@ -509,7 +509,7 @@ class RawsMaster:
                                          )
 
         if to_create.blocks_tile:
-            components_for_entity.append(BlockTileComponent)
+            components_for_entity.append(BlockTileComponent())
 
         if to_create.vision_range:
             components_for_entity.append(ViewshedComponent(to_create.vision_range))

@@ -14,7 +14,6 @@ from systems.item_use_system import ItemUseSystem
 from systems.item_identification_system import ItemIdentificationSystem
 from systems.trigger_system import TriggerSystem
 from systems.initiative_system import InitiativeSystem
-from systems.movement_system import MovementSystem
 from gmap.master_dungeon import MasterDungeon
 from gmap.spawner import spawn_player
 
@@ -41,9 +40,6 @@ def init_game(master_seed=None):
 
     identification_system = ItemIdentificationSystem()
     World.add_system(identification_system)
-
-    movement_system = MovementSystem()
-    World.add_system(movement_system)
 
     map_indexing_system = MapIndexingSystem()
     World.add_system(map_indexing_system)

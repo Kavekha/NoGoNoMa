@@ -1,4 +1,4 @@
-from world import World
+"""from world import World
 from systems.system import System
 from player_systems.initiative_costs_mecanisms import calculate_move_cost
 from components.position_components import PositionComponent, ApplyMoveComponent, EntityMovedComponent
@@ -38,3 +38,4 @@ class MovementSystem(System):
             World.add_component(calculate_move_cost(entity), entity)
 
         World.remove_component_for_all_entities(ApplyMoveComponent)
+"""

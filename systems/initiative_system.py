@@ -21,30 +21,23 @@ class InitiativeSystem(System):
         # sorting initiative
         subjects = World.get_components(InitiativeComponent, PositionComponent)
         # subjects = sorted(subjects, key=lambda entry: entry[1][0].current)
-        print(f'UPDATA INITIATIVE')
 
         for entity, (initiative, position) in subjects:
-            entity_name = World.get_entity_component(entity, NameComponent)
-            print(f'{entity_name.name}-{entity}: My initiative was {initiative.current}')
-
-            # Cas1: I have an initiativeCost: I've done something and my initiative need to be updated.
+            print(f'entity {entity} with initiative of {initiative.current}')
+            # Cas 1: I have an initiativeCost: I've done something and my initiative need to be updated.
             initiative_cost = World.get_entity_component(entity, InitiativeCostComponent)
             if initiative_cost:
                 # initiative.current += randint(1, config.DEFAULT_INITIATIVE_GAIN)
                 initiative.current += initiative_cost.cost
                 # Here go any Malus / Bonus for initiative. Or initiative action cost?
                 World.remove_component(InitiativeCostComponent, entity)
-            print(f'{entity_name.name}-{entity}: My initiative after cost is {initiative.current}')
+            else:
+                # if no cost, then no action: let's reduce my initiative and see if its my turn:
+                # !NOTA: if we do initiative.cost then initiative.Current - 1, we risk to get in a unending loop.
+                initiative.current -= config.DEFAULT_INITIATIVE_TICK
+                if initiative.current < 1:
+                    # Cas 2: I dont have an InitiativeCost. I must do something.
+                    World.add_component(MyTurn(), entity)
 
-            # Then, let's reduce my initiative and see if its my turn:
-            initiative.current -= config.DEFAULT_INITIATIVE_TICK
-            print(f'{entity_name.name}-{entity}: My initiative after tick is {initiative.current}')
-            if initiative.current < 1:
-                # Cas 2: I dont have an InitiativeCost. I must do something.
-                World.add_component(MyTurn(), entity)
-
-                if entity == World.fetch('player'):
-                    run_state.change_state(States.AWAITING_INPUT)
-
-                # break: now we know I have to play, I play!
-                break
+                    if entity == World.fetch('player'):
+                        run_state.change_state(States.AWAITING_INPUT)
