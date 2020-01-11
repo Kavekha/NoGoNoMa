@@ -2,7 +2,7 @@ from random import randint
 
 from systems.system import System
 from world import World
-from effects.effects_system import EffectSystem, EffectType, Targets, Effect, TargetType
+from effects.effects_system import add_effect, EffectType, Targets, Effect, TargetType
 from components.intent_components import WantsToMeleeComponent
 from components.name_components import NameComponent
 from components.pools_component import Pools
@@ -122,7 +122,7 @@ class MeleeCombatSystem(System):
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_HIT, '!!', 'particules/attack.png')
 
-                    EffectSystem.add_effect(entity, Effect(EffectType.DAMAGE, damage=attack_dmg), Targets(TargetType.SINGLE, target=wants_melee.target))
+                    add_effect(entity, Effect(EffectType.DAMAGE, damage=attack_dmg), Targets(TargetType.SINGLE, target=wants_melee.target))
                     # target_suffer_dmg = SufferDamageComponent(attack_dmg, attacker_is_player)
                     # World.add_component(target_suffer_dmg, wants_melee.target)
                 else:
