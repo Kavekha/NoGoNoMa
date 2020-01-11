@@ -75,6 +75,7 @@ def player_input():
         elif key == terminal.TK_ENTER:
             current_map = World.fetch('current_map')
             current_map.revealed_tiles = [True] * (current_map.height * current_map.width)
+            terminal.refresh()
 
         elif key == terminal.TK_ESCAPE:
             show_quit_game_menu()

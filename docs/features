@@ -6,11 +6,12 @@ Release 5 - Done.
     > Refresh UI order against other systems.
     > se deplacer dans un mur : Ne coute plus le tour.
     > Annuler scroll
+    > improve: DiagonalPathRemoval builder
 
 Release 5 - Systems & items + API
     4.1 - Gestion du tour par tour.
-
-        improve: DiagonalPathRemoval builder
+        > improve: DiagonalPathRemoval builder
+        fix: Parfois, Player "didnt move" contre un ennemi. (Vu: ligne vers la droite).
 
     4.2 - Effets generiques.
         Generic effects & refacto.
