@@ -7,6 +7,12 @@ from systems.particule_system import ParticuleBuilder
 from world import World
 from effects.targeting_effect import entity_position
 from components.pools_component import Pools
+
+from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
+from player_systems.on_death import on_player_death
+from components.name_components import NameComponent
+from texts import Texts
+
 import config
 
 
@@ -14,6 +20,7 @@ class EffectType(Enum):
     DAMAGE = 0      # {damage:0}
     BLOOD_STAINS = 1
     PARTICULE = 2
+    ENTITY_DEATH = 3
 
 
 class Effect:
@@ -82,13 +89,15 @@ def target_applicator(effect_spawner):
 
 def affect_entity(effect_spawner, target):
     if effect_spawner.effect.effect_type == EffectType.DAMAGE:
-        inflict_damage_effect(effect_spawner.effect, target)
+        inflict_damage_effect(effect_spawner, target)
     elif effect_spawner.effect.effect_type == EffectType.BLOOD_STAINS:
         idx = entity_position(target)
         inflict_bloodstain(idx)
     elif effect_spawner.effect.effect_type == EffectType.PARTICULE:
         idx = entity_position(target)
         particule_to_tile(effect_spawner, idx)
+    elif effect_spawner.effect.effect_type == EffectType.ENTITY_DEATH:
+        death_effect(effect_spawner, target)
     else:
         return
 
@@ -114,7 +123,8 @@ def tile_effect_hits_entity(effect):
         return False
 
 
-def inflict_damage_effect(effect_spawner_effect, target):
+def inflict_damage_effect(effect_spawner, target):
+    effect_spawner_effect = effect_spawner.effect
     pool = World.get_entity_component(target, Pools)
     # pool & dmg effect
     if pool and effect_spawner_effect.effect_type == EffectType.DAMAGE:
@@ -132,6 +142,11 @@ def inflict_damage_effect(effect_spawner_effect, target):
                                 lifetime=1),
                    Targets(TargetType.SINGLE, target=target))
 
+        if pool.hit_points.current < 1:
+            add_effect(effect_spawner.creator,
+                       Effect(EffectType.ENTITY_DEATH),
+                       Targets(TargetType.SINGLE, target=target))
+
 
 def inflict_bloodstain(tile_idx):
     current_map = World.fetch('current_map')
@@ -145,3 +160,23 @@ def particule_to_tile(effect_spawner, tile_idx):
         ParticuleBuilder.request(x, y,
                                  effect_spawner.effect.fg,
                                  effect_spawner.effect.glyph, effect_spawner.effect.sprite)
+
+
+def death_effect(effect_spawner, target):
+    # remove
+    current_map = World.fetch('current_map')
+    target_pos = entity_position(target)
+    current_map.blocked_tiles[target_pos] = False
+
+    name = World.get_entity_component(target, NameComponent)
+    logs = World.fetch('logs')
+    logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
+                    f'{Texts.get_text("_HAS_BEEN_SLAIN").format(Texts.get_text(name.name))}[/color]')
+
+    if effect_spawner.creator == World.fetch('player'):
+        player_gain_xp(calculate_xp_from_entity(target))
+
+    if target == World.fetch('player'):
+        on_player_death()
+    else:
+        World.delete_entity(target)
