@@ -70,12 +70,14 @@ def player_input():
 
         elif key == terminal.TK_PAGEUP:
             Interface.set_zoom(Interface.zoom + 1)
+            return States.REFRESH
         elif key == terminal.TK_PAGEDOWN:
             Interface.set_zoom(Interface.zoom - 1)
+            return States.REFRESH
         elif key == terminal.TK_ENTER:
             current_map = World.fetch('current_map')
             current_map.revealed_tiles = [True] * (current_map.height * current_map.width)
-            terminal.refresh()
+            return States.REFRESH
 
         elif key == terminal.TK_ESCAPE:
             show_quit_game_menu()

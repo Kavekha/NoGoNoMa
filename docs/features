@@ -7,11 +7,10 @@ Release 5 - Done.
     > se deplacer dans un mur : Ne coute plus le tour.
     > Annuler scroll
     > improve: DiagonalPathRemoval builder
+    > Zoom and Reveal mal rafraichis.
 
 Release 5 - Systems & items + API
-    4.1 - Gestion du tour par tour.
-        > improve: DiagonalPathRemoval builder
-        fix: Parfois, Player "didnt move" contre un ennemi. (Vu: ligne vers la droite).
+
 
     4.2 - Effets generiques.
         Generic effects & refacto.

@@ -119,6 +119,10 @@ def tick():
         run_state.change_state(player_input())
         draw_tooltip()
 
+    elif run_state.current_state == States.REFRESH:
+        run_state.change_state(States.AWAITING_INPUT)
+        run_all_systems()
+
     elif run_state.current_state == States.TICKING:
         run_game_systems()
         if run_state.current_state == States.AWAITING_INPUT:
