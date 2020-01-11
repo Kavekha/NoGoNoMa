@@ -3,7 +3,7 @@ from enum import Enum
 from random import randint
 
 from systems.system import System
-
+from systems.particule_system import ParticuleBuilder
 from world import World
 from effects.targeting_effect import entity_position
 from components.pools_component import Pools
@@ -13,6 +13,7 @@ import config
 class EffectType(Enum):
     DAMAGE = 0      # {damage:0}
     BLOOD_STAINS = 1
+    PARTICULE = 2
 
 
 class Effect:
@@ -22,6 +23,11 @@ class Effect:
 
         if effect_type == EffectType.DAMAGE:
             self.damage = kwargs.get('damage', 0)
+        elif effect_type == EffectType.PARTICULE:
+            self.glyph = kwargs.get('glyph')
+            self.fg = kwargs.get('fg')
+            self.sprite = kwargs.get('sprite')
+            self.lifetime = kwargs.get('lifetime')
         self.effect_type = effect_type
 
 
@@ -77,6 +83,12 @@ def target_applicator(effect_spawner):
 def affect_entity(effect_spawner, target):
     if effect_spawner.effect.effect_type == EffectType.DAMAGE:
         inflict_damage_effect(effect_spawner.effect, target)
+    elif effect_spawner.effect.effect_type == EffectType.BLOOD_STAINS:
+        idx = entity_position(target)
+        inflict_bloodstain(idx)
+    elif effect_spawner.effect.effect_type == EffectType.PARTICULE:
+        idx = entity_position(target)
+        particule_to_tile(effect_spawner, idx)
     else:
         return
 
@@ -89,6 +101,8 @@ def affect_tile(effect, tile_idx):
 
     if effect.effect_type == EffectType.BLOOD_STAINS:
         inflict_bloodstain(tile_idx)
+    elif effect.effect_type == EffectType.PARTICULE:
+        particule_to_tile(tile_idx, effect)
     else:
         return
 
@@ -102,14 +116,32 @@ def tile_effect_hits_entity(effect):
 
 def inflict_damage_effect(effect_spawner_effect, target):
     pool = World.get_entity_component(target, Pools)
+    # pool & dmg effect
     if pool and effect_spawner_effect.effect_type == EffectType.DAMAGE:
         pool.hit_points.current -= effect_spawner_effect.damage
 
+        # blood stain
         if randint(0, 100) < config.BLOOD_ON_GROUND_CHANCE:
-            tile_idx = entity_position(target)
-            add_effect(None, Effect(EffectType.BLOOD_STAINS), Targets(TargetType.TILE, target=tile_idx))
+            add_effect(None, Effect(EffectType.BLOOD_STAINS), Targets(TargetType.SINGLE, target=target))
+
+        # particule dmg
+        add_effect(None, Effect(EffectType.PARTICULE,
+                                glyph='!!',
+                                fg=config.COLOR_PARTICULE_HIT,
+                                sprite='particules/attack.png',
+                                lifetime=1),
+                   Targets(TargetType.SINGLE, target=target))
 
 
 def inflict_bloodstain(tile_idx):
     current_map = World.fetch('current_map')
     current_map.stains[tile_idx] = randint(1, 5)
+
+
+def particule_to_tile(effect_spawner, tile_idx):
+    if effect_spawner.effect.effect_type == EffectType.PARTICULE:
+        current_map = World.fetch('current_map')
+        x, y = current_map.index_to_point2d(tile_idx)
+        ParticuleBuilder.request(x, y,
+                                 effect_spawner.effect.fg,
+                                 effect_spawner.effect.glyph, effect_spawner.effect.sprite)
