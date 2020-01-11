@@ -23,6 +23,7 @@ def can_move_on_tile(x, y):
 
 
 def move_on_click_player(dx, dy):
+    """ Return true if has moved"""
     player = World.fetch('player')
     player_position = World.get_entity_component(player, PositionComponent)
     x, y = 0, 0
@@ -34,7 +35,7 @@ def move_on_click_player(dx, dy):
         y += 1
     elif dy - player_position.y < 0:
         y -= 1
-    try_move_player(x, y)
+    return try_move_player(x, y)
 
 
 def available_tile_for_move(destination_idx):
@@ -45,13 +46,13 @@ def available_tile_for_move(destination_idx):
 
 
 def try_move_player(delta_x, delta_y):
-    print(f'MOVING!')
+    """ return true if has moved """
     player = World.fetch('player')
     player_pos = World.get_entity_component(player, PositionComponent)
 
     # anti auto kill si clic sur soit meme avec move by click
     if not delta_x and not delta_y:
-        return
+        return False
 
     current_map = World.fetch('current_map')
     destination_idx = current_map.xy_idx(player_pos.x + delta_x, player_pos.y + delta_y)
@@ -61,16 +62,17 @@ def try_move_player(delta_x, delta_y):
         if target:
             want_to_melee = WantsToMeleeComponent(potential_target)
             World.add_component(want_to_melee, player)
-            return
+            return True
         door = World.get_entity_component(potential_target, DoorComponent)
         if door:
             opening_door(potential_target, door)
 
     x, y = current_map.index_to_point2d(destination_idx)
-    move_to(x, y, player, current_map)
+    return move_to(x, y, player, current_map)
 
 
 def move_to(x, y, entity, current_map):
+    """ return True if has moved """
     entity_pos = World.get_entity_component(entity, PositionComponent)
     from_idx = current_map.xy_idx(entity_pos.x, entity_pos.y)
     idx = current_map.xy_idx(x, y)
@@ -93,6 +95,11 @@ def move_to(x, y, entity, current_map):
 
         World.add_component(EntityMovedComponent(), entity)
         World.add_component(calculate_move_cost(entity), entity)
+        print(f'{entity} has moved')
+        return True
+    # didnt move
+    print(f'{entity} didnt move')
+    return False
 
 
 def action_wait(entity):
