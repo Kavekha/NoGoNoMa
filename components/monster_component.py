@@ -1,2 +1,0 @@
-class MonsterComponent:
-    pass
