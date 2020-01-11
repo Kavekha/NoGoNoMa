@@ -12,7 +12,7 @@ from gmap.utils import level_transition
 class States(Enum):
     AWAITING_INPUT = 0
     PRE_RUN = 1
-    PLAYER_TURN = 2
+    REFRESH = 2
     MONSTER_TURN = 3
     SHOW_INVENTORY = 4
     SHOW_SELECTED_ITEM_MENU = 5

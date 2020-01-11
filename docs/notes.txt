@@ -6,25 +6,18 @@ Load_raws
 Identification:
     Couleur des parchos & potions non aleatoire.
 
-Tooltips:
-    Mal formaté.
-
 Input:
     Recuperation des inputs dans le save pour le Replay.
 
 AI:
     # /!\ On utilise visible_tiles, qui concerne ce que le mob voit = le transparent est consideré comme walkable.
     # /!\ Libtcod fonctionne en y,x et pas en x, y. Melange facile à faire, a ameliorer!
-    # /!\ Pas de second check sur le deplacement, on teleporte le mob. Danger si walkable, se teleporte sur le player aussi ou autre mob.
     Attiré par des items au sol.
-    Actif / inactif selon presence pj.
     Eviter les NPC les uns dans les autres.
-    N'attaquent pas en diagonal
 
 Tour par Tour:
     Foutoir dans les States & les run_systems.
-    Deplacement impossible (dans le mur) compte comme un tour
-    Si Cancel Targeting, un round est perdu pour le joueur. NPC agissent.
+    Parfois, deplacement vers un ennemi est consideré comme "didnt move" et aucune action (Vers la droite, avec ennemi a droite).
 
 World:
     maintain :
