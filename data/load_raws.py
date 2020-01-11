@@ -9,7 +9,7 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
-from components.items_component import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent
+from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent
 from components.equip_components import EquippableComponent
 from components.blocktile_component import BlockTileComponent, BlockVisibilityComponent
 from components.viewshed_component import ViewshedComponent

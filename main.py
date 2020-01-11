@@ -27,7 +27,7 @@ def main():
     RawsMaster.load_raws()
 
     # Interface
-    interface = Interface()
+    Interface()
     Interface.initialize()
 
     show_main_menu()

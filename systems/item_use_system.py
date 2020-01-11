@@ -1,7 +1,7 @@
 from itertools import product as it_product
 
 from systems.system import System
-from components.wants_use_item_component import WantsToUseComponent
+from components.intent_components import WantsToUseComponent
 from components.pools_component import Pools
 from components.provides_healing_component import ProvidesHealingComponent
 from components.inflicts_damage_component import InflictsDamageComponent
@@ -14,7 +14,7 @@ from components.equip_components import EquippedComponent, EquippableComponent
 from components.position_components import PositionComponent
 from systems.particule_system import ParticuleBuilder
 from components.magic_item_components import IdentifiedItemComponent
-from components.items_component import MeleeWeaponComponent, ConsumableComponent, InBackPackComponent
+from components.item_components import MeleeWeaponComponent, ConsumableComponent, InBackPackComponent
 from systems.inventory_system import drop_item_from_inventory, select_item_from_inventory
 from world import World
 from texts import Texts
