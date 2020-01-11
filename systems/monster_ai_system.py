@@ -7,7 +7,7 @@ from components.character_components import MonsterComponent
 from components.viewshed_component import ViewshedComponent
 from components.position_components import PositionComponent
 from components.name_components import NameComponent
-from components.wants_to_melee_component import WantsToMeleeComponent
+from components.intent_components import WantsToMeleeComponent
 from components.confusion_component import ConfusionComponent
 from components.initiative_components import MyTurn
 from systems.particule_system import ParticuleBuilder

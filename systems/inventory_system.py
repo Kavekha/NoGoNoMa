@@ -1,11 +1,10 @@
 from systems.system import System
 from world import World
 
-from components.wants_to_pickup_component import WantsToPickUpComponent
+from components.intent_components import WantsToPickUpComponent
 from components.position_components import PositionComponent
-from components.items_component import ItemComponent, InBackPackComponent
-from components.wants_use_item_component import WantsToUseComponent
-from components.wants_to_drop_component import WantsToDropComponent
+from components.item_components import ItemComponent, InBackPackComponent
+from components.intent_components import WantsToUseComponent, WantsToDropComponent
 from components.character_components import AutopickupComponent
 from components.name_components import NameComponent
 from components.ranged_component import RangedComponent
@@ -15,28 +14,6 @@ from state import States
 from texts import Texts
 from ui_system.render_functions import get_obfuscate_name
 import config
-
-
-class ItemCollectionSystem(System):
-    def update(self, *args, **kwargs):
-        subjects = World.get_components(WantsToPickUpComponent)
-        if not subjects:
-            return
-
-        player = World.fetch('player')
-        logs = World.fetch('logs')
-        for entity, (wants_to_pick, *args) in subjects:
-            print(f'debug: Wants to pick item is : {wants_to_pick.item}')
-            # Remove item position component.
-            World.remove_component(PositionComponent, wants_to_pick.item)
-            backpack = InBackPackComponent(entity)
-            World.add_component(backpack, wants_to_pick.item)
-
-            if wants_to_pick.collected_by == player:
-                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("YOU_PICK_UP")}'
-                                f'{Texts.get_text(get_obfuscate_name(wants_to_pick.item))}[/color]')
-
-            World.remove_component(WantsToPickUpComponent, entity)
 
 
 class ItemDropSystem(System):

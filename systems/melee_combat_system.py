@@ -2,12 +2,13 @@ from random import randint
 
 from systems.system import System
 from world import World
-from components.wants_to_melee_component import WantsToMeleeComponent
+from effects.effects_system import EffectSystem, EffectType, Targets, Effect, TargetType
+from components.intent_components import WantsToMeleeComponent
 from components.name_components import NameComponent
 from components.pools_component import Pools
 from components.character_components import AttributesComponent
 from components.suffer_damage_component import SufferDamageComponent
-from components.items_component import MeleeWeaponComponent, WearableComponent
+from components.item_components import MeleeWeaponComponent, WearableComponent
 from components.equip_components import EquippedComponent
 from components.skills_component import SkillsComponent, Skills
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent
@@ -120,8 +121,10 @@ class MeleeCombatSystem(System):
                         f'{Texts.get_text("HITS_FOR_DMG").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name), attack_dmg)}')
                     ParticuleBuilder.request(target_pos.x, target_pos.y,
                                               config.COLOR_PARTICULE_HIT, '!!', 'particules/attack.png')
-                    target_suffer_dmg = SufferDamageComponent(attack_dmg, attacker_is_player)
-                    World.add_component(target_suffer_dmg, wants_melee.target)
+
+                    EffectSystem.add_effect(entity, Effect(EffectType.DAMAGE, damage=attack_dmg), Targets(TargetType.SINGLE, target=wants_melee.target))
+                    # target_suffer_dmg = SufferDamageComponent(attack_dmg, attacker_is_player)
+                    # World.add_component(target_suffer_dmg, wants_melee.target)
                 else:
                     logs.appendleft(
                         f'{Texts.get_text("UNABLE_TO_HURT").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name))}')

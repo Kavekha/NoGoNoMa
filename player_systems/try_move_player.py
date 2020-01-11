@@ -6,7 +6,7 @@ from components.character_components import AutopickupComponent
 from components.blocktile_component import BlockTileComponent
 from systems.inventory_system import get_item
 from components.pools_component import Pools
-from components.wants_to_melee_component import WantsToMeleeComponent
+from components.intent_components import WantsToMeleeComponent
 from components.door_component import DoorComponent
 from player_systems.game_system import opening_door
 from player_systems.initiative_costs_mecanisms import calculate_move_cost, wait_turn_cost

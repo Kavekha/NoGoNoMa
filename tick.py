@@ -176,7 +176,7 @@ def run_game_systems():
 def run_all_systems():
     # we have to run all systems to render, because of ui system -_-
     terminal.clear()
-    World.update()
+    run_game_systems()
     render_map_camera()
     render_entities_camera()
     draw_tooltip()

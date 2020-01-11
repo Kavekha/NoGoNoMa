@@ -4,7 +4,7 @@ from data.load_raws import RawsMaster
 from components.character_components import PlayerComponent
 from components.magic_item_components import IdentifiedItemComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
-from components.items_component import ItemComponent
+from components.item_components import ItemComponent
 
 
 class ItemIdentificationSystem(System):

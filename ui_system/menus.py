@@ -7,7 +7,7 @@ from ui_system.render_functions import get_item_color, get_item_display_name, pr
 from world import World
 from components.name_components import ObfuscatedNameComponent
 from components.provides_healing_component import ProvidesHealingComponent
-from components.items_component import MeleeWeaponComponent, ConsumableComponent
+from components.item_components import MeleeWeaponComponent, ConsumableComponent
 from components.equip_components import EquippedComponent, EquippableComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
