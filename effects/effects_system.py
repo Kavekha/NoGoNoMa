@@ -1,12 +1,15 @@
 from collections import deque
 from enum import Enum
 from random import randint
+from itertools import product as it_product
 
 from systems.system import System
 from systems.particule_system import ParticuleBuilder
 from world import World
 from effects.targeting_effect import entity_position
 from components.pools_component import Pools
+from components.provides_healing_component import ProvidesHealingComponent
+from components.item_components import ConsumableComponent
 
 from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
 from player_systems.on_death import on_player_death
@@ -21,6 +24,8 @@ class EffectType(Enum):
     BLOOD_STAINS = 1
     PARTICULE = 2
     ENTITY_DEATH = 3
+    ITEM_USE = 4
+    HEALING = 5
 
 
 class Effect:
@@ -30,18 +35,26 @@ class Effect:
 
         if effect_type == EffectType.DAMAGE:
             self.damage = kwargs.get('damage', 0)
+
         elif effect_type == EffectType.PARTICULE:
             self.glyph = kwargs.get('glyph')
             self.fg = kwargs.get('fg')
             self.sprite = kwargs.get('sprite')
             self.lifetime = kwargs.get('lifetime')
+
+        elif effect_type == EffectType.ITEM_USE:
+            self.item = kwargs.get('item')
+
+        elif effect_type == EffectType.HEALING:
+            self.amount = kwargs.get('amount')
+
         self.effect_type = effect_type
 
 
 class TargetType(Enum):
     SINGLE = 0
-    AREA = 1
-    TILE = 2
+    TILE = 1
+    TILES = 2
 
 
 class Targets:
@@ -51,8 +64,10 @@ class Targets:
 
         if target_type == TargetType.SINGLE:
             self.target = kwargs.get('target', 0)
-        elif target_type == TargetType.AREA:
-            pass
+        elif target_type == TargetType.TILE:
+            self.target = kwargs.get('tile', None)
+        elif target_type == TargetType.TILES:
+            self.target = kwargs.get('tiles', None)
         self.target_type = target_type
 
 
@@ -83,8 +98,27 @@ def add_effect(creator, effect_type, targets):
 
 def target_applicator(effect_spawner):
     print(f'target applicator: {effect_spawner.targets.target_type}, with target : {effect_spawner.targets.target}')
-    if effect_spawner.targets.target_type == TargetType.SINGLE:
-        affect_entity(effect_spawner, effect_spawner.targets.target)
+    if effect_spawner.effect.effect_type == EffectType.ITEM_USE:
+        item_trigger(effect_spawner.creator, effect_spawner.effect.item, effect_spawner.targets)
+    else:
+        if effect_spawner.targets.target_type == TargetType.SINGLE:
+            affect_entity(effect_spawner, effect_spawner.targets.target)
+
+
+def item_trigger(creator, item, effect_spawner_target):
+    # use item via generic system
+    event_trigger(creator, item, effect_spawner_target)
+    if World.get_entity_component(item, ConsumableComponent):
+        World.delete_entity(item)
+
+
+def event_trigger(creator, item, effect_spawner_target):
+    # healing
+    healing = World.get_entity_component(item, ProvidesHealingComponent)
+    if healing:
+        add_effect(creator,
+                   Effect(EffectType.HEALING, amount=healing.healing_amount),
+                   effect_spawner_target)
 
 
 def affect_entity(effect_spawner, target):
@@ -98,6 +132,8 @@ def affect_entity(effect_spawner, target):
         particule_to_tile(effect_spawner, idx)
     elif effect_spawner.effect.effect_type == EffectType.ENTITY_DEATH:
         death_effect(effect_spawner, target)
+    elif effect_spawner.effect.effect_type == EffectType.HEALING:
+        heal_damage_effect(effect_spawner, target)
     else:
         return
 
@@ -118,6 +154,8 @@ def affect_tile(effect, tile_idx):
 
 def tile_effect_hits_entity(effect):
     if effect.effect_type == EffectType.DAMAGE:
+        return True
+    elif effect.effect_type == EffectType.HEALING:
         return True
     else:
         return False
@@ -180,3 +218,34 @@ def death_effect(effect_spawner, target):
         on_player_death()
     else:
         World.delete_entity(target)
+
+
+def get_aoe_tiles(target, aoe_radius):
+    blast_tiles_idx = list()
+    current_map = World.fetch('current_map')
+
+    target_x, target_y = target
+    idx = current_map.xy_idx(target_x, target_y)
+    radius = aoe_radius // 2
+
+    for x, y in it_product(range(- radius, radius + 1), range(- radius, radius + 1)):
+        radius_x = target_x + x
+        radius_y = target_y + y
+        new_idx = current_map.xy_idx(radius_x, radius_y)
+        if not current_map.out_of_bound(new_idx):
+            blast_tiles_idx.append(new_idx)
+
+    return blast_tiles_idx
+
+
+def heal_damage_effect(effect_spawner, target):
+    pool = World.get_entity_component(target, Pools)
+    if pool:
+        if effect_spawner.effect.effect_type == EffectType.HEALING:
+            pool.hit_points.current = min(pool.hit_points.max, pool.hit_points.current + effect_spawner.effect.amount)
+            add_effect(None,
+                       Effect(EffectType.PARTICULE,
+                              glyph='!',
+                              fg=config.COLOR_PARTICULE_HEAL,
+                              sprite='particules/heal.png'),
+                       Targets(TargetType.SINGLE, target=target))

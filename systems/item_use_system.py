@@ -21,6 +21,7 @@ from texts import Texts
 import config
 
 
+"""
 class ItemUseSystem(System):
     def update(self, *args, **kwargs):
         subjects = World.get_components(WantsToUseComponent, Pools)
@@ -140,6 +141,8 @@ class ItemUseSystem(System):
                                     f'[/color]')
 
         World.remove_component_for_all_entities(WantsToUseComponent)
+
+"""
 
 
 def get_available_item_actions(item):

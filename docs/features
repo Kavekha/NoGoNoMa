@@ -14,8 +14,10 @@ Release 5 - Done.
 
 Release 5 - Systems & items + API
     4.2 - Effets generiques.
-        > Refacto & documentation pour la durée.
-        ItemEquip on use
+        > ItemEquip on use: ToEquip not working
+        Healing: Effet non visible immediatement, nouveau cycle update necessaire. Why? States.SHOW_SELECTED_ITEM_MENU:?
+        Combat: Le cycle de combat a l'air de se jouer deux fois?
+        Refacto & documentation pour la durée.
         Item Effects
         Item use system
         healing effect
