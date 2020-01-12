@@ -7,13 +7,11 @@ from components.intent_components import WantsToMeleeComponent
 from components.name_components import NameComponent
 from components.pools_component import Pools
 from components.character_components import AttributesComponent
-from components.suffer_damage_component import SufferDamageComponent
 from components.item_components import MeleeWeaponComponent, WearableComponent
 from components.equip_components import EquippedComponent
 from components.skills_component import SkillsComponent, Skills
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent
 from components.position_components import PositionComponent
-from systems.particule_system import ParticuleBuilder
 from player_systems.game_system import skill_level
 from player_systems.initiative_costs_mecanisms import calculate_fight_cost
 from texts import Texts
