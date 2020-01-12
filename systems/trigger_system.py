@@ -6,7 +6,8 @@ from components.area_effect_component import AreaOfEffectComponent
 from components.skills_component import Skills
 from ui_system.render_functions import get_obfuscate_name
 from player_systems.game_system import skill_roll_against_difficulty
-from effects.effects_system import add_effect, Targets, TargetType, EffectType, Effect, get_aoe_tiles, entity_position
+from effects.effects_system import add_effect, Targets, TargetType, EffectType, Effect, entity_position
+from effects.targeting_effect import get_aoe_tiles
 from texts import Texts
 import config
 

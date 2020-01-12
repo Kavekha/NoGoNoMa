@@ -18,3 +18,8 @@ class WantsToUseComponent:
     def __init__(self, item_id, target=None):
         self.item = item_id
         self.target = target
+
+
+class WantsToRemoveItemComponent:
+    def __init__(self, item_id):
+        self.item = item_id

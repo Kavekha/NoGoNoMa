@@ -4,7 +4,7 @@ from world import World
 from components.intent_components import WantsToPickUpComponent
 from components.position_components import PositionComponent
 from components.item_components import ItemComponent, InBackPackComponent
-from components.intent_components import WantsToUseComponent, WantsToDropComponent
+from components.intent_components import WantsToUseComponent, WantsToDropComponent, WantsToRemoveItemComponent
 from components.character_components import AutopickupComponent
 from components.name_components import NameComponent
 from components.ranged_component import RangedComponent
@@ -74,13 +74,20 @@ def use_item(item_id, target_position=None):
     player = World.fetch('player')
     use_intent = WantsToUseComponent(item_id, target_position)
     World.add_component(use_intent, player)
-    print(f'use item: player has wants to use? : {World.get_entity_component(player, WantsToUseComponent)}')
 
 
 def drop_item_from_inventory(item_id):
     drop_intent = WantsToDropComponent(item_id)
     player = World.fetch('player')
     World.add_component(drop_intent, player)
+    return States.TICKING
+
+
+def unequip_item_from_inventory(item_id):
+    print(f'unequip item : {item_id}')
+    player = World.fetch('player')
+    unequip_intent = WantsToRemoveItemComponent(item_id)
+    World.add_component(unequip_intent, player)
     return States.TICKING
 
 
