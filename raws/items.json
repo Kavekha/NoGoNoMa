@@ -139,6 +139,27 @@
           }
       },
       {
+          "name" : "LONGSWORD_OF_KLUTZINESS",
+          "renderable": {
+            "glyph" : "/",
+            "fg" : "#FFAAAA",
+            "order" : "ITEM",
+              "sprite": "items/sword.png"
+          },
+          "weapon" : {
+              "range" : "melee",
+              "attribute": "might",
+              "min_dmg": 1,
+              "max_dmg": 6,
+              "hit_bonus": -1,
+              "dmg_bonus": 2
+          },
+          "magic": {
+              "class": "uncommon",
+              "naming": "UNIDENTIFIED_SWORD",
+              "cursed": true
+          }
+      },{
           "name" : "LONGSWORD",
           "renderable": {
             "glyph" : "/",

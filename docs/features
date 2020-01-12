@@ -8,32 +8,34 @@ Release 5 - Done.
     Annuler scroll
     improve: DiagonalPathRemoval builder
     Zoom and Reveal mal rafraichis.
-        Systeme d'effets de base.
-        Particules inclus dans le systeme d'effets.
-        EntityDeath effect & experience
-        Effect supporte healing.
-        Fix cycle update joué deux fois & ui_system hors des system updates.
-        Fix: Equipped item equippé.
-        Fix: Identified item.
-        fix: Crash on target tile idx usage.
-        fix: Target Tile and Multiple Tiles working.
-        effect confusion
-        fix: Detect hidden.
-        effect trigger + trigger system updated
-        Initiative cost for item usage if ok.
-        Remove Damage system, item use system in systems, SufferDamageComponent
-        Particules effects on scroll
-        Message info aux degats & soins.
+    Systeme d'effets de base.
+    Particules inclus dans le systeme d'effets.
+    EntityDeath effect & experience
+    Effect supporte healing.
+    Fix cycle update joué deux fois & ui_system hors des system updates.
+    Fix: Equipped item equippé.
+    Fix: Identified item.
+    fix: Crash on target tile idx usage.
+    fix: Target Tile and Multiple Tiles working.
+    effect confusion
+    fix: Detect hidden.
+    effect trigger + trigger system updated
+    Initiative cost for item usage if ok.
+    Remove Damage system, item use system in systems, SufferDamageComponent
+    Particules effects on scroll
+    Message info aux degats & soins.
+    Un item exemple: throwable potion of acid.
+        > fix: unequip item
+        > Cursed items
+        > Impossible to unequip cursed items
 
-Release 5 - Systems & items + API
-    4.2 - Refacto pour creations d'items et events plus faciles.
-        Un item exemple: throwable potion of acid
 
+Release 5 - Cursed and unknown items
     4.3 - Identification & curses.
-        Refacto & documentation pour la durée.
-        Cursed items
         Remove curse
         Identified items
+        -> Cursed item.
+        -> Doc: API Concept.
 
     4.4 - Elargir le champs des items possibles.
         Attribute modifier items

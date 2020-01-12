@@ -6,6 +6,8 @@
     { "name" : "MISSILE_MAGIC_SCROLL", "weight" : 4, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "ACID_POTION", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
 
+    { "name" : "LONGSWORD_OF_KLUTZINESS", "weight" : 70, "min_depth" : 1, "max_depth" : 100 },
+
     { "name" : "TRAP", "weight" : 2, "min_depth" : 1, "max_depth" : 100 },
 
     { "name" : "DAGGER", "weight" : 3, "min_depth" : 2, "max_depth" : 4 },
