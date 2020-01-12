@@ -23,11 +23,10 @@ Release 5 - Done.
         Initiative cost for item usage if ok.
         Remove Damage system, item use system in systems, SufferDamageComponent
         Particules effects on scroll
-        > Message info aux degats & soins.
+        Message info aux degats & soins.
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
-        Message info aux degats & soins.
         Un item exemple: throwable potion of acid
 
     4.3 - Identification & curses.
