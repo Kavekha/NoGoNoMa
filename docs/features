@@ -13,12 +13,14 @@ Release 5 - Done.
         > EntityDeath effect & experience
         > Effect supporte healing.
         > Fix cycle update joué deux fois & ui_system hors des system updates.
+        > Fix: Equipped item equippé.
+        > Fix: Identified item.
+        > fix: Crash on target tile idx usage.
 
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
-        > ToFix: ItemEquip on use: ToEquip not working
-        > ToFix: Scroll effect crash
+        > Tofix: target tile idx usage not working
         Refacto & documentation pour la durée.
         confusion
         damage trigger

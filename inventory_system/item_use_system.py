@@ -13,11 +13,10 @@ class ItemUseSystem(System):
         player = World.fetch('player')
 
         for entity, (wants_to_use, *args) in subjects:
-            print(f'ITEM USE SYSTEM for {entity}')
             # identify
             item_named = World.get_entity_component(wants_to_use.item, NameComponent)
             if entity == player:
-                World.add_component(IdentifiedItemComponent(name=item_named.name), wants_to_use.item)
+                World.add_component(IdentifiedItemComponent(name=item_named.name), entity)
 
             # effect:
             if not wants_to_use.target:
@@ -28,8 +27,10 @@ class ItemUseSystem(System):
                     target = Targets(TargetType.TILES, tiles=get_aoe_tiles(wants_to_use.target, aoe.radius))
                 else:
                     current_map = World.fetch('current_map')
-                    target = Targets(TargetType.TILE, tile=current_map.xy_idx(wants_to_use.target.x,
-                                                                              wants_to_use.target.y))
+                    print(f'TARGET TILE IDX: wants_to_use_target is {wants_to_use.target}')
+                    target_x, target_y = wants_to_use.target
+                    target = Targets(TargetType.TILE, tile=current_map.xy_idx(target_x,
+                                                                              target_y))
 
             add_effect(entity, Effect(EffectType.ITEM_USE, item=wants_to_use.item), target)
 
