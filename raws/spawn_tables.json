@@ -4,6 +4,7 @@
     { "name" : "FIREBALL_SCROLL", "weight" : 1, "min_depth" : 1, "max_depth" : 100, "add_map_depth_to_weight" : true },
     { "name" : "CONFUSION_SCROLL", "weight" : 2, "min_depth" : 1, "max_depth" : 1, "add_map_depth_to_weight" : true },
     { "name" : "MISSILE_MAGIC_SCROLL", "weight" : 4, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "ACID_POTION", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
 
     { "name" : "TRAP", "weight" : 2, "min_depth" : 1, "max_depth" : 100 },
 
