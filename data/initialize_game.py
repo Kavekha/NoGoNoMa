@@ -7,7 +7,6 @@ from systems.visibility_system import VisibilitySystem
 from systems.monster_ai_system import MonsterAi
 from systems.map_indexing_system import MapIndexingSystem
 from systems.melee_combat_system import MeleeCombatSystem
-from systems.damage_system import DamageSystem
 from systems.particule_system import ParticuleSpawnSystem
 
 from inventory_system.item_collection_system import ItemCollectionSystem
@@ -59,8 +58,6 @@ def init_game(master_seed=None):
 
     melee_combat_system = MeleeCombatSystem()
     World.add_system(melee_combat_system)
-    damage_system = DamageSystem()
-    World.add_system(damage_system)
 
     effect_system = EffectSystem()
     World.add_system(effect_system)

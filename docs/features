@@ -24,10 +24,12 @@ Release 5 - Done.
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
+        > Initiative cost for item usage if ok.
+        > Remove Damage system, item use system in systems, SufferDamageComponent
         Message info aux degats & soins.
         Particules effects on scroll
         selectionner case vide avec scroll ne coute pas d'initiative.
-        -> Un item exemple.
+        Un item exemple: throwable potion of acid
 
     4.3 - Identification & curses.
         Refacto & documentation pour la durée.

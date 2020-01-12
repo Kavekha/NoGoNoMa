@@ -1,14 +1,10 @@
 from systems.system import System
 from world import World
-from components.triggers_components import EntryTriggerComponent, ActivationComponent
+from components.triggers_components import EntryTriggerComponent
 from components.position_components import PositionComponent, EntityMovedComponent
 from components.area_effect_component import AreaOfEffectComponent
-from components.hidden_component import HiddenComponent
-from components.inflicts_damage_component import InflictsDamageComponent
-from components.suffer_damage_component import SufferDamageComponent
 from components.skills_component import Skills
 from ui_system.render_functions import get_obfuscate_name
-from systems.particule_system import ParticuleBuilder
 from player_systems.game_system import skill_roll_against_difficulty
 from effects.effects_system import add_effect, Targets, TargetType, EffectType, Effect, get_aoe_tiles, entity_position
 from texts import Texts

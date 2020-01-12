@@ -13,7 +13,8 @@ from components.item_components import ConsumableComponent
 from components.confusion_component import ConfusionComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import ActivationComponent
-
+from components.inflicts_damage_component import InflictsDamageComponent
+from components.initiative_components import InitiativeCostComponent
 from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
 from player_systems.on_death import on_player_death
 from components.name_components import NameComponent
@@ -161,11 +162,11 @@ def trigget_fire(creator, trigger, effect_spawner_target):
         World.remove_component(HiddenComponent, trigger)
 
     # launch event
-    event_trigger(creator, trigger, effect_spawner_target)
+    did_something = event_trigger(creator, trigger, effect_spawner_target)
 
     # remove activation
     trigger_activation = World.get_entity_component(trigger, ActivationComponent)
-    if trigger_activation:
+    if trigger_activation and did_something:
         trigger_activation.nb_activations -= 1
         if trigger_activation.nb_activations < 1:
             World.delete_entity(trigger)
@@ -173,13 +174,16 @@ def trigget_fire(creator, trigger, effect_spawner_target):
 
 def item_trigger(creator, item, effect_spawner_target):
     # use item via generic system
-    event_trigger(creator, item, effect_spawner_target)
-    if World.get_entity_component(item, ConsumableComponent):
-        World.delete_entity(item)
+    did_something = event_trigger(creator, item, effect_spawner_target)
+
+    if did_something:
+        World.add_component(InitiativeCostComponent(config.DEFAULT_ITEM_USE_INITIATIVE_COST), creator)
+        if World.get_entity_component(item, ConsumableComponent):
+            World.delete_entity(item)
 
 
 def event_trigger(creator, item, effect_spawner_target):
-    from components.inflicts_damage_component import InflictsDamageComponent
+    did_something = False
 
     # healing
     healing = World.get_entity_component(item, ProvidesHealingComponent)
@@ -190,15 +194,21 @@ def event_trigger(creator, item, effect_spawner_target):
         add_effect(creator,
                    Effect(EffectType.HEALING, amount=healing.healing_amount),
                    effect_spawner_target)
+        did_something = True
+
     if damaging:
         add_effect(creator,
                    Effect(EffectType.DAMAGE, damage=damaging.damage),
                    effect_spawner_target)
+        did_something = True
 
     if confusion:
         add_effect(creator,
                    Effect(EffectType.CONFUSION, turns=confusion.turns),
                    effect_spawner_target)
+        did_something = True
+
+    return did_something
 
 
 def affect_entity(effect_spawner, target):
