@@ -16,12 +16,13 @@ Release 5 - Done.
         > Fix: Equipped item equippé.
         > Fix: Identified item.
         > fix: Crash on target tile idx usage.
+        > fix: Target Tile and Multiple Tiles working.
 
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
-        > Tofix: target tile idx usage not working
         Refacto & documentation pour la durée.
+        Message info aux degats & soins.
         confusion
         damage trigger
         selectionner case vide avec scroll ne coute pas d'initiative.

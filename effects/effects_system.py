@@ -19,6 +19,33 @@ from texts import Texts
 import config
 
 
+"""
+DOCUMENTATION:
+    -- Usage:
+        add_effect(source, Effect(EffectType, args du type), Targets(TargetType, args))
+    
+    -- Creer un effet.
+        * Ajouter EffectType
+            exemple: HEALING
+        * Dans Effect: a l'init, ajouter les args necessaires pour ce EffectType.
+            exemple: if HEALING, self.amount = kwargs.get('amount')
+        * Ajouter TargetType
+            exemple: TILE
+        * dans Targets: A l'init, ajouter la target pour ce TargetType.
+            exemple: if TILE, self.target = kwargs.get('tile')
+        * Ajouter le TargetType dans target_applicator.
+            Quand l'effet est recuperé par la Queue, la fonction target_applicator est utilisée.
+            Une fonction est jouée selon le target_applicator.
+        * Ajouter pour ce TargetType, dans target_applicator, la fonction à utiliser.
+            Exemple: affect_tile
+        * Dans la fonction affect_tile, check si l'EffectType est utilisable sur les entitées de cette Tile.
+        * Dans la fonction affect_tile, check l'EffectType et utilise la vraie Fonction liée à l'effet.
+        * Creer enfin le vrai effet, avec les infos recupérés ici et là.
+                     
+"""
+
+
+
 class EffectType(Enum):
     DAMAGE = 0      # {damage:0}
     BLOOD_STAINS = 1
@@ -101,8 +128,17 @@ def target_applicator(effect_spawner):
     if effect_spawner.effect.effect_type == EffectType.ITEM_USE:
         item_trigger(effect_spawner.creator, effect_spawner.effect.item, effect_spawner.targets)
     else:
+        # cible unique
         if effect_spawner.targets.target_type == TargetType.SINGLE:
             affect_entity(effect_spawner, effect_spawner.targets.target)
+        # tuile
+        elif effect_spawner.targets.target_type == TargetType.TILE:
+            affect_tile(effect_spawner, effect_spawner.targets.target)
+        # aoe
+        elif effect_spawner.targets.target_type == TargetType.TILES:
+            print(f'target applicator: aoe: target is : {effect_spawner.targets.target}')
+            affect_multiple_tiles(effect_spawner, effect_spawner.targets.target)
+            #affect_tile(effect_spawner, effect_spawner.targets.target)
 
 
 def item_trigger(creator, item, effect_spawner_target):
@@ -113,11 +149,18 @@ def item_trigger(creator, item, effect_spawner_target):
 
 
 def event_trigger(creator, item, effect_spawner_target):
+    from components.inflicts_damage_component import InflictsDamageComponent
+
     # healing
     healing = World.get_entity_component(item, ProvidesHealingComponent)
+    damaging = World.get_entity_component(item, InflictsDamageComponent)
     if healing:
         add_effect(creator,
                    Effect(EffectType.HEALING, amount=healing.healing_amount),
+                   effect_spawner_target)
+    if damaging:
+        add_effect(creator,
+                   Effect(EffectType.DAMAGE, damage=damaging.damage),
                    effect_spawner_target)
 
 
@@ -138,24 +181,29 @@ def affect_entity(effect_spawner, target):
         return
 
 
-def affect_tile(effect, tile_idx):
-    if tile_effect_hits_entity(effect):
+def affect_multiple_tiles(effect_spawner, tiles):
+    for tile in tiles:
+        affect_tile(effect_spawner, tile)
+
+
+def affect_tile(effect_spawner, tile_idx):
+    if tile_effect_hits_entity(effect_spawner):
         content = World.fetch('current_map').tile_content[tile_idx]
         for entity in content:
-            affect_entity(effect, entity)
+            affect_entity(effect_spawner, entity)
 
-    if effect.effect_type == EffectType.BLOOD_STAINS:
+    if effect_spawner.effect.effect_type == EffectType.BLOOD_STAINS:
         inflict_bloodstain(tile_idx)
-    elif effect.effect_type == EffectType.PARTICULE:
-        particule_to_tile(tile_idx, effect)
+    elif effect_spawner.effect.effect_type == EffectType.PARTICULE:
+        particule_to_tile(tile_idx, effect_spawner)
     else:
         return
 
 
-def tile_effect_hits_entity(effect):
-    if effect.effect_type == EffectType.DAMAGE:
+def tile_effect_hits_entity(effect_spawner):
+    if effect_spawner.effect.effect_type == EffectType.DAMAGE:
         return True
-    elif effect.effect_type == EffectType.HEALING:
+    elif effect_spawner.effect.effect_type == EffectType.HEALING:
         return True
     else:
         return False
