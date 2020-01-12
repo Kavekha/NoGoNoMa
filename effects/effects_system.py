@@ -6,7 +6,7 @@ from itertools import product as it_product
 from systems.system import System
 from systems.particule_system import ParticuleBuilder
 from world import World
-from effects.targeting_effect import entity_position
+from effects.targeting_effect import entity_position, find_item_position
 from components.pools_component import Pools
 from components.provides_healing_component import ProvidesHealingComponent
 from components.item_components import ConsumableComponent
@@ -15,6 +15,8 @@ from components.hidden_component import HiddenComponent
 from components.triggers_components import ActivationComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.initiative_components import InitiativeCostComponent
+from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
+
 from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
 from player_systems.on_death import on_player_death
 from components.name_components import NameComponent
@@ -137,6 +139,7 @@ def add_effect(creator, effect_type, targets):
 
 def target_applicator(effect_spawner):
     print(f'target applicator: {effect_spawner.targets.target_type}, with target : {effect_spawner.targets.target}')
+    print(f'target application: effect is {effect_spawner.effect.effect_type}')
     if effect_spawner.effect.effect_type == EffectType.ITEM_USE:
         item_trigger(effect_spawner.creator, effect_spawner.effect.item, effect_spawner.targets)
     elif effect_spawner.effect.effect_type == EffectType.TRIGGER_FIRE:
@@ -185,6 +188,29 @@ def item_trigger(creator, item, effect_spawner_target):
 def event_trigger(creator, item, effect_spawner_target):
     did_something = False
 
+    # particule spawn
+    particule_blast = World.get_entity_component(item, SpawnParticuleBurstComponent)
+    if particule_blast:
+        add_effect(creator, Effect(EffectType.PARTICULE, glyph=particule_blast.glyph,
+                                   fg=particule_blast.color,
+                                   sprite=particule_blast.sprite),
+                   effect_spawner_target)
+
+    # line particule spawn
+    particule_line = World.get_entity_component(item, SpawnParticuleLineComponent)
+    if particule_line:
+
+        start_pos = find_item_position(item)
+        if effect_spawner_target.target_type == TargetType.TILE:
+            spawn_line_particules(start_pos, effect_spawner_target.target, particule_line)
+        elif effect_spawner_target.target_type == TargetType.TILES:
+            for tile in effect_spawner_target.target:
+                spawn_line_particules(start_pos, tile, particule_line)
+        elif effect_spawner_target.target_type == TargetType.SINGLE:
+            end_pos = entity_position(effect_spawner_target.target)
+            if end_pos:
+                spawn_line_particules(start_pos, end_pos, particule_line)
+
     # healing
     healing = World.get_entity_component(item, ProvidesHealingComponent)
     damaging = World.get_entity_component(item, InflictsDamageComponent)
@@ -209,6 +235,24 @@ def event_trigger(creator, item, effect_spawner_target):
         did_something = True
 
     return did_something
+
+
+def spawn_line_particules(start_idx, end_idx, particule_component):
+    from tcod import tcod
+    current_map = World.fetch('current_map')
+    start_x, start_y = current_map.index_to_point2d(start_idx)
+    end_x, end_y = current_map.index_to_point2d(end_idx)
+
+    line = tcod.line_iter(start_x, start_y, end_x, end_y)
+    for cell in line:
+        x, y = cell
+        cell_idx = current_map.xy_idx(x, y)
+        print(f'spawn line particules: cell idx is {cell_idx}')
+        add_effect(None,
+                   Effect(EffectType.PARTICULE, glyph=particule_component.glyph,
+                                   fg=particule_component.color,
+                                   sprite=particule_component.sprite),
+                   Targets(TargetType.TILE, tile=cell_idx))
 
 
 def affect_entity(effect_spawner, target):
@@ -244,7 +288,7 @@ def affect_tile(effect_spawner, tile_idx):
     if effect_spawner.effect.effect_type == EffectType.BLOOD_STAINS:
         inflict_bloodstain(tile_idx)
     elif effect_spawner.effect.effect_type == EffectType.PARTICULE:
-        particule_to_tile(tile_idx, effect_spawner)
+        particule_to_tile(effect_spawner, tile_idx)
     else:
         return
 
@@ -296,6 +340,8 @@ def inflict_bloodstain(tile_idx):
 
 
 def particule_to_tile(effect_spawner, tile_idx):
+    print(f'particule to tile is : {effect_spawner}')
+    print(f'particule to tile: tile idx is {tile_idx}')
     if effect_spawner.effect.effect_type == EffectType.PARTICULE:
         current_map = World.fetch('current_map')
         x, y = current_map.index_to_point2d(tile_idx)
