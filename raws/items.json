@@ -27,7 +27,8 @@
           "consumable" : {
               "effects" : {
                   "ranged" : "6",
-                  "damage" : "12"
+                  "damage" : "12",
+                  "particule_line": "*;#00FFFF;particules/offensive_spell.png"
               }
           },
           "magic": {
@@ -47,7 +48,8 @@
             "effects" : {
                 "ranged" : "6",
                 "damage" : "20",
-                "area_of_effect" : "3"
+                "area_of_effect" : "3",
+                "particule" : "*;#FFA500;particules/fire.png"
                 }
             },
           "magic": {

@@ -11,23 +11,23 @@ Release 5 - Done.
         Systeme d'effets de base.
         Particules inclus dans le systeme d'effets.
         EntityDeath effect & experience
-        > Effect supporte healing.
-        > Fix cycle update joué deux fois & ui_system hors des system updates.
-        > Fix: Equipped item equippé.
-        > Fix: Identified item.
-        > fix: Crash on target tile idx usage.
-        > fix: Target Tile and Multiple Tiles working.
-        > effect confusion
-        > fix: Detect hidden.
-        > effect trigger + trigger system updated
-
+        Effect supporte healing.
+        Fix cycle update joué deux fois & ui_system hors des system updates.
+        Fix: Equipped item equippé.
+        Fix: Identified item.
+        fix: Crash on target tile idx usage.
+        fix: Target Tile and Multiple Tiles working.
+        effect confusion
+        fix: Detect hidden.
+        effect trigger + trigger system updated
+        Initiative cost for item usage if ok.
+        Remove Damage system, item use system in systems, SufferDamageComponent
+        > Particules effects on scroll
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
-        > Initiative cost for item usage if ok.
-        > Remove Damage system, item use system in systems, SufferDamageComponent
+        > Particules effects on scroll
         Message info aux degats & soins.
-        Particules effects on scroll
         selectionner case vide avec scroll ne coute pas d'initiative.
         Un item exemple: throwable potion of acid
 

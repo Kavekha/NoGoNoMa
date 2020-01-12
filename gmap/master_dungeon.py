@@ -1,4 +1,4 @@
-from data.load_raws import RawsMaster
+from data.raw_master import RawsMaster
 from player_systems.game_system import make_scroll_name, make_potion_name
 
 
