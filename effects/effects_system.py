@@ -24,12 +24,11 @@ from texts import Texts
 
 import config
 
-
 """
 DOCUMENTATION:
     -- Usage:
         add_effect(source, Effect(EffectType, args du type), Targets(TargetType, args))
-    
+
     -- Creer un effet.
         * Ajouter EffectType
             exemple: HEALING
@@ -47,13 +46,12 @@ DOCUMENTATION:
         * Dans la fonction affect_tile, check si l'EffectType est utilisable sur les entitées de cette Tile.
         * Dans la fonction affect_tile, check l'EffectType et utilise la vraie Fonction liée à l'effet.
         * Creer enfin le vrai effet, avec les infos recupérés ici et là.
-                     
+
 """
 
 
-
 class EffectType(Enum):
-    DAMAGE = 0      # {damage:0}
+    DAMAGE = 0  # {damage:0}
     BLOOD_STAINS = 1
     PARTICULE = 2
     ENTITY_DEATH = 3
@@ -155,7 +153,7 @@ def target_applicator(effect_spawner):
         elif effect_spawner.targets.target_type == TargetType.TILES:
             print(f'target applicator: aoe: target is : {effect_spawner.targets.target}')
             affect_multiple_tiles(effect_spawner, effect_spawner.targets.target)
-            #affect_tile(effect_spawner, effect_spawner.targets.target)
+            # affect_tile(effect_spawner, effect_spawner.targets.target)
 
 
 def trigget_fire(creator, trigger, effect_spawner_target):
@@ -250,8 +248,8 @@ def spawn_line_particules(start_idx, end_idx, particule_component):
         print(f'spawn line particules: cell idx is {cell_idx}')
         add_effect(None,
                    Effect(EffectType.PARTICULE, glyph=particule_component.glyph,
-                                   fg=particule_component.color,
-                                   sprite=particule_component.sprite),
+                          fg=particule_component.color,
+                          sprite=particule_component.sprite),
                    Targets(TargetType.TILE, tile=cell_idx))
 
 
@@ -380,24 +378,6 @@ def death_effect(effect_spawner, target):
         on_player_death()
     else:
         World.delete_entity(target)
-
-
-def get_aoe_tiles(target, aoe_radius):
-    blast_tiles_idx = list()
-    current_map = World.fetch('current_map')
-
-    target_x, target_y = target
-    # idx = current_map.xy_idx(target_x, target_y)
-    radius = aoe_radius // 2
-
-    for x, y in it_product(range(- radius, radius + 1), range(- radius, radius + 1)):
-        radius_x = target_x + x
-        radius_y = target_y + y
-        new_idx = current_map.xy_idx(radius_x, radius_y)
-        if not current_map.out_of_bound(new_idx):
-            blast_tiles_idx.append(new_idx)
-
-    return blast_tiles_idx
 
 
 def heal_damage_effect(effect_spawner, target):

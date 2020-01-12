@@ -12,6 +12,7 @@ from systems.particule_system import ParticuleSpawnSystem
 from inventory_system.item_collection_system import ItemCollectionSystem
 from inventory_system.use_equip_system import UseEquipSystem
 from inventory_system.item_use_system import ItemUseSystem
+from inventory_system.item_remove_system import ItemRemoveSystem
 
 from systems.inventory_system import ItemDropSystem
 from systems.item_identification_system import ItemIdentificationSystem
@@ -40,6 +41,9 @@ def init_game(master_seed=None):
 
     drop_system = ItemDropSystem()
     World.add_system(drop_system)
+
+    remove_item_system = ItemRemoveSystem()
+    World.add_system(remove_item_system)
 
     identification_system = ItemIdentificationSystem()
     World.add_system(identification_system)

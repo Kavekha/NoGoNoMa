@@ -4,7 +4,8 @@ from components.intent_components import WantsToUseComponent
 from components.magic_item_components import IdentifiedItemComponent
 from components.name_components import NameComponent
 from components.area_effect_component import AreaOfEffectComponent
-from effects.effects_system import add_effect, Effect, EffectType, Targets, TargetType, get_aoe_tiles
+from effects.effects_system import add_effect, Effect, EffectType, Targets, TargetType
+from effects.targeting_effect import get_aoe_tiles
 
 
 class ItemUseSystem(System):

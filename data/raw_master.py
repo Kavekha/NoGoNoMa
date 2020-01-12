@@ -17,7 +17,7 @@ from components.character_components import AttributesComponent, MonsterComponen
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
-from components.magic_item_components import MagicItemComponent
+from components.magic_item_components import MagicItemComponent, CursedItemComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import EntryTriggerComponent, ActivationComponent
 from components.door_component import DoorComponent
@@ -293,6 +293,8 @@ class RawsMaster:
                     magic_attributes[attribute] = magic_component[attribute]
                     print(
                         f'WARNING: In magic naming, attribute {magic_component[attribute]} not implemented for component {magic_component}')
+            elif attribute == 'cursed':
+                magic_attributes[attribute] = magic_component[attribute]
             else:
                 print(f'magic attribute {attribute} not implemented in magic item raw')
                 raise NotImplementedError
@@ -636,6 +638,7 @@ class RawsMaster:
             identified_items = World.fetch('master_dungeon').identified_items
             magic_class = to_create.magic.get('class', MagicItemClass.COMMON)
             magic_naming_convention = to_create.magic.get('naming')
+            magic_cursed = to_create.magic.get('cursed', False)
 
             # si nom inconnu, on utilise l'obfuscation
             if name not in identified_items:
@@ -649,7 +652,11 @@ class RawsMaster:
                     components_for_entity.append(ObfuscatedNameComponent(magic_naming_convention))
 
             components_for_entity.append(MagicItemComponent(magic_class=magic_class,
-                                                            naming=magic_naming_convention))
+                                                            naming=magic_naming_convention,
+                                                            cursed=magic_cursed))
+
+            if magic_cursed:
+                components_for_entity.append(CursedItemComponent())
 
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:
