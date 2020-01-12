@@ -129,3 +129,4 @@ YES;Yes;Oui
 NO;No;Non
 YOU_SEE_;You see: ;Vous voyez:
 YOU_IDENTIFIED_;You identified: ;Vous identifiez:
+UNKNOWN_SOURCE_HITS_SOMEONE_FOR_;Something hits {0} for {1} hp.;Quelque chose frappe {0} pour {1} pv.
