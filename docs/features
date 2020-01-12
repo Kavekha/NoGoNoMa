@@ -8,59 +8,68 @@ Release 5 - Done.
     Annuler scroll
     improve: DiagonalPathRemoval builder
     Zoom and Reveal mal rafraichis.
-        > Systeme d'effets de base.
-        > Particules inclus dans le systeme d'effets.
-        > EntityDeath effect & experience
+        Systeme d'effets de base.
+        Particules inclus dans le systeme d'effets.
+        EntityDeath effect & experience
+        > Effect supporte healing.
+        > Fix cycle update joué deux fois & ui_system hors des system updates.
+        > Fix: Equipped item equippé.
+        > Fix: Identified item.
+        > fix: Crash on target tile idx usage.
+        > fix: Target Tile and Multiple Tiles working.
+        > effect confusion
+        > fix: Detect hidden.
+        > effect trigger + trigger system updated
+
 
 Release 5 - Systems & items + API
-    4.2 - Effets generiques.
-        > Refacto & documentation pour la durée.
-        ItemEquip on use
-        Item Effects
-        Item use system
-        healing effect
-        confusion
-        damage trigger
+    4.2 - Refacto pour creations d'items et events plus faciles.
+        Message info aux degats & soins.
+        Particules effects on scroll
+        selectionner case vide avec scroll ne coute pas d'initiative.
+        -> Un item exemple.
 
-        Generic effects & refacto.
+    4.3 - Identification & curses.
+        Refacto & documentation pour la durée.
         Cursed items
         Remove curse
         Identified items
+
+    4.4 - Elargir le champs des items possibles.
         Attribute modifier items
         Items with charges
         Status effects
         Proc effects
+
+    4.5 - Attaques speciales, Loot tables & API bases
         Magic spell / special attack.
         Learning special attacks
         Special attack NPC cast.
-        selectionner case vide avec scroll ne coute pas d'initiative.
-
-    4.3 - Loot tables & API bases
         Loot tables for rooms & mobs.
         API: Separation Interface / Jeu.
         API: Communication UI / Jeu : menus.
 
-    4.4 - Combat.
+    4.6 - Combat.
         Fix du combat en diagonal - IA.
         Nouveau systeme de combat plus clair & skills.
         Items pour prendre en compte le systeme de combat.
         API: Controles & Options graphiques / Langues.
         API: Mouse support.
 
-    4.5 - Progression level.
+    4.7 - Progression level.
         Traits de monstres.
         Generation d'objets & monstres basés sur des traits.
         Gain au level up & distributions via Interface API.
         API: Particules dans l'API Interface.
 
-    4.6 - Affichage Map / API & controles.
+    4.8 - Affichage Map / API & controles.
         API: affichage de la map dans l'interface: le jeu communique la map visible & contents + map revelée.
         API: Affichage de la zone de target.
         API: Modification des controles niveau interface: Les controles sont configurables via l'interface.
         API: Affichage des logs dans l'interface.
         API: Modification de la resolution.
 
-    4.7 - Scores, Morgue files & animations interface.
+    4.9 - Scores, Morgue files & animations interface.
         A la fin d'une partie, on calcule le score selon niveau perso, depth & modificateur de fin de partie (game over ou victoire).
         Au game over, creer un fichier texte avec les details de la mort, le score, les stats du perso, la carte(?).
         Au game over, un bref resumé de la partie avec les informations majeures ("A vaincu pour la premiere fois BLA", "A atteint Depth 2", etc.

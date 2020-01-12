@@ -74,6 +74,7 @@ def use_item(item_id, target_position=None):
     player = World.fetch('player')
     use_intent = WantsToUseComponent(item_id, target_position)
     World.add_component(use_intent, player)
+    print(f'use item: player has wants to use? : {World.get_entity_component(player, WantsToUseComponent)}')
 
 
 def drop_item_from_inventory(item_id):

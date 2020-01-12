@@ -20,8 +20,8 @@ _FOR_DMG; for {0} hp.; pour {0} pv.
 YOU_DRINK_ITEM;You drink: {0}.;Vous buvez: {0}.
 YOU_ARE_HEAL_FOR;You are heal for {0} hp.;Vous êtes soigné de {0} pv.
 _CONFUSING_THEM;,confusing them.;, provoquant la confusion dans son esprit.
-YOU_UNEQUIP;You unequip: {0};Vous desequipez: {0}
-YOU_EQUIP;You equip: {0};Vous equipez: {0}
+YOU_UNEQUIP;You unequip: ;Vous desequipez:
+YOU_EQUIP;You equip: ;Vous equipez:
 YOU_PICK_UP;You pick up: ;Vous ramassez:
 YOU_DROP_UP;You drop up : ;Vous laissez tomber:
 NOTHING_TO_PICK_UP;There is nothing here to pick up.;Il n'y a rien à ramasser ici.
@@ -128,3 +128,4 @@ QUIT_GAME_QUESTION;Quit game?;Quitter le jeu?
 YES;Yes;Oui
 NO;No;Non
 YOU_SEE_;You see: ;Vous voyez:
+YOU_IDENTIFIED_;You identified: ;Vous identifiez:

@@ -10,6 +10,7 @@ from systems.targeting_system import show_targeting, select_target
 from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input, \
     inventory_selected_item_input, yes_no_input
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
+from ui_system.ui_system import UiSystem
 from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
 from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
@@ -28,6 +29,7 @@ def tick():
         if result == MainMenuSelection.NEWGAME:
             if config.SHOW_MAPGEN_VISUALIZER:
                 run_state.change_state(States.MAP_GENERATION)
+                run_render_systems()
             else:
                 run_state.change_state(States.PRE_RUN)
             World.reset_all()
@@ -55,10 +57,10 @@ def tick():
         if result == YesNoResult.NO:
             # Je ne veux plus quitter
             run_state.change_state(States.AWAITING_INPUT)
-            run_all_systems()
+            run_render_systems()
         elif result == YesNoResult.YES:
             run_state.change_state(States.SAVE_GAME)
-            run_all_systems()
+            run_render_systems()
 
     elif run_state.current_state == States.SAVE_GAME:
         run_state.change_state(States.MAIN_MENU)
@@ -92,7 +94,7 @@ def tick():
         result = input_escape_to_quit()
         if result == ItemMenuResult.SELECTED:
             run_state.change_state(States.AWAITING_INPUT)
-            run_game_systems()
+            run_render_systems()
 
     # map gen
     elif run_state.current_state == States.MAP_GENERATION:
@@ -119,21 +121,22 @@ def tick():
         run_state.change_state(player_input())
         draw_tooltip()
 
+    # pour fix menu close item -_-
     elif run_state.current_state == States.REFRESH:
         run_state.change_state(States.AWAITING_INPUT)
-        run_all_systems()
+        run_render_systems()
 
     elif run_state.current_state == States.TICKING:
         run_game_systems()
         if run_state.current_state == States.AWAITING_INPUT:
-            run_all_systems()
+            run_render_systems()
 
     # In game menus
     elif run_state.current_state == States.SHOW_INVENTORY:
         items_in_backpack = get_items_in_inventory(World.fetch('player'))
         result, new_state, item = inventory_input(items_in_backpack)
         if result == ItemMenuResult.CANCEL:
-            run_all_systems()
+            run_render_systems()
             run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             run_state.args = item
@@ -159,6 +162,7 @@ def tick():
         result, item, target_pos = show_targeting()
         if result == ItemMenuResult.CANCEL:
             run_state.change_state(States.AWAITING_INPUT)
+            run_render_systems()
         elif result == ItemMenuResult.SELECTED:
             select_target(item, target_pos)
             run_state.change_state(States.TICKING)
@@ -173,11 +177,15 @@ def run_game_systems():
     World.update()
 
 
-def run_all_systems():
-    # we have to run all systems to render, because of ui system -_-
+def run_render_systems():
     terminal.clear()
-    run_game_systems()
+    UiSystem().update()
     render_map_camera()
     render_entities_camera()
     draw_tooltip()
     terminal.refresh()
+
+
+def run_all_systems():
+    run_game_systems()
+    run_render_systems()
