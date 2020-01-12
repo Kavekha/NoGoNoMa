@@ -98,6 +98,7 @@ def player_see_tile(idx, current_map, player):
         if maybe_hidden:
             hidden_entity_seen = player_try_to_see_hidden_entity(player, entity)
             if hidden_entity_seen:
+                World.remove_component(HiddenComponent, entity)
                 entities_in_tile.append(entity)
         else:
             entities_in_tile.append(entity)
@@ -112,3 +113,4 @@ def player_try_to_see_hidden_entity(player, entity):
         # found it!
         World.remove_component(HiddenComponent, entity)
         return entity
+    return False

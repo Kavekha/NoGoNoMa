@@ -8,27 +8,29 @@ Release 5 - Done.
     Annuler scroll
     improve: DiagonalPathRemoval builder
     Zoom and Reveal mal rafraichis.
-        > Systeme d'effets de base.
-        > Particules inclus dans le systeme d'effets.
-        > EntityDeath effect & experience
+        Systeme d'effets de base.
+        Particules inclus dans le systeme d'effets.
+        EntityDeath effect & experience
         > Effect supporte healing.
         > Fix cycle update joué deux fois & ui_system hors des system updates.
         > Fix: Equipped item equippé.
         > Fix: Identified item.
         > fix: Crash on target tile idx usage.
         > fix: Target Tile and Multiple Tiles working.
+        > effect confusion
+        > fix: Detect hidden.
+        > effect trigger + trigger system updated
 
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
-        Refacto & documentation pour la durée.
         Message info aux degats & soins.
-        confusion
-        damage trigger
+        Particules effects on scroll
         selectionner case vide avec scroll ne coute pas d'initiative.
         -> Un item exemple.
 
     4.3 - Identification & curses.
+        Refacto & documentation pour la durée.
         Cursed items
         Remove curse
         Identified items
