@@ -316,6 +316,18 @@ def inflict_damage_effect(effect_spawner, target):
     # pool & dmg effect
     if pool and effect_spawner_effect.effect_type == EffectType.DAMAGE:
         pool.hit_points.current -= effect_spawner_effect.damage
+        logs = World.fetch('logs')
+        creator = effect_spawner.creator
+        target_name = World.get_entity_component(target, NameComponent)
+        if creator:
+            creator_name = World.get_entity_component(creator, NameComponent)
+            if creator_name and target_name:
+                logs.appendleft(
+                    f'{Texts.get_text("HITS_FOR_DMG").format(Texts.get_text(creator_name.name), Texts.get_text(target_name.name), effect_spawner_effect.damage)}')
+        elif target_name:
+            logs.appendleft(
+                f'{Texts.get_text("UNKNOWN_SOURCE_HITS_SOMEONE_FOR_").format(Texts.get_text(target_name.name), effect_spawner_effect.damage)}')
+
         # blood stain
         if randint(0, 100) < config.BLOOD_ON_GROUND_CHANCE:
             add_effect(None, Effect(EffectType.BLOOD_STAINS), Targets(TargetType.SINGLE, target=target))

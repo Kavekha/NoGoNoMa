@@ -22,13 +22,12 @@ Release 5 - Done.
         effect trigger + trigger system updated
         Initiative cost for item usage if ok.
         Remove Damage system, item use system in systems, SufferDamageComponent
-        > Particules effects on scroll
+        Particules effects on scroll
+        > Message info aux degats & soins.
 
 Release 5 - Systems & items + API
     4.2 - Refacto pour creations d'items et events plus faciles.
-        > Particules effects on scroll
         Message info aux degats & soins.
-        selectionner case vide avec scroll ne coute pas d'initiative.
         Un item exemple: throwable potion of acid
 
     4.3 - Identification & curses.
