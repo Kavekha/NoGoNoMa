@@ -10,6 +10,7 @@ class RawsItem:
         self.weapon = {}    # {'range': None,'attribute': None, "min_dmg":None, "max_dmg":None, hit_bonus:None}
         self.wearable = {}    # {'slot': None, 'armor':None}
         self.magic = {}     # {'class': None, 'naming':None}
+        self.attributes = {}    # {'might': None}
 
 
 class RawsMob:

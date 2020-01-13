@@ -5,8 +5,6 @@ from components.character_components import PlayerComponent
 from components.magic_item_components import IdentifiedItemComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.item_components import ItemComponent
-import config
-from texts import Texts
 
 
 class ItemIdentificationSystem(System):

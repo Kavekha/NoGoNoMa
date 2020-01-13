@@ -15,7 +15,7 @@ from components.position_components import PositionComponent
 from player_systems.game_system import skill_level
 from player_systems.initiative_costs_mecanisms import calculate_fight_cost
 from texts import Texts
-from data.items_enum import EquipmentSlots, WeaponAttributes
+from data.components_enum import EquipmentSlots, WeaponAttributes
 import config
 
 
@@ -70,9 +70,9 @@ class MeleeCombatSystem(System):
                 attacker_attribute_hit_bonus = 0
                 if weapon_info:
                     if weapon_info.attribute == WeaponAttributes.MIGHT:
-                        attacker_attribute_hit_bonus += attacker_attributes.might
+                        attacker_attribute_hit_bonus += attacker_attributes.might.bonus_value
                     elif weapon_info.attribute == WeaponAttributes.QUICKNESS:
-                        attacker_attribute_hit_bonus += attacker_attributes.quickness
+                        attacker_attribute_hit_bonus += attacker_attributes.quickness.bonus_value
 
                 attacker_skill_melee = skill_level(attacker_skill, Skills.MELEE)
                 attacker_weapon_hit_bonus = 0
@@ -80,7 +80,7 @@ class MeleeCombatSystem(System):
                                     attacker_skill_melee + attacker_weapon_hit_bonus
 
                 # Defense calculation
-                dodge_quickness_bonus = target_attributes.quickness
+                dodge_quickness_bonus = target_attributes.quickness.bonus_value
                 dodge_skill_dodge = skill_level(target_skills, Skills.DODGE)
                 dodge_item_bonus = 0
                 dodge_difficulty = dodge_quickness_bonus + dodge_skill_dodge + dodge_item_bonus
@@ -103,10 +103,10 @@ class MeleeCombatSystem(System):
                     base_dmg += weapon_info.dmg_bonus
                 else:
                     base_dmg = randint(config.DEFAULT_MIN_DMG, config.DEFAULT_MAX_DMG)
-                attack_dmg = max(0, base_dmg + attacker_attributes.might + attacker_skill_melee)
+                attack_dmg = max(0, base_dmg + attacker_attributes.might.bonus_value + attacker_skill_melee)
 
                 # armor mitigation calculation
-                target_armor = target_attributes.body
+                target_armor = target_attributes.body.bonus_value
                 natural_target_armor = World.get_entity_component(wants_melee.target, NaturalAttackDefenseComponent)
                 if natural_target_armor:
                     target_armor += natural_target_armor.natural_armor
