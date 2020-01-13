@@ -9,11 +9,14 @@ from components.character_components import AttributesComponent
 from components.skills_component import SkillsComponent
 from components.blocktile_component import BlockVisibilityComponent, BlockTileComponent
 from components.renderable_component import RenderableComponent
+from components.magic_item_components import CursedItemComponent, MagicItemComponent
 
 
 def remove_curse_on_item(item):
-    from components.magic_item_components import CursedItemComponent
     World.remove_component(CursedItemComponent, item)
+    magic_item = World.get_entity_component(item, MagicItemComponent)
+    if magic_item:
+        magic_item.cursed = False
     logs = World.fetch('logs')
     logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("CURSE_REMOVED_ON_")}'
                     f'{get_obfuscate_name(item)}[/color]')

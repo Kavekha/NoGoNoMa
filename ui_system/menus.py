@@ -495,17 +495,26 @@ class RemovalCurseMenu(Menu):
     def get_decorated_names_list(self, items_to_display):
         decorated_names_list = list()
         for item in items_to_display:
+            item_name, equipped_info = self.display_name(item)
             color = get_item_color(item)
             letter_index = f'({chr(self.letter_index)})'
-            item_name = Texts.get_text(get_item_display_name(item))
 
-            final_msg = f'[color={color}]{letter_index} {item_name}[/color]'
+            final_msg = f'[color={color}]{letter_index} {equipped_info} {item_name}[/color]'
             decorated_names_list.append(final_msg)
 
             # on augmente l'index car on va choisir dans cette liste.
             self.letter_index += 1
 
         return decorated_names_list
+
+    def display_name(self, item):
+        item_name = Texts.get_text(get_item_display_name(item))
+        item_equipped = World.get_entity_component(item, EquippedComponent)
+        if item_equipped:
+            equipped_info = f'({Texts.get_text("EQUIPPED")})'
+        else:
+            equipped_info = ''
+        return item_name, equipped_info
 
     def create_menu_content(self, decorated_names_list):
         print(f'inventory: create menu content')

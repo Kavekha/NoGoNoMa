@@ -13,7 +13,8 @@ from ui_system.draw_tooltip import draw_tooltip
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from ui_system.ui_system import UiSystem
 from ui_system.interface import Interface
-from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
+from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu, \
+    show_curse_removal_screen
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 
 from systems.targeting_system import show_targeting, select_target
@@ -26,7 +27,7 @@ from data.initialize_game import init_game
 
 def tick():
     run_state = World.fetch('state')
-    print(f'current state tick is {run_state.current_state}')
+    # print(f'current state tick is {run_state.current_state}')
 
     # Menus
     if run_state.current_state == States.MAIN_MENU:
@@ -134,6 +135,7 @@ def tick():
     elif run_state.current_state == States.TICKING:
         run_game_systems()
         if run_state.current_state == States.AWAITING_INPUT:
+            # player turn
             run_render_systems()
 
     # In game menus
@@ -151,6 +153,8 @@ def tick():
 
     # remove curse menu
     elif run_state.current_state == States.SHOW_REMOVE_CURSE:
+        # we have to show it here, because not displayed if in Effect. TODO: Better.
+        show_curse_removal_screen()
         known_cursed_items_in_backpack = get_known_cursed_items_in_inventory(World.fetch('player'))
         result, new_state, item = known_cursed_inventory_input(known_cursed_items_in_backpack)
         if result == ItemMenuResult.CANCEL:

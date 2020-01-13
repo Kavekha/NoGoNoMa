@@ -235,9 +235,9 @@ def event_trigger(creator, item, effect_spawner_target):
         did_something = True
 
     if remove_curse:
-        from bearlibterminal import terminal
-        show_curse_removal_screen()
+        # show_curse_removal_screen()   # The show curse disappears when state change, since we dont come from tick.
         run_state = World.fetch('state')
+        print(f'we are launching remove curse effect: state is {run_state.current_state}')
         run_state.change_state(States.SHOW_REMOVE_CURSE)
         did_something = True
 
