@@ -5,3 +5,7 @@ class ProvidesHealingComponent:
 
 class ProvidesCurseRemovalComponent:
     pass
+
+
+class ProvidesIdentificationComponent:
+    pass
