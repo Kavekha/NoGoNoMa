@@ -6,9 +6,9 @@
     { "name" : "MISSILE_MAGIC_SCROLL", "weight" : 4, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "ACID_POTION", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
 
-    { "name" : "LONGSWORD_OF_KLUTZINESS", "weight" : 200, "min_depth" : 1, "max_depth" : 100 },
-    { "name" : "REMOVE_CURSE_SCROLL", "weight" : 200, "min_depth" : 1, "max_depth" : 100 },
-    { "name" : "IDENTIFY_SCROLL", "weight" : 300, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "LONGSWORD_OF_KLUTZINESS", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "REMOVE_CURSE_SCROLL", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "IDENTIFY_SCROLL", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
 
     { "name" : "TRAP", "weight" : 2, "min_depth" : 1, "max_depth" : 100 },
 
