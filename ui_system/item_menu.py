@@ -161,18 +161,9 @@ class InventorySelectedMenu(ItemMenu):
         # selected item
         box = BoxMenu(render_order)
         render_order += 1
-        selected_content = Texts.get_text(self.explanation_text)
+        selected_content = Texts.get_text(get_item_display_name(self.selected_item))
         selected_content = f'[color={config.COLOR_INFO_INVENTORY_SELECTED_ITEM}] {selected_content} [/color]'
         box.add(selected_content, MenuAlignement.CENTER)
-        menu_contents.append(box)
-
-        # left: item list.
-        box = BoxMenu(render_order)
-        render_order += 1
-        if not decorated_names_list:
-            box.add(Texts.get_text(self.no_item_text), MenuAlignement.CENTER)
-        for decorated_name in decorated_names_list:
-            box.add(decorated_name, MenuAlignement.CENTER)
         menu_contents.append(box)
 
         # right: description
