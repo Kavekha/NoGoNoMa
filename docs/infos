@@ -1,14 +1,54 @@
-*Attributes*
-    might: utilisé par les armes mélée concernée par la force brute.
-    body: Pris en compte dans le calcul des pv.
-    quickness: pris en compte dans l'esquive et les armes mélée de precision.
-    wits: Pris en compte dans le calcul de mana.
+combat 2.0 // Release 5.
 
-    reflexions:
-        wits pour les attaques "malignes"?
+Stats:
+Bonus Malus: Stat - 3
+1   Petite bestiole.
+2   Rat
+3   Chien
+4   Morblin
+5   Heros / Orc.
+6   Ettin
+7   Troll
+8   Ogre
+9   Geant
+10  Dragon
+11+ Surnaturel
 
-*Skills*
-    skill roll : On lance SkillValue vs Difficulté. Base diff = 40.
-    Avoir des difficultés types = 20 : easy, 40: normal, 60: hard.
-    Success = Jet de diff(1, Diff) <= Jet de Skill (0, SkillValue + 5)
-    rappel : skill value par defaut : -4
+
+Skills
+Bonus / Malus: (Skill * 2) -5
+0   Rien
+1   Neophythe
+2   Novice
+3   Apprenti
+4   Compagnon
+5   Expert
+6   Adept
+7   Maitre
+8   Grand Maitre
+9   Ancien
+10+ Legendaire
+
+
+Might:
+    Augmente les dmg.
+
+Body:
+    Augmente les PV.
+    Reduit les dmg après resistance de l'armure.
+
+Quickness:
+    Reduit le cout Initiative.
+
+Wits:
+    Augmente la Mana.
+    Augmente les dmg de sorts.
+
+
+Skills:
+    On lance 1d20 + bonus / Malus Skill vs 1d20 + Skill de l'adversaire.
+    Le bonus / malus est (Skill * 2) -5, soit - 5 pour un 0, -3 pour 1, -1 pour 2, 1 pour 3 Skill, 15 pour lvl 10.
+    Si 20 naturel : Succes. Si 1 naturel : Fail.
+    Si resultat >= Skill adverse: reussite.
+
+

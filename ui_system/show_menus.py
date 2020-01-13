@@ -1,28 +1,30 @@
 from bearlibterminal import terminal
 
-from ui_system.menus import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, MainOptionsMenu, \
-    QuitGameMenu, RemovalCurseMenu, IdentifyMenu
+from ui_system.item_menu import ItemMenu, ItemMenuType, InventorySelectedMenu
+from ui_system.menus import CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, MainOptionsMenu, \
+    QuitGameMenu
 from texts import Texts
 
 
 def show_identify_menu():
-    identify_menu = IdentifyMenu(Texts.get_text("IDENTIFY_MENU"))
+    identify_menu = ItemMenu(Texts.get_text("IDENTIFY_MENU"), ItemMenuType.IDENTIFY_ITEM)
     identify_menu.initialize()
 
 
 def show_curse_removal_screen():
-    removal_curse_menu = RemovalCurseMenu(Texts.get_text("CURSE_REMOVAL_MENU"))
+    removal_curse_menu = ItemMenu(Texts.get_text("CURSE_REMOVAL_MENU"), ItemMenuType.REMOVAL_CURSE_ON_ITEM)
     removal_curse_menu.initialize()
 
 
 def show_item_screen():
-    inventory_menu = InventoryMenu(Texts.get_text("INVENTORY"))
+    inventory_menu = ItemMenu(Texts.get_text("INVENTORY"), ItemMenuType.INVENTORY_MENU)
     inventory_menu.initialize()
 
 
 def show_selected_item_screen(item):
-    inventory_menu = InventoryMenu(Texts.get_text("INVENTORY"))
-    inventory_menu.selected_item = item
+    inventory_menu = InventorySelectedMenu(Texts.get_text("INVENTORY"),
+                                           ItemMenuType.INVENTORY_WITH_SELECT_ITEM_MENU,
+                                           item)
     inventory_menu.initialize()
 
 

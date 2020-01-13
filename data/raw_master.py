@@ -594,39 +594,10 @@ class RawsMaster:
             components_for_entity.append(ConsumableComponent())
 
         if to_create.consumable.get('effects'):
-            if to_create.consumable['effects'].get('provides_healing'):
-                components_for_entity.append(ProvidesHealingComponent(
-                    to_create.consumable['effects']['provides_healing']))
+            effect_components = RawsMaster.apply_effects(to_create.consumable.get('effects'))
 
-            if to_create.consumable['effects'].get('damage'):
-                components_for_entity.append(InflictsDamageComponent(to_create.consumable['effects']['damage']))
-
-            if to_create.consumable['effects'].get('ranged'):
-                components_for_entity.append(RangedComponent(to_create.consumable['effects']['ranged']))
-
-            if to_create.consumable['effects'].get('area_of_effect'):
-                components_for_entity.append(AreaOfEffectComponent(to_create.consumable['effects']['area_of_effect']))
-
-            if to_create.consumable['effects'].get('confusion'):
-                components_for_entity.append(ConfusionComponent(to_create.consumable['effects']['confusion']))
-
-            if to_create.consumable['effects'].get('particule'):
-                particule_infos = to_create.consumable['effects']['particule']
-                components_for_entity.append(SpawnParticuleBurstComponent(particule_infos['glyph'],
-                                                                          particule_infos['color'],
-                                                                          particule_infos['sprite']))
-
-            if to_create.consumable['effects'].get('particule_line'):
-                particule_infos = to_create.consumable['effects']['particule_line']
-                components_for_entity.append(SpawnParticuleLineComponent(particule_infos['glyph'],
-                                                                          particule_infos['color'],
-                                                                          particule_infos['sprite']))
-
-            if to_create.consumable['effects'].get('remove_curse'):
-                components_for_entity.append(ProvidesCurseRemovalComponent())
-
-            if to_create.consumable['effects'].get('identify'):
-                components_for_entity.append(ProvidesIdentificationComponent())
+            for effect_component in effect_components:
+                components_for_entity.append(effect_component)
 
         if to_create.weapon:
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))
@@ -675,6 +646,44 @@ class RawsMaster:
             World.add_component(component, item_id)
 
         return True
+
+    @staticmethod
+    def apply_effects(effects):
+        effects_list = list()
+        if effects.get('provides_healing'):
+            effects_list.append(ProvidesHealingComponent(effects.get('provides_healing')))
+
+        if effects.get('damage'):
+            effects_list.append(InflictsDamageComponent(effects.get('damage')))
+
+        if effects.get('ranged'):
+            effects_list.append(RangedComponent(effects.get('ranged')))
+
+        if effects.get('area_of_effect'):
+            effects_list.append(AreaOfEffectComponent(effects.get('area_of_effect')))
+
+        if effects.get('confusion'):
+            effects_list.append(ConfusionComponent(effects.get('confusion')))
+
+        if effects.get('particule'):
+            particule_infos = effects.get('particule')
+            effects_list.append(SpawnParticuleBurstComponent(particule_infos['glyph'],
+                                                                      particule_infos['color'],
+                                                                      particule_infos['sprite']))
+
+        if effects.get('particule_line'):
+            particule_infos = effects.get('particule_line')
+            effects_list.append(SpawnParticuleLineComponent(particule_infos['glyph'],
+                                                                     particule_infos['color'],
+                                                                     particule_infos['sprite']))
+
+        if effects.get('remove_curse'):
+            effects_list.append(ProvidesCurseRemovalComponent())
+
+        if effects.get('identify'):
+            effects_list.append(ProvidesIdentificationComponent())
+
+        return effects_list
 
     @staticmethod
     def get_scroll_tags():
