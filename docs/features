@@ -30,18 +30,19 @@ Release 5 - Done.
         > Impossible to unequip cursed items
         > Remove curse
         > Identified items
+        > Doc: API Concept.
+        > Refato menu inventory pour être utilisé par RemovalCurse, Identified, et autres items use on item.
 
 
-Release 5 - Cursed and unknown items
-    4.3 - Identification & curses.
-        Refato menu inventory pour être utilisé par RemovalCurse, Identified, et autres items use on item.
+Release 5 - Magic items and combat!
+    4.3 - Cursed and unknown items
         Ne pas perdre les parchemins removalCurse / identify quand ne fait rien ou rien à faire.
             Liste vide: on ne consomme pas. Deja une premiere etape.
             Sinon, si cancel: on rends l'item. Bof.
+
         Refacto tick pour meilleure transition State? A voir, ignoré selon API concept.
         Effects in RawMasters
         -> Cursed item.
-        -> Doc: API Concept.
 
     4.4 - Elargir le champs des items possibles.
         Items ameliorent Stats
