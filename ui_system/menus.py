@@ -484,6 +484,82 @@ class CharacterMenu(Menu):
         self.menu_contents = menu_contents
 
 
+class IdentifyMenu(Menu):
+    def initialize(self):
+        from inventory_system.inventory_functions import get_non_identify_items_in_inventory
+        user = World.fetch('player')
+        items_to_display = get_non_identify_items_in_inventory(user)
+        decorated_names_list = self.get_decorated_names_list(items_to_display)
+        self.create_menu_content(decorated_names_list)
+        self.render_menu()
+
+    def get_decorated_names_list(self, items_to_display):
+        decorated_names_list = list()
+        for item in items_to_display:
+            item_name, equipped_info = self.display_name(item)
+            color = get_item_color(item)
+            letter_index = f'({chr(self.letter_index)})'
+
+            final_msg = f'[color={color}]{letter_index} {equipped_info} {item_name}[/color]'
+            decorated_names_list.append(final_msg)
+
+            # on augmente l'index car on va choisir dans cette liste.
+            self.letter_index += 1
+
+        return decorated_names_list
+
+    def display_name(self, item):
+        item_name = Texts.get_text(get_item_display_name(item))
+        item_equipped = World.get_entity_component(item, EquippedComponent)
+        if item_equipped:
+            equipped_info = f'({Texts.get_text("EQUIPPED")})'
+        else:
+            equipped_info = ''
+        return item_name, equipped_info
+
+    def create_menu_content(self, decorated_names_list):
+        print(f'inventory: create menu content')
+        # content = (x, y, text)
+        menu_contents = list()
+        render_order = 1
+
+        # header
+        box = BoxMenu(render_order, linebreak=3, margin=1)
+        render_order += 1
+        header = f'[color={config.COLOR_SYS_MSG}] {self.header} [/color]'  # On ajoute la couleur après le len()
+        box.add(header, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        # usage explanation
+        box = BoxMenu(render_order)
+        render_order += 1
+        selected_content = Texts.get_text('IDENTIFY_EXPLANATION')
+        selected_content = f'[color={config.COLOR_INFO_INVENTORY_SELECTED_ITEM}] {selected_content} [/color]'
+        box.add(selected_content, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        # item list.
+        box = BoxMenu(render_order)
+        render_order += 1
+        if not decorated_names_list:
+            box.add(Texts.get_text('ALL_ITEMS_ARE_IDENTIFIED'), MenuAlignement.CENTER)
+
+        for decorated_name in decorated_names_list:
+            box.add(decorated_name, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        # end : how to quit.
+        box = BoxMenu(render_order)
+        render_order += 1
+
+        exit_text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
+        exit_text = f'[color=darker yellow]{exit_text}[/color]'
+        box.add(exit_text, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        self.menu_contents = menu_contents
+
+
 class RemovalCurseMenu(Menu):
     def initialize(self):
         user = World.fetch('player')

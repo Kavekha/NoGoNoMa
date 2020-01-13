@@ -5,16 +5,17 @@ import sys
 import config
 from world import World
 from player_systems.player_input import player_input, main_menu_input, input_escape_to_quit, inventory_input, \
-    option_menu_input, inventory_selected_item_input, yes_no_input, known_cursed_inventory_input
-from player_systems.game_system import remove_curse_on_item
+    option_menu_input, inventory_selected_item_input, yes_no_input, known_cursed_inventory_input, identify_menu_input
+from player_systems.game_system import remove_curse_on_item, item_identified
 
-from inventory_system.inventory_functions import get_items_in_inventory, get_known_cursed_items_in_inventory
+from inventory_system.inventory_functions import get_items_in_inventory, get_known_cursed_items_in_inventory, \
+    get_non_identify_items_in_inventory
 from ui_system.draw_tooltip import draw_tooltip
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from ui_system.ui_system import UiSystem
 from ui_system.interface import Interface
 from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu, \
-    show_curse_removal_screen
+    show_curse_removal_screen, show_identify_menu
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 
 from systems.targeting_system import show_targeting, select_target
@@ -162,6 +163,20 @@ def tick():
             run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             remove_curse_on_item(item)
+            run_state.change_state(new_state)
+            run_all_systems()
+
+    # identify menu
+    elif run_state.current_state == States.SHOW_IDENTIFY_MENU:
+        # we have to show it here, because not displayed if in Effect. TODO: Better.
+        show_identify_menu()
+        non_identified_items_in_backpack = get_non_identify_items_in_inventory(World.fetch('player'))
+        result, new_state, item = identify_menu_input(non_identified_items_in_backpack)
+        if result == ItemMenuResult.CANCEL:
+            run_render_systems()
+            run_state.change_state(States.AWAITING_INPUT)
+        elif result == ItemMenuResult.SELECTED:
+            item_identified(item)
             run_state.change_state(new_state)
             run_all_systems()
 

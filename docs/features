@@ -28,54 +28,70 @@ Release 5 - Done.
         > fix: unequip item
         > Cursed items
         > Impossible to unequip cursed items
+        > Remove curse
+        > Identified items
 
 
 Release 5 - Cursed and unknown items
     4.3 - Identification & curses.
-        Remove curse
-        Identified items
+        Refato menu inventory pour être utilisé par RemovalCurse, Identified, et autres items use on item.
+        Ne pas perdre les parchemins removalCurse / identify quand ne fait rien ou rien à faire.
+            Liste vide: on ne consomme pas. Deja une premiere etape.
+            Sinon, si cancel: on rends l'item. Bof.
+        Refacto tick pour meilleure transition State? A voir, ignoré selon API concept.
+        Effects in RawMasters
         -> Cursed item.
         -> Doc: API Concept.
 
     4.4 - Elargir le champs des items possibles.
-        Attribute modifier items
-        Items with charges
+        Items ameliorent Stats
+        Items avec des charges.
         Status effects
-        Proc effects
+        Afficher le status PJ & mobs
+        -> Poc API / Main Menu & controls / mouse.
 
     4.5 - Attaques speciales, Loot tables & API bases
+        Connaitre des sorts / Attaques speciales
+        Lancer des sorts.
+        Sorts dans le Raw.
+        Systeme de sorts / Attaques speciales
+        Mana
+        Apprendre des sorts / Attaques speciales
+        Poison, Hate & Slow
+        Procs.
+        NPC & cast abilities
         Magic spell / special attack.
         Learning special attacks
         Special attack NPC cast.
-        Loot tables for rooms & mobs.
-        API: Separation Interface / Jeu.
-        API: Communication UI / Jeu : menus.
+        -> Poc API / Menus secondaires hors Jeu (Options, Quit, etc).
 
-    4.6 - Combat.
-        Fix du combat en diagonal - IA.
-        Nouveau systeme de combat plus clair & skills.
-        Items pour prendre en compte le systeme de combat.
-        API: Controles & Options graphiques / Langues.
-        API: Mouse support.
-
-    4.7 - Progression level.
-        Traits de monstres.
+    4.6 - Table de loots dynamiques.
+        Rooms specifiques dans les donjons, sur modele.
+        Table de loots specifiques selon region & rooms.
         Generation d'objets & monstres basés sur des traits.
-        Gain au level up & distributions via Interface API.
-        API: Particules dans l'API Interface.
+        Table de loots pour la construction d'items.
+        Table de loots pour la construction de monstres.
+        -> Poc API / Autres menus inventaire.
 
-    4.8 - Affichage Map / API & controles.
-        API: affichage de la map dans l'interface: le jeu communique la map visible & contents + map revelée.
-        API: Affichage de la zone de target.
-        API: Modification des controles niveau interface: Les controles sont configurables via l'interface.
-        API: Affichage des logs dans l'interface.
-        API: Modification de la resolution.
+    4.7 - Combat.
+        Nouveau systeme de combat plus clair & skills.
+        Items associés au combat.
+        Regles d'opportunité etc.
+        -> Poc API / Affichage de l'interface & map + controles.
+
+    4.8 - Progression level.
+        Gain au level up
+        HungerClock like & items.
+        Distributions via Interface API.
+        Boss final pour condition de victoire.
+        -> Poc API / Particules dans l'API Interface.
 
     4.9 - Scores, Morgue files & animations interface.
         A la fin d'une partie, on calcule le score selon niveau perso, depth & modificateur de fin de partie (game over ou victoire).
         Au game over, creer un fichier texte avec les details de la mort, le score, les stats du perso, la carte(?).
         Au game over, un bref resumé de la partie avec les informations majeures ("A vaincu pour la premiere fois BLA", "A atteint Depth 2", etc.
         API: Animations de l'interface (Barre de vie qui se reduit, changement de Depth, endroit où l'on clique).
+        Application .exe?
 
 
 Release 6 - Simple Dungeon progression

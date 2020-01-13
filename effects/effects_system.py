@@ -7,7 +7,8 @@ from systems.particule_system import ParticuleBuilder
 from world import World
 from effects.targeting_effect import entity_position, find_item_position
 from components.pools_component import Pools
-from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent
+from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
+    ProvidesIdentificationComponent
 from components.item_components import ConsumableComponent
 from components.confusion_component import ConfusionComponent
 from components.hidden_component import HiddenComponent
@@ -215,6 +216,7 @@ def event_trigger(creator, item, effect_spawner_target):
     damaging = World.get_entity_component(item, InflictsDamageComponent)
     confusion = World.get_entity_component(item, ConfusionComponent)
     remove_curse = World.get_entity_component(item, ProvidesCurseRemovalComponent)
+    identify = World.get_entity_component(item, ProvidesIdentificationComponent)
 
     if healing:
         add_effect(creator,
@@ -239,6 +241,14 @@ def event_trigger(creator, item, effect_spawner_target):
         run_state = World.fetch('state')
         print(f'we are launching remove curse effect: state is {run_state.current_state}')
         run_state.change_state(States.SHOW_REMOVE_CURSE)
+        # we cant know if usage worked or not -_-
+        did_something = True
+
+    if identify:
+        # show_identify_screen()   # The show curse disappears when state change, since we dont come from tick.
+        run_state = World.fetch('state')
+        run_state.change_state(States.SHOW_IDENTIFY_MENU)
+        # we cant know if usage worked or not -_-
         did_something = True
 
     return did_something
