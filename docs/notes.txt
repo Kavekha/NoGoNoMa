@@ -9,6 +9,9 @@ Identification:
         Exemple: Je bois une potion de soins à full vie. Comment puis je savoir qu'elle soigne?
         Exemple2: J'utilise un parchemin. Il m'ouvre l'ecran d'identification.
 
+Items:
+    Si on utilise Identification ou Removal Curse, et Cancel, l'item est perdu quand meme.
+
 Input:
     Recuperation des inputs dans le save pour le Replay.
 

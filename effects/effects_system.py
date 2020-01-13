@@ -18,7 +18,8 @@ from components.initiative_components import InitiativeCostComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
 
 from state import States
-from ui_system.show_menus import show_curse_removal_screen
+from inventory_system.inventory_functions import get_non_identify_items_in_inventory, \
+    get_known_cursed_items_in_inventory
 from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
 from player_systems.on_death import on_player_death
 from components.name_components import NameComponent
@@ -242,14 +243,17 @@ def event_trigger(creator, item, effect_spawner_target):
         print(f'we are launching remove curse effect: state is {run_state.current_state}')
         run_state.change_state(States.SHOW_REMOVE_CURSE)
         # we cant know if usage worked or not -_-
-        did_something = True
+        if get_known_cursed_items_in_inventory(creator):
+            did_something = True
 
     if identify:
         # show_identify_screen()   # The show curse disappears when state change, since we dont come from tick.
         run_state = World.fetch('state')
         run_state.change_state(States.SHOW_IDENTIFY_MENU)
         # we cant know if usage worked or not -_-
-        did_something = True
+        # si il y a au moins des items a identifier
+        if get_non_identify_items_in_inventory(creator):
+            did_something = True
 
     return did_something
 

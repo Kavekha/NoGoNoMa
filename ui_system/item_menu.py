@@ -161,7 +161,7 @@ class InventorySelectedMenu(ItemMenu):
         # selected item
         box = BoxMenu(render_order)
         render_order += 1
-        selected_content = self.explanation_text
+        selected_content = Texts.get_text(self.explanation_text)
         selected_content = f'[color={config.COLOR_INFO_INVENTORY_SELECTED_ITEM}] {selected_content} [/color]'
         box.add(selected_content, MenuAlignement.CENTER)
         menu_contents.append(box)
