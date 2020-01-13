@@ -9,6 +9,7 @@ from components.item_components import ItemComponent
 from data.items_enum import MagicItemClass
 from texts import Texts
 from world import World
+import config
 
 
 def print_shadow(x, y, text, shadow_offset=1):
@@ -59,16 +60,25 @@ def render_bar(x, y, width, name, value, max_value, bar_color, back_color, text_
 
 def get_item_color(item_entity):
     magic_component = World.get_entity_component(item_entity, MagicItemComponent)
+    result = config.COLOR_MAGIC_ITEM_COMMON
     if magic_component:
         if magic_component.magic_class == MagicItemClass.UNCOMMON:
-            return 'green'
+            result = config.COLOR_MAGIC_ITEM_UNCOMMON
         if magic_component.magic_class == MagicItemClass.RARE:
-            return 'blue'
+            result = config.COLOR_MAGIC_ITEM_RARE
         elif magic_component.magic_class == MagicItemClass.EPIC:
-            return 'violet'
+            result = config.COLOR_MAGIC_ITEM_EPIC
         elif magic_component.magic_class == MagicItemClass.LEGENDARY:
-            return 'yellow'
-    return 'white'
+            result = config.COLOR_MAGIC_ITEM_LEGENDARY
+
+        if magic_component.cursed:
+            item_named = World.get_entity_component(item_entity, NameComponent)
+            master_dungeon = World.fetch('master_dungeon')
+            # a été identifié?
+            if item_named.name in master_dungeon.identified_items:
+                result = config.COLOR_MAGIC_ITEM_CURSED
+
+    return result
 
 
 def get_item_display_name(item_id):

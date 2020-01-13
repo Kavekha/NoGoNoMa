@@ -1,14 +1,13 @@
 from collections import deque
 from enum import Enum
 from random import randint
-from itertools import product as it_product
 
 from systems.system import System
 from systems.particule_system import ParticuleBuilder
 from world import World
 from effects.targeting_effect import entity_position, find_item_position
 from components.pools_component import Pools
-from components.provides_healing_component import ProvidesHealingComponent
+from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent
 from components.item_components import ConsumableComponent
 from components.confusion_component import ConfusionComponent
 from components.hidden_component import HiddenComponent
@@ -17,6 +16,8 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.initiative_components import InitiativeCostComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
 
+from state import States
+from ui_system.show_menus import show_curse_removal_screen
 from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
 from player_systems.on_death import on_player_death
 from components.name_components import NameComponent
@@ -209,10 +210,11 @@ def event_trigger(creator, item, effect_spawner_target):
             if end_pos:
                 spawn_line_particules(start_pos, end_pos, particule_line)
 
-    # healing
+    # effects
     healing = World.get_entity_component(item, ProvidesHealingComponent)
     damaging = World.get_entity_component(item, InflictsDamageComponent)
     confusion = World.get_entity_component(item, ConfusionComponent)
+    remove_curse = World.get_entity_component(item, ProvidesCurseRemovalComponent)
 
     if healing:
         add_effect(creator,
@@ -230,6 +232,13 @@ def event_trigger(creator, item, effect_spawner_target):
         add_effect(creator,
                    Effect(EffectType.CONFUSION, turns=confusion.turns),
                    effect_spawner_target)
+        did_something = True
+
+    if remove_curse:
+        from bearlibterminal import terminal
+        show_curse_removal_screen()
+        run_state = World.fetch('state')
+        run_state.change_state(States.SHOW_REMOVE_CURSE)
         did_something = True
 
     return did_something

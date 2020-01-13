@@ -3,11 +3,20 @@ from random import randint
 import config
 from world import World
 from texts import Texts
+from ui_system.render_functions import get_obfuscate_name
 from components.pools_component import Pools
 from components.character_components import AttributesComponent
 from components.skills_component import SkillsComponent
 from components.blocktile_component import BlockVisibilityComponent, BlockTileComponent
 from components.renderable_component import RenderableComponent
+
+
+def remove_curse_on_item(item):
+    from components.magic_item_components import CursedItemComponent
+    World.remove_component(CursedItemComponent, item)
+    logs = World.fetch('logs')
+    logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]{Texts.get_text("CURSE_REMOVED_ON_")}'
+                    f'{get_obfuscate_name(item)}[/color]')
 
 
 def opening_door(door_id, door_component):

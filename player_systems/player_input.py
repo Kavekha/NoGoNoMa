@@ -3,8 +3,7 @@ from bearlibterminal import terminal
 import sys
 
 from player_systems.try_move_player import try_move_player, try_next_level, move_on_click_player, action_wait
-from systems.inventory_system import get_item
-from systems.item_use_system import get_available_item_actions
+from inventory_system.inventory_functions import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from ui_system.show_menus import show_main_options_menu, show_item_screen, show_character_menu, show_victory_menu, \
@@ -150,6 +149,25 @@ def yes_no_input():
                 elif index == 1:
                     return YesNoResult.YES
     return YesNoResult.NO_RESPONSE
+
+
+def known_cursed_inventory_input(item_list):
+    # return ItemMenuResult, new_state, item selected
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            if key == terminal.TK_ESCAPE:
+                return ItemMenuResult.CANCEL, None, None
+            elif key == terminal.TK_CLOSE:
+                save_game(World)
+                terminal.close()
+                sys.exit()
+            else:
+                index = terminal.state(terminal.TK_CHAR) - ord('a')
+                if 0 <= index < len(item_list):
+                    print(f'curse removal input: item {index} has been chosen.')
+                    return ItemMenuResult.SELECTED, States.TICKING, item_list[index]
+    return ItemMenuResult.NO_RESPONSE, None, None
 
 
 def inventory_input(item_list):

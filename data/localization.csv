@@ -134,3 +134,7 @@ ACID_POTION;Acid potion;Potion d'Acide
 LONGSWORD_OF_KLUTZINESS;Longsword of Klutziness;Grande Lame du Maladroit
 YOU_CANNOT_REMOVE_;You cannot remove {0} ;Vous ne pouvez pas retirer {0}
 ITS_CURSED;It's cursed!;C'est maudit!
+CURSE_REMOVAL_MENU;Curse Removal;Retirer la Malediction
+CURSE_REMOVAL_EXPLANATION;Select an item to remove its curse.;Selectionner un objet pour retirer sa malediction.
+NO_CURSE_ITEM_KNOWN;There is no known cursed item.;Vous n'avez aucun objet maudit, à votre connaissance.
+CURSE_REMOVED_ON_;The curse is left on ;La Malediction est retirée de

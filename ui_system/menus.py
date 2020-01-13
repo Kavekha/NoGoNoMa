@@ -6,7 +6,7 @@ from ui_system.render_menus import draw_background
 from ui_system.render_functions import get_item_color, get_item_display_name, print_shadow
 from world import World
 from components.name_components import ObfuscatedNameComponent
-from components.provides_healing_component import ProvidesHealingComponent
+from components.provide_effects_components import ProvidesHealingComponent
 from components.item_components import MeleeWeaponComponent, ConsumableComponent
 from components.equip_components import EquippedComponent, EquippableComponent
 from components.area_effect_component import AreaOfEffectComponent
@@ -16,8 +16,9 @@ from components.magic_item_components import MagicItemComponent
 from components.ranged_component import RangedComponent
 from components.character_components import AttributesComponent
 from components.pools_component import Pools
-from components.skills_component import SkillsComponent, Skills
-from systems.inventory_system import get_equipped_items, get_items_in_inventory
+from components.skills_component import SkillsComponent
+from inventory_system.inventory_functions import get_equipped_items, get_items_in_inventory, \
+    get_known_cursed_items_in_inventory
 from player_systems.game_system import xp_for_next_level
 from ui_system.ui_enums import Layers
 from ui_system.text_functions import remove_color_tag
@@ -170,6 +171,7 @@ class Menu:
         return lines_list
 
     def render_menu(self):
+        print(f'Menu: Render menu: i am {self}')
         terminal.layer(Layers.MENU.value)
 
         window_width = 0
@@ -477,6 +479,72 @@ class CharacterMenu(Menu):
         text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
         text = f'[color=darker yellow]{text}[/color]'
         box.add(text, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        self.menu_contents = menu_contents
+
+
+class RemovalCurseMenu(Menu):
+    def initialize(self):
+        user = World.fetch('player')
+        items_to_display = get_known_cursed_items_in_inventory(user)
+        decorated_names_list = self.get_decorated_names_list(items_to_display)
+        self.create_menu_content(decorated_names_list)
+        self.render_menu()
+
+    def get_decorated_names_list(self, items_to_display):
+        decorated_names_list = list()
+        for item in items_to_display:
+            color = get_item_color(item)
+            letter_index = f'({chr(self.letter_index)})'
+            item_name = Texts.get_text(get_item_display_name(item))
+
+            final_msg = f'[color={color}]{letter_index} {item_name}[/color]'
+            decorated_names_list.append(final_msg)
+
+            # on augmente l'index car on va choisir dans cette liste.
+            self.letter_index += 1
+
+        return decorated_names_list
+
+    def create_menu_content(self, decorated_names_list):
+        print(f'inventory: create menu content')
+        # content = (x, y, text)
+        menu_contents = list()
+        render_order = 1
+
+        # header
+        box = BoxMenu(render_order, linebreak=3, margin=1)
+        render_order += 1
+        header = f'[color={config.COLOR_SYS_MSG}] {self.header} [/color]'  # On ajoute la couleur après le len()
+        box.add(header, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        # usage explanation
+        box = BoxMenu(render_order)
+        render_order += 1
+        selected_content = Texts.get_text('CURSE_REMOVAL_EXPLANATION')
+        selected_content = f'[color={config.COLOR_INFO_INVENTORY_SELECTED_ITEM}] {selected_content} [/color]'
+        box.add(selected_content, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        # item list.
+        box = BoxMenu(render_order)
+        render_order += 1
+        if not decorated_names_list:
+            box.add(Texts.get_text('NO_CURSE_ITEM_KNOWN'), MenuAlignement.CENTER)
+
+        for decorated_name in decorated_names_list:
+            box.add(decorated_name, MenuAlignement.CENTER)
+        menu_contents.append(box)
+
+        # end : how to quit.
+        box = BoxMenu(render_order)
+        render_order += 1
+
+        exit_text = f' {Texts.get_text("ESCAPE_TO_CANCEL")} '
+        exit_text = f'[color=darker yellow]{exit_text}[/color]'
+        box.add(exit_text, MenuAlignement.CENTER)
         menu_contents.append(box)
 
         self.menu_contents = menu_contents
