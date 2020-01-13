@@ -76,6 +76,24 @@
           }
       },
       {
+          "name" : "IDENTIFY_SCROLL",
+          "renderable": {
+              "glyph" : ")",
+              "fg" : "#00FFFF",
+              "order" : "ITEM",
+              "sprite": "items/scroll.png"
+          },
+          "consumable" : {
+              "effects" : {
+                  "identify": ""
+              }
+          },
+          "magic": {
+              "class": "common",
+              "naming": "scroll"
+          }
+      },
+      {
           "name" : "FIREBALL_SCROLL",
           "renderable": {
             "glyph" : ")",

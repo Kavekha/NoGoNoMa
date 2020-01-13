@@ -10,6 +10,24 @@ from components.skills_component import SkillsComponent
 from components.blocktile_component import BlockVisibilityComponent, BlockTileComponent
 from components.renderable_component import RenderableComponent
 from components.magic_item_components import CursedItemComponent, MagicItemComponent
+from components.name_components import NameComponent, ObfuscatedNameComponent
+from components.item_components import ItemComponent
+
+
+def item_identified(item):
+    # doublon de item identification system.
+    item_named = World.get_entity_component(item, NameComponent)
+    master_dungeon = World.fetch('master_dungeon')
+    master_dungeon.identified_items.add(item_named.name)
+
+    for entity_item, (_item, named) in World.get_components(ItemComponent, NameComponent):
+        if named.name == item_named.name:
+            World.remove_component(ObfuscatedNameComponent, entity_item)
+
+    logs = World.fetch('logs')
+    logs.appendleft(f'[color={config.COLOR_SYS_MSG}]'
+                    f'{Texts.get_text("YOU_IDENTIFIED_")}'
+                    f'{Texts.get_text(item_named.name)}.')
 
 
 def remove_curse_on_item(item):

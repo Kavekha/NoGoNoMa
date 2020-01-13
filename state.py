@@ -28,6 +28,7 @@ class States(Enum):
     MAP_GENERATION = 15
     CONFIRM_QUIT = 16
     TICKING = 17
+    SHOW_IDENTIFY_MENU = 18
 
 
 class State:

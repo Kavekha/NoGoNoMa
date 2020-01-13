@@ -10,6 +10,7 @@ from components.name_components import NameComponent
 from components.ranged_component import RangedComponent
 from components.targeting_component import TargetingComponent
 from components.equip_components import EquippedComponent
+from components.magic_item_components import CursedItemComponent
 from state import States
 from texts import Texts
 import config
@@ -38,8 +39,23 @@ def get_available_item_actions(item):
     return available_actions
 
 
+def get_non_identify_items_in_inventory(user):
+    from components.name_components import ObfuscatedNameComponent
+    all_items_in_inventory = get_items_in_inventory(user)
+    master_dungeon = World.fetch('master_dungeon')
+    non_identified_items = list()
+
+    for item in all_items_in_inventory:
+        item_named = World.get_entity_component(item, NameComponent)
+        if item_named.name:
+            obfuscated = World.get_entity_component(item, ObfuscatedNameComponent)
+            if obfuscated and item_named.name not in master_dungeon.identified_items:
+                non_identified_items.append(item)
+
+    return non_identified_items
+
+
 def get_known_cursed_items_in_inventory(user):
-    from components.magic_item_components import CursedItemComponent
     all_items_in_inventory = get_items_in_inventory(user)
     master_dungeon = World.fetch('master_dungeon')
     known_cursed_items = list()

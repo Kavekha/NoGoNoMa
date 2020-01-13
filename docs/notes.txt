@@ -5,6 +5,9 @@ Load_raws
 
 Identification:
     Couleur des parchos & potions non aleatoire.
+    Rendre plus intelligent le moteur d'identification.
+        Exemple: Je bois une potion de soins à full vie. Comment puis je savoir qu'elle soigne?
+        Exemple2: J'utilise un parchemin. Il m'ouvre l'ecran d'identification.
 
 Input:
     Recuperation des inputs dans le save pour le Replay.

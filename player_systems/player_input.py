@@ -151,6 +151,25 @@ def yes_no_input():
     return YesNoResult.NO_RESPONSE
 
 
+def identify_menu_input(item_list):
+    # return ItemMenuResult, new_state, item selected
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            if key == terminal.TK_ESCAPE:
+                return ItemMenuResult.CANCEL, None, None
+            elif key == terminal.TK_CLOSE:
+                save_game(World)
+                terminal.close()
+                sys.exit()
+            else:
+                index = terminal.state(terminal.TK_CHAR) - ord('a')
+                if 0 <= index < len(item_list):
+                    print(f'identify item input: item {index} has been chosen.')
+                    return ItemMenuResult.SELECTED, States.TICKING, item_list[index]
+    return ItemMenuResult.NO_RESPONSE, None, None
+
+
 def known_cursed_inventory_input(item_list):
     # return ItemMenuResult, new_state, item selected
     if terminal.has_input():

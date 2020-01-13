@@ -1,0 +1,102 @@
+game state = main_menu
+ihm state = launch
+
+tick:
+    while True
+        if ihm state == launch
+            ihm.get_state: game.return_state
+
+        # we deal with the response.
+        if game.state == main_menu
+            show main_menu(options)
+
+        if game.state == awaiting_input
+            show_game(options)
+            ihm state = awaiting_input
+
+ihm.show_game(options)
+    if infos
+
+game.return_state:
+    if state == main_menu
+        if game:
+            option: resume_game
+        option: create_new_game
+        if save:
+            option: launch_save
+
+game.receive_request(option):
+    # fait ses trucs.
+    # Si pas valid: return negatif.
+    # Si valid: fait ses ticks a lui jusqu'à arriver à awaiting_input.
+    play option:
+        if not valid option:
+            return Nothing happen
+        resume_game:
+            state = awaiting_input
+            return known_game_infos + options
+        create_new_game:
+            generate world
+            state = prerun
+            game update() with prerun state
+            create save
+            change state = awaiting_input
+            return known_game infos + options
+        launch_save:
+            reload save
+            recreate world
+            return known_game infos + options
+
+ihm.awaiting_input(options):
+    options attendues par le jeu.
+        exemples:
+            use_item(item):ihm.send_usage_request(item, target=optional)
+            move(position):ihm.send_move_request(position)
+    options ajoutées par l'IHM:
+        show_inventary
+
+ihm.show_inventory(options)
+    on a deja la connaissance des items possedés et leur statut
+    on les affiche.
+    On filtre les options demandant un item en retour.
+    ihm.send_usage_request(item, target=optional)
+
+
+ihm.show_game(options):
+    # verifie si infos nouvelles par rapport à iteration precedente.
+    # si infos nouvelles parmi celles souhaitées pour l'interface:
+        render_interface
+    # si infos nouvelles map:
+        garder revealed map du coté game
+        render_map
+    # si infos nouvelles personnages:
+        render_entities
+        ajout messages ("see X")
+    # si actions nouvelles:
+        render_particules
+        ajout messages
+    # si messages nouveaux:
+        render_logs
+    # si commandes nouvelles:
+        mettre à jour les input disponibles.
+    ihm.state = awaiting_input
+
+game.return_known_game_infos:
+    # info sur personnage: stats
+    # info sur personnage: equipement
+    # info sur map
+    # info sur personnages
+    # info actions accomplies depuis la derniere action joueur
+    # info actions disponibles
+
+
+ihm.show_main_menu(options):
+    for option in options: display button
+        send_request(option):game.receive_request(option)
+    # on ajoute des options specifiques interface:
+    add Options option
+        > ihm.show_options_menu:
+            change language
+            change graphisme
+    add Quit option
+
