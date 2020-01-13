@@ -4,7 +4,7 @@ from components.position_components import PositionComponent, EntityMovedCompone
 from components.viewshed_component import ViewshedComponent
 from components.character_components import AutopickupComponent
 from components.blocktile_component import BlockTileComponent
-from systems.inventory_system import get_item
+from inventory_system.inventory_functions import get_item
 from components.pools_component import Pools
 from components.intent_components import WantsToMeleeComponent
 from components.door_component import DoorComponent

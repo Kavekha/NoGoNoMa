@@ -4,7 +4,7 @@ import os
 from components.position_components import PositionComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.renderable_component import RenderableComponent
-from components.provides_healing_component import ProvidesHealingComponent
+from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
@@ -428,6 +428,8 @@ class RawsMaster:
                         raw_effects["particule_line"] = parse_particule(consumable[attribute][effect])
                     elif effect == "particule":
                         raw_effects["particule_line"] = parse_particule(consumable[attribute][effect])
+                    elif effect == "remove_curse":
+                        raw_effects["remove_curse"] = True
                     else:
                         print(f'load consum raw: unknown effect in {consumable[attribute]}')
                         raise NotImplementedError
@@ -616,6 +618,10 @@ class RawsMaster:
                 components_for_entity.append(SpawnParticuleLineComponent(particule_infos['glyph'],
                                                                           particule_infos['color'],
                                                                           particule_infos['sprite']))
+
+            if to_create.consumable['effects'].get('remove_curse'):
+                components_for_entity.append(ProvidesCurseRemovalComponent())
+
         if to_create.weapon:
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))
 

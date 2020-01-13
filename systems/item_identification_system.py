@@ -14,9 +14,11 @@ class ItemIdentificationSystem(System):
         subjects = World.get_components(PlayerComponent, IdentifiedItemComponent)
         master_dungeon = World.fetch('master_dungeon')
 
+        identified_to_remove = list()
         for entity, (_player, identified) in subjects:
             if identified not in master_dungeon.identified_items and RawsMaster.is_tag_magic(identified.name):
                 master_dungeon.identified_items.add(identified.name)
+                identified_to_remove.append(entity)
                 # This proc every time you use an item already identified (Scroll Missile after identifing another)Why?
                 '''
                 logs = World.fetch('logs')
@@ -30,4 +32,5 @@ class ItemIdentificationSystem(System):
                     if named.name == identified.name:
                         World.remove_component(ObfuscatedNameComponent, entity_item)
 
+        for entity in identified_to_remove:
             World.remove_component(IdentifiedItemComponent, entity)

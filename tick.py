@@ -4,24 +4,30 @@ import sys
 
 import config
 from world import World
-from player_systems.player_input import player_input
+from player_systems.player_input import player_input, main_menu_input, input_escape_to_quit, inventory_input, \
+    option_menu_input, inventory_selected_item_input, yes_no_input, known_cursed_inventory_input
+from player_systems.game_system import remove_curse_on_item
+
+from inventory_system.inventory_functions import get_items_in_inventory, get_known_cursed_items_in_inventory
 from ui_system.draw_tooltip import draw_tooltip
-from systems.targeting_system import show_targeting, select_target
-from player_systems.player_input import main_menu_input, input_escape_to_quit, inventory_input, option_menu_input, \
-    inventory_selected_item_input, yes_no_input
 from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from ui_system.ui_system import UiSystem
-from systems.inventory_system import get_items_in_inventory
 from ui_system.interface import Interface
-from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu
+from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu, \
+    show_curse_removal_screen
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
+
+from systems.targeting_system import show_targeting, select_target
+
 from state import States
+
 from data.save_and_load import load_game, save_game, has_saved_game
 from data.initialize_game import init_game
 
 
 def tick():
     run_state = World.fetch('state')
+    # print(f'current state tick is {run_state.current_state}')
 
     # Menus
     if run_state.current_state == States.MAIN_MENU:
@@ -129,6 +135,7 @@ def tick():
     elif run_state.current_state == States.TICKING:
         run_game_systems()
         if run_state.current_state == States.AWAITING_INPUT:
+            # player turn
             run_render_systems()
 
     # In game menus
@@ -143,6 +150,20 @@ def tick():
             run_state.change_state(new_state)
             run_game_systems()
             show_selected_item_screen(item)
+
+    # remove curse menu
+    elif run_state.current_state == States.SHOW_REMOVE_CURSE:
+        # we have to show it here, because not displayed if in Effect. TODO: Better.
+        show_curse_removal_screen()
+        known_cursed_items_in_backpack = get_known_cursed_items_in_inventory(World.fetch('player'))
+        result, new_state, item = known_cursed_inventory_input(known_cursed_items_in_backpack)
+        if result == ItemMenuResult.CANCEL:
+            run_render_systems()
+            run_state.change_state(States.AWAITING_INPUT)
+        elif result == ItemMenuResult.SELECTED:
+            remove_curse_on_item(item)
+            run_state.change_state(new_state)
+            run_all_systems()
 
     # menu inventory with item selected
     elif run_state.current_state == States.SHOW_SELECTED_ITEM_MENU:

@@ -13,6 +13,7 @@ class InitiativeSystem(System):
         if run_state.current_state != States.TICKING:
             return
 
+        print(f'initiative : run state is : {run_state.current_state}')
         # on s'assure qu'i n'y a plus de "My Turn".
         World.remove_component_for_all_entities(MyTurn)
 

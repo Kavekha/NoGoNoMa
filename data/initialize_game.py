@@ -14,7 +14,7 @@ from inventory_system.use_equip_system import UseEquipSystem
 from inventory_system.item_use_system import ItemUseSystem
 from inventory_system.item_remove_system import ItemRemoveSystem
 
-from systems.inventory_system import ItemDropSystem
+from inventory_system.drop_item_system import ItemDropSystem
 from systems.item_identification_system import ItemIdentificationSystem
 from systems.trigger_system import TriggerSystem
 from systems.initiative_system import InitiativeSystem

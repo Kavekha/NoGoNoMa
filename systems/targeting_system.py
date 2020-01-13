@@ -1,6 +1,6 @@
 from bearlibterminal import terminal
 
-from systems.inventory_system import use_item
+from inventory_system.inventory_functions import use_item
 from world import World
 from components.targeting_component import TargetingComponent
 from components.viewshed_component import ViewshedComponent

@@ -1,8 +1,13 @@
 from bearlibterminal import terminal
 
 from ui_system.menus import InventoryMenu, CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, MainOptionsMenu, \
-    QuitGameMenu
+    QuitGameMenu, RemovalCurseMenu
 from texts import Texts
+
+
+def show_curse_removal_screen():
+    removal_curse_menu = RemovalCurseMenu(Texts.get_text("CURSE_REMOVAL_MENU"))
+    removal_curse_menu.initialize()
 
 
 def show_item_screen():

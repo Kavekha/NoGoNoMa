@@ -58,6 +58,24 @@
           }
       },
       {
+          "name" : "REMOVE_CURSE_SCROLL",
+          "renderable": {
+              "glyph" : ")",
+              "fg" : "#00FFFF",
+              "order" : "ITEM",
+              "sprite": "items/scroll.png"
+          },
+          "consumable" : {
+              "effects" : {
+                  "remove_curse": ""
+              }
+          },
+          "magic": {
+              "class": "common",
+              "naming": "scroll"
+          }
+      },
+      {
           "name" : "FIREBALL_SCROLL",
           "renderable": {
             "glyph" : ")",
