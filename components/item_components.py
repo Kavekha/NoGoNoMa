@@ -23,3 +23,11 @@ class MeleeWeaponComponent:
 class WearableComponent:
     def __init__(self, armor):
         self.armor = armor
+
+
+class ItemAttributeBonusComponent:
+    def __init__(self, might=0, body=0, quickness=0, wits=0):
+        self.might = might
+        self.body = body
+        self.quickness = quickness
+        self.wits = wits

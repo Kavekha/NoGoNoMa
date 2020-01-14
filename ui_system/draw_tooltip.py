@@ -89,21 +89,21 @@ def draw_tooltip():
             attributes = World.get_entity_component(entity, AttributesComponent)
             if attributes:
                 description = ''
-                if attributes.might > 3:
+                if attributes.might.bonus_value > 3:
                     description += "Strong. "
-                if attributes.might < 3:
+                if attributes.might.bonus_value < 3:
                     description += "Weak. "
-                if attributes.body > 3:
+                if attributes.body.bonus_value > 3:
                     description += "Healthy. "
-                if attributes.body < 3:
+                if attributes.body.bonus_value < 3:
                     description += "Unhealthy. "
-                if attributes.quickness > 3:
+                if attributes.quickness.bonus_value > 3:
                     description += "Agile. "
-                if attributes.quickness < 3:
+                if attributes.quickness.bonus_value < 3:
                     description += "Clumsy. "
-                if attributes.wits > 3:
+                if attributes.wits.bonus_value > 3:
                     description += "Smart. "
-                if attributes.wits < 3:
+                if attributes.wits.bonus_value < 3:
                     description += "Stupid. "
                 if not description:
                     description = "Quite average."

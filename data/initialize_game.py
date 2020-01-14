@@ -13,8 +13,9 @@ from inventory_system.item_collection_system import ItemCollectionSystem
 from inventory_system.use_equip_system import UseEquipSystem
 from inventory_system.item_use_system import ItemUseSystem
 from inventory_system.item_remove_system import ItemRemoveSystem
-
 from inventory_system.drop_item_system import ItemDropSystem
+
+from inventory_system.equipment_change_system import EquipmentChangeSystem
 from systems.item_identification_system import ItemIdentificationSystem
 from systems.trigger_system import TriggerSystem
 from systems.initiative_system import InitiativeSystem
@@ -38,6 +39,9 @@ def init_game(master_seed=None):
 
     item_use_system = ItemUseSystem()
     World.add_system(item_use_system)
+
+    change_equip_system = EquipmentChangeSystem()
+    World.add_system(change_equip_system)
 
     drop_system = ItemDropSystem()
     World.add_system(drop_system)

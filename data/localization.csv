@@ -46,10 +46,10 @@ MISS_HIT;{0} miss {1};{0} rate {1}
 CHARACTER_SHEET_CONTENT_LEVEL;Level : {0};Niveau: {0}
 CHARACTER_SHEET_CONTENT_XP;xp : {0} / {1};xp : {0} / {1}
 CHARACTER_SHEET_CONTENT_ATTRIBUTES;Attributes;Attributs
-CHARACTER_SHEET_CONTENT_MIGHT;Might: {0};Puissance: {0}
-CHARACTER_SHEET_CONTENT_BODY;Body: {0};Corporel: {0}
-CHARACTER_SHEET_CONTENT_QUICKNESS;Quickness: {0};Rapidité: {0}
-CHARACTER_SHEET_CONTENT_WITS;Wits: {0};Astuce: {0}
+CHARACTER_SHEET_CONTENT_MIGHT;Might: ;Puissance:
+CHARACTER_SHEET_CONTENT_BODY;Body: ;Corporel:
+CHARACTER_SHEET_CONTENT_QUICKNESS;Quickness: ;Rapidité:
+CHARACTER_SHEET_CONTENT_WITS;Wits: ;Astuce:
 CHARACTER_SHEET_HEADER;-character sheet-;-Fiche de personnage-
 YOU_ARE_NOW_LEVEL;Congratulations! You are now level {0};Felicitations! Vous avez atteint le niveau {0}
 TROLL;Troll;Troll

@@ -1,7 +1,7 @@
 from world import World
 from systems.system import System
 from components.intent_components import WantsToUseComponent
-from components.equip_components import EquippableComponent, EquippedComponent
+from components.equip_components import EquippableComponent, EquippedComponent, EquipmentChangedComponent
 from components.name_components import NameComponent
 from components.magic_item_components import IdentifiedItemComponent, CursedItemComponent
 from components.item_components import InBackPackComponent
@@ -42,11 +42,11 @@ class UseEquipSystem(System):
                                                 f'{Texts.get_text(get_obfuscate_name(item_entity))}[/color]')
 
                 if can_equip:
-
                     for item in to_unequip:
                         World.remove_component(EquippedComponent, item)
                         World.add_component(InBackPackComponent(owner=entity), item)
 
+                    World.add_component(EquipmentChangedComponent(), entity)
                     World.add_component(EquippedComponent(owner=entity, equipment_slot=entity_slot), use_item.item)
                     World.remove_component(InBackPackComponent, use_item.item)
                     if entity == player:

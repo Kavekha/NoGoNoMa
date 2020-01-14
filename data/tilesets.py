@@ -53,6 +53,8 @@ ITEMS = [
     'items/scroll.png',
     'items/potion.png',
     'items/armor.png',
+    'items/helm.png',
+    'items/gauntlet.png',
 ]
 
 

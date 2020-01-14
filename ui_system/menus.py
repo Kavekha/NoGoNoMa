@@ -27,7 +27,6 @@ class MenuPlacement(Enum):
     BOTTOM = 2
 
 
-
 class BoxMenu:
     def __init__(self, render_order=100, linebreak=0, margin=1):
         self.content = list()
@@ -420,7 +419,7 @@ class CharacterMenu(Menu):
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
 
         text = Texts.get_text('CHARACTER_SHEET_CONTENT_XP').format(player_pools.xp,
-                                                                    xp_for_next_level(player_pools.level))
+                                                                   xp_for_next_level(player_pools.level))
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
         menu_contents.append(box)
 
@@ -433,16 +432,24 @@ class CharacterMenu(Menu):
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
 
         color = config.COLOR_MENU_BASE
-        text = Texts.get_text('CHARACTER_SHEET_CONTENT_MIGHT').format(player_attributes.might)
+        text = Texts.get_text(
+            'CHARACTER_SHEET_CONTENT_MIGHT') + f'{player_attributes.might.value} + ' \
+                                               f'{player_attributes.might.bonus_value - player_attributes.might.value}'
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
 
-        text = Texts.get_text('CHARACTER_SHEET_CONTENT_BODY').format(player_attributes.body)
+        text = Texts.get_text(
+            'CHARACTER_SHEET_CONTENT_BODY') + f'{player_attributes.body.value} + ' \
+                                              f'{player_attributes.body.bonus_value - player_attributes.body.value}'
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
 
-        text = Texts.get_text('CHARACTER_SHEET_CONTENT_QUICKNESS').format(player_attributes.quickness)
+        text = Texts.get_text(
+            'CHARACTER_SHEET_CONTENT_QUICKNESS') + f'{player_attributes.quickness.value} + ' \
+                                                   f'{player_attributes.quickness.bonus_value - player_attributes.quickness.value}'
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
 
-        text = Texts.get_text('CHARACTER_SHEET_CONTENT_WITS').format(player_attributes.wits)
+        text = Texts.get_text(
+            'CHARACTER_SHEET_CONTENT_WITS') + f'{player_attributes.wits.value} + ' \
+                                              f'{player_attributes.wits.bonus_value - player_attributes.wits.value}'
         box.add(f'[color={color}]{text}[/color]', MenuAlignement.CENTER)
         menu_contents.append(box)
 

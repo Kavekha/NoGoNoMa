@@ -6,7 +6,7 @@ from ui_system.interface import Interface
 from components.magic_item_components import MagicItemComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.item_components import ItemComponent
-from data.items_enum import MagicItemClass
+from data.components_enum import MagicItemClass
 from texts import Texts
 from world import World
 import config
