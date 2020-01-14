@@ -149,3 +149,6 @@ ROD_OF_LIGHTNINGS;Rod of lightnings;Batonnet d'eclairs
 _IS_OUT_OF_CHARGES; is out of charges.; n'a plus aucune charge.
 CHARGES;charges;charges
 CONFUSION;Confusion;Confusion
+_INFLICT_CONFUSION_AT_; inflict Confusion at ; inflige Confusion à
+_BECOMES_CONFUSED; becomes confused.; devient confus
+_INFLICT_CONFUSION_ON_THEMSELF; inflict Confusion on themselves; s'inflige Confusion!

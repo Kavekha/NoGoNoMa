@@ -345,6 +345,16 @@ def add_confusion_effect(effect_spawner, target):
                             ConfusionComponent(),
                             DurationComponent(nb_turns=turns),
                             NameComponent(Texts.get_text("CONFUSION")))
+        logs=World.fetch('logs')
+        target_named = World.get_entity_component(target, NameComponent).name
+        creator_named = World.get_entity_component(effect_spawner.creator, NameComponent).name
+        if target_named and creator_named:
+            if target_named != creator_named:
+                logs.appendleft(f"{creator_named}{Texts.get_text('_INFLICT_CONFUSION_AT_')}{target_named}")
+            else:
+                logs.appendleft(f"{creator_named}{Texts.get_text('_INFLICT_CONFUSION_ON_THEMSELF')}")
+        elif target_named:
+            logs.appendleft(f'{target_named}{Texts.get_text("_BECOMES_CONFUSED")}')
 
 
 def inflict_damage_effect(effect_spawner, target):

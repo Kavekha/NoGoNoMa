@@ -34,7 +34,8 @@ class TurnStatusEffectSystem(System):
 
         # find entity affected by status_effect
         statuses = World.get_components(StatusEffectComponent)
-        for effect, (status) in statuses:
+        for effect, (status, *args) in statuses:
+            print(f'turn status effect: entities turn is {entities_turn} and status target is {status.target}')
             if status.target in entities_turn:
                 entities_and_components_effects_applied_this_update.append((effect, status))
                 # Its entity turn and it have a status effect
@@ -56,7 +57,8 @@ class TurnStatusEffectSystem(System):
             duration.turns -= 1
             if duration.turns < 1:
                 World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, so recalculate things
-                effects_ended = effect_entity
+                effects_ended.append(effect_entity)
 
+        print(f'effects ended is {effects_ended}')
         for effect_ended in effects_ended:
             World.delete_entity(effect_ended)
