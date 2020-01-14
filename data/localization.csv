@@ -144,3 +144,7 @@ ALL_ITEMS_ARE_IDENTIFIED;All your items are already identified;Tous vos objets s
 IDENTIFY_MENU;Item identification menu;Menu d'identification des objets
 GAUNTLETS_OF_OGRE_POWER;Gauntlets of Ogre Power;Gantelets de Puissance de l'Ogre
 UNIDENTIFIED_GAUNTLETS;Unidentified gauntlets;Gantelets non identifiés
+UNIDENTIFIED_ROD;Unidentified rod;Batonnet non identifié
+ROD_OF_LIGHTNINGS;Rod of lightnings;Batonnet d'eclairs
+_IS_OUT_OF_CHARGES; is out of charges.; n'a plus aucune charge.
+CHARGES;charges;charges

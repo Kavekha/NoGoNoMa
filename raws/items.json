@@ -9,7 +9,7 @@
               "sprite": "items/potion.png"
           },
           "consumable" : {
-              "effects" : { "provides_healing" : "8"}
+              "effects" : { "provides_healing" : 8}
           },
           "magic": {
               "class": "common",
@@ -26,9 +26,9 @@
           },
           "consumable" : {
               "effects" : {
-                  "damage" : "8",
-                  "ranged" : "9",
-                  "area_of_effect" : "3",
+                  "damage" : 8,
+                  "ranged" : 8,
+                  "area_of_effect" : 3,
                   "particule" : "*;#FFA500;particules/fire.png"
               }
           },
@@ -47,8 +47,8 @@
           },
           "consumable" : {
               "effects" : {
-                  "ranged" : "6",
-                  "damage" : "12",
+                  "ranged" : 6,
+                  "damage" : 12,
                   "particule_line": "*;#00FFFF;particules/offensive_spell.png"
               }
           },
@@ -103,9 +103,9 @@
           },
           "consumable" : {
             "effects" : {
-                "ranged" : "6",
-                "damage" : "20",
-                "area_of_effect" : "3",
+                "ranged" : 6,
+                "damage" : 20,
+                "area_of_effect" : 3,
                 "particule" : "*;#FFA500;particules/fire.png"
                 }
             },
@@ -124,13 +124,35 @@
           },
           "consumable" : {
               "effects" : {
-              "ranged" : "6",
-              "confusion" : "4"
+              "ranged" : 6,
+              "confusion" : 4
               }
           },
           "magic": {
               "class": "common",
               "naming": "scroll"
+          }
+      },
+      {
+          "name" : "ROD_OF_LIGHTNINGS",
+          "renderable": {
+            "glyph" : "/",
+            "fg" : "#FFAAAA",
+            "order" : "ITEM",
+              "sprite": "items/rod.png"
+          },
+          "consumable" : {
+              "charges": 5,
+              "effects" : {
+              "ranged" : 6,
+              "damage" : 15,
+              "area_of_effect" : 3,
+              "particule": "▓;#FFA500;particules/lightning.png"
+              }
+          },
+          "magic": {
+              "class": "uncommon",
+              "naming": "UNIDENTIFIED_ROD"
           }
       },
       {

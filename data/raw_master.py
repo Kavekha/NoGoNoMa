@@ -431,38 +431,44 @@ class RawsMaster:
         return skills
 
     @staticmethod
+    def load_effects(effect_list):
+        raw_effects = dict()
+        for effect in effect_list:
+            if effect == "provides_healing":
+                raw_effects["provides_healing"] = int(effect_list[effect])
+            elif effect == "damage":
+                raw_effects["damage"] = int(effect_list[effect])
+            elif effect == "ranged":
+                raw_effects["ranged"] = int(effect_list[effect])
+            elif effect == "area_of_effect":
+                raw_effects["area_of_effect"] = int(effect_list[effect])
+            elif effect == "confusion":
+                raw_effects["confusion"] = int(effect_list[effect])
+            elif effect == "particule_line":
+                raw_effects["particule_line"] = parse_particule(effect_list[effect])
+            elif effect == "particule":
+                raw_effects["particule_line"] = parse_particule(effect_list[effect])
+            elif effect == "remove_curse":
+                raw_effects["remove_curse"] = True
+            elif effect == "identify":
+                raw_effects["identify"] = True
+            else:
+                print(f'load consum raw: unknown effect in {effect_list[effect]}')
+                raise NotImplementedError
+        return raw_effects
+
+    @staticmethod
     def load_consumable_raw(consumable):
+        raw_consumable = dict()
         for attribute in consumable:
-            raw_consumable = dict()
             if attribute == 'effects':
-                raw_effects = dict()
-                for effect in consumable[attribute]:
-                    if effect == "provides_healing":
-                        raw_effects["provides_healing"] = int(consumable[attribute][effect])
-                    elif effect == "damage":
-                        raw_effects["damage"] = int(consumable[attribute][effect])
-                    elif effect == "ranged":
-                        raw_effects["ranged"] = int(consumable[attribute][effect])
-                    elif effect == "area_of_effect":
-                        raw_effects["area_of_effect"] = int(consumable[attribute][effect])
-                    elif effect == "confusion":
-                        raw_effects["confusion"] = int(consumable[attribute][effect])
-                    elif effect == "particule_line":
-                        raw_effects["particule_line"] = parse_particule(consumable[attribute][effect])
-                    elif effect == "particule":
-                        raw_effects["particule_line"] = parse_particule(consumable[attribute][effect])
-                    elif effect == "remove_curse":
-                        raw_effects["remove_curse"] = True
-                    elif effect == "identify":
-                        raw_effects["identify"] = True
-                    else:
-                        print(f'load consum raw: unknown effect in {consumable[attribute]}')
-                        raise NotImplementedError
-                raw_consumable['effects'] = raw_effects
+                raw_consumable['effects'] = RawsMaster.load_effects(consumable[attribute])
+            elif attribute == 'charges':
+                raw_consumable['charges'] = consumable[attribute]
             else:
                 print(f'load consumable raw: unkown attribute in {consumable}')
                 raise NotImplementedError
-            return raw_consumable
+        return raw_consumable
 
     @staticmethod
     def spawn_named_entity(name, x, y):
@@ -619,13 +625,18 @@ class RawsMaster:
                                          )
 
         if to_create.consumable:
+            consumable = ConsumableComponent()
+
+            if to_create.consumable.get('effects'):
+                effect_components = RawsMaster.apply_effects(to_create.consumable.get('effects'))
+
+                for effect_component in effect_components:
+                    components_for_entity.append(effect_component)
+
+            if to_create.consumable.get('charges'):
+                consumable.charges = to_create.consumable.get('charges', 0)
+
             components_for_entity.append(ConsumableComponent())
-
-        if to_create.consumable.get('effects'):
-            effect_components = RawsMaster.apply_effects(to_create.consumable.get('effects'))
-
-            for effect_component in effect_components:
-                components_for_entity.append(effect_component)
 
         if to_create.weapon:
             components_for_entity.append(EquippableComponent(EquipmentSlots.MELEE))

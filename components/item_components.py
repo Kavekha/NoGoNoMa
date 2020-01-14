@@ -3,7 +3,9 @@ class ItemComponent:
 
 
 class ConsumableComponent:
-    pass
+    def __init__(self, charges=1):
+        self.effects = list()
+        self.charges = charges
 
 
 class InBackPackComponent:

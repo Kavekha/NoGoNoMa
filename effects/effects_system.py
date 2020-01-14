@@ -20,7 +20,7 @@ from components.particule_components import SpawnParticuleBurstComponent, SpawnP
 from state import States
 from inventory_system.inventory_functions import get_non_identify_items_in_inventory, \
     get_known_cursed_items_in_inventory
-from player_systems.game_system import calculate_xp_from_entity, player_gain_xp
+from player_systems.game_system import calculate_xp_from_entity, player_gain_xp, get_obfuscate_name
 from player_systems.on_death import on_player_death
 from components.name_components import NameComponent
 from texts import Texts
@@ -177,13 +177,25 @@ def trigget_fire(creator, trigger, effect_spawner_target):
 
 
 def item_trigger(creator, item, effect_spawner_target):
+    # item has charge?
+    item_consumable = World.get_entity_component(item, ConsumableComponent)
+    if item_consumable:
+        if item_consumable.charges < 1:
+            logs = World.fetch('logs')
+            item_name = get_obfuscate_name(item)
+            logs.appendleft(f'{item_name} {Texts.get_text("_IS_OUT_OF_CHARGES")}')
+            return
+        else:
+            item_consumable.charges -= 1
+
     # use item via generic system
     did_something = event_trigger(creator, item, effect_spawner_target)
 
     if did_something:
         World.add_component(InitiativeCostComponent(config.DEFAULT_ITEM_USE_INITIATIVE_COST), creator)
-        if World.get_entity_component(item, ConsumableComponent):
-            World.delete_entity(item)
+        if item_consumable:
+            if item_consumable.charges == 0:
+                World.delete_entity(item)
 
 
 def event_trigger(creator, item, effect_spawner_target):

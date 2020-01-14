@@ -85,7 +85,13 @@ def get_item_display_name(item_id):
     master_dungeon = World.fetch('master_dungeon')
     item_name_comp = World.get_entity_component(item_id, NameComponent)
 
+    # we know this item.
+    from components.item_components import ConsumableComponent
     if item_name_comp.name in master_dungeon.identified_items:
+        item_consumable = World.get_entity_component(item_id, ConsumableComponent)
+        if item_consumable.charges > 1:
+            # may crash if return to function that act on string.
+            return f'{item_name_comp.name} - {item_consumable.charges} {Texts.get_text("CHARGES")}'
         return item_name_comp.name
     else:
         obfuscate_comp = World.get_entity_component(item_id, ObfuscatedNameComponent)
