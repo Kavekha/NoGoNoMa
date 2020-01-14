@@ -8,7 +8,7 @@ from components.provide_effects_components import ProvidesHealingComponent
 from components.item_components import MeleeWeaponComponent, ConsumableComponent
 from components.equip_components import EquippedComponent, EquippableComponent
 from components.area_effect_component import AreaOfEffectComponent
-from components.confusion_component import ConfusionComponent
+from components.status_effect_components import ConfusionComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.magic_item_components import MagicItemComponent
 from components.ranged_component import RangedComponent

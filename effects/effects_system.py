@@ -10,7 +10,7 @@ from components.pools_component import Pools
 from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
     ProvidesIdentificationComponent
 from components.item_components import ConsumableComponent
-from components.confusion_component import ConfusionComponent
+from components.status_effect_components import ConfusionComponent, DurationComponent, StatusEffectComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import ActivationComponent
 from components.inflicts_damage_component import InflictsDamageComponent
@@ -244,8 +244,9 @@ def event_trigger(creator, item, effect_spawner_target):
         did_something = True
 
     if confusion:
+        confusion_duration = World.get_entity_component(item, DurationComponent)
         add_effect(creator,
-                   Effect(EffectType.CONFUSION, turns=confusion.turns),
+                   Effect(EffectType.CONFUSION, turns=confusion_duration.turns),
                    effect_spawner_target)
         did_something = True
 
@@ -340,7 +341,10 @@ def tile_effect_hits_entity(effect_spawner):
 def add_confusion_effect(effect_spawner, target):
     if effect_spawner.effect.effect_type == EffectType.CONFUSION:
         turns = effect_spawner.effect.turns
-        World.add_component(ConfusionComponent(nb_turns=turns), target)
+        World.create_entity(StatusEffectComponent(target),
+                            ConfusionComponent(),
+                            DurationComponent(nb_turns=turns),
+                            NameComponent(Texts.get_text("CONFUSION")))
 
 
 def inflict_damage_effect(effect_spawner, target):
