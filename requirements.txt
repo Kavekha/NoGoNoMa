@@ -1,0 +1,2 @@
+bearlibterminal==0.15.7
+tcod==11.6.0
