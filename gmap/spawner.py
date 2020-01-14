@@ -25,8 +25,9 @@ def spawn_entity(spawn_name, spawn_point, current_map):
     try:
         print(f'idx spawn in spawn points is {spawn_name}')
         RawsMaster.spawn_named_entity(spawn_name, x, y)
-    except:
+    except Exception as e:
         print(f'WARNING:Spawner:spawn room: {spawn_name} requested, not generated because error.')
+        print(f'Error was : {e}')
 
 
 def spawn_room(room, current_map, spawn_list):
