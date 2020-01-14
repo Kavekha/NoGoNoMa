@@ -55,6 +55,7 @@ ITEMS = [
     'items/armor.png',
     'items/helm.png',
     'items/gauntlet.png',
+    'items/rod.png'
 ]
 
 
@@ -65,7 +66,8 @@ PARTICULES = [
     'particules/confusion.png',
     'particules/offensive_spell.png',
     'particules/fire.png',
-    'particules/grid.png'
+    'particules/grid.png',
+    'particules/lightning.png'
 ]
 
 

@@ -36,10 +36,11 @@ Release 5 - Done.
     Effects in RawMasters
         > Items ameliorent Stats
         > Fix: Menu select item avec mauvais LetterIndex
+        > Items avec des charges.
+
 
 Release 5 - Magic items and combat!
-    4.4 - Elargir le champs des items possibles.
-        Items avec des charges.
+    4.4 - bonus Attributes, charges on item and Status effects revisited.
         Status effects
         Afficher le status PJ & mobs
         -> Poc API / Main Menu & controls / mouse.
