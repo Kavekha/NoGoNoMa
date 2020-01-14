@@ -9,6 +9,7 @@
     { "name" : "LONGSWORD_OF_KLUTZINESS", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "REMOVE_CURSE_SCROLL", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "IDENTIFY_SCROLL", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "GAUNTLETS_OF_OGRE_POWER", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
 
     { "name" : "TRAP", "weight" : 2, "min_depth" : 1, "max_depth" : 100 },
 
@@ -20,11 +21,11 @@
     { "name" : "DAGGER_ASSASSIN", "weight" : 1, "min_depth" : 6, "max_depth" : 100 },
 
     { "name" : "RAT", "weight" : 10, "min_depth" : 1, "max_depth" : 3 },
-    { "name" : "MORBLIN", "weight" : 5, "min_depth" : 1, "max_depth" : 4, "add_map_depth_to_weight" : true},
-    { "name" : "OOGLOTH", "weight" : 2, "min_depth" : 2, "max_depth" : 5, "add_map_depth_to_weight" : true },
-    { "name" : "SKELTON", "weight" : 3, "min_depth" : 3, "max_depth" : 100 },
-    { "name" : "TROLL", "weight" : 3, "min_depth" : 4, "max_depth" : 100 },
-    { "name" : "GOLEM", "weight" : 4, "min_depth" : 5, "max_depth" : 100 },
-    { "name" : "DRAGON", "weight" : 3, "min_depth" : 6, "max_depth" : 100 }
+    { "name" : "MORBLIN", "weight" : 8, "min_depth" : 1, "max_depth" : 4, "add_map_depth_to_weight" : true},
+    { "name" : "OOGLOTH", "weight" : 4, "min_depth" : 2, "max_depth" : 5, "add_map_depth_to_weight" : true },
+    { "name" : "SKELTON", "weight" : 6, "min_depth" : 3, "max_depth" : 100 },
+    { "name" : "TROLL", "weight" : 6, "min_depth" : 4, "max_depth" : 100 },
+    { "name" : "GOLEM", "weight" : 8, "min_depth" : 5, "max_depth" : 100 },
+    { "name" : "DRAGON", "weight" : 6, "min_depth" : 6, "max_depth" : 100 }
 ]
 }

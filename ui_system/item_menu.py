@@ -144,6 +144,7 @@ class InventorySelectedMenu(ItemMenu):
     def __init__(self, header, type, selected_item):
         super().__init__(header, type)
         self.selected_item = selected_item
+        print(f'INVENTORY SELECTED MENU: INIT: my letter index is {chr(self.letter_index)}')
 
     def create_menu_content(self, decorated_names_list):
         print(f'inventory: create menu content')
@@ -202,7 +203,10 @@ class InventorySelectedMenu(ItemMenu):
         available_options = self.get_item_available_options(self.selected_item)
 
         decorated_options = list()
+        # for some reason, self.letter_index is augmented before...?
+        self.letter_index = ord('a')
         for option in available_options:
+            print(f'option is {option}, with letter {chr(self.letter_index)}')
             decorated_options.append(f'({chr(self.letter_index)}) {option}')
             self.letter_index += 1
 

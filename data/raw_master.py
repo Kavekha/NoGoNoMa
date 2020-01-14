@@ -10,7 +10,8 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.confusion_component import ConfusionComponent
-from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent
+from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent, \
+    ItemAttributeBonusComponent
 from components.equip_components import EquippableComponent
 from components.blocktile_component import BlockTileComponent, BlockVisibilityComponent
 from components.viewshed_component import ViewshedComponent
@@ -26,7 +27,7 @@ from components.initiative_components import InitiativeComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
 
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
-from data.items_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
+from data.components_enum import EquipmentSlots, WeaponAttributes, MagicItemClass
 from data.raws_structs import RawsItem, RawsMob, RawsSpawnTable
 from data.load_raws import parse_particule
 from world import World
@@ -245,7 +246,7 @@ class RawsMaster:
 
     @staticmethod
     def load_mob_natural_attacks_raw(natural_attacks_raw):
-        natural_attacks = []
+        natural_attacks = list()
         for attack in natural_attacks_raw:
             natural_attacks.append(attack)
         return natural_attacks
@@ -268,14 +269,33 @@ class RawsMaster:
                     raw_item.wearable = RawsMaster.load_wearable_raw(item[component])
                 elif component == 'magic':
                     raw_item.magic = RawsMaster.load_magic_item_raw(item[component])
+                elif component == 'attributes':
+                    raw_item.attributes = RawsMaster.load_attributes_bonus_raw(item[component])
                 else:
                     print(f'load item raw: unkown component in {component}')
                     raise NotImplementedError
             RawsMaster.items.append(raw_item)
 
     @staticmethod
+    def load_attributes_bonus_raw(attributes_component):
+        bonus_attributes = dict()
+        for bonus in attributes_component:
+            if bonus == 'might':
+                bonus_attributes[bonus] = int(attributes_component.get(bonus))
+            elif bonus == 'body':
+                bonus_attributes[bonus] = int(attributes_component.get(bonus))
+            elif bonus == 'quickness':
+                bonus_attributes[bonus] = int(attributes_component.get(bonus))
+            elif bonus == 'wits':
+                bonus_attributes[bonus] = int(attributes_component.get(bonus))
+            else:
+                print(f'Attribute bonus {bonus} not implemented in load attributes bonus')
+                raise NotImplementedError
+        return bonus_attributes
+
+    @staticmethod
     def load_magic_item_raw(magic_component):
-        magic_attributes = {}
+        magic_attributes = dict()
         for attribute in magic_component:
             if attribute == 'class':
                 if magic_component[attribute] == 'common':
@@ -303,7 +323,7 @@ class RawsMaster:
 
     @staticmethod
     def load_wearable_raw(wearable_component):
-        wearable_attributes = {}
+        wearable_attributes = dict()
         for attribute in wearable_component:
             if attribute == 'armor':
                 wearable_attributes[attribute] = int(wearable_component[attribute])
@@ -312,8 +332,10 @@ class RawsMaster:
                     wearable_attributes[attribute] = EquipmentSlots.SHIELD
                 elif wearable_component[attribute] == 'torso':
                     wearable_attributes[attribute] = EquipmentSlots.TORSO
-                elif wearable_component[attribute] == 'head':
-                    wearable_attributes[attribute] = EquipmentSlots.HEAD
+                elif wearable_component[attribute] == 'helm':
+                    wearable_attributes[attribute] = EquipmentSlots.HELM
+                elif wearable_component[attribute] == 'gauntlet':
+                    wearable_attributes[attribute] = EquipmentSlots.GAUNTLET
                 else:
                     print(f'Missing equipment slots in wearable: {wearable_component[attribute]}')
                     raise NotImplementedError
@@ -324,7 +346,7 @@ class RawsMaster:
 
     @staticmethod
     def load_weapon_raw(weapon):
-        weap = {}
+        weap = dict()
         for attribute in weapon:
             if attribute == 'range':
                 weap[attribute] = weapon[attribute]
@@ -355,15 +377,15 @@ class RawsMaster:
 
     @staticmethod
     def load_attributes_raw(attributes_raw):
-        attributes = {}
+        attributes = dict()
         for attribute in attributes_raw:
             if attribute == 'might' or attribute == 'body' or attribute == 'wits' or attribute == 'quickness':
-                attributes[attribute] = attributes_raw[attribute]
+                attributes[attribute] = int(attributes_raw[attribute])
         return attributes
 
     @staticmethod
     def load_renderable_raw(renderable):
-        render = {}
+        render = dict()
         for attribute in renderable:
             # print(f'attribute for render is {attribute}')
             if attribute == "glyph":
@@ -394,7 +416,7 @@ class RawsMaster:
 
     @staticmethod
     def load_skills_raw(skills_component):
-        skills = {}
+        skills = dict()
         for skill in skills_component:
             # valid skill?
             if skill == 'melee':
@@ -411,9 +433,9 @@ class RawsMaster:
     @staticmethod
     def load_consumable_raw(consumable):
         for attribute in consumable:
-            raw_consumable = {}
+            raw_consumable = dict()
             if attribute == 'effects':
-                raw_effects = {}
+                raw_effects = dict()
                 for effect in consumable[attribute]:
                     if effect == "provides_healing":
                         raw_effects["provides_healing"] = int(consumable[attribute][effect])
@@ -506,8 +528,9 @@ class RawsMaster:
     @staticmethod
     def create_mob(name, x, y):
         to_create = RawsMaster.mobs[RawsMaster.mob_index[name] - 1]
-        components_for_entity = [MonsterComponent()]
 
+        components_for_entity = list()
+        components_for_entity.append(MonsterComponent())
         components_for_entity.append(InitiativeComponent(config.BASE_MONSTER_INITIATIVE))
 
         if to_create.name:
@@ -528,24 +551,27 @@ class RawsMaster:
             components_for_entity.append(ViewshedComponent(to_create.vision_range))
 
         if to_create.attributes:
-            components_for_entity.append(AttributesComponent(might=to_create.attributes.get('might', 1),
+            mob_attr = AttributesComponent(might=to_create.attributes.get('might', 1),
                                                              body=to_create.attributes.get('body', 1),
                                                              quickness=to_create.attributes.get('quickness', 1),
                                                              wits=to_create.attributes.get('wits', 1)
-                                                             ))
+                                                             )
+            components_for_entity.append(mob_attr)
+
+            # attributes needed for pv & mana
+            if to_create.lvl:
+                mob_lvl = to_create.lvl
+            else:
+                mob_lvl = 1
+            mob_hp = npc_hp_at_lvl(mob_attr.body, mob_lvl)
+            mob_mana = mana_point_at_level(mob_attr.wits,
+                                           mob_lvl)
 
         if to_create.skills:
             skill_component = SkillsComponent()
             for skill in to_create.skills:
                 skill_component.skills[skill] = to_create.skills[skill]
             components_for_entity.append(skill_component)
-
-        if to_create.lvl:
-            mob_lvl = to_create.lvl
-        else:
-            mob_lvl = 1
-        mob_hp = npc_hp_at_lvl(to_create.attributes.get('body', config.DEFAULT_MONSTER_BODY_ATTRIBUTE), mob_lvl)
-        mob_mana = mana_point_at_level(to_create.attributes.get('wits', config.DEFAULT_MONSTER_WITS_ATTRIBUTE), mob_lvl)
 
         if to_create.natural:
             natural_def_attack_component = NaturalAttackDefenseComponent(to_create.natural.get('armor', 0))
@@ -568,7 +594,9 @@ class RawsMaster:
         components_for_entity.append(Pools(mob_hp, mob_mana, mob_lvl))
 
         mob_id = World.create_entity(PositionComponent(x, y))
+
         for component in components_for_entity:
+            print(f'CREATE MOB: Component : {component}')
             World.add_component(component, mob_id)
 
         return True
@@ -640,6 +668,14 @@ class RawsMaster:
 
             if magic_cursed:
                 components_for_entity.append(CursedItemComponent())
+
+        if to_create.attributes:
+            components_for_entity.append(ItemAttributeBonusComponent(
+                might=to_create.attributes.get('might'),
+                body=to_create.attributes.get('body'),
+                quickness=to_create.attributes.get('quickness'),
+                wits=to_create.attributes.get('wits')
+            ))
 
         item_id = World.create_entity(PositionComponent(x, y))
         for component in components_for_entity:

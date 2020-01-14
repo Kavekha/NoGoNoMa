@@ -250,7 +250,7 @@
               "naming": "UNIDENTIFIED_SHIELD"
           }
       },
-            {
+      {
           "name" : "TUNIC",
           "renderable": {
               "glyph" : "[[",
@@ -265,6 +265,26 @@
           "magic": {
               "class": "common",
               "naming": "UNIDENTIFIED_CHEST"
+          }
+      },
+      {
+          "name" : "GAUNTLETS_OF_OGRE_POWER",
+          "renderable": {
+              "glyph" : "[[",
+              "fg" : "#00FF00",
+              "order" : "ITEM",
+              "sprite": "items/gauntlet.png"
+          },
+          "wearable" : {
+              "slot": "gauntlet",
+              "armor" : 1
+          },
+          "magic": {
+              "class": "common",
+              "naming": "UNIDENTIFIED_GAUNTLETS"
+          },
+          "attributes": {
+              "might": 5
           }
       }
   ]
