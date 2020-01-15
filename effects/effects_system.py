@@ -345,7 +345,7 @@ def add_confusion_effect(effect_spawner, target):
                             ConfusionComponent(),
                             DurationComponent(nb_turns=turns),
                             NameComponent(Texts.get_text("CONFUSION")))
-        logs=World.fetch('logs')
+        logs = World.fetch('logs')
         target_named = World.get_entity_component(target, NameComponent).name
         creator_named = World.get_entity_component(effect_spawner.creator, NameComponent).name
         if target_named and creator_named:

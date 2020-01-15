@@ -38,11 +38,11 @@ Release 5 - Done.
         > Fix: Menu select item avec mauvais LetterIndex
         > Items avec des charges.
         > Status effect system & duration
+        > fix: Confusion sur soit meme.
 
 
 Release 5 - Magic items and combat!
     4.4 - bonus Attributes, charges on item and Status effects revisited.
-        tofix: Confusion sur soit meme. Check Initiative?
         Afficher le status PJ & mobs
         -> API Doc v2.
 

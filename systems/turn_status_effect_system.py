@@ -2,16 +2,16 @@ from systems.system import System
 from components.initiative_components import MyTurn, InitiativeCostComponent
 from components.status_effect_components import StatusEffectComponent, ConfusionComponent, DurationComponent
 from components.equip_components import EquipmentChangedComponent
+from components.name_components import NameComponent
 from world import World
 from state import States
 import config
+from texts import Texts
 
 
 class TurnStatusEffectSystem(System):
     def update(self, *args, **kwargs):
-        """Time is relative, so 'A turn' is any time it's the player turn.
-        A bit unfair, since the quicker he is, the quicker the effect worns off
-        other possibility : InitiativeCostComponent, that increase Initiative.
+        """Time is relative, so 'A turn' is any time it's the char turn. No "Universal Turn" exists.
 
         Note: A StatusEffect is an entity, with following components:
         - StatusEffect (with target containing the entity affected)
@@ -19,46 +19,74 @@ class TurnStatusEffectSystem(System):
         - The effect applyied on the target
         """
 
-        run_state = World.fetch('state')
-        if run_state.current_state != States.TICKING:
-            return
-
+        # On recupere les entities qui joueront ce tour.
         entities_turn = list()
         subjects = World.get_components(MyTurn)
-
         for entity, (_turn, *args) in subjects:
             entities_turn.append(entity)
+        print(f'turn status effect: Turn for: {entities_turn}')
 
+        # On se prepare à enregistrer les entités dont c'est le tour et qui ont un effet sur eux
         entities_under_confusion_at_duration_tick = list()  # entities that have a confusion effect
         entities_and_components_effects_applied_this_update = list()
 
-        # find entity affected by status_effect
+        # On recupere les entités "StatusEffect" qui contiennent leur victime
         statuses = World.get_components(StatusEffectComponent)
-        for effect, (status, *args) in statuses:
-            print(f'turn status effect: entities turn is {entities_turn} and status target is {status.target}')
+        for effect_entity, (status, *args) in statuses:
+            print(f'turn status effect: status target is {status.target}.')
             if status.target in entities_turn:
-                entities_and_components_effects_applied_this_update.append((effect, status))
+                print(f'Status.target is an entity in entities_turn.'
+                      f' We register effect_entity and statusEffect component')
+                entities_and_components_effects_applied_this_update.append((effect_entity, status))
                 # Its entity turn and it have a status effect
+                # Effect that will have to apply
                 # confusion
-                confusion = World.get_entity_component(effect, ConfusionComponent)
+                confusion = World.get_entity_component(effect_entity, ConfusionComponent)
                 if confusion:
+                    print(f'The effect is Confusion. We put target {status.target} in the list.')
                     entities_under_confusion_at_duration_tick.append(status.target)
 
-        # effect applied
-        for entity in entities_under_confusion_at_duration_tick:
-            # lost its turn and wait X initiative after that.
-            World.remove_component(MyTurn, entity)
-            World.add_component(InitiativeCostComponent(config.DEFAULT_CONFUSION_INITIATIVE_COST), entity)
+        run_state = World.fetch('state')
+        # Si c'est Ticking, c'est pour les mobs.
+        # Si c'est Player has MyTurn, c'est pour le joueur.
+        # Si pas ticking, alors probablement Menu ou Waiting For Input: pas de raison que ca tourne.
+        if run_state.current_state == States.TICKING or World.get_entity_component(World.fetch('player'), MyTurn):
+            logs = World.fetch('logs')
 
-        # Effect has act this turn, so it worns off.
-        effects_ended = list()
-        for effect_entity, effect_status in entities_and_components_effects_applied_this_update:
-            duration = World.get_entity_component(effect_entity, DurationComponent)
-            duration.turns -= 1
-            if duration.turns < 1:
-                World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, so recalculate things
-                effects_ended.append(effect_entity)
+            # effect applied on victims
+            # confusion
+            for entity in entities_under_confusion_at_duration_tick:
+                # lost its turn and wait X initiative after that.
+                World.remove_component(MyTurn, entity)  # perd son tour.
+                # augmente le temps avant prochain tour.
+                World.add_component(InitiativeCostComponent(config.DEFAULT_CONFUSION_INITIATIVE_COST), entity)
+                # if player:
+                if entity == World.fetch('player'):
+                    run_state = run_state.change_state(States.TICKING)
 
-        print(f'effects ended is {effects_ended}')
-        for effect_ended in effects_ended:
-            World.delete_entity(effect_ended)
+            # Effect has act this turn, so it worns off.
+            effects_ended = list()
+            for effect_entity, effect_status in entities_and_components_effects_applied_this_update:
+                duration = World.get_entity_component(effect_entity, DurationComponent)
+                duration.turns -= 1
+                effect_name = World.get_entity_component(effect_entity, NameComponent).name
+                effect_target = World.get_entity_component(effect_entity, StatusEffectComponent).target
+                target_name = World.get_entity_component(effect_target, NameComponent).name
+                if effect_name and effect_target:
+                    logs.appendleft(f'{target_name}{Texts.get_text("_STILL_UNDER_EFFECT_")}{effect_name}')
+
+                if duration.turns < 1:
+                    print(f'end of duration: effect entity {effect_entity} is removed.'
+                          f' Victim entity {effect_status.target} is free.')
+                    World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, so recalculate things
+                    effects_ended.append(effect_entity)
+
+            print(f'effects ended is {effects_ended}')
+            for effect_ended in effects_ended:
+                effect_name = World.get_entity_component(effect_ended, NameComponent).name
+                effect_target = World.get_entity_component(effect_ended, StatusEffectComponent).target
+                target_name = World.get_entity_component(effect_target, NameComponent).name
+                if effect_name and effect_target:
+                    logs.appendleft(f'{effect_name}{Texts.get_text("_EFFECT_FADES_ON_")}{target_name}')
+
+                World.delete_entity(effect_ended)

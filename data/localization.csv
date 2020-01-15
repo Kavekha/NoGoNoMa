@@ -152,3 +152,5 @@ CONFUSION;Confusion;Confusion
 _INFLICT_CONFUSION_AT_; inflict Confusion at ; inflige Confusion à
 _BECOMES_CONFUSED; becomes confused.; devient confus
 _INFLICT_CONFUSION_ON_THEMSELF; inflict Confusion on themselves; s'inflige Confusion!
+_EFFECT_FADES_ON_; fades of ; se dissipe de ;
+_STILL_UNDER_EFFECT_; is still under the effect of ; est toujours sous l'effet de
