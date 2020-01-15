@@ -33,9 +33,7 @@ class InitiativeSystem(System):
                 if entity != player and distance_to(player_pos.x, player_pos.y, position.x, position.y) > config.MIN_DISTANCE_TO_BE_ACTIVE:
                     print(f'INITIATIVE: {entity} is not active. Initiative is : {initiative.current}')
                     continue
-
                 print(f'INITIATIVE: {entity} is active, with : {initiative.current}')
-
                 initiative.current -= config.DEFAULT_INITIATIVE_TICK
                 if initiative.current < 1:
                     # Cas 2: I dont have an InitiativeCost. I must do something.

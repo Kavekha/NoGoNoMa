@@ -8,17 +8,18 @@ from systems.monster_ai_system import MonsterAi
 from systems.map_indexing_system import MapIndexingSystem
 from systems.melee_combat_system import MeleeCombatSystem
 from systems.particule_system import ParticuleSpawnSystem
+from systems.item_identification_system import ItemIdentificationSystem
+from systems.trigger_system import TriggerSystem
+from systems.initiative_system import InitiativeSystem
+from systems.turn_status_effect_system import TurnStatusEffectSystem
 
 from inventory_system.item_collection_system import ItemCollectionSystem
 from inventory_system.use_equip_system import UseEquipSystem
 from inventory_system.item_use_system import ItemUseSystem
 from inventory_system.item_remove_system import ItemRemoveSystem
 from inventory_system.drop_item_system import ItemDropSystem
-
 from inventory_system.equipment_change_system import EquipmentChangeSystem
-from systems.item_identification_system import ItemIdentificationSystem
-from systems.trigger_system import TriggerSystem
-from systems.initiative_system import InitiativeSystem
+
 from gmap.master_dungeon import MasterDungeon
 from gmap.spawner import spawn_player
 
@@ -40,9 +41,6 @@ def init_game(master_seed=None):
     item_use_system = ItemUseSystem()
     World.add_system(item_use_system)
 
-    change_equip_system = EquipmentChangeSystem()
-    World.add_system(change_equip_system)
-
     drop_system = ItemDropSystem()
     World.add_system(drop_system)
 
@@ -51,6 +49,9 @@ def init_game(master_seed=None):
 
     identification_system = ItemIdentificationSystem()
     World.add_system(identification_system)
+
+    change_equip_system = EquipmentChangeSystem()
+    World.add_system(change_equip_system)
 
     visibility_system = VisibilitySystem()
     World.add_system(visibility_system)
@@ -75,6 +76,9 @@ def init_game(master_seed=None):
 
     initiative_system = InitiativeSystem()
     World.add_system(initiative_system)
+
+    turn_status_effect = TurnStatusEffectSystem()
+    World.add_system(turn_status_effect)
 
     # add player position to ressources
     player = spawn_player(0, 0)

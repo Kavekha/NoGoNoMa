@@ -8,7 +8,7 @@ from components.viewshed_component import ViewshedComponent
 from components.position_components import PositionComponent
 from components.name_components import NameComponent
 from components.intent_components import WantsToMeleeComponent
-from components.confusion_component import ConfusionComponent
+from components.status_effect_components import ConfusionComponent
 from components.initiative_components import MyTurn
 from systems.particule_system import ParticuleBuilder
 from player_systems.try_move_player import move_to, action_wait

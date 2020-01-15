@@ -9,7 +9,7 @@ from components.provide_effects_components import ProvidesHealingComponent, Prov
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
-from components.confusion_component import ConfusionComponent
+from components.status_effect_components import ConfusionComponent, DurationComponent
 from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent, \
     ItemAttributeBonusComponent
 from components.equip_components import EquippableComponent
@@ -710,7 +710,8 @@ class RawsMaster:
             effects_list.append(AreaOfEffectComponent(effects.get('area_of_effect')))
 
         if effects.get('confusion'):
-            effects_list.append(ConfusionComponent(effects.get('confusion')))
+            effects_list.append(ConfusionComponent())
+            effects_list.append(DurationComponent(effects.get('confusion')))
 
         if effects.get('particule'):
             particule_infos = effects.get('particule')
