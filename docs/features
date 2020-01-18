@@ -38,12 +38,12 @@ Release 5 - Done.
         > Fix: Menu select item avec mauvais LetterIndex
         > Items avec des charges.
         > Status effect system & duration
-        > fix: Confusion sur soit meme.
+        > Afficher le status PJ & mobs
 
 
 Release 5 - Magic items and combat!
     4.4 - bonus Attributes, charges on item and Status effects revisited.
-        Afficher le status PJ & mobs
+        Potions de Stats
         -> API Doc v2.
 
     4.5 - Attaques speciales, Loot tables & API bases
@@ -62,6 +62,10 @@ Release 5 - Magic items and combat!
         -> Poc API
 
     4.6 - Table de loots dynamiques.
+        Refacto Raws
+            RawMaster: Dico Raw.
+            RawSpawner: Spawn depuis RawMaster
+            MasterDungeon: Dynamiques spawn tables & maj spawn tables & uniques spawn: Lié à la partie.
         Rooms specifiques dans les donjons, sur modele.
         Table de loots specifiques selon region & rooms.
         Generation d'objets & monstres basés sur des traits.
@@ -78,9 +82,8 @@ Release 5 - Magic items and combat!
     4.8 - Progression level.
         Gain au level up
         HungerClock like & items.
-        Distributions via Interface API.
         Boss final pour condition de victoire.
-        -> Poc API / Particules dans l'API Interface.
+        -> API
 
     4.9 - Scores, Morgue files & animations interface.
         A la fin d'une partie, on calcule le score selon niveau perso, depth & modificateur de fin de partie (game over ou victoire).

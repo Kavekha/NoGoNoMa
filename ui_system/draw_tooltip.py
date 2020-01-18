@@ -81,6 +81,7 @@ def draw_tooltip():
         for entity in tooltip:
             tip = Tooltip()
             tip.add(get_item_display_name(entity))
+
             # level
             level = World.get_entity_component(entity, Pools)
             if level:
@@ -108,6 +109,14 @@ def draw_tooltip():
                 if not description:
                     description = "Quite average."
                 tip.add(description)
+
+            # Status effects
+            from components.status_effect_components import DurationComponent, StatusEffectComponent
+            subjects = World.get_components(NameComponent, DurationComponent, StatusEffectComponent)
+            for effect, (effect_named, effect_duration, effect_status) in subjects:
+                if effect_status.target == entity:
+                    tip.add(f'{effect_named.name} ({effect_duration.turns})')
+
             tip_boxes.append(tip)
 
         # render left or right of mouse

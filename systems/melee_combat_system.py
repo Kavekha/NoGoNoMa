@@ -118,18 +118,7 @@ class MeleeCombatSystem(System):
                 attack_dmg = max(0, attack_dmg - armor_roll)
 
                 if attack_dmg:
-                    attacker_is_player = False
-                    if entity == World.fetch('player'):
-                        attacker_is_player = True
-
-                    logs.appendleft(
-                        f'{Texts.get_text("HITS_FOR_DMG").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name), attack_dmg)}')
-                    # ParticuleBuilder.request(
-                    # target_pos.x, target_pos.y, config.COLOR_PARTICULE_HIT, '!!', 'particules/attack.png')
-                    # particule now in add_effect dmg
                     add_effect(entity, Effect(EffectType.DAMAGE, damage=attack_dmg), Targets(TargetType.SINGLE, target=wants_melee.target))
-                    # target_suffer_dmg = SufferDamageComponent(attack_dmg, attacker_is_player)
-                    # World.add_component(target_suffer_dmg, wants_melee.target)
                 else:
                     logs.appendleft(
                         f'{Texts.get_text("UNABLE_TO_HURT").format(Texts.get_text(attacker_name.name), Texts.get_text(target_name))}')
