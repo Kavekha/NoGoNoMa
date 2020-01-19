@@ -1,8 +1,7 @@
 from systems.system import System
 from world import World
 from components.equip_components import EquipmentChangedComponent, EquippedComponent
-from components.item_components import ItemAttributeBonusComponent
-from components.character_components import AttributesComponent
+from components.character_components import AttributesComponent, AttributeBonusComponent
 
 
 class EquipmentChangeSystem(System):
@@ -17,7 +16,7 @@ class EquipmentChangeSystem(System):
         World.remove_component_for_all_entities(EquipmentChangedComponent)
 
         entities_attributes_bonus = dict()
-        subjects = World.get_components(EquippedComponent, ItemAttributeBonusComponent)
+        subjects = World.get_components(EquippedComponent, AttributeBonusComponent)
         for item, (item_equipped, item_bonus) in subjects:
             if item_equipped.owner in entity_to_update:
                 owner = item_equipped.owner

@@ -3,9 +3,12 @@ from bearlibterminal import terminal
 import re
 
 from ui_system.interface import Interface
+
 from components.magic_item_components import MagicItemComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.item_components import ItemComponent
+from components.item_components import ConsumableComponent
+
 from data.components_enum import MagicItemClass
 from texts import Texts
 from world import World
@@ -13,6 +16,7 @@ import config
 
 
 def print_shadow(x, y, text, shadow_offset=1):
+    print(f'print shadow: {x, y, text, shadow_offset}')
     try:
         """Print text with shadow."""
         # remove color options for drawing shadow which has to be always black
@@ -29,8 +33,9 @@ def print_shadow(x, y, text, shadow_offset=1):
         terminal.printf(x, y, text)
 
         terminal.composition(terminal.TK_OFF)
-    except:
+    except Exception as e:
         print(f'print shadow error with : {text}')
+        print(f'exception was: {e}')
         terminal.printf(x, y, text)
 
 
@@ -85,14 +90,13 @@ def get_item_display_name(item_id):
     master_dungeon = World.fetch('master_dungeon')
     item_name_comp = World.get_entity_component(item_id, NameComponent)
 
-    # we know this item.
-    from components.item_components import ConsumableComponent
     if item_name_comp.name in master_dungeon.identified_items:
         item_consumable = World.get_entity_component(item_id, ConsumableComponent)
-        if item_consumable.charges > 1:
-            # may crash if return to function that act on string.
-            return f'{item_name_comp.name} - {item_consumable.charges} {Texts.get_text("CHARGES")}'
-        return item_name_comp.name
+        if item_consumable:
+            if item_consumable.charges > 1:
+                # may crash if return to function that act on string.
+                return f'{item_name_comp.name} - {item_consumable.charges} {Texts.get_text("CHARGES")}'
+            return item_name_comp.name
     else:
         obfuscate_comp = World.get_entity_component(item_id, ObfuscatedNameComponent)
         if obfuscate_comp:
@@ -100,8 +104,8 @@ def get_item_display_name(item_id):
         else:
             if World.get_entity_component(item_id, ItemComponent):
                 return Texts.get_text('UNIDENTIFIED_ITEM')
-            else:
-                return Texts.get_text(item_name_comp.name)
+
+    return Texts.get_text("UNKNOWN")
 
 
 def get_obfuscate_name(item_id):

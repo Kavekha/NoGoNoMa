@@ -17,6 +17,27 @@
           }
       },
       {
+          "name" : "STRENGTH_POTION",
+          "renderable": {
+              "glyph" : "!",
+              "fg" : "#FF00FF",
+              "order" : "ITEM",
+              "sprite": "items/potion.png"
+          },
+          "consumable" : {
+              "effects" : {
+                  "particule" : "*;#FFA500;particules/stat_upgrade.png"
+              }
+          },
+          "attributes": {
+              "might": 3
+          },
+          "magic": {
+              "class": "common",
+              "naming": "potion"
+          }
+      },
+      {
           "name" : "ACID_POTION",
           "renderable": {
               "glyph" : "!",
