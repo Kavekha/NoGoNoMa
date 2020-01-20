@@ -5,7 +5,10 @@ from random import randint
 from systems.system import System
 from systems.particule_system import ParticuleBuilder
 from world import World
+
 from effects.targeting_effect import entity_position, find_item_position
+from effects.add_effects import add_attribute_effect
+
 from components.pools_component import Pools
 from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
     ProvidesIdentificationComponent
@@ -16,6 +19,7 @@ from components.triggers_components import ActivationComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.initiative_components import InitiativeCostComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
+from components.character_components import AttributeBonusComponent
 
 from state import States
 from inventory_system.inventory_functions import get_non_identify_items_in_inventory, \
@@ -62,6 +66,7 @@ class EffectType(Enum):
     HEALING = 5
     CONFUSION = 6
     TRIGGER_FIRE = 7
+    ATTRIBUTE_EFFECT = 8
 
 
 class Effect:
@@ -89,6 +94,10 @@ class Effect:
 
         elif effect_type == EffectType.TRIGGER_FIRE:
             self.trigger = kwargs.get('trigger')
+
+        elif effect_type == EffectType.ATTRIBUTE_EFFECT:
+            self.attr_bonus = kwargs.get('attribute_bonus_component')
+            self.turns = kwargs.get('turns')
 
         self.effect_type = effect_type
 
@@ -230,6 +239,7 @@ def event_trigger(creator, item, effect_spawner_target):
     confusion = World.get_entity_component(item, ConfusionComponent)
     remove_curse = World.get_entity_component(item, ProvidesCurseRemovalComponent)
     identify = World.get_entity_component(item, ProvidesIdentificationComponent)
+    attr_modifier = World.get_entity_component(item, AttributeBonusComponent)
 
     if healing:
         add_effect(creator,
@@ -268,6 +278,16 @@ def event_trigger(creator, item, effect_spawner_target):
         if get_non_identify_items_in_inventory(creator):
             did_something = True
 
+    if attr_modifier:
+        attr_duration = config.DEFAULT_ITEM_ATTRIBUTE_MODIFIER_DURATION
+        attribute_bonus_component = World.get_entity_component(item, AttributeBonusComponent)
+        add_effect(creator,
+                   Effect(EffectType.ATTRIBUTE_EFFECT,
+                          turns=attr_duration,
+                          attribute_bonus_component=attribute_bonus_component),
+                   effect_spawner_target)
+        did_something = True
+
     return did_something
 
 
@@ -304,6 +324,8 @@ def affect_entity(effect_spawner, target):
         heal_damage_effect(effect_spawner, target)
     elif effect_spawner.effect.effect_type == EffectType.CONFUSION:
         add_confusion_effect(effect_spawner, target)
+    elif effect_spawner.effect.effect_type == EffectType.ATTRIBUTE_EFFECT:
+        add_attribute_effect(effect_spawner, target)
     else:
         return
 
@@ -334,6 +356,8 @@ def tile_effect_hits_entity(effect_spawner):
         return True
     elif effect_spawner.effect.effect_type == EffectType.CONFUSION:
         return True
+    elif effect_spawner.effect.effect_type == EffectType.ATTRIBUTE_EFFECT:
+        return True
     else:
         return False
 
@@ -358,7 +382,6 @@ def add_confusion_effect(effect_spawner, target):
 
 
 def inflict_damage_effect(effect_spawner, target):
-    print(f'DAMAGE EFFECT from {effect_spawner.creator}, with target {target}')
     effect_spawner_effect = effect_spawner.effect
     pool = World.get_entity_component(target, Pools)
     # pool & dmg effect

@@ -376,9 +376,9 @@ def build_random_map(depth, width, height):
     Interface.set_zoom(Interface.zoom)
 
     # return random_build_example(depth)
-    # return random_builder(depth, width, height)
+    return random_builder(depth, width, height)
 
-    '''
+    """
     builder = BuilderChain(depth, width, height)
     builder.start_with(SimpleMapBuilder())
     builder.build_with(RoomDrawer())
@@ -393,7 +393,9 @@ def build_random_map(depth, width, height):
     builder.build_with(RoomBasedStartingPosition())
     builder.build_with(PrefabBuilder(PrefabRoom(None, 1, 1, 1, 100)))
     return builder
-    '''
+
+
+
 
     builder = BuilderChain(depth, width, height)
     builder.start_with(DLABuilder().insectoid())
@@ -403,5 +405,5 @@ def build_random_map(depth, width, height):
     builder.build_with(VoronoiSpawning())
     builder.build_with(DistantExit())
     return builder
-
+    """
 

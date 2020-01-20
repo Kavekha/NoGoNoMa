@@ -172,10 +172,8 @@ class Menu:
         x1, y1 = self.menu_placement(window_width, window_height)
 
         draw_background(x1 - 1, y1 - 1, x1 + window_width + 2, y1 + window_height + 1, color='gray')
-        print(f'menu background : {x1, y1, x1 + window_width, y1 + window_height}')
         self.menu_contents = sorted(self.menu_contents, key=lambda cont: cont.render_order)
         for content in self.menu_contents:
-            print(f'render menu: content {content}: paste on window {x1, y1}')
             y1 += content.margin
             content.paste_on_window(x1, y1, window_width)
             y1 += content.get_height()

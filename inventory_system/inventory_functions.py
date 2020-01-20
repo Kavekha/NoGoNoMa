@@ -97,7 +97,6 @@ def get_item(user):
 
 def is_inventory_full(user):
     items_in_backpack = get_items_in_inventory(user)
-    print(f'items in backpack : {len(items_in_backpack)}')
     if len(items_in_backpack) > 25:
         return True
     return False
@@ -117,7 +116,6 @@ def drop_item_from_inventory(item_id):
 
 
 def unequip_item_from_inventory(item_id):
-    print(f'unequip item : {item_id}')
     player = World.fetch('player')
     unequip_intent = WantsToRemoveItemComponent(item_id)
     World.add_component(unequip_intent, player)
@@ -125,7 +123,6 @@ def unequip_item_from_inventory(item_id):
 
 
 def select_item_from_inventory(item_id):
-    print(f'select item : item id {item_id}')
     player = World.fetch('player')
     ranged = World.get_entity_component(item_id, RangedComponent)
     if ranged:
