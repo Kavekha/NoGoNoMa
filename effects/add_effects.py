@@ -7,6 +7,7 @@ from texts import Texts
 
 def add_attribute_effect(effect_spawner, target):
     turns = effect_spawner.effect.turns
+    print(f'strength: effect spawner attr_bonus : {effect_spawner.effect.attr_bonus}')
 
     World.create_entity(
         StatusEffectComponent(target),

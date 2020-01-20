@@ -97,7 +97,6 @@ class Effect:
 
         elif effect_type == EffectType.ATTRIBUTE_EFFECT:
             self.attr_bonus = kwargs.get('attribute_bonus_component')
-            self.name = kwargs.get('name')
             self.turns = kwargs.get('turns')
 
         self.effect_type = effect_type
@@ -281,9 +280,11 @@ def event_trigger(creator, item, effect_spawner_target):
 
     if attr_modifier:
         attr_duration = config.DEFAULT_ITEM_ATTRIBUTE_MODIFIER_DURATION
+        attribute_bonus_component = World.get_entity_component(item, AttributeBonusComponent)
         add_effect(creator,
                    Effect(EffectType.ATTRIBUTE_EFFECT,
-                          turns=attr_duration),
+                          turns=attr_duration,
+                          attribute_bonus_component=attribute_bonus_component),
                    effect_spawner_target)
         did_something = True
 
