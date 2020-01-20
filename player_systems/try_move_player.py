@@ -59,6 +59,8 @@ def try_move_player(delta_x, delta_y):
 
     for potential_target in current_map.tile_content[destination_idx]:
         target = World.get_entity_component(potential_target, Pools)
+        print(f'player move: player was {player_pos.x, player_pos.y}. Delta: {delta_x, delta_y}.')
+        print(f'content in tile destination: {current_map.tile_content[destination_idx]}')
         if target:
             want_to_melee = WantsToMeleeComponent(potential_target)
             World.add_component(want_to_melee, player)

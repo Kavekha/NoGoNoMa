@@ -358,6 +358,7 @@ def add_confusion_effect(effect_spawner, target):
 
 
 def inflict_damage_effect(effect_spawner, target):
+    print(f'DAMAGE EFFECT from {effect_spawner.creator}, with target {target}')
     effect_spawner_effect = effect_spawner.effect
     pool = World.get_entity_component(target, Pools)
     # pool & dmg effect
