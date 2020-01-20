@@ -34,19 +34,26 @@ Release 5 - Done.
     Refato menu inventory pour être utilisé par RemovalCurse, Identified, et autres items use on item.
     Liste vide: on ne consomme pas. Deja une premiere etape.
     Effects in RawMasters
-        4.4 - bonus Attributes, charges on item and Status effects revisited.
-        > Items ameliorent Stats
-        > Fix: Menu select item avec mauvais LetterIndex
-        > Items avec des charges.
-        > Status effect system & duration
-        > Afficher le status PJ & mobs
-        > Potions de Stats
-        fix: Impossible d'avancer / didnt move
-        -> API Doc v2.
+    Items ameliorent Stats
+    Fix: Menu select item avec mauvais LetterIndex
+    Items avec des charges.
+    Status effect system & duration
+    Afficher le status PJ & mobs
+    Potions de Stats
+    fix: Impossible d'avancer / didnt move
+    -> API Doc v2.
+    # 4.5
+        Separation RawCompendium(Load raw en dico python) et RawMaster (Generation d'entités sur base du dico)
+        Corriger / faire disparaitre raws_structs.
 
 Release 5 - Magic items and combat!
-
     4.5 - Attaques speciales, Loot tables & API bases
+        Refacto Raws
+            > Docs Raws.
+            fix: "unknown" pour les entités vivantes & props
+            Mettre fonctions communes à l'exterieur de raw master (genre load raw renderable, attributes)
+            RawSpawner: Spawn depuis RawMaster
+            MasterDungeon: Dynamiques spawn tables & maj spawn tables & uniques spawn: Lié à la partie.
         Connaitre des sorts / Attaques speciales
         Lancer des sorts.
         Sorts dans le Raw.
@@ -62,10 +69,6 @@ Release 5 - Magic items and combat!
         -> Poc API
 
     4.6 - Table de loots dynamiques.
-        Refacto Raws
-            RawMaster: Dico Raw.
-            RawSpawner: Spawn depuis RawMaster
-            MasterDungeon: Dynamiques spawn tables & maj spawn tables & uniques spawn: Lié à la partie.
         Rooms specifiques dans les donjons, sur modele.
         Table de loots specifiques selon region & rooms.
         Generation d'objets & monstres basés sur des traits.

@@ -1,5 +1,5 @@
 from map_builders.builder_map import MetaMapbuilder
-from data.raw_master import RawsMaster
+from data_raw_master.raw_master import RawsMaster
 from gmap.spawner import spawn_room
 
 

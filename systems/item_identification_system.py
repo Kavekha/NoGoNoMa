@@ -1,6 +1,6 @@
 from systems.system import System
 from world import World
-from data.raw_master import RawsMaster
+from data_raw_master.raw_master import RawsMaster
 from components.character_components import PlayerComponent
 from components.magic_item_components import IdentifiedItemComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent

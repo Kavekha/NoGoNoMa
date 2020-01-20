@@ -4,7 +4,9 @@ import time
 
 import config
 from world import World
-from data.raw_master import RawsMaster
+from data_raw_master.raw_master import RawsMaster
+from data_raw_master.raw_compendium import RawCompendium
+
 from systems.particule_system import cull_dead_particules
 from ui_system.interface import Interface
 from ui_system.show_menus import show_main_menu
@@ -23,8 +25,9 @@ def main():
     terminal.refresh()
 
     # load raws
+    RawCompendium()
+    RawCompendium.load_raws()
     RawsMaster()
-    RawsMaster.load_raws()
 
     # Interface
     Interface()

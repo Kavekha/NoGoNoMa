@@ -15,7 +15,7 @@ from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level
 from world import World
 from gmap.gmap_enums import TileType
-from data.raw_master import RawsMaster
+from data_raw_master.raw_master import RawsMaster
 import config
 
 
