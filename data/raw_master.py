@@ -10,12 +10,11 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
 from components.status_effect_components import ConfusionComponent, DurationComponent
-from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent, \
-    ItemAttributeBonusComponent
+from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent
 from components.equip_components import EquippableComponent
 from components.blocktile_component import BlockTileComponent, BlockVisibilityComponent
 from components.viewshed_component import ViewshedComponent
-from components.character_components import AttributesComponent, MonsterComponent
+from components.character_components import AttributesComponent, MonsterComponent, AttributeBonusComponent
 from components.skills_component import Skills, SkillsComponent
 from components.pools_component import Pools
 from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
@@ -115,7 +114,7 @@ class RawsMaster:
                     props[component] = prop_raw[component]
                 elif component == 'blocks_visibility':
                     props[component] = prop_raw[component]
-                elif component == 'door_open':
+                elif component == 'door_close':
                     props[component] = prop_raw[component]
                 else:
                     print(f'prop component {component} is not implemented for props')
@@ -523,8 +522,8 @@ class RawsMaster:
         if to_create.get('blocks_visibility'):
             components_for_entity.append(BlockVisibilityComponent())
 
-        if to_create.get('door_open'):
-            components_for_entity.append(DoorComponent(to_create.get('door_open')))
+        if to_create.get('door_close'):
+            components_for_entity.append(DoorComponent(to_create.get('door_close')))
 
         prop_id = World.create_entity(PositionComponent(x, y))
 
@@ -634,7 +633,7 @@ class RawsMaster:
                     components_for_entity.append(effect_component)
 
             if to_create.consumable.get('charges'):
-                consumable.charges = to_create.consumable.get('charges', 0)
+                consumable.charges = to_create.consumable.get('charges', 1)
 
             components_for_entity.append(ConsumableComponent())
 
@@ -681,7 +680,7 @@ class RawsMaster:
                 components_for_entity.append(CursedItemComponent())
 
         if to_create.attributes:
-            components_for_entity.append(ItemAttributeBonusComponent(
+            components_for_entity.append(AttributeBonusComponent(
                 might=to_create.attributes.get('might'),
                 body=to_create.attributes.get('body'),
                 quickness=to_create.attributes.get('quickness'),

@@ -39,11 +39,11 @@ Release 5 - Done.
         > Items avec des charges.
         > Status effect system & duration
         > Afficher le status PJ & mobs
-
+        > Potions de Stats
+        fix: Impossible d'avancer / didnt move
 
 Release 5 - Magic items and combat!
     4.4 - bonus Attributes, charges on item and Status effects revisited.
-        Potions de Stats
         -> API Doc v2.
 
     4.5 - Attaques speciales, Loot tables & API bases

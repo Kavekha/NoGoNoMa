@@ -33,17 +33,13 @@ class TurnStatusEffectSystem(System):
         # On recupere les entités "StatusEffect" qui contiennent leur victime
         statuses = World.get_components(StatusEffectComponent)
         for effect_entity, (status, *args) in statuses:
-            print(f'turn status effect: status target is {status.target}.')
             if status.target in entities_turn:
-                print(f'Status.target is an entity in entities_turn.'
-                      f' We register effect_entity and statusEffect component')
                 entities_and_components_effects_applied_this_update.append((effect_entity, status))
                 # Its entity turn and it have a status effect
                 # Effect that will have to apply
                 # confusion
                 confusion = World.get_entity_component(effect_entity, ConfusionComponent)
                 if confusion:
-                    print(f'The effect is Confusion. We put target {status.target} in the list.')
                     entities_under_confusion_at_duration_tick.append(status.target)
 
         run_state = World.fetch('state')
@@ -69,19 +65,10 @@ class TurnStatusEffectSystem(System):
             for effect_entity, effect_status in entities_and_components_effects_applied_this_update:
                 duration = World.get_entity_component(effect_entity, DurationComponent)
                 duration.turns -= 1
-                effect_name = World.get_entity_component(effect_entity, NameComponent).name
-                effect_target = World.get_entity_component(effect_entity, StatusEffectComponent).target
-                target_name = World.get_entity_component(effect_target, NameComponent).name
-                if effect_name and effect_target:
-                    logs.appendleft(f'{target_name}{Texts.get_text("_STILL_UNDER_EFFECT_")}{effect_name}')
-
                 if duration.turns < 1:
-                    print(f'end of duration: effect entity {effect_entity} is removed.'
-                          f' Victim entity {effect_status.target} is free.')
                     World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, so recalculate things
                     effects_ended.append(effect_entity)
 
-            print(f'effects ended is {effects_ended}')
             for effect_ended in effects_ended:
                 effect_name = World.get_entity_component(effect_ended, NameComponent).name
                 effect_target = World.get_entity_component(effect_ended, StatusEffectComponent).target

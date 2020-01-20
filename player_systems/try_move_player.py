@@ -58,17 +58,24 @@ def try_move_player(delta_x, delta_y):
     destination_idx = current_map.xy_idx(player_pos.x + delta_x, player_pos.y + delta_y)
 
     for potential_target in current_map.tile_content[destination_idx]:
+        # peut on le tabasser?
         target = World.get_entity_component(potential_target, Pools)
         print(f'player move: player was {player_pos.x, player_pos.y}. Delta: {delta_x, delta_y}.')
         print(f'content in tile destination: {current_map.tile_content[destination_idx]}')
+        print(f'target is {target}')
         if target:
             want_to_melee = WantsToMeleeComponent(potential_target)
             World.add_component(want_to_melee, player)
             return True
+
+        # Est ce une porte?
         door = World.get_entity_component(potential_target, DoorComponent)
         if door:
-            opening_door(potential_target, door)
+            if door.close:
+                opening_door(potential_target, door)
+                return True
 
+    # si ni door fermée, ni cible, alors on avance si move_to = True
     x, y = current_map.index_to_point2d(destination_idx)
     return move_to(x, y, player, current_map)
 
