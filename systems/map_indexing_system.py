@@ -3,8 +3,6 @@ from world import World
 from components.position_components import PositionComponent
 from components.blocktile_component import BlockTileComponent
 
-from components.name_components import NameComponent
-
 
 class MapIndexingSystem(System):
     def update(self, *args, **kwargs):
@@ -21,10 +19,6 @@ class MapIndexingSystem(System):
 
             if World.get_entity_component(entity, BlockTileComponent):
                 current_map.blocked_tiles[idx] = True
-                print(f'{idx} - map indexing: is blocked by {entity}: tile content is : {current_map.tile_content[idx]}')
-                name = World.get_entity_component(entity, NameComponent)
-                if name:
-                    print(f'entity {entity} is {name.name}')
 
             # Add the entity in the [] of this tile in tile content
             if not current_map.tile_content[idx]:
