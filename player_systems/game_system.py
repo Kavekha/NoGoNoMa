@@ -41,7 +41,8 @@ def remove_curse_on_item(item):
 
 
 def opening_door(door_id, door_component):
-    door_component.open = False
+    print(f'opening door {door_id}')
+    door_component.close = False
     World.remove_component(BlockVisibilityComponent, door_id)
     World.remove_component(BlockTileComponent, door_id)
     renderable = World.get_entity_component(door_id, RenderableComponent)

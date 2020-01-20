@@ -19,7 +19,8 @@ AI:
     # /!\ On utilise visible_tiles, qui concerne ce que le mob voit = le transparent est consideré comme walkable.
     # /!\ Libtcod fonctionne en y,x et pas en x, y. Melange facile à faire, a ameliorer!
     Attiré par des items au sol.
-    Eviter les NPC les uns dans les autres.
+    Mobs non soumis aux regles d'ouverture des portes (Try to move player)
+
 
 Tour par Tour:
     Foutoir dans les States & les run_systems.
@@ -29,6 +30,7 @@ World:
     maintain :
         Gerer autrement les delete pour ne pas defoncer les iterators.
         On marque une entité comme "morte", et on l'efface en fin de cycle.
+        Remplacer les id effacés, en n'ecrasant pas ceux uqi existent tjrs.
 
 UI:
     API pour mieux gerer l'interface vs Game.
@@ -42,8 +44,6 @@ Map, visible tiles etc
 
 Use:
     Fireball basé sur la visibilité de la cible, pas du joueur.
-    Use system a refactor pour plus de lisibilité. Notamment le code equip / unequip, illisible.
-    Items : Potion sans interdiction de boire alors que full pv.
 
 Changer State
     Tjrs penible. cf damage_system pour changer l'etat de mort.

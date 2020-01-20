@@ -2,7 +2,7 @@
 "spawn_table" : [
     { "name" : "HEALTH_POTION", "weight" : 7, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "FIREBALL_SCROLL", "weight" : 1, "min_depth" : 1, "max_depth" : 100, "add_map_depth_to_weight" : true },
-    { "name" : "CONFUSION_SCROLL", "weight" : 2, "min_depth" : 1, "max_depth" : 1, "add_map_depth_to_weight" : true },
+    { "name" : "CONFUSION_SCROLL", "weight" : 200, "min_depth" : 1, "max_depth" : 1, "add_map_depth_to_weight" : true },
     { "name" : "MISSILE_MAGIC_SCROLL", "weight" : 4, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "ACID_POTION", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
 
@@ -10,7 +10,8 @@
     { "name" : "REMOVE_CURSE_SCROLL", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "IDENTIFY_SCROLL", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "GAUNTLETS_OF_OGRE_POWER", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
-    { "name" : "ROD_OF_LIGHTNINGS", "weight" : 1000, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "ROD_OF_LIGHTNINGS", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "STRENGTH_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
 
     { "name" : "TRAP", "weight" : 2, "min_depth" : 1, "max_depth" : 100 },
 
@@ -21,7 +22,7 @@
     { "name" : "TUNIC", "weight" : 2, "min_depth" : 6, "max_depth" : 100 },
     { "name" : "DAGGER_ASSASSIN", "weight" : 1, "min_depth" : 6, "max_depth" : 100 },
 
-    { "name" : "RAT", "weight" : 10, "min_depth" : 1, "max_depth" : 3 },
+    { "name" : "RAT", "weight" : 100, "min_depth" : 1, "max_depth" : 3 },
     { "name" : "MORBLIN", "weight" : 8, "min_depth" : 1, "max_depth" : 4, "add_map_depth_to_weight" : true},
     { "name" : "OOGLOTH", "weight" : 4, "min_depth" : 2, "max_depth" : 5, "add_map_depth_to_weight" : true },
     { "name" : "SKELTON", "weight" : 6, "min_depth" : 3, "max_depth" : 100 },

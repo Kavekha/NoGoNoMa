@@ -1,3 +1,3 @@
 class DoorComponent:
-    def __init__(self, open):
-        self.open = open
+    def __init__(self, close):
+        self.close = close

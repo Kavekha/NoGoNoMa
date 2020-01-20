@@ -67,7 +67,8 @@ PARTICULES = [
     'particules/offensive_spell.png',
     'particules/fire.png',
     'particules/grid.png',
-    'particules/lightning.png'
+    'particules/lightning.png',
+    'particules/stat_upgrade.png'
 ]
 
 
