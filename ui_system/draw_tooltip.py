@@ -8,6 +8,8 @@ from components.name_components import NameComponent
 from components.hidden_component import HiddenComponent
 from components.character_components import AttributesComponent
 from components.pools_component import Pools
+from components.status_effect_components import DurationComponent, StatusEffectComponent
+
 from ui_system.interface import Interface
 from ui_system.render_functions import print_shadow
 from ui_system.render_camera import get_map_coord_with_mouse_when_zooming, get_map_coord_with_zoom
@@ -111,12 +113,11 @@ def draw_tooltip():
                 tip.add(description)
 
             # Status effects
-            from components.status_effect_components import DurationComponent, StatusEffectComponent
             subjects = World.get_components(NameComponent, DurationComponent, StatusEffectComponent)
             for effect, (effect_named, effect_duration, effect_status) in subjects:
                 if effect_status.target == entity:
                     tip.add(f'{effect_named.name} ({effect_duration.turns})')
-
+            
             tip_boxes.append(tip)
 
         # render left or right of mouse
