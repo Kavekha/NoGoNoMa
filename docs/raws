@@ -1,0 +1,88 @@
+items (list)
+    name    # sert de reference.
+    renderable(dict):
+        glyph
+        fg
+        order # ITEM, MONSTER
+        sprite  # tileset path
+    consumable(dict):
+        effects (dict)
+            provides_healing: int
+            particule: glyph;color;tileset path
+            particule_line: glyph;color;tileset path
+            damage: int
+            ranged: int
+            area_of_effect: int
+            remove_curse: ""    # True if present
+            identify: ""    # true if present
+            confusion: int  # nb turns
+    magic(dict)
+        class: # common, uncommon, rare, epic, legendary
+        naming: # potion, scroll    # Naming convention pour obfuscate name
+        cursed: True
+    attributes(dict)
+        might: int
+        body: int
+        quickness: int
+        wits: int
+    weapon(dict)
+        range: string   # "melee"
+        attribute: # "quickness", "might"
+        min_dmg: int
+        max_dmg: int
+        hit_bonus: int
+        dmg_bonus: int
+    wearable:
+        slot:   # shield, helm
+        armor: int
+
+
+mobs:
+    name:   # id d'identification
+    renderable(dict):
+        idem que item
+    blocks_tile:true
+    vision_range:int
+    attributes(dict):
+        might:int
+        body:int
+        quickness:int
+        wits:int
+    skills(dict):
+        string:int  # melee, dodge
+    level: int
+    natural(dict):
+        attacks(dict):
+            attack name
+        armor: int
+
+
+natural_attacks:
+    name:   # id d'identification
+    attribute: # might, body, etc
+    hit_bonus: int
+    min_dmg: int
+    max_dmg: int
+    dmg_bonus: int
+
+
+props:
+    name:   # id
+    renderable(dict)
+        idem mobs & items
+    hidden:true # caché
+    entry_trigger(dict):
+        effects(dict):
+            damage: int
+            activations: int
+    blocks_tile: true
+    blocks_visibility: true
+    door_close: true    # Im door and i'm closed
+
+
+spawn_table:
+    name:   #id de ce que l'on veut invoquer: item, mob, etc
+    weight:     # chances de le spawn, relatif aux autres de la table.
+    min_depth:  # a partir de quand c'est possible d'avoir cette entrée dans le donj
+    max_depth:  # a partir de quand ce ne l'est plus
+    add_map_depth_to_weight: true   # Ajoute la depth au poids, augmente les chances d'avoir l'objet selon la depth.

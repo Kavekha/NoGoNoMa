@@ -3,6 +3,8 @@ from bearlibterminal import terminal
 from world import World
 from ui_system.ui_enums import Layers
 from ui_system.render_functions import get_item_display_name
+
+from components.item_components import ItemComponent
 from components.position_components import PositionComponent
 from components.name_components import NameComponent
 from components.hidden_component import HiddenComponent
@@ -82,7 +84,11 @@ def draw_tooltip():
         tip_boxes = list()
         for entity in tooltip:
             tip = Tooltip()
-            tip.add(get_item_display_name(entity))
+            is_item = World.get_entity_component(entity, ItemComponent)
+            if is_item:
+                tip.add(get_item_display_name(entity))
+            else:
+                tip.add(World.get_entity_component(entity, NameComponent).name)
 
             # level
             level = World.get_entity_component(entity, Pools)

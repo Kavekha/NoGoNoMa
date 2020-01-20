@@ -45,15 +45,11 @@ Release 5 - Done.
     # 4.5
         Separation RawCompendium(Load raw en dico python) et RawMaster (Generation d'entités sur base du dico)
         Corriger / faire disparaitre raws_structs.
+        Docs Raws.
+        fix: "unknown" pour les entités vivantes & props
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales, Loot tables & API bases
-        Refacto Raws
-            > Docs Raws.
-            fix: "unknown" pour les entités vivantes & props
-            Mettre fonctions communes à l'exterieur de raw master (genre load raw renderable, attributes)
-            RawSpawner: Spawn depuis RawMaster
-            MasterDungeon: Dynamiques spawn tables & maj spawn tables & uniques spawn: Lié à la partie.
         Connaitre des sorts / Attaques speciales
         Lancer des sorts.
         Sorts dans le Raw.
