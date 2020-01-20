@@ -1,102 +1,83 @@
-game state = main_menu
-ihm state = launch
-
-tick:
-    while True
-        if ihm state == launch
-            ihm.get_state: game.return_state
-
-        # we deal with the response.
-        if game.state == main_menu
-            show main_menu(options)
-
-        if game.state == awaiting_input
-            show_game(options)
-            ihm state = awaiting_input
-
-ihm.show_game(options)
-    if infos
-
-game.return_state:
-    if state == main_menu
-        if game:
-            option: resume_game
-        option: create_new_game
-        if save:
-            option: launch_save
-
-game.receive_request(option):
-    # fait ses trucs.
-    # Si pas valid: return negatif.
-    # Si valid: fait ses ticks a lui jusqu'à arriver à awaiting_input.
-    play option:
-        if not valid option:
-            return Nothing happen
-        resume_game:
-            state = awaiting_input
-            return known_game_infos + options
-        create_new_game:
-            generate world
-            state = prerun
-            game update() with prerun state
-            create save
-            change state = awaiting_input
-            return known_game infos + options
-        launch_save:
-            reload save
-            recreate world
-            return known_game infos + options
-
-ihm.awaiting_input(options):
-    options attendues par le jeu.
-        exemples:
-            use_item(item):ihm.send_usage_request(item, target=optional)
-            move(position):ihm.send_move_request(position)
-    options ajoutées par l'IHM:
-        show_inventary
-
-ihm.show_inventory(options)
-    on a deja la connaissance des items possedés et leur statut
-    on les affiche.
-    On filtre les options demandant un item en retour.
-    ihm.send_usage_request(item, target=optional)
+API concept 2.
 
 
-ihm.show_game(options):
-    # verifie si infos nouvelles par rapport à iteration precedente.
-    # si infos nouvelles parmi celles souhaitées pour l'interface:
-        render_interface
-    # si infos nouvelles map:
-        garder revealed map du coté game
-        render_map
-    # si infos nouvelles personnages:
-        render_entities
-        ajout messages ("see X")
-    # si actions nouvelles:
-        render_particules
-        ajout messages
-    # si messages nouveaux:
-        render_logs
-    # si commandes nouvelles:
-        mettre à jour les input disponibles.
-    ihm.state = awaiting_input
-
-game.return_known_game_infos:
-    # info sur personnage: stats
-    # info sur personnage: equipement
-    # info sur map
-    # info sur personnages
-    # info actions accomplies depuis la derniere action joueur
-    # info actions disponibles
+Separer le jeu et la representation du jeu.
+Ne pas melanger le code pour l'un et pour l'autre.
+Faciliter une transition à d'autres librairies graphiques, ou langages.
+Permettre la creation de tests plus facilement.
 
 
-ihm.show_main_menu(options):
-    for option in options: display button
-        send_request(option):game.receive_request(option)
-    # on ajoute des options specifiques interface:
-    add Options option
-        > ihm.show_options_menu:
-            change language
-            change graphisme
-    add Quit option
+Le jeu a trois etats:
+    - Attends les input du joueur.
+    - Traite les inputs du joueur.
+    - Fait tourner les systemes du jeu jusqu'à ce que ce soit le tour du joueur. Sauvegarde. Envoi info.
+
+Le GUI a plusieurs states: main menu, game, etc.
+Tout l'aspect graphique est geré par le GUI, sur la base des infos recus par le jeu.
+La methode utilisé par le joueur pour envoyer des commandes au jeu est du coté GUI.
+
+
+Bases:
+    GUI affiche le main menu et attends input.
+        - Quit: Geré par GUI.
+        - Options:
+            Graphical: Géré par GUI.
+            Languages: Maj d'une variable envoyée au Jeu pour avoir du texte dans langue X.
+        - Load game:
+            GUI demande au Jeu les sauvegardes disponibles.
+            GUI affiche les sauvegardes disponibles.
+            GUI demande de charger la sauvegarde X.
+            Le Jeu load la sauvegarde et retourne ce qui doit etre affiché / les infos connus du joueur.
+        - New game:
+            GUI demande au jeu une nouvelle partie.
+            Jeu créé une partie, sauvegarde, envoi les infos connus de la situation du joueur dans le jeu.
+
+    GUI sait qu'il est ingame car le jeu envoit des infos "de jeu".
+    GUI affiche la map, persos, interface etc sur la base de ce qu'il recoit.
+    Le JEU est en attente d'input.
+    Selon les inputs, le GUI traite lui-même ou envoi au Jeu.
+    - Escape: Menu pour quitter la partie: confirmation:
+        GUI affiche les menus, le Jeu s'en moque.
+        Si joueur decide de quitter la partie: GUI demande au jeu de Save.
+    - Inventaire: Menu d'inventaire. Coté GUI.
+        GUI demande les infos sur ce que possede le joueur.
+        Jeu renvoie les infos connues.
+        GUI affiche comme il lui plait.
+    - Character screen: Coté GUI.
+    - Deplacements:
+        GUI envoit demande de deplacement en x,y au jeu.
+        Jeu traite si possible.
+            Si possible: fait l'action, fait des ticks jusqu'à ce que l'action du joueur soit faites. Retourne l'info.
+            Si pas possible: Ne fait pas l'action, envoi un retour negatif. GUI le traite.
+    - Game over:
+        GUI a envoyé une action au jeu.
+        Lors du tick du jeu, le PJ a été tué.
+        La reponse du jeu est : le dernier ecran + l'etat mort + scores and co.
+        Le GUI affiche le game over comme il lui plait.
+    - Victoire:
+        Idem.
+
+
+Etape 1:
+    GUI gère l'affichage & la reception des input du joueur. La boucle infinie est du coté GUI.
+    Le jeu fait ses ticks et donne l'accès à un ou plusieurs objets quand c'est le tour du joueur.
+    Le GUI accède à ces objets et créé le retour visuel.
+    Les commandes sont encore gerées par le jeu.
+
+Etape 2:
+    Les menus sont cotés GUI.
+    Le GUI gère les inputs pour se deplacer au sein du GUI.
+    Requetes necessaires par le GUI pour affichage & reponses du jeu.
+
+Etape 3:
+    Commandes du joueur vers le jeu, envoyées par le GUI, reponse du jeu.
+    Traitement des reponses negatives.
+    Gestion du systeme de targeting:
+        Joueur veut utiliser un item a position x,y.
+        GUI envoit la demande au jeu.
+        Jeu reponds en accord:
+            - Pas jetable du tout
+            - Jetable mais pas ici
+            - Jetable & donc jeté.
+    GUI permets au joueur de reconfigurer ses touches.
 
