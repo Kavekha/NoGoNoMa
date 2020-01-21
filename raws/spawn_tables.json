@@ -12,6 +12,7 @@
     { "name" : "GAUNTLETS_OF_OGRE_POWER", "weight" : 3, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "ROD_OF_LIGHTNINGS", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "STRENGTH_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "MANA_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
 
     { "name" : "TRAP", "weight" : 2, "min_depth" : 1, "max_depth" : 100 },
 

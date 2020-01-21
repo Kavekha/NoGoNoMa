@@ -157,3 +157,6 @@ _STILL_UNDER_EFFECT_; is still under the effect of ; est toujours sous l'effet d
 ATTRIBUTE_MODIFIER;Attribute modifier;Modification d'Attribut
 UNKNOWN;Unknown;Inconnu
 STRENGTH_POTION;Strength potion;Potion de Force
+MANA;Mana;Mana
+MANA_POTION;Mana potion;Potion de Mana
+YOUR_MANA_IS_RESTORED_FOR_POINTS;Your mana is restored for {0} points.;Votre mana est restaurée de {0} points.

@@ -16,6 +16,9 @@ import config
 
 
 def print_shadow(x, y, text, shadow_offset=1):
+    if not text:
+        # None error
+        return
     print(f'print shadow: {x, y, text, shadow_offset}')
     try:
         """Print text with shadow."""

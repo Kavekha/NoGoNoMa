@@ -4,7 +4,7 @@ from components.position_components import PositionComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.renderable_component import RenderableComponent
 from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
-    ProvidesIdentificationComponent
+    ProvidesIdentificationComponent, ProvidesManaComponent
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
@@ -269,12 +269,15 @@ class RawsMaster:
             magic_cursed = magic.get('cursed', False)
 
             # si nom inconnu, on utilise l'obfuscation
+            print(f'create magic item: name is {name}')
             if name not in identified_items:
                 if magic_naming_convention == 'scroll':
                     scroll_names = World.fetch('master_dungeon').scroll_mappings
                     components_for_entity.append(ObfuscatedNameComponent(scroll_names.get(name)))
                 elif magic_naming_convention == 'potion':
+                    print(f'create magic item potion: name is {name}')
                     potion_names = World.fetch('master_dungeon').potion_mappings
+                    print(f'create magic potion potion names get :  {potion_names.get(name)} ')
                     components_for_entity.append(ObfuscatedNameComponent(potion_names.get(name)))
                 else:
                     components_for_entity.append(ObfuscatedNameComponent(magic_naming_convention))
@@ -306,6 +309,9 @@ class RawsMaster:
         effects_list = list()
         if effects.get('provides_healing'):
             effects_list.append(ProvidesHealingComponent(effects.get('provides_healing')))
+
+        if effects.get('provides_mana'):
+            effects_list.append(ProvidesManaComponent(effects.get('provides_mana')))
 
         if effects.get('damage'):
             effects_list.append(InflictsDamageComponent(effects.get('damage')))
@@ -358,7 +364,7 @@ class RawsMaster:
             if magic:
                 if magic.get('naming') == 'potion':
                     result.append(item.get("name"))
-            return result
+        return result
 
     @staticmethod
     def is_tag_magic(tag):
