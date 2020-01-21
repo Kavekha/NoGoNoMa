@@ -1,5 +1,5 @@
 class SpellTemplate:
-    def __init__(self, mana_cost):
+    def __init__(self, mana_cost=0):
         self.mana_cost = mana_cost
 
 

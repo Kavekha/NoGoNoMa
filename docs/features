@@ -47,21 +47,17 @@ Release 5 - Done.
         Corriger / faire disparaitre raws_structs.
         Docs Raws.
         fix: "unknown" pour les entités vivantes & props
+        > Sorts dans le Raw.
+        > Lancer des sorts.
 
 Release 5 - Magic items and combat!
-    4.5 - Attaques speciales, Loot tables & API bases
-        > Sorts dans le Raw.
-        Connaitre des sorts / Attaques speciales
-        Lancer des sorts.
-        Systeme de sorts / Attaques speciales
-        Mana
-        Apprendre des sorts / Attaques speciales
-        Poison, Hate & Slow
-        Procs.
-        NPC & cast abilities
-        Magic spell / special attack.
-        Learning special attacks
-        Special attack NPC cast.
+    4.5 - Attaques speciales & magie basique
+        Mana affichée & gerée, item mana.
+        Connaitre des sorts.
+        Apprendre des sorts.
+        Slow & DoT, various items
+        Proc effect on weapon.
+        Enemy abilities
         -> Poc API
 
     4.6 - Table de loots dynamiques.
@@ -92,38 +88,30 @@ Release 5 - Magic items and combat!
         Application .exe?
 
 
-Release 6 - Simple Dungeon progression
-    5.1 - Region 1: "Prison": map building.
-        MapBuilding "Prison", "Sousterrain", "Tunnels", etc.
-        Differentes rooms.
-        Spawn selon le thème des corridors, rooms.
-        Des passages secrets.
-        La taille de la carte augmente. Très petite au debut (tutoriel like).
-    5.2 - Region 2: "Ferme": map building.
-        MapBuilding "Ferme": champs ouverts, silos, ecuries, etc.
-        Lieux ouverts.
-        Spawn selon les regions.
-    5.3 - Transition Region 1 / 2 & contenus de base.
-        Melange des morceaux de chaque Builder.
-        Monstres & items selon thematique de chaque Region.
-    5.4 - Region 3: "Abbatoir".
-        Mapbuilding. A demi ouvert, melange de prison & pieges.
-        Un Vault pour le boss "final" de la Region.
-        Items & monstres.
-        Transition Region 2 à 3.
-    5.5 - Region 4: "Le Ventre de la Bete"
-        Mapbuilding. Zone "vivante", "changeante".
-        Transition brutale avec la Region 3.
-        Items & monstres violents.
-    5.6 - Correctifs & ameliorations.
-        Room building & props
-        NPC talking
+Release 6 - Simple jeu personnalisé.
+    5.1 - MapBuilding personnalisé.
+        Differentes rooms & spawns selon le thème.
+        Premières maps de petites tailles.
+        Items & monstres personnalisés.
+        Traits d'items & monstres.
+        Objectif: contenu riche pour premiere experience.
+    5.2 - Passages secrets & clés
+        Builder à passage secret.
+        Builder à portes verouillées.
+        Changement de tiles selon le lieu ou la zone du lieu.
+    5.3 - Ambiance
+        Props pour les rooms.
+        NPC talking.
         Lore via npc & items.
-    5.7 - IA.
+    5.4 - IA
         Better IA.
         Factions.
         IA Chaining.
         NPC neutres.
+    5.5 - Enrichissement du systeme d'identification.
+        Toutes les actions disponibles de l'item, peu importe la pertinence (boire du poison).
+        Conditions où un Trait peut être dévoilé à l'utilisateur.
+        Confirmation lorsque trait identifié et consequence nefaste pour l'utilisateur.
 
 Release 7 - Nouveaux systemes & personnages.
     6.1 - Lumière, vision & champs de vision.

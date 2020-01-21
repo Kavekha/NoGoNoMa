@@ -60,7 +60,7 @@ class RawsMaster:
             template = RawCompendium.spells[RawCompendium.spell_index.get(name) - 1]
             print(f'template is {template}')
             effects = RawsMaster.apply_effects(template.get("effects"))
-            spell = World.create_entity(SpellTemplate(mana_cost=template.get("mana_cost")),
+            spell = World.create_entity(SpellTemplate(mana_cost=template.get("mana_cost", 0)),
                                         NameComponent(name=template.get("name"))
                                         )
             for effect in effects:

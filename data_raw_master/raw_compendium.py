@@ -100,6 +100,8 @@ class RawCompendium:
                     raw_spell[component] = spell[component]
                 elif component == 'effects':
                     raw_spell[component] = RawCompendium.load_effects(spell[component])
+                elif component == 'mana_cost':
+                    raw_spell[component] = spell[component]
                 else:
                     print(f'spell component {component} not supported in load spells raw')
                     raise NotImplementedError

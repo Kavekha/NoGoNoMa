@@ -67,6 +67,7 @@ class EffectType(Enum):
     CONFUSION = 6
     TRIGGER_FIRE = 7
     ATTRIBUTE_EFFECT = 8
+    SPELL_USE = 9
 
 
 class Effect:
@@ -98,6 +99,9 @@ class Effect:
         elif effect_type == EffectType.ATTRIBUTE_EFFECT:
             self.attr_bonus = kwargs.get('attribute_bonus_component')
             self.turns = kwargs.get('turns')
+
+        elif effect_type == EffectType.SPELL_USE:
+            self.spell = kwargs.get('spell')
 
         self.effect_type = effect_type
 
@@ -152,6 +156,8 @@ def target_applicator(effect_spawner):
     print(f'target application: effect is {effect_spawner.effect.effect_type}')
     if effect_spawner.effect.effect_type == EffectType.ITEM_USE:
         item_trigger(effect_spawner.creator, effect_spawner.effect.item, effect_spawner.targets)
+    elif effect_spawner.effect.effect_type == EffectType.SPELL_USE:
+        spell_trigger(effect_spawner.creator, effect_spawner.effect.spell, effect_spawner.targets)
     elif effect_spawner.effect.effect_type == EffectType.TRIGGER_FIRE:
         trigget_fire(effect_spawner.creator, effect_spawner.effect.trigger, effect_spawner.targets)
     else:
@@ -183,6 +189,19 @@ def trigget_fire(creator, trigger, effect_spawner_target):
         trigger_activation.nb_activations -= 1
         if trigger_activation.nb_activations < 1:
             World.delete_entity(trigger)
+
+
+def spell_trigger(creator, spell, effect_spawner_target):
+    from components.spell_components import SpellTemplate
+    spell_casted = World.get_entity_component(spell, SpellTemplate)
+    print(f'spell caster is : {spell_casted}.')
+    print(f'Mana cost is {spell_casted.mana_cost}')
+    if spell_casted and creator:
+        caster_pools = World.get_entity_component(creator, Pools)
+        if caster_pools:
+            if spell_casted.mana_cost <= caster_pools.mana_points.current:
+                caster_pools.mana_points.current -= spell_casted.mana_cost
+    event_trigger(creator, spell, effect_spawner_target)
 
 
 def item_trigger(creator, item, effect_spawner_target):
@@ -222,7 +241,7 @@ def event_trigger(creator, item, effect_spawner_target):
     particule_line = World.get_entity_component(item, SpawnParticuleLineComponent)
     if particule_line:
 
-        start_pos = find_item_position(item)
+        start_pos = find_item_position(item, creator)
         if effect_spawner_target.target_type == TargetType.TILE:
             spawn_line_particules(start_pos, effect_spawner_target.target, particule_line)
         elif effect_spawner_target.target_type == TargetType.TILES:

@@ -4,6 +4,7 @@ from components.intent_components import WantsToUseComponent
 from components.magic_item_components import IdentifiedItemComponent
 from components.name_components import NameComponent
 from components.area_effect_component import AreaOfEffectComponent
+from components.equip_components import EquipmentChangedComponent
 from effects.effects_system import add_effect, Effect, EffectType, Targets, TargetType
 from effects.targeting_effect import get_aoe_tiles
 
@@ -14,9 +15,11 @@ class ItemUseSystem(System):
         player = World.fetch('player')
 
         for entity, (wants_to_use, *args) in subjects:
+            World.add_component(EquipmentChangedComponent(), entity)
+
             # identify
             item_named = World.get_entity_component(wants_to_use.item, NameComponent)
-            if entity == player:
+            if entity == player and item_named:
                 World.add_component(IdentifiedItemComponent(name=item_named.name), entity)
 
             # effect:

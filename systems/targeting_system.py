@@ -1,10 +1,14 @@
 from bearlibterminal import terminal
 
 from inventory_system.inventory_functions import use_item
+from inventory_system.spell_functions import cast_spell
 from world import World
 from components.targeting_component import TargetingComponent
 from components.viewshed_component import ViewshedComponent
 from components.position_components import PositionComponent
+from components.item_components import ItemComponent
+from components.spell_components import SpellTemplate
+
 from ui_system.ui_enums import Layers
 from ui_system.render_camera import get_screen_bounds, draw_tile, render_entities_camera
 from map_builders.commons import distance_to
@@ -60,16 +64,7 @@ def show_targeting():
 
 def select_target(entity_id, target_position):
     # used for item and spell.
-    from components.item_components import ItemComponent
-    from components.spell_components import SpellTemplate
     if World.get_entity_component(entity_id, ItemComponent):
         use_item(entity_id, target_position)
     elif World.get_entity_component(entity_id, SpellTemplate):
         cast_spell(entity_id, target_position)
-
-
-def cast_spell(entity_id, target_position):
-    from components.intent_components import WantsToCastSpellComponent
-    player = World.fetch('player')
-    use_intent = WantsToCastSpellComponent(entity_id, target_position)
-    World.add_component(use_intent, player)
