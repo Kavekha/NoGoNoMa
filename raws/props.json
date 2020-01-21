@@ -11,8 +11,8 @@
       "hidden": true,
       "entry_trigger": {
         "effects": {
-          "damage": "6",
-          "activations": "1"
+          "damage": 6,
+          "activations": 1
         }
       }
     },

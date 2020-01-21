@@ -10,6 +10,7 @@ from components.character_components import AttributesComponent, AutopickupCompo
 from components.skills_component import SkillsComponent, Skills
 from components.pools_component import Pools
 from components.initiative_components import InitiativeComponent
+from components.spell_components import KnownSpells, KnownSpell
 
 from ui_system.ui_enums import Layers
 from player_systems.game_system import player_hp_at_level, mana_point_at_level
@@ -87,4 +88,10 @@ def spawn_player(x, y):
 
     player_id = World.create_entity(pos, rend, name, player, viewshed, block, attributes, skills, player_pool,
                                     autopickup, player_initiative)
+
+    spell = KnownSpell('HARM', 1)
+    known_spells = KnownSpells()
+    known_spells.spells.append(spell)
+    World.add_component(known_spells, player_id)
+
     return player_id

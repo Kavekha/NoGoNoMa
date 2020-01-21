@@ -28,10 +28,12 @@ class RawCompendium:
     spawn_table = []
     natural_attacks = []
     props = []
+    spells = []
     item_index = {}
     mob_index = {}
     natural_attacks_index = {}
     props_index = {}
+    spell_index = {}
 
     @staticmethod
     def load_raws():
@@ -60,6 +62,9 @@ class RawCompendium:
         for i, prop in enumerate(RawCompendium.props):
             RawCompendium.props_index[prop["name"]] = i + 1
 
+        for i, spell in enumerate(RawCompendium.spells):
+            RawCompendium.spell_index[spell["name"]] = i + 1
+
     @staticmethod
     def load_raw(file):
         # full_path = '../raws/' + file   # load raws
@@ -79,9 +84,28 @@ class RawCompendium:
                     RawCompendium.load_natural_attacks_raw(datas[data])
                 elif data == 'props':
                     RawCompendium.load_props_raw(datas[data])
+                elif data == 'spells':
+                    RawCompendium.load_spells_raw(datas[data])
                 else:
                     print(f'load raw: Data type {data} not supported')
                     raise NotImplementedError
+
+    @staticmethod
+    def load_spells_raw(data):
+        print(f'----- load spells -----')
+        for spell in data:
+            raw_spell = dict()
+            for component in spell:
+                if component == 'name':
+                    raw_spell[component] = spell[component]
+                elif component == 'effects':
+                    raw_spell[component] = RawCompendium.load_effects(spell[component])
+                elif component == 'mana_cost':
+                    raw_spell[component] = spell[component]
+                else:
+                    print(f'spell component {component} not supported in load spells raw')
+                    raise NotImplementedError
+            RawCompendium.spells.append(raw_spell)
 
     @staticmethod
     def load_item_raw(data):

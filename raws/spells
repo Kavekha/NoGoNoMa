@@ -1,0 +1,13 @@
+{
+  "spells": [
+    {
+      "name": "HARM",
+      "mana_cost": 1,
+      "effects": {
+        "ranged": 5,
+        "damage": 5,
+        "particule": "*;#FFA500;particules/harm_spell.png"
+      }
+    }
+  ]
+}

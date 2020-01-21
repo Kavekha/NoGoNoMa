@@ -13,6 +13,7 @@ from systems.trigger_system import TriggerSystem
 from systems.initiative_system import InitiativeSystem
 from systems.turn_status_effect_system import TurnStatusEffectSystem
 
+from inventory_system.spell_use_system import SpellUseSystem
 from inventory_system.item_collection_system import ItemCollectionSystem
 from inventory_system.use_equip_system import UseEquipSystem
 from inventory_system.item_use_system import ItemUseSystem
@@ -32,53 +33,39 @@ def init_game(master_seed=None):
         World.insert('seed', master_seed)
 
     # create systems.
-    item_collection_system = ItemCollectionSystem()
-    World.add_system(item_collection_system)
+    World.add_system(ItemCollectionSystem())
 
-    use_equip_system = UseEquipSystem()
-    World.add_system(use_equip_system)
+    World.add_system(UseEquipSystem())
 
-    item_use_system = ItemUseSystem()
-    World.add_system(item_use_system)
+    World.add_system(ItemUseSystem())
 
-    drop_system = ItemDropSystem()
-    World.add_system(drop_system)
+    World.add_system(SpellUseSystem())
 
-    remove_item_system = ItemRemoveSystem()
-    World.add_system(remove_item_system)
+    World.add_system(ItemDropSystem())
 
-    identification_system = ItemIdentificationSystem()
-    World.add_system(identification_system)
+    World.add_system(ItemRemoveSystem())
 
-    change_equip_system = EquipmentChangeSystem()
-    World.add_system(change_equip_system)
+    World.add_system(ItemIdentificationSystem())
 
-    visibility_system = VisibilitySystem()
-    World.add_system(visibility_system)
+    World.add_system(EquipmentChangeSystem())
 
-    map_indexing_system = MapIndexingSystem()
-    World.add_system(map_indexing_system)
+    World.add_system(VisibilitySystem())
 
-    trigger_system = TriggerSystem()
-    World.add_system(trigger_system)
+    World.add_system(MapIndexingSystem())
 
-    monster_ai_system = MonsterAi()
-    World.add_system(monster_ai_system)
+    World.add_system(TriggerSystem())
 
-    melee_combat_system = MeleeCombatSystem()
-    World.add_system(melee_combat_system)
+    World.add_system(MonsterAi())
 
-    effect_system = EffectSystem()
-    World.add_system(effect_system)
+    World.add_system(MeleeCombatSystem())
 
-    particule_spawn_system = ParticuleSpawnSystem()
-    World.add_system(particule_spawn_system)
+    World.add_system(EffectSystem())
 
-    initiative_system = InitiativeSystem()
-    World.add_system(initiative_system)
+    World.add_system(ParticuleSpawnSystem())
 
-    turn_status_effect = TurnStatusEffectSystem()
-    World.add_system(turn_status_effect)
+    World.add_system(InitiativeSystem())
+
+    World.add_system(TurnStatusEffectSystem())
 
     # add player position to ressources
     player = spawn_player(0, 0)
@@ -97,3 +84,7 @@ def init_game(master_seed=None):
     # add tooltips
     tooltip = list()
     World.insert('tooltip', (tooltip, 0, 0))
+
+    # spawn all spell templates.
+    from data_raw_master.raw_master import RawsMaster
+    RawsMaster.spawn_all_spells()

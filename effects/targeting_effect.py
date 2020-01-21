@@ -31,7 +31,7 @@ def entity_position(entity):
         return current_map.xy_idx(entity_pos.x, entity_pos.y)
 
 
-def find_item_position(entity):
+def find_item_position(entity, creator=None):
     current_map = World.fetch('current_map')
 
     # it has a position
@@ -52,6 +52,12 @@ def find_item_position(entity):
         pos = World.get_entity_component(equipped.owner, PositionComponent)
         if pos:
             return current_map.xy_idx(pos.x, pos.y)
+
+    # Spell template, no position. Its creator may have one
+    if creator:
+        creator_pos = World.get_entity_component(creator, PositionComponent)
+        if creator_pos:
+            return current_map.xy_idx(creator_pos.x, creator_pos.y)
 
     # no idea
     return None
