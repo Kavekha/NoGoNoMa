@@ -50,36 +50,3 @@ def try_to_cast_spell(caster, known_spell_to_cast):
             logs = World.fetch('logs')
             logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOT_ENOUGH_MANA")}[/color]')
     return States.TICKING
-
-
-def use_key_spellcast():
-    player = World.fetch('player')
-    pools = World.get_entity_component(player, Pools)
-    known_spells = World.get_entity_component(player, KnownSpells)
-    if pools and known_spells:
-        print(f'player got pools and known spells')
-        if pools.mana_points.current >= known_spells.spells[0].mana_cost:
-            spell_name = known_spells.spells[0].display_name
-            print(f'spell name is {spell_name}')
-            spell_entity = find_spell_entity(known_spells.spells[0].display_name)
-            print(f'spell entity is {spell_entity}')
-
-            ranged = World.get_entity_component(spell_entity, RangedComponent)
-            if ranged:
-                target_intent = TargetingComponent(spell_entity, ranged.range)
-                World.add_component(target_intent, player)
-                logs = World.fetch('logs')
-                logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("SELECT_TARGET")} '
-                                f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
-                print(f'spell has range')
-                return States.SHOW_TARGETING
-            print(f'spell doesnt have range: {spell_entity}')
-            World.add_component(WantsToCastSpellComponent(spell_id=spell_entity),
-                                player)
-            return States.TICKING
-        else:
-            logs = World.fetch('logs')
-            logs.appendleft('You dont have enough mana to cast this.')
-    else:
-        print(f'player dont got pools and spells known')
-    return States.TICKING

@@ -166,3 +166,5 @@ NO_SPELL_LEARNED;You don't know any spell;Vous ne connaissez aucun sort.
 SPELL_BOOK_USAGE_EXPLANATION;Select a spell you want to cast;Selectionnez le sort que vous voulez incanter.
 HARM;Harm;Douleur
 NOT_ENOUGH_MANA;You dont have enough mana;Vous n'avez pas assez de mana.
+YOU_LEARN_SPELL_;You learn the spell: ;Vous avez appris le sort:
+YOU_ALREADY_KNOW_SPELL;You already know this spell.;Vous connaissez déjà ce sort.
