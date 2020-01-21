@@ -17,6 +17,45 @@ from data.save_and_load import save_game
 from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
 
 
+def use_spell_hotkey():
+    from components.pools_component import Pools
+    from components.spell_components import KnownSpells
+    from data_raw_master.load_raws import find_spell_entity
+    from components.ranged_component import RangedComponent
+    from components.intent_components import WantsToCastSpellComponent
+
+    player = World.fetch('player')
+    pools = World.get_entity_component(player, Pools)
+    known_spells = World.get_entity_component(player, KnownSpells)
+    if pools and known_spells:
+        print(f'player got pools and known spells')
+        if pools.mana_points.current >= known_spells.spells[0].mana_cost:
+            spell_name = known_spells.spells[0].display_name
+            print(f'spell name is {spell_name}')
+            spell_entity = find_spell_entity(known_spells.spells[0].display_name)
+            print(f'spell entity is {spell_entity}')
+
+            ranged = World.get_entity_component(spell_entity, RangedComponent)
+            if ranged:
+                target_intent = TargetingComponent(spell_entity, ranged.range)
+                World.add_component(target_intent, player)
+                logs = World.fetch('logs')
+                logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("SELECT_TARGET")} '
+                                f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
+                print(f'spell has range')
+                return States.SHOW_TARGETING
+            print(f'spell doesnt have range: {spell_entity}')
+            World.add_component(WantsToCastSpellComponent(spell_id=spell_entity),
+                                player)
+            return States.TICKING
+        else:
+            logs = World.fetch('logs')
+            logs.appendleft('You dont have enough mana to cast this.')
+    else:
+        print(f'player dont got pools and spells known')
+    return States.TICKING
+
+
 def player_input():
     if terminal.has_input():
         key = terminal.read()
@@ -44,6 +83,9 @@ def player_input():
             has_act = try_move_player(1, 1)
         elif key == terminal.TK_KP_1 or key == terminal.TK_B:
             has_act = try_move_player(-1, 1)
+
+        elif key == terminal.TK_1:
+            return use_spell_hotkey()
 
         # others
             '''

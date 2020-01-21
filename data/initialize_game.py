@@ -97,3 +97,7 @@ def init_game(master_seed=None):
     # add tooltips
     tooltip = list()
     World.insert('tooltip', (tooltip, 0, 0))
+
+    # spawn all spell templates.
+    from data_raw_master.raw_master import RawsMaster
+    RawsMaster.spawn_all_spells()

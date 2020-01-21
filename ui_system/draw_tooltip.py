@@ -28,8 +28,9 @@ class Tooltip:
     def width(self):
         best = 0
         for line in self.lines:
-            if len(line) > best:
-                best = len(line)
+            if line:    # crash with NoneType....
+                if len(line) > best:
+                    best = len(line)
         return best
 
     @property

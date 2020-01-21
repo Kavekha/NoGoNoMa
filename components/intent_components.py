@@ -23,3 +23,9 @@ class WantsToUseComponent:
 class WantsToRemoveItemComponent:
     def __init__(self, item_id):
         self.item = item_id
+
+
+class WantsToCastSpellComponent:
+    def __init__(self, spell_id, target=None):
+        self.spell = spell_id
+        self.target = target

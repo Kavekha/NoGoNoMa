@@ -23,6 +23,7 @@ from components.triggers_components import EntryTriggerComponent, ActivationComp
 from components.door_component import DoorComponent
 from components.initiative_components import InitiativeComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
+from components.spell_components import SpellTemplate
 
 from data.random_table import RandomTable
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
@@ -51,6 +52,24 @@ class RawsMaster:
             print(f'- {entry.name}, {entry.weight}')
 
         return table_depth
+
+    @staticmethod
+    def spawn_named_spell(name):
+        print(f'name is {name}')
+        if RawCompendium.spell_index.get(name):
+            template = RawCompendium.spells[RawCompendium.spell_index.get(name) - 1]
+            print(f'template is {template}')
+            effects = RawsMaster.apply_effects(template.get("effects"))
+            spell = World.create_entity(SpellTemplate(mana_cost=template.get("mana_cost")),
+                                        NameComponent(name=template.get("name"))
+                                        )
+            for effect in effects:
+                World.add_component(effect, spell)
+
+    @staticmethod
+    def spawn_all_spells():
+        for spell in RawCompendium.spells:
+            RawsMaster.spawn_named_spell(spell.get('name'))
 
     @staticmethod
     def spawn_named_entity(name, x, y):

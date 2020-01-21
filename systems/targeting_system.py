@@ -58,5 +58,18 @@ def show_targeting():
     return targeting_input(targeter.item, (mouse_pos_x, mouse_pos_y), valid_target)
 
 
-def select_target(item_id, target_position):
-    use_item(item_id, target_position)
+def select_target(entity_id, target_position):
+    # used for item and spell.
+    from components.item_components import ItemComponent
+    from components.spell_components import SpellTemplate
+    if World.get_entity_component(entity_id, ItemComponent):
+        use_item(entity_id, target_position)
+    elif World.get_entity_component(entity_id, SpellTemplate):
+        cast_spell(entity_id, target_position)
+
+
+def cast_spell(entity_id, target_position):
+    from components.intent_components import WantsToCastSpellComponent
+    player = World.fetch('player')
+    use_intent = WantsToCastSpellComponent(entity_id, target_position)
+    World.add_component(use_intent, player)
