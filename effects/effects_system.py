@@ -7,11 +7,11 @@ from systems.particule_system import ParticuleBuilder
 from world import World
 
 from effects.targeting_effect import entity_position, find_item_position
-from effects.add_effects import add_attribute_effect
+from effects.add_effects import add_attribute_effect, death_effect
 
 from components.pools_component import Pools
 from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
-    ProvidesIdentificationComponent
+    ProvidesIdentificationComponent, ProvidesManaComponent
 from components.item_components import ConsumableComponent
 from components.status_effect_components import ConfusionComponent, DurationComponent, StatusEffectComponent
 from components.hidden_component import HiddenComponent
@@ -24,8 +24,7 @@ from components.character_components import AttributeBonusComponent
 from state import States
 from inventory_system.inventory_functions import get_non_identify_items_in_inventory, \
     get_known_cursed_items_in_inventory
-from player_systems.game_system import calculate_xp_from_entity, player_gain_xp, get_obfuscate_name
-from player_systems.on_death import on_player_death
+from player_systems.game_system import get_obfuscate_name
 from components.name_components import NameComponent
 from texts import Texts
 
@@ -68,6 +67,7 @@ class EffectType(Enum):
     TRIGGER_FIRE = 7
     ATTRIBUTE_EFFECT = 8
     SPELL_USE = 9
+    MANA = 10
 
 
 class Effect:
@@ -102,6 +102,9 @@ class Effect:
 
         elif effect_type == EffectType.SPELL_USE:
             self.spell = kwargs.get('spell')
+
+        elif effect_type == EffectType.MANA:
+            self.mana_amount = kwargs.get('amount')
 
         self.effect_type = effect_type
 
@@ -259,10 +262,17 @@ def event_trigger(creator, item, effect_spawner_target):
     remove_curse = World.get_entity_component(item, ProvidesCurseRemovalComponent)
     identify = World.get_entity_component(item, ProvidesIdentificationComponent)
     attr_modifier = World.get_entity_component(item, AttributeBonusComponent)
+    mana = World.get_entity_component(item, ProvidesManaComponent)
 
     if healing:
         add_effect(creator,
                    Effect(EffectType.HEALING, amount=healing.healing_amount),
+                   effect_spawner_target)
+        did_something = True
+
+    if mana:
+        add_effect(creator,
+                   Effect(EffectType.MANA, amount=mana.mana_amount),
                    effect_spawner_target)
         did_something = True
 
@@ -341,6 +351,8 @@ def affect_entity(effect_spawner, target):
         death_effect(effect_spawner, target)
     elif effect_spawner.effect.effect_type == EffectType.HEALING:
         heal_damage_effect(effect_spawner, target)
+    elif effect_spawner.effect.effect_type == EffectType.MANA:
+        restore_mana(effect_spawner, target)
     elif effect_spawner.effect.effect_type == EffectType.CONFUSION:
         add_confusion_effect(effect_spawner, target)
     elif effect_spawner.effect.effect_type == EffectType.ATTRIBUTE_EFFECT:
@@ -376,6 +388,8 @@ def tile_effect_hits_entity(effect_spawner):
     elif effect_spawner.effect.effect_type == EffectType.CONFUSION:
         return True
     elif effect_spawner.effect.effect_type == EffectType.ATTRIBUTE_EFFECT:
+        return True
+    elif effect_spawner.effect.effect_type == EffectType.MANA:
         return True
     else:
         return False
@@ -452,24 +466,7 @@ def particule_to_tile(effect_spawner, tile_idx):
                                  effect_spawner.effect.glyph, effect_spawner.effect.sprite)
 
 
-def death_effect(effect_spawner, target):
-    # remove
-    current_map = World.fetch('current_map')
-    target_pos = entity_position(target)
-    current_map.blocked_tiles[target_pos] = False
 
-    name = World.get_entity_component(target, NameComponent)
-    logs = World.fetch('logs')
-    logs.appendleft(f'[color={config.COLOR_MAJOR_INFO}]'
-                    f'{Texts.get_text("_HAS_BEEN_SLAIN").format(Texts.get_text(name.name))}[/color]')
-
-    if effect_spawner.creator == World.fetch('player'):
-        player_gain_xp(calculate_xp_from_entity(target))
-
-    if target == World.fetch('player'):
-        on_player_death()
-    else:
-        World.delete_entity(target)
 
 
 def heal_damage_effect(effect_spawner, target):
@@ -488,3 +485,21 @@ def heal_damage_effect(effect_spawner, target):
             logs = World.fetch('logs')
             logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]'
                             f'{Texts.get_text("YOU_ARE_HEAL_FOR").format(heal_effect)}[/color]')
+
+
+def restore_mana(effect_spawner, target):
+    from components.pools_component import Pools
+    pool = World.get_entity_component(target, Pools)
+    if pool:
+        mana_restore = min(pool.mana_points.max,
+                           pool.mana_points.current + effect_spawner.effect.mana_amount) - pool.mana_points.current
+        pool.mana_points.current += mana_restore
+        add_effect(None,
+                   Effect(EffectType.PARTICULE,
+                          glyph='!',
+                          fg=config.COLOR_PARTICULE_HEAL,
+                          sprite='particules/heal.png'),
+                   Targets(TargetType.SINGLE, target=target))
+        logs = World.fetch('logs')
+        logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_OK}]'
+                        f'{Texts.get_text("YOUR_MANA_IS_RESTORED_FOR_POINTS").format(mana_restore)}[/color]')

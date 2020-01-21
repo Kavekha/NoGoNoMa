@@ -47,12 +47,14 @@ Release 5 - Done.
         Corriger / faire disparaitre raws_structs.
         Docs Raws.
         fix: "unknown" pour les entités vivantes & props
-        > Sorts dans le Raw.
-        > Lancer des sorts.
+        Sorts dans le Raw.
+        Lancer des sorts.
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales & magie basique
-        Mana affichée & gerée, item mana.
+        > Mana affichée & gerée, item mana.
+        > fix: Masked potion names: seul un nom etait generé (Retour de la liste au for item et non à la fin).
+        tofix: Message "Target" quand cast spell s'affiche apres le lancement / action suivante.
         Connaitre des sorts.
         Apprendre des sorts.
         Slow & DoT, various items

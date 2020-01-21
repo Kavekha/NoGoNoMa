@@ -1,6 +1,7 @@
 from components.item_components import MeleeWeaponComponent
 from world import World
 
+from components.name_components import ObfuscatedNameComponent
 from components.intent_components import WantsToPickUpComponent
 from components.position_components import PositionComponent
 from components.item_components import ItemComponent, InBackPackComponent
@@ -40,7 +41,6 @@ def get_available_item_actions(item):
 
 
 def get_non_identify_items_in_inventory(user):
-    from components.name_components import ObfuscatedNameComponent
     all_items_in_inventory = get_items_in_inventory(user)
     master_dungeon = World.fetch('master_dungeon')
     non_identified_items = list()
@@ -103,6 +103,8 @@ def is_inventory_full(user):
 
 
 def use_item(item_id, target_position=None):
+    item_name = World.get_entity_component(item_id, NameComponent).name
+    print(f'use item: {item_name}')
     player = World.fetch('player')
     use_intent = WantsToUseComponent(item_id, target_position)
     World.add_component(use_intent, player)

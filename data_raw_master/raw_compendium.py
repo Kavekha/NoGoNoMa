@@ -435,8 +435,10 @@ class RawCompendium:
                 raw_effects["remove_curse"] = True
             elif effect == "identify":
                 raw_effects["identify"] = True
+            elif effect == "provides_mana":
+                raw_effects[effect] = effect_list[effect]
             else:
-                print(f'load consum raw: unknown effect in {effect_list[effect]}')
+                print(f'load consum raw: unknown effect {effect} in {effect_list[effect]}')
                 raise NotImplementedError
         return raw_effects
 

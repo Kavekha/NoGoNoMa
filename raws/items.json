@@ -17,6 +17,22 @@
           }
       },
       {
+          "name" : "MANA_POTION",
+          "renderable": {
+              "glyph" : "!",
+              "fg" : "#FF00FF",
+              "order" : "ITEM",
+              "sprite": "items/potion.png"
+          },
+          "consumable" : {
+              "effects" : { "provides_mana" : 4}
+          },
+          "magic": {
+              "class": "common",
+              "naming": "potion"
+          }
+      },
+      {
           "name" : "STRENGTH_POTION",
           "renderable": {
               "glyph" : "!",

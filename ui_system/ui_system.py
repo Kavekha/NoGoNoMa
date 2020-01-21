@@ -21,6 +21,8 @@ class UiSystem(System):
             'depth': current_map.depth,
             'player_hp': player_pool.hit_points.current,
             'player_max_hp': player_pool.hit_points.max,
+            'player_mana': player_pool.mana_points.current,
+            'player_max_mana': player_pool.mana_points.max,
             'player_current_xp': player_pool.xp,
             'player_next_level_xp': xp_for_next_level(player_pool.level)
         }
@@ -79,9 +81,21 @@ class UiSystem(System):
                    config.COLOR_HP_BAR_BACKGROUND,
                    config.COLOR_TEXT_HP_BAR)
 
-        # XP
+        # MANA
         render_bar(Interface.ui_model.ui_player_bars.start_x,
                    Interface.ui_model.ui_player_bars.start_y + 1,
+                   config.UI_MANA_BAR_WIDTH + min(info_to_display.get("player_max_mana", 0) // 2,
+                                                config.UI_MANA_BAR_WIDTH * 3),
+                   Texts.get_text("MANA"),
+                   info_to_display.get("player_mana", 0),
+                   info_to_display.get("player_max_mana", 0),
+                   config.COLOR_MANA_BAR_VALUE,
+                   config.COLOR_MANA_BAR_BACKGROUND,
+                   config.COLOR_TEXT_MANA_BAR)
+
+        # XP
+        render_bar(Interface.ui_model.ui_player_bars.start_x,
+                   Interface.ui_model.ui_player_bars.start_y + 2,
                    config.UI_XP_BAR_WIDTH + min(info_to_display.get("player_next_level_xp", 0) // 10,
                                                 config.UI_XP_BAR_WIDTH * 3),
                    Texts.get_text("XP"),
