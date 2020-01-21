@@ -7,7 +7,7 @@ from inventory_system.inventory_functions import get_available_item_actions
 from state import States
 from ui_system.ui_enums import NextLevelResult, ItemMenuResult, MainMenuSelection, OptionMenuSelection, YesNoResult
 from ui_system.show_menus import show_main_options_menu, show_item_screen, show_character_menu, show_victory_menu, \
-    show_quit_game_menu
+    show_quit_game_menu, show_spell_menu
 from ui_system.interface import Interface, GraphicalModes
 from world import World
 from texts import Texts
@@ -17,43 +17,22 @@ from data.save_and_load import save_game
 from ui_system.render_camera import get_map_coord_with_mouse_when_zooming
 
 
-def use_spell_hotkey():
-    from components.pools_component import Pools
-    from components.spell_components import KnownSpells
-    from data_raw_master.load_raws import find_spell_entity
-    from components.ranged_component import RangedComponent
-    from components.intent_components import WantsToCastSpellComponent
-
-    player = World.fetch('player')
-    pools = World.get_entity_component(player, Pools)
-    known_spells = World.get_entity_component(player, KnownSpells)
-    if pools and known_spells:
-        print(f'player got pools and known spells')
-        if pools.mana_points.current >= known_spells.spells[0].mana_cost:
-            spell_name = known_spells.spells[0].display_name
-            print(f'spell name is {spell_name}')
-            spell_entity = find_spell_entity(known_spells.spells[0].display_name)
-            print(f'spell entity is {spell_entity}')
-
-            ranged = World.get_entity_component(spell_entity, RangedComponent)
-            if ranged:
-                target_intent = TargetingComponent(spell_entity, ranged.range)
-                World.add_component(target_intent, player)
-                logs = World.fetch('logs')
-                logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("SELECT_TARGET")} '
-                                f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
-                print(f'spell has range')
-                return States.SHOW_TARGETING
-            print(f'spell doesnt have range: {spell_entity}')
-            World.add_component(WantsToCastSpellComponent(spell_id=spell_entity),
-                                player)
-            return States.TICKING
-        else:
-            logs = World.fetch('logs')
-            logs.appendleft('You dont have enough mana to cast this.')
-    else:
-        print(f'player dont got pools and spells known')
-    return States.TICKING
+def spell_menu_input(known_spells):
+    if terminal.has_input():
+        key = terminal.read()
+        if key != terminal.TK_MOUSE_MOVE:
+            if key == terminal.TK_ESCAPE:
+                return ItemMenuResult.CANCEL, None, None
+            elif key == terminal.TK_CLOSE:
+                save_game(World)
+                terminal.close()
+                sys.exit()
+            else:
+                index = terminal.state(terminal.TK_CHAR) - ord('a')
+                if 0 <= index < len(known_spells):
+                    print(f'spell select item {index} has been chosen.')
+                    return ItemMenuResult.SELECTED, States.TICKING, index
+    return ItemMenuResult.NO_RESPONSE, None, None
 
 
 def player_input():
@@ -84,14 +63,16 @@ def player_input():
         elif key == terminal.TK_KP_1 or key == terminal.TK_B:
             has_act = try_move_player(-1, 1)
 
-        elif key == terminal.TK_1:
-            return use_spell_hotkey()
-
         # others
             '''
             elif key == terminal.TK_G:
                 get_item(World.fetch('player'))
             '''
+
+        elif key == terminal.TK_S:
+            # return use_spell_hotkey()
+            show_spell_menu()
+            return States.SHOW_SPELL_MENU
         elif key == terminal.TK_I:
             show_item_screen()
             return States.SHOW_INVENTORY
