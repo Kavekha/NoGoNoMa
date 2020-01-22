@@ -7,7 +7,8 @@ from systems.particule_system import ParticuleBuilder
 from world import World
 
 from effects.targeting_effect import entity_position, find_item_position
-from effects.add_effects import add_attribute_effect, death_effect
+from effects.add_effects import add_attribute_effect, death_effect, add_confusion_effect, add_damage_over_time_effect,\
+    add_slow_effect
 
 from components.pools_component import Pools
 from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
@@ -70,6 +71,8 @@ class EffectType(Enum):
     ATTRIBUTE_EFFECT = 8
     SPELL_USE = 9
     MANA = 10
+    SLOW = 11
+    DAMAGE_OVER_TIME = 12
 
 
 class Effect:
@@ -107,6 +110,12 @@ class Effect:
 
         elif effect_type == EffectType.MANA:
             self.mana_amount = kwargs.get('amount')
+
+        elif effect_type == EffectType.SLOW:
+            self.initiative_penality = kwargs.get('initiative_penality')
+
+        elif effect_type == EffectType.DAMAGE_OVER_TIME:
+            self.damage = kwargs.get('damage')
 
         self.effect_type = effect_type
 
@@ -267,6 +276,22 @@ def event_trigger(creator, item, effect_spawner_target):
     mana = World.get_entity_component(item, ProvidesManaComponent)
     teach_spell = World.get_entity_component(item, TeachesSpell)
 
+    from components.status_effect_components import SlowSpellEffect, DamageOverTimeEffect
+    dot = World.get_entity_component(item, DamageOverTimeEffect)
+    slow = World.get_entity_component(item, SlowSpellEffect)
+
+    if dot:
+        add_effect(creator,
+                   Effect(EffectType.DAMAGE_OVER_TIME, damage=dot.damage),
+                   effect_spawner_target)
+        did_something = True
+
+    if slow:
+        add_effect(creator,
+                   Effect(EffectType.SLOW, damage=slow.initiative_penality),
+                   effect_spawner_target)
+        did_something = True
+
     if healing:
         add_effect(creator,
                    Effect(EffectType.HEALING, amount=healing.healing_amount),
@@ -294,7 +319,6 @@ def event_trigger(creator, item, effect_spawner_target):
             else:
                 logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]'
                                 f'{Texts.get_text("YOU_ALREADY_KNOW_SPELL")}[/color]')
-
 
     if mana:
         add_effect(creator,
@@ -383,6 +407,10 @@ def affect_entity(effect_spawner, target):
         add_confusion_effect(effect_spawner, target)
     elif effect_spawner.effect.effect_type == EffectType.ATTRIBUTE_EFFECT:
         add_attribute_effect(effect_spawner, target)
+    elif effect_spawner.effect.effect_type == EffectType.SLOW:
+        add_slow_effect(effect_spawner, target)
+    elif effect_spawner.effect.effect_type == EffectType.DAMAGE_OVER_TIME:
+        add_damage_over_time_effect(effect_spawner, target)
     else:
         return
 
@@ -417,27 +445,12 @@ def tile_effect_hits_entity(effect_spawner):
         return True
     elif effect_spawner.effect.effect_type == EffectType.MANA:
         return True
+    elif effect_spawner.effect.effect_type == EffectType.SLOW:
+        return True
+    elif effect_spawner.effect.effect_type == EffectType.DAMAGE_OVER_TIME:
+        return True
     else:
         return False
-
-
-def add_confusion_effect(effect_spawner, target):
-    if effect_spawner.effect.effect_type == EffectType.CONFUSION:
-        turns = effect_spawner.effect.turns
-        World.create_entity(StatusEffectComponent(target),
-                            ConfusionComponent(),
-                            DurationComponent(nb_turns=turns),
-                            NameComponent(Texts.get_text("CONFUSION")))
-        logs = World.fetch('logs')
-        target_named = World.get_entity_component(target, NameComponent).name
-        creator_named = World.get_entity_component(effect_spawner.creator, NameComponent).name
-        if target_named and creator_named:
-            if target_named != creator_named:
-                logs.appendleft(f"{creator_named}{Texts.get_text('_INFLICT_CONFUSION_AT_')}{target_named}")
-            else:
-                logs.appendleft(f"{creator_named}{Texts.get_text('_INFLICT_CONFUSION_ON_THEMSELF')}")
-        elif target_named:
-            logs.appendleft(f'{target_named}{Texts.get_text("_BECOMES_CONFUSED")}')
 
 
 def inflict_damage_effect(effect_spawner, target):

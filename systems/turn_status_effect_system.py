@@ -28,6 +28,7 @@ class TurnStatusEffectSystem(System):
 
         # On se prepare à enregistrer les entités dont c'est le tour et qui ont un effet sur eux
         entities_under_confusion_at_duration_tick = list()  # entities that have a confusion effect
+        entities_under_dot_at_duration_tick = list()    # entities with dot
         entities_and_components_effects_applied_this_update = list()
 
         # On recupere les entités "StatusEffect" qui contiennent leur victime
@@ -41,6 +42,11 @@ class TurnStatusEffectSystem(System):
                 confusion = World.get_entity_component(effect_entity, ConfusionComponent)
                 if confusion:
                     entities_under_confusion_at_duration_tick.append(status.target)
+
+                from components.status_effect_components import DamageOverTimeEffect
+                dot = World.get_entity_component(effect_entity, DamageOverTimeEffect)
+                if dot:
+                    entities_under_dot_at_duration_tick.append(status.target)
 
         run_state = World.fetch('state')
         # Si c'est Ticking, c'est pour les mobs.
@@ -60,6 +66,15 @@ class TurnStatusEffectSystem(System):
                 if entity == World.fetch('player'):
                     run_state = run_state.change_state(States.TICKING)
 
+            """
+            # dot on victim
+            from effects.effects_system import add_effect, Effect, EffectType, Targets, TargetType
+            for entity in entities_under_dot_at_duration_tick:
+                add_effect(None,
+                           Effect(EffectType.DAMAGE, damage=dot.damage),
+                           Targets(TargetType.SINGLE, target=entity)
+                           )
+            """
             # Effect has act this turn, so it worns off.
             effects_ended = list()
             for effect_entity, effect_status in entities_and_components_effects_applied_this_update:
