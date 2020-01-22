@@ -29,6 +29,7 @@ class States(Enum):
     CONFIRM_QUIT = 16
     TICKING = 17
     SHOW_IDENTIFY_MENU = 18
+    SHOW_SPELL_MENU = 19
 
 
 class State:

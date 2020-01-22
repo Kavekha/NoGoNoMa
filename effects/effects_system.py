@@ -20,6 +20,8 @@ from components.inflicts_damage_component import InflictsDamageComponent
 from components.initiative_components import InitiativeCostComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
 from components.character_components import AttributeBonusComponent
+from components.spell_components import TeachesSpell, KnownSpells, KnownSpell, SpellTemplate
+from data_raw_master.load_raws import find_spell_entity
 
 from state import States
 from inventory_system.inventory_functions import get_non_identify_items_in_inventory, \
@@ -263,12 +265,36 @@ def event_trigger(creator, item, effect_spawner_target):
     identify = World.get_entity_component(item, ProvidesIdentificationComponent)
     attr_modifier = World.get_entity_component(item, AttributeBonusComponent)
     mana = World.get_entity_component(item, ProvidesManaComponent)
+    teach_spell = World.get_entity_component(item, TeachesSpell)
 
     if healing:
         add_effect(creator,
                    Effect(EffectType.HEALING, amount=healing.healing_amount),
                    effect_spawner_target)
         did_something = True
+
+    if teach_spell:
+        if creator:
+            known_spells_comp = World.get_entity_component(creator, KnownSpells)
+            spell_to_learn_name = teach_spell.spell
+            print(f'spell to learn name is {spell_to_learn_name}')
+            spell_template = find_spell_entity(teach_spell.spell)
+            spell_template = World.get_entity_component(spell_template, SpellTemplate)
+            print(f'spell template is {spell_template}')
+            already_known = False
+            for spell in known_spells_comp.spells:
+                if spell.display_name == spell_to_learn_name:
+                    already_known = True
+            logs = World.fetch('logs')
+            if not already_known:
+                known_spells_comp.spells.append(KnownSpell(spell_to_learn_name, spell_template.mana_cost))
+                logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("YOU_LEARN_SPELL_")}'
+                                f'{Texts.get_text(spell_to_learn_name)}[/color]')
+                did_something = True
+            else:
+                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]'
+                                f'{Texts.get_text("YOU_ALREADY_KNOW_SPELL")}[/color]')
+
 
     if mana:
         add_effect(creator,

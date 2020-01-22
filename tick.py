@@ -15,7 +15,7 @@ from ui_system.ui_enums import ItemMenuResult, MainMenuSelection, OptionMenuSele
 from ui_system.ui_system import UiSystem
 from ui_system.interface import Interface
 from ui_system.show_menus import show_item_screen, show_main_options_menu, show_selected_item_screen, show_main_menu, \
-    show_curse_removal_screen, show_identify_menu
+    show_curse_removal_screen, show_identify_menu, show_spell_menu
 from ui_system.render_camera import render_map_camera, render_entities_camera, render_debug_map
 
 from systems.targeting_system import show_targeting, select_target
@@ -177,6 +177,22 @@ def tick():
             run_state.change_state(States.AWAITING_INPUT)
         elif result == ItemMenuResult.SELECTED:
             item_identified(item)
+            run_state.change_state(new_state)
+            run_all_systems()
+
+    # spellbook
+    elif run_state.current_state == States.SHOW_SPELL_MENU:
+        from inventory_system.spell_functions import get_known_spells, try_to_cast_spell
+        from player_systems.player_input import spell_menu_input
+        show_spell_menu()
+        player = World.fetch('player')
+        known_spells = get_known_spells(player)
+        result, new_state, known_spell_to_cast = spell_menu_input(known_spells)
+        if result == ItemMenuResult.CANCEL:
+            run_render_systems()
+            run_state.change_state(States.AWAITING_INPUT)
+        elif result == ItemMenuResult.SELECTED:
+            new_state = try_to_cast_spell(player, known_spell_to_cast)
             run_state.change_state(new_state)
             run_all_systems()
 

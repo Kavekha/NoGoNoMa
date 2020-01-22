@@ -90,24 +90,31 @@ def get_item_color(item_entity):
 
 
 def get_item_display_name(item_id):
+    print(f'get item display name: item id {item_id}')
+    from components.spell_components import KnownSpell
     master_dungeon = World.fetch('master_dungeon')
-    item_name_comp = World.get_entity_component(item_id, NameComponent)
+    item_name_comp = World.get_entity_component(item_id, NameComponent).name
 
-    if item_name_comp.name in master_dungeon.identified_items:
+    if item_name_comp in master_dungeon.identified_items:
         item_consumable = World.get_entity_component(item_id, ConsumableComponent)
         if item_consumable:
             if item_consumable.charges > 1:
                 # may crash if return to function that act on string.
-                return f'{item_name_comp.name} - {item_consumable.charges} {Texts.get_text("CHARGES")}'
-            return item_name_comp.name
+                return f'{item_name_comp} - {item_consumable.charges} {Texts.get_text("CHARGES")}'
+            return item_name_comp
     else:
         obfuscate_comp = World.get_entity_component(item_id, ObfuscatedNameComponent)
         if obfuscate_comp:
             return obfuscate_comp.name
         else:
+            # not an item identified, not an item with obfuscate.
+            # still an item
             if World.get_entity_component(item_id, ItemComponent):
                 return Texts.get_text('UNIDENTIFIED_ITEM')
-
+            #a spell known
+            known_spell = World.get_entity_component(item_id, KnownSpell)
+            if known_spell:
+                return Texts.get_text(known_spell.display_name)
     return Texts.get_text("UNKNOWN")
 
 

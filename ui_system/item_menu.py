@@ -14,6 +14,8 @@ from components.magic_item_components import MagicItemComponent
 from components.ranged_component import RangedComponent
 from inventory_system.inventory_functions import get_non_identify_items_in_inventory, get_items_in_inventory, \
     get_known_cursed_items_in_inventory
+from inventory_system.spell_functions import get_known_spells
+
 import config
 from texts import Texts
 
@@ -23,14 +25,15 @@ class ItemMenuType(Enum):
     IDENTIFY_ITEM = 1
     INVENTORY_MENU = 2
     INVENTORY_WITH_SELECT_ITEM_MENU = 3
+    SPELL_MENU = 4
 
 
 class ItemMenu(Menu):
     """ Generic Menu with list of items.
     List is requested in get_item_list_according_to_type"""
-    def __init__(self, header, type):
+    def __init__(self, header, menu_type):
         super().__init__(header)
-        self.type = type
+        self.type = menu_type
         self.explanation_text = self.get_explanation_text()
         self.no_item_text = self.get_no_item_text()
 
@@ -43,6 +46,8 @@ class ItemMenu(Menu):
             return "NO_ITEM_INVENTORY"
         elif self.type == ItemMenuType.INVENTORY_WITH_SELECT_ITEM_MENU:
             return "NO_ITEM_INVENTORY"
+        elif self.type == ItemMenuType.SPELL_MENU:
+            return "NO_SPELL_LEARNED"
 
     def get_explanation_text(self):
         if self.type == ItemMenuType.IDENTIFY_ITEM:
@@ -53,6 +58,8 @@ class ItemMenu(Menu):
             return "INVENTORY_USAGE_EXPLANATION"
         elif self.type == ItemMenuType.INVENTORY_WITH_SELECT_ITEM_MENU:
             return "INVENTORY_USAGE_EXPLANATION"
+        elif self.type == ItemMenuType.SPELL_MENU:
+            return "SPELL_BOOK_USAGE_EXPLANATION"
 
     def get_item_list_according_to_type(self, user):
         item_list = list()
@@ -64,6 +71,8 @@ class ItemMenu(Menu):
             item_list = get_items_in_inventory(user)
         elif self.type == ItemMenuType.INVENTORY_WITH_SELECT_ITEM_MENU:
             item_list = get_items_in_inventory(user)
+        elif self.type == ItemMenuType.SPELL_MENU:
+            item_list = get_known_spells(user)
         return item_list
 
     def initialize(self):
@@ -89,7 +98,11 @@ class ItemMenu(Menu):
         return decorated_names_list
 
     def display_name(self, item):
-        item_name = Texts.get_text(get_item_display_name(item))
+        # not generic
+        if self.type == ItemMenuType.SPELL_MENU:
+            item_name = Texts.get_text(item)
+        else:
+            item_name = Texts.get_text(get_item_display_name(item))
         item_equipped = World.get_entity_component(item, EquippedComponent)
         if item_equipped:
             equipped_info = f'({Texts.get_text("EQUIPPED")})'

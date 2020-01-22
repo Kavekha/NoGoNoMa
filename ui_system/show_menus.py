@@ -6,6 +6,11 @@ from ui_system.menus import CharacterMenu, MainMenu, GameOverMenu, VictoryMenu, 
 from texts import Texts
 
 
+def show_spell_menu():
+    spell_menu = ItemMenu(Texts.get_text("SPELL_MENU"), ItemMenuType.SPELL_MENU)
+    spell_menu.initialize()
+
+
 def show_identify_menu():
     identify_menu = ItemMenu(Texts.get_text("IDENTIFY_MENU"), ItemMenuType.IDENTIFY_ITEM)
     identify_menu.initialize()

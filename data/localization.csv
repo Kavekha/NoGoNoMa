@@ -160,3 +160,11 @@ STRENGTH_POTION;Strength potion;Potion de Force
 MANA;Mana;Mana
 MANA_POTION;Mana potion;Potion de Mana
 YOUR_MANA_IS_RESTORED_FOR_POINTS;Your mana is restored for {0} points.;Votre mana est restaurée de {0} points.
+BOOK_OF_HARM;Book of Harm;Livre de la Douleur
+SPELL_MENU;Spell book;Livre de sorts
+NO_SPELL_LEARNED;You don't know any spell;Vous ne connaissez aucun sort.
+SPELL_BOOK_USAGE_EXPLANATION;Select a spell you want to cast;Selectionnez le sort que vous voulez incanter.
+HARM;Harm;Douleur
+NOT_ENOUGH_MANA;You dont have enough mana;Vous n'avez pas assez de mana.
+YOU_LEARN_SPELL_;You learn the spell: ;Vous avez appris le sort:
+YOU_ALREADY_KNOW_SPELL;You already know this spell.;Vous connaissez déjà ce sort.

@@ -49,45 +49,210 @@ Release 5 - Done.
         fix: "unknown" pour les entités vivantes & props
         Sorts dans le Raw.
         Lancer des sorts.
+        Mana affichée & gerée, item mana.
+        fix: Masked potion names: seul un nom etait generé (Retour de la liste au for item et non à la fin).
+        > Connaitre & apprendre des sorts.
+        > Afficher spellbook pour cast.
+        > tofix: Message "Target" quand cast spell s'affiche apres le lancement / action suivante.
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales & magie basique
-        > Mana affichée & gerée, item mana.
-        > fix: Masked potion names: seul un nom etait generé (Retour de la liste au for item et non à la fin).
-        tofix: Message "Target" quand cast spell s'affiche apres le lancement / action suivante.
-        Connaitre des sorts.
-        Apprendre des sorts.
+        tofix: pickup: LearnSpellbook nom affiché.
+        tofix:pickup: Objet non identifié mais sans moyen d'etre identifié à l'usage. SpellBook tjrs.
         Slow & DoT, various items
         Proc effect on weapon.
         Enemy abilities
         -> Poc API
 
     4.6 - Table de loots dynamiques.
-        Rooms specifiques dans les donjons, sur modele.
-        Table de loots specifiques selon region & rooms.
-        Generation d'objets & monstres basés sur des traits.
-        Table de loots pour la construction d'items.
-        Table de loots pour la construction de monstres.
+        MasterDungeon:
+            Spawn passe par le MasterDungeon.
+            Spawn d'items ou monstres plus équilibré (une chance sur deux).
+            Suivi du spawn par le MasterDungeon, pour augmenter les chances de spawner item ou monstre (plus équilibré).
+            Spawn obligatoire: maintenir un certain niveau de potions ou nourriture.
+            Spawn unique: retrait de la table de tous les spawns si spawn unique.
+        SpawnTable thematiques, et par zone.
+            Spawn table a des categories de themes (Exterieur, interieur).
+            Les differents lieux de la map ont aussi des themes:
+                Theme de map, general.
+                Theme de corridors, de rooms, de zones (BSP).
+            Selon l'endroit où l'on spawn un item, on pioche dans la Spawn Table.
+            Il est possible d'ignorer la region au moment du spawn, pour les invocations.
+        SpawnTable modifier:
+            Selon la region, modifie la table de spawn pour augmenter les chances de l'un plutot que l'autre.
+            Associer des tables de spawn: lieu + region.
+            Definition de lieu: table de spawn unique. N'accepte pas les fusions de tables.
+        Traits d'objets & de monstres.
+            Des caracteristiques d'objets et de monstres qu'on peut leur associer à la creation.
+            Ces caracteristiques sont suivies dans MasterDungeon, pour les limiter ou les garantir (Unique ou Tous).
+        Valeur des objets & monstres.
+            Les objets ont une valeur par defaut.
+            L'equilibrage des spawn peuvent être liés à la valeur.
+            Autres modificateurs possibles: distance de l'entrée & sortie, nombre de monstres autour, etc.
+            Les traits augmentent la valeur ou la reduisent.
+            La valeur fait office d'xp pour le monstre.
+        Spawn de groupe:
+            Des ennemis peuvent apparaitre en groupe.
+            Des objets peuvent apparaitre avec des pieges ou des gardiens.
         -> API
 
     4.7 - Combat.
-        Nouveau systeme de combat plus clair & skills.
-        Items associés au combat.
-        Regles d'opportunité etc.
+        melee skill vs melee skill pour hit.
+            fail: Malus vulnerable: hit garanti pour le prochain tour / touché.
+            miss: rien.
+            success: degats.
+            crit: extra attaque.
+        dodge skill vs melee skill pour dodge.
+            fail: malus opportunité.
+            miss: prends les degats.
+            success: esquive le coup.
+            crit: esquive le coup. Opportunité contre son opposant.
+        parrying skill vs melee skill pour parry.
+            Si bouclier: reduit les dmg.
+            fail: stun leger.
+            miss: rien.
+            success: Annule largement les dmg.
+            crit: Annule les dmg. Gagne opportunité contre opposant.
+        stats & combat
+            might: augmente les dmg.
+            quickness: chances d'extra-attaque.
+            quickness: Ajout à l'attaque d'opportunité.
+            body: reduit les dmg après armure.
+            body: reduit les chances de stun.
+            wits: augmente les chances de degats critiques.
+            wits: donne une chance à attaque d'opportunité.
+            affichage des stats dans Char Sheet.
+        armes 1 main, 1 main + bouclier, 2 mains, offhand.
+            1 main:
+                ++ chances extra attaque.
+                ++ chances opportunité.
+                ++ chances de reduire le temps d'attaque (No shield)
+            1 main + bouclier:
+                ++ chances d'opportunité après parade.
+                ++ chances de parade.
+            2 mains:
+                ++ augmentation dmg.
+                -- augmentation du temps d'attaque.
+                -- impossible de bouclier.
+                ++ chances de stun.
+                + chances de parade.
+            Offhand:
+                +++ extra attaque garantie.
+                ++ chances de parade.
+                -- hit chance.
+            items: Arme 2 mains template, Arme offhand template.
+        types de dmg.
+            contondant:
+                ++ chances de stun.
+                ++ bonus might augmenté.
+                ++ dmg crit augmenté.
+            tranchant:
+                ++ chances de bleed.
+                ++ chances extra attaque.
+            perforant:
+                ++ chances d'ignore armor.
+                ++ chances d'opportunité.
+            vulnerabilité aux types de dmg
+                Degats doublés si vulnerable.
+                Divisés si resistant.
+        skills:
+            Macefighting, Fencing, Swordsmanship (Specialité).
+            S'ajoute aux jets d'attaque & defense.
+            S'ajoute aux dmg.
+            Armes 1 main de chaque type, 2 mains de chaque type, offhand de chaque type.
+        localisation dmg:
+            Chances de toucher tête, torse, jambe, mains.
+            Armure de la zone touchée reduit les dmg.
+            Selon zone:
+                Tete:
+                    10%
+                    150% dmg.
+                    Si crit: Concusion, sorts impossibles & reduction visibilité, ranged, et hit chance.
+                Jambes:
+                    25%
+                    75% dmg.
+                    Si crit: InitiativeCost augmenté pour mouvement, penalité Esquive / anti piege.
+                Mains:
+                    15%
+                    50% dmg.
+                    Si crit: reduction hit chance, desarmement.
+                Torse:
+                    %restant.
+                    100% dmg.
+                    Si crit: souffle coupé. % de chances de initiative cost pour mouvement & attaque.
+                Messages selon la zone touchée.
+                Messages de mort selon zone touchée.
+            % de zones corporelles definies sur le monstre.
+            Monstres sans tête, serpents, sans bras, sans jambes.
+        skills & magie.
+            Sorts avec niveau. Jet de Skill Magie vs Niveau du sort.
+            fail: mana perdue, degats magiques.
+            miss: demi mana perdue.
+            sucess: sort lancé.
+            crit: sort lancé, mana gratuite.
+            Possibilité de lancer sort sans mana, mais Epuisement: penalités generales, initiative cost etc.
+        types de magie:
+            curative: effets de soins.
+            physique: reduit par armure, localisée.
+            psychique
+            energie
+        stats & magie:
+            might:
+                Augmente la portée.
+                Augmente legerement les dmg.
+            body:
+                Chances de reduire le cout mana.
+            quickness:
+                Chances de Reduire le temps de cast.
+            wits:
+                Augmente mana.
+                Augmente effets (durée, puissance, portée).
+        pieges:
+            type de degats.
+            localisation prioritaire (Divise les autres localisations par deux, augmentant la cible par effet de bord).
+            HiddenSkill du piege.
+            Jet SkillTrap vs HiddenSkill:
+                fail: Ne pourra jamais le reveler + bonus du piege contre le perso.
+                miss: Non decouvert.
+                success: Decouvre le piege.
+                crit: Decouvre le piege & immunité contre lui.
+            Si piege activé, jet SkillTrap vs Skill du Piege.
+                fail: effets augmentés sur la victime.
+                miss: effets standards.
+                sucess: Piege esquivé, dommages partiels.
+                crit: Piege entierement esquivé, immunité contre lui. Piege tjrs actif contre ennemis.
+            Variété de pieges pour couvrir les possibilités.
         -> API
 
     4.8 - Progression level.
-        Gain au level up
-        HungerClock like & items.
-        Boss final pour condition de victoire.
+        Effet particule au level up.
+        Stats & skills à repartir.
+        Menu Character sheet: choisir une stat / skill.
+        Menu Character sheet: definition de la stat / skill - ce qu'elle apporte.
+        HungerClock-like: Nourriture pour le moment.
+        Bonus & malus dû à Hunger. Pas de mort si faim, juste malus & perte de vie.
+        Boss final simple pour condition de victoire.
+        Deux types de victoire: fuite ou mort du boss final.
         -> API
 
-    4.9 - Scores, Morgue files & animations interface.
-        A la fin d'une partie, on calcule le score selon niveau perso, depth & modificateur de fin de partie (game over ou victoire).
-        Au game over, creer un fichier texte avec les details de la mort, le score, les stats du perso, la carte(?).
-        Au game over, un bref resumé de la partie avec les informations majeures ("A vaincu pour la premiere fois BLA", "A atteint Depth 2", etc.
+    4.9 - Scores & Morgue files
+        Scores de fin de partie.
+            Niveau du personnage, profondeur atteinte, bonus selon victoire, valeurs des items?
+        Menu de Fin de Partie (Game Over ou Victoire):
+            Conclusion de l'histoire (Victory, death) + score
+            Dump texte possible:
+                score
+                character sheet.
+                Inventaire identifié.
+            Continuer en mode fantome dans la carte, pour voir ce que l'on a manqué?
+        Faits de gloire / Achievement like de la partie.
+            Loguer des informations "majeurs" à raconter dans le log de fin de partie.
+            "A atteint le niveau 2"
+            "A atteint l'Etage 2"
+            "A tuer un X pour la premiere fois"
+            Scores associés aux faits de gloire.
+        Application .exe
         -> API
-        Application .exe?
 
 
 Release 6 - Simple jeu personnalisé.
@@ -101,6 +266,7 @@ Release 6 - Simple jeu personnalisé.
         Builder à passage secret.
         Builder à portes verouillées.
         Changement de tiles selon le lieu ou la zone du lieu.
+        Mini boss & items sympas.
     5.3 - Ambiance
         Props pour les rooms.
         NPC talking.
