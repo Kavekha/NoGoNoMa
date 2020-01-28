@@ -8,6 +8,7 @@ from components.magic_item_components import MagicItemComponent
 from components.name_components import NameComponent, ObfuscatedNameComponent
 from components.item_components import ItemComponent
 from components.item_components import ConsumableComponent
+from components.spell_components import KnownSpell
 
 from data.components_enum import MagicItemClass
 from texts import Texts
@@ -91,7 +92,6 @@ def get_item_color(item_entity):
 
 def get_item_display_name(item_id):
     print(f'get item display name: item id {item_id}')
-    from components.spell_components import KnownSpell
     master_dungeon = World.fetch('master_dungeon')
     item_name_comp = World.get_entity_component(item_id, NameComponent).name
 

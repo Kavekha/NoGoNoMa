@@ -73,7 +73,13 @@
               "sprite": "items/scroll.png"
         },
         "consumable" : {
-            "effects" : { "teach_spell" : "HARM" }
+            "effects": {
+                "teach_spell": "HARM"
+            }
+        },
+        "magic": {
+              "class": "common",
+              "naming": "UNKNOWN_SPELL_BOOK"
         }
       },
       {

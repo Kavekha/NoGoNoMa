@@ -13,7 +13,7 @@
     { "name" : "ROD_OF_LIGHTNINGS", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "STRENGTH_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "MANA_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
-    { "name" : "BOOK_OF_HARM", "weight" : 1000, "min_depth" : 1, "max_depth" : 100 },
+    { "name" : "BOOK_OF_HARM", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "POISON_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "SLOW_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
     { "name" : "HASTE_POTION", "weight" : 1, "min_depth" : 1, "max_depth" : 100 },
