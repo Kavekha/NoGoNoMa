@@ -14,7 +14,8 @@ from components.pools_component import Pools
 from components.provide_effects_components import ProvidesHealingComponent, ProvidesCurseRemovalComponent, \
     ProvidesIdentificationComponent, ProvidesManaComponent
 from components.item_components import ConsumableComponent
-from components.status_effect_components import ConfusionComponent, DurationComponent, StatusEffectComponent
+from components.status_effect_components import ConfusionComponent, DurationComponent, StatusEffectComponent, \
+    SlowSpellEffect, DamageOverTimeEffect
 from components.hidden_component import HiddenComponent
 from components.triggers_components import ActivationComponent
 from components.inflicts_damage_component import InflictsDamageComponent
@@ -113,9 +114,11 @@ class Effect:
 
         elif effect_type == EffectType.SLOW:
             self.initiative_penality = kwargs.get('initiative_penality')
+            self.turns = kwargs.get('turns')
 
         elif effect_type == EffectType.DAMAGE_OVER_TIME:
             self.damage = kwargs.get('damage')
+            self.turns = kwargs.get('turns')
 
         self.effect_type = effect_type
 
@@ -275,20 +278,20 @@ def event_trigger(creator, item, effect_spawner_target):
     attr_modifier = World.get_entity_component(item, AttributeBonusComponent)
     mana = World.get_entity_component(item, ProvidesManaComponent)
     teach_spell = World.get_entity_component(item, TeachesSpell)
-
-    from components.status_effect_components import SlowSpellEffect, DamageOverTimeEffect
     dot = World.get_entity_component(item, DamageOverTimeEffect)
     slow = World.get_entity_component(item, SlowSpellEffect)
 
     if dot:
+        dot_duration = World.get_entity_component(item, DurationComponent)
         add_effect(creator,
-                   Effect(EffectType.DAMAGE_OVER_TIME, damage=dot.damage),
+                   Effect(EffectType.DAMAGE_OVER_TIME, damage=dot.damage, turns=dot_duration.turns),
                    effect_spawner_target)
         did_something = True
 
     if slow:
+        slow_duration = World.get_entity_component(item, DurationComponent)
         add_effect(creator,
-                   Effect(EffectType.SLOW, damage=slow.initiative_penality),
+                   Effect(EffectType.SLOW, initiative_penality=slow.initiative_penality, turns=slow_duration.turns),
                    effect_spawner_target)
         did_something = True
 

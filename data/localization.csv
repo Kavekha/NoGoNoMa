@@ -170,8 +170,9 @@ YOU_LEARN_SPELL_;You learn the spell: ;Vous avez appris le sort:
 YOU_ALREADY_KNOW_SPELL;You already know this spell.;Vous connaissez déjà ce sort.
 SLOW_EFFECT;Slow;Lenteur
 HASTE_EFFECT;Haste;Hate
-DAMAGE_OVER_TIME;Damage over time,Degats sur la durée
+DAMAGE_OVER_TIME;Damage over time;Degats sur la durée
 SLOW_POTION;Slow potion;Potion de lenteur
 POISON_POTION;Poison potion;Potion de poison
 HASTE_POTION;Haste potion;Potion de Hate
-
+UNKNOWN_SPELL_BOOK;Unknown spellbook;Livre de sort inconnu
+NOTHING;Nothing;Rien

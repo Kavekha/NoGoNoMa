@@ -350,9 +350,11 @@ class RawsMaster:
 
         if effects.get('damage_over_time'):
             effects_list.append(DamageOverTimeEffect(effects.get('damage_over_time')))
+            effects_list.append(DurationComponent(config.DEFAULT_DOT_DURATION))
 
         if effects.get('slow'):
-            effects_list.append(SlowSpellEffect(effects.get('slow')))
+            effects_list.append(SlowSpellEffect(initiative_penality=effects.get('slow', 0)))
+            effects_list.append(DurationComponent(config.DEFAULT_SLOW_DURATION))
 
         return effects_list
 

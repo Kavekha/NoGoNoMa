@@ -27,10 +27,6 @@ class InitiativeSystem(System):
             print(f'INITIATIVE: {entity} initiative is : {initiative.current}')
 
             # on ajoute les penalités d'initiative.
-            slow_effects = World.get_components(StatusEffectComponent, SlowSpellEffect)
-            for entity, (status, slow) in slow_effects:
-                initiative.current += slow.initiative_penality
-
             initiative_cost = World.get_entity_component(entity, InitiativeCostComponent)
             if initiative_cost:
                 initiative.current += initiative_cost.cost

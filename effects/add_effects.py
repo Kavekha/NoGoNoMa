@@ -11,18 +11,18 @@ import config
 
 
 def get_slow_effect_name(initiative_penality_value):
-    if initiative_penality_value <= 0:
+    if initiative_penality_value > 0:
         return "SLOW_EFFECT"
-    elif initiative_penality_value > 0:
+    elif initiative_penality_value <= 0:
         return "HASTE_EFFECT"
 
 
 def add_slow_effect(effect_spawner, target):
     turns = effect_spawner.effect.turns
-    slow_effect_name = get_slow_effect_name(get_slow_effect_name(effect_spawner.effect.initiative_penality))
+    slow_effect_name = get_slow_effect_name(effect_spawner.effect.initiative_penality)
     World.create_entity(
         StatusEffectComponent(target),
-        SlowSpellEffect(effect_spawner.initiative_penality),
+        SlowSpellEffect(effect_spawner.effect.initiative_penality),
         DurationComponent(nb_turns=turns),
         NameComponent(Texts.get_text(slow_effect_name))
     )

@@ -115,6 +115,8 @@ def get_item_display_name(item_id):
             known_spell = World.get_entity_component(item_id, KnownSpell)
             if known_spell:
                 return Texts.get_text(known_spell.display_name)
+            else:
+                return Texts.get_text("UNKNOWN_SPELL_BOOK")
     return Texts.get_text("UNKNOWN")
 
 

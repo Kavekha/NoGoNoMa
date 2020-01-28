@@ -66,7 +66,8 @@ class TurnStatusEffectSystem(System):
             effects_ended = list()
             for effect_entity, effect_status in entities_and_components_effects_applied_this_update:
                 duration = World.get_entity_component(effect_entity, DurationComponent)
-                if World.entity_is_alive(effect_status.target):
+                if World.entity_is_alive(effect_status.target) and duration:
+                    print(f'duration component is {duration}')
                     duration.turns -= 1
                     if duration.turns < 1:
                         World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, recalculate things
@@ -78,6 +79,7 @@ class TurnStatusEffectSystem(System):
                                    Effect(EffectType.DAMAGE, damage=dot.damage),
                                    Targets(TargetType.SINGLE, target=effect_status.target)
                                    )
+
                     slow = World.get_entity_component(effect_entity, SlowSpellEffect)
                     if slow:
                         World.add_component(InitiativeCostComponent(slow.initiative_penality), effect_status.target)

@@ -58,10 +58,9 @@ Release 5 - Done.
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales & magie basique
-        tofix: pickup: LearnSpellbook nom affiché.
+        > tofix: pickup: LearnSpellbook nom affiché.
+        > tofix:pas de log si user != player dans try to cast.
         tofix:pickup: Objet non identifié mais sans moyen d'etre identifié à l'usage. SpellBook tjrs.
-        tofix:pas de log si user != player dans try to cast.
-        tocheck: On verifie le spell dans le trigger event ou dans le try to cast?
         Proc effect on weapon.
         Enemy abilities
         -> Poc API
