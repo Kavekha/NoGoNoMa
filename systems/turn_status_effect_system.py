@@ -1,8 +1,10 @@
 from systems.system import System
 from components.initiative_components import MyTurn, InitiativeCostComponent
-from components.status_effect_components import StatusEffectComponent, ConfusionComponent, DurationComponent
+from components.status_effect_components import StatusEffectComponent, ConfusionComponent, DurationComponent, \
+    DamageOverTimeEffect, SlowSpellEffect
 from components.equip_components import EquipmentChangedComponent
 from components.name_components import NameComponent
+from effects.effects_system import add_effect, Effect, EffectType, Targets, TargetType
 from world import World
 from state import States
 import config
@@ -64,10 +66,23 @@ class TurnStatusEffectSystem(System):
             effects_ended = list()
             for effect_entity, effect_status in entities_and_components_effects_applied_this_update:
                 duration = World.get_entity_component(effect_entity, DurationComponent)
-                duration.turns -= 1
-                if duration.turns < 1:
-                    World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, so recalculate things
-                    effects_ended.append(effect_entity)
+                if World.entity_is_alive(effect_status.target) and duration:
+                    print(f'duration component is {duration}')
+                    duration.turns -= 1
+                    if duration.turns < 1:
+                        World.add_component(EquipmentChangedComponent(), effect_status.target)  # dirty, recalculate things
+                        effects_ended.append(effect_entity)
+
+                    dot = World.get_entity_component(effect_entity, DamageOverTimeEffect)
+                    if dot:
+                        add_effect(None,
+                                   Effect(EffectType.DAMAGE, damage=dot.damage),
+                                   Targets(TargetType.SINGLE, target=effect_status.target)
+                                   )
+
+                    slow = World.get_entity_component(effect_entity, SlowSpellEffect)
+                    if slow:
+                        World.add_component(InitiativeCostComponent(slow.initiative_penality), effect_status.target)
 
             for effect_ended in effects_ended:
                 effect_name = World.get_entity_component(effect_ended, NameComponent).name

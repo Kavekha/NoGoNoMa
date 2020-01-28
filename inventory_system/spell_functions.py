@@ -38,15 +38,16 @@ def try_to_cast_spell(caster, known_spell_to_cast):
             if ranged:
                 target_intent = TargetingComponent(spell_entity, ranged.range)
                 World.add_component(target_intent, caster)
-                logs = World.fetch('logs')
-                logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("SELECT_TARGET")} '
-                                f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
-                print(f'spell has range')
-                return States.SHOW_TARGETING
+                if caster == World.fetch('player'):
+                    logs = World.fetch('logs')
+                    logs.appendleft(f'[color={config.COLOR_SYS_MSG}]{Texts.get_text("SELECT_TARGET")} '
+                                    f'{Texts.get_text("ESCAPE_TO_CANCEL")}[/color]')
+                    return States.SHOW_TARGETING
             World.add_component(WantsToCastSpellComponent(spell_id=spell_entity),
                                 caster)
             return States.TICKING
         else:
-            logs = World.fetch('logs')
-            logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOT_ENOUGH_MANA")}[/color]')
+            if caster == World.fetch('player'):
+                logs = World.fetch('logs')
+                logs.appendleft(f'[color={config.COLOR_PLAYER_INFO_NOT}]{Texts.get_text("NOT_ENOUGH_MANA")}[/color]')
     return States.TICKING

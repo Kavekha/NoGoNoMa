@@ -1,5 +1,6 @@
 from systems.system import System
 from components.initiative_components import InitiativeComponent, MyTurn, InitiativeCostComponent
+from components.status_effect_components import SlowSpellEffect, StatusEffectComponent
 from components.position_components import PositionComponent
 from map_builders.commons import distance_to
 from world import World
@@ -25,6 +26,7 @@ class InitiativeSystem(System):
         for entity, (initiative, position) in subjects:
             print(f'INITIATIVE: {entity} initiative is : {initiative.current}')
 
+            # on ajoute les penalités d'initiative.
             initiative_cost = World.get_entity_component(entity, InitiativeCostComponent)
             if initiative_cost:
                 initiative.current += initiative_cost.cost

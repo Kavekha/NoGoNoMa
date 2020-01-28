@@ -54,12 +54,13 @@ Release 5 - Done.
         > Connaitre & apprendre des sorts.
         > Afficher spellbook pour cast.
         > tofix: Message "Target" quand cast spell s'affiche apres le lancement / action suivante.
+        > Slow & DoT, various items
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales & magie basique
-        tofix: pickup: LearnSpellbook nom affiché.
+        > tofix: pickup: LearnSpellbook nom affiché.
+        > tofix:pas de log si user != player dans try to cast.
         tofix:pickup: Objet non identifié mais sans moyen d'etre identifié à l'usage. SpellBook tjrs.
-        Slow & DoT, various items
         Proc effect on weapon.
         Enemy abilities
         -> Poc API

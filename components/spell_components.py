@@ -12,3 +12,8 @@ class KnownSpell:
 class KnownSpells:
     def __init__(self):
         self.spells = list()
+
+
+class TeachesSpell:
+    def __init__(self, spell):
+        self.spell = spell
