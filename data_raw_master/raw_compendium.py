@@ -346,6 +346,12 @@ class RawCompendium:
                 weap[attribute] = weapon[attribute]
             elif attribute == 'dmg_bonus':
                 weap[attribute] = weapon[attribute]
+            elif attribute == 'proc_chance':
+                weap[attribute] = weapon[attribute]
+            elif attribute == 'proc_target':
+                weap[attribute] = weapon[attribute]
+            elif attribute == 'proc_effects':
+                weap[attribute] = weapon[attribute]
             else:
                 print(f'Missing attribute {attribute} for weapon in {weap}')
                 raise NotImplementedError

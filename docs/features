@@ -51,17 +51,17 @@ Release 5 - Done.
         Lancer des sorts.
         Mana affichée & gerée, item mana.
         fix: Masked potion names: seul un nom etait generé (Retour de la liste au for item et non à la fin).
-        > Connaitre & apprendre des sorts.
-        > Afficher spellbook pour cast.
-        > tofix: Message "Target" quand cast spell s'affiche apres le lancement / action suivante.
-        > Slow & DoT, various items
+        Connaitre & apprendre des sorts.
+        Afficher spellbook pour cast.
+        tofix: Message "Target" quand cast spell s'affiche apres le lancement / action suivante.
+        Slow & DoT, various items
+        tofix:pas de log si user != player dans try to cast.
+        tofix: pickup: LearnSpellbook nom affiché.
+        > Proc effect on weapon.
+
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales & magie basique
-        > tofix: pickup: LearnSpellbook nom affiché.
-        > tofix:pas de log si user != player dans try to cast.
-        tofix:pickup: Objet non identifié mais sans moyen d'etre identifié à l'usage. SpellBook tjrs.
-        Proc effect on weapon.
         Enemy abilities
         -> Poc API
 
@@ -223,6 +223,10 @@ Release 5 - Magic items and combat!
                 sucess: Piege esquivé, dommages partiels.
                 crit: Piege entierement esquivé, immunité contre lui. Piege tjrs actif contre ennemis.
             Variété de pieges pour couvrir les possibilités.
+        procs:
+            OnHit, OnGetHit, OnMiss
+            Armes & wearables ont des procs divers, qui sont équipés sur leur porteur.
+            Refacto proc
         -> API
 
     4.8 - Progression level.
