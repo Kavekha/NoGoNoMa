@@ -13,6 +13,12 @@ class World:
         return cls._next_available_id
 
     @classmethod
+    def entity_is_alive(cls, entity):
+        if cls._entities.get(entity):
+            return True
+        return False
+
+    @classmethod
     def remove_component_for_all_entities(cls, component_type):
         print(f'remove component {component_type} for all entities')
         for entity in cls._entities:

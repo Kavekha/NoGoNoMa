@@ -8,7 +8,8 @@ from components.provide_effects_components import ProvidesHealingComponent, Prov
 from components.inflicts_damage_component import InflictsDamageComponent
 from components.ranged_component import RangedComponent
 from components.area_effect_component import AreaOfEffectComponent
-from components.status_effect_components import ConfusionComponent, DurationComponent
+from components.status_effect_components import ConfusionComponent, DurationComponent, SlowSpellEffect, \
+    DamageOverTimeEffect
 from components.item_components import ItemComponent, MeleeWeaponComponent, WearableComponent, ConsumableComponent
 from components.equip_components import EquippableComponent
 from components.blocktile_component import BlockTileComponent, BlockVisibilityComponent
@@ -23,7 +24,7 @@ from components.triggers_components import EntryTriggerComponent, ActivationComp
 from components.door_component import DoorComponent
 from components.initiative_components import InitiativeComponent
 from components.particule_components import SpawnParticuleBurstComponent, SpawnParticuleLineComponent
-from components.spell_components import SpellTemplate
+from components.spell_components import SpellTemplate, TeachesSpell
 
 from data.random_table import RandomTable
 from player_systems.game_system import npc_hp_at_lvl, mana_point_at_level
@@ -343,6 +344,15 @@ class RawsMaster:
 
         if effects.get('identify'):
             effects_list.append(ProvidesIdentificationComponent())
+
+        if effects.get('teach_spell'):
+            effects_list.append(TeachesSpell(effects.get('teach_spell')))
+
+        if effects.get('damage_over_time'):
+            effects_list.append(DamageOverTimeEffect(effects.get('damage_over_time')))
+
+        if effects.get('slow'):
+            effects_list.append(SlowSpellEffect(effects.get('slow')))
 
         return effects_list
 

@@ -437,6 +437,12 @@ class RawCompendium:
                 raw_effects["identify"] = True
             elif effect == "provides_mana":
                 raw_effects[effect] = effect_list[effect]
+            elif effect == "teach_spell":
+                raw_effects[effect] = effect_list[effect]
+            elif effect == "slow":
+                raw_effects[effect] = effect_list[effect]
+            elif effect == "damage_over_time":
+                raw_effects[effect] = effect_list[effect]
             else:
                 print(f'load consum raw: unknown effect {effect} in {effect_list[effect]}')
                 raise NotImplementedError

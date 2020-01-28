@@ -17,6 +17,66 @@
           }
       },
       {
+          "name" : "SLOW_POTION",
+          "renderable": {
+              "glyph" : "!",
+              "fg" : "#FF00FF",
+              "order" : "ITEM",
+              "sprite": "items/potion.png"
+          },
+          "consumable" : {
+              "effects" : { "slow" : 2}
+          },
+          "magic": {
+              "class": "common",
+              "naming": "potion"
+          }
+      },
+      {
+          "name" : "HASTE_POTION",
+          "renderable": {
+              "glyph" : "!",
+              "fg" : "#FF00FF",
+              "order" : "ITEM",
+              "sprite": "items/potion.png"
+          },
+          "consumable" : {
+              "effects" : { "slow" : -2}
+          },
+          "magic": {
+              "class": "common",
+              "naming": "potion"
+          }
+      },
+      {
+          "name" : "POISON_POTION",
+          "renderable": {
+              "glyph" : "!",
+              "fg" : "#FF00FF",
+              "order" : "ITEM",
+              "sprite": "items/potion.png"
+          },
+          "consumable" : {
+              "effects" : { "damage_over_time" : 2}
+          },
+          "magic": {
+              "class": "common",
+              "naming": "potion"
+          }
+      },
+      {
+        "name" : "BOOK_OF_HARM",
+        "renderable": {
+              "glyph" : ")",
+              "fg" : "#00FFFF",
+              "order" : "ITEM",
+              "sprite": "items/scroll.png"
+        },
+        "consumable" : {
+            "effects" : { "teach_spell" : "HARM" }
+        }
+      },
+      {
           "name" : "MANA_POTION",
           "renderable": {
               "glyph" : "!",
