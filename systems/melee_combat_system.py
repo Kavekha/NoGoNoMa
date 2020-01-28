@@ -32,8 +32,6 @@ class MeleeCombatSystem(System):
                 # Logs
                 target_name = World.get_entity_component(wants_melee.target, NameComponent).name
                 logs = World.fetch('logs')
-                # particules
-                target_pos = World.get_entity_component(wants_melee.target, PositionComponent)
 
                 # HIT ROLL
                 natural_roll = randint(1, 20)
@@ -52,11 +50,14 @@ class MeleeCombatSystem(System):
                 attacker_natural_attacks = World.get_entity_component(entity, NaturalAttackDefenseComponent)
 
                 # attacker has weapon?
-                weapon_info = None
+                weapon_entity = None
+                weapon_info = get_virtual_bare_hands_weapon(entity)
+
                 wielded_weapons = World.get_components(EquippedComponent, MeleeWeaponComponent)
                 for wielden_weapon, (wielded, melee) in wielded_weapons:
                     if wielded.owner == entity and wielded.slot == EquipmentSlots.MELEE:
                         weapon_info = melee
+                        weapon_entity = wielden_weapon
                 # natural attack?
                 if attacker_natural_attacks:
                     if randint(0, 100) <= config.DEFAULT_NATURAL_ATTACK_CHOICE:
@@ -97,7 +98,8 @@ class MeleeCombatSystem(System):
                                Targets(TargetType.SINGLE, target=wants_melee.target))
                     continue
 
-                # success Damage calculation
+                # success Hit
+                # Damage calculation
                 if weapon_info:
                     base_dmg = randint(weapon_info.min_dmg, weapon_info.max_dmg)
                     base_dmg += weapon_info.dmg_bonus
@@ -132,5 +134,27 @@ class MeleeCombatSystem(System):
                 # initiative cost
                 World.add_component(calculate_fight_cost(entity), entity)
 
+                # proc chance: Hit is enough, no check on damage or not
+                if weapon_info.proc_chance:
+                    if randint(1, 100) <= weapon_info.proc_chance:
+                        if weapon_info.proc_target == 'self':
+                            target = 0
+                        else:
+                            target = wants_melee.target
+                        add_effect(entity,
+                                   Effect(EffectType.ITEM_USE, item=weapon_entity),
+                                   Targets(TargetType.SINGLE, target=target))
+
         World.remove_component_for_all_entities(WantsToMeleeComponent)
 
+
+def get_virtual_bare_hands_weapon(entity):
+    virtual_bare_hands = MeleeWeaponComponent(attribute=WeaponAttributes.MIGHT,
+                                              min_dmg=config.DEFAULT_MIN_DMG,
+                                              max_dmg=config.DEFAULT_MAX_DMG,
+                                              hit_bonus=0,
+                                              dmg_bonus=0,
+                                              proc_chance=None,
+                                              proc_target=None
+                                              )
+    return virtual_bare_hands

@@ -278,7 +278,34 @@
               "class": "common",
               "naming": "UNIDENTIFIED_DAGGER"
           }
-      },      {
+      },
+      {
+          "name" : "DAGGER_OF_VENOM",
+          "renderable": {
+              "glyph" : "/",
+              "fg" : "#FFAAAA",
+              "order" : "ITEM",
+              "sprite": "items/sword.png"
+          },
+          "weapon" : {
+              "range" : "melee",
+              "attribute": "quickness",
+              "min_dmg": 1,
+              "max_dmg": 4,
+              "hit_bonus": 3,
+              "dmg_bonus": 1,
+              "proc_chance": 50,
+              "proc_target": "target",
+              "proc_effects": {
+                  "damage_over_time": 2
+              }
+          },
+          "magic": {
+              "class": "uncommon",
+              "naming": "UNIDENTIFIED_DAGGER"
+          }
+      },
+      {
           "name" : "DAGGER_ASSASSIN",
           "renderable": {
               "glyph" : "/",

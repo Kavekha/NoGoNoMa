@@ -32,6 +32,9 @@ items (list)
         max_dmg: int
         hit_bonus: int
         dmg_bonus: int
+        proc_chance: int
+        proc_target: self ou target
+        proc_effects: effets lors d'un proc.
     wearable:
         slot:   # shield, helm
         armor: int
