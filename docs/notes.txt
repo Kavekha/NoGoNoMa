@@ -1,6 +1,4 @@
 Load_raws
-    Fusionner les raws pour ne pas les garder.
-    Exemple: Table Raws oblige a chercher dans tous les raws pour determiner la table.
     Sanity checks: http://bfnightly.bracketproductions.com/rustbook/chapter_46.html
 
 Identification:
@@ -11,6 +9,11 @@ Identification:
 
 Items:
     Si on utilise Identification ou Removal Curse, et Cancel, l'item est perdu quand meme.
+
+Procs:
+    Un seul proc possible par item.
+    Mettre les procs dans un component sur le joueur / monstres avec des effets OnHit, OnGethit, etc.
+    Dirty / Equipment change pour mettre ce component à jour.
 
 Input:
     Recuperation des inputs dans le save pour le Replay.
@@ -24,12 +27,10 @@ AI:
 
 Tour par Tour:
     Foutoir dans les States & les run_systems.
-    Parfois, deplacement vers un ennemi est consideré comme "didnt move" et aucune action (Vers la droite, avec ennemi a droite).
 
 World:
     maintain :
         Gerer autrement les delete pour ne pas defoncer les iterators.
-        On marque une entité comme "morte", et on l'efface en fin de cycle.
         Remplacer les id effacés, en n'ecrasant pas ceux uqi existent tjrs.
 
 UI:
@@ -47,8 +48,6 @@ Use:
 
 Changer State
     Tjrs penible. cf damage_system pour changer l'etat de mort.
-
-systems order
 
 Inventory
     Si identification a l'equipement, on reste dans le menu pour voir ce que c'est.

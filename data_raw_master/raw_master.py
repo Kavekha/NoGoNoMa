@@ -251,9 +251,18 @@ class RawsMaster:
             weap_max_dmg = weapon.get('max_dmg')
             weap_dmg_bonus = weapon.get('dmg_bonus')
             weap_hit_bonus = weapon.get('hit_bonus')
+            weap_proc_chance = weapon.get('proc_chance', 0)
+            weap_proc_target = weapon.get('proc_target', 0)
+            weap_proc_effects = weapon.get('proc_effects')
 
             components_for_entity.append(MeleeWeaponComponent(weap_attribute, weap_min_dmg,
-                                                              weap_max_dmg, weap_dmg_bonus, weap_hit_bonus))
+                                                              weap_max_dmg, weap_dmg_bonus, weap_hit_bonus,
+                                                              weap_proc_chance, weap_proc_target))
+
+            if weap_proc_effects:
+                effects_list = RawsMaster.apply_effects(weap_proc_effects)
+                for effect in effects_list:
+                    components_for_entity.append(effect)
 
         if to_create.get('wearable'):
             wearable = to_create.get('wearable')
