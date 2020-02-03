@@ -17,7 +17,7 @@ from components.viewshed_component import ViewshedComponent
 from components.character_components import AttributesComponent, MonsterComponent, AttributeBonusComponent
 from components.skills_component import SkillsComponent
 from components.pools_component import Pools
-from components.natural_attack_defense_component import NaturalAttackDefenseComponent, NaturalAttack
+from components.ability_components import NaturalAttackDefenseComponent, NaturalAttack, AbilitiesComponent, Ability
 from components.magic_item_components import MagicItemComponent, CursedItemComponent
 from components.hidden_component import HiddenComponent
 from components.triggers_components import EntryTriggerComponent, ActivationComponent
@@ -200,6 +200,16 @@ class RawsMaster:
                     )
                     natural_def_attack_component.attacks.append(natural_attack)
             components_for_entity.append(natural_def_attack_component)
+
+        if to_create.get('abilities'):
+            abilities_component = AbilitiesComponent()
+            for ability in to_create.get("abilities"):
+                ability_component = Ability(ability.get('spell'),
+                                            ability.get('chance'),
+                                            ability.get('range'),
+                                            ability.get('min_range'))
+                abilities_component.abilities.append(ability_component)
+            components_for_entity.append(abilities_component)
 
         mob_id = World.create_entity(PositionComponent(x, y))
 

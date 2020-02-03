@@ -1,5 +1,6 @@
 from world import World
 from systems.system import System
+from components.position_components import PositionComponent
 from components.intent_components import WantsToCastSpellComponent
 from components.magic_item_components import IdentifiedItemComponent
 from components.equip_components import EquipmentChangedComponent
@@ -30,8 +31,12 @@ class SpellUseSystem(System):
                 if aoe:
                     target = Targets(TargetType.TILES, tiles=get_aoe_tiles(wants_to_cast.target, aoe.radius))
                 else:
+                    target_pos = World.get_entity_component(wants_to_cast.target, PositionComponent)
                     current_map = World.fetch('current_map')
-                    target_x, target_y = wants_to_cast.target
+                    if target_pos:
+                        target_x, target_y = target_pos.x, target_pos.y
+                    else:
+                        target_x, target_y = wants_to_cast.target
                     target = Targets(TargetType.TILE, tile=current_map.xy_idx(target_x,
                                                                               target_y))
             add_effect(entity, Effect(EffectType.SPELL_USE, spell=wants_to_cast.spell), target)

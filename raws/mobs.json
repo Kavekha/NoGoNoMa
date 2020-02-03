@@ -28,6 +28,39 @@
       }
     },
     {
+      "name": "LARGE_SNAKE",
+      "renderable": {
+        "glyph": "s",
+        "fg": "#FF0000",
+        "order": "MONSTER",
+        "sprite": "chars/snake.png"
+      },
+      "blocks_tile": true,
+      "vision_range": 6,
+      "attributes": {
+        "might": 1,
+        "body": 2,
+        "quickness": 3,
+        "wits": 1
+      },
+      "skills": {
+        "melee": -2,
+        "dodge": 1
+      },
+      "level": 1,
+      "natural": {
+        "attacks": [
+          "BITE"
+        ]
+      },
+      "abilities": [
+        {"spell": "POISON_SPIT",
+        "chance": 100,
+        "range": 6,
+        "min_range": 3}
+      ]
+    },
+    {
       "name": "MORBLIN",
       "renderable": {
         "glyph": "m",

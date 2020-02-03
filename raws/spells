@@ -8,6 +8,15 @@
         "damage": 5,
         "particule": "*;#FFA500;particules/harm_spell.png"
       }
+    },
+    {
+      "name": "POISON_SPIT",
+      "mana_cost": 1,
+      "effects": {
+        "ranged": 6,
+        "damage_over_time": 4,
+        "particule": "▓;#00FF00;particules/poison_effect.png"
+      }
     }
   ]
 }

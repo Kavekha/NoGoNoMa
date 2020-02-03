@@ -1,18 +1,24 @@
 import tcod as tcod
 
 import math
+from random import randint
 
-from systems.system import System
 from components.character_components import MonsterComponent
 from components.viewshed_component import ViewshedComponent
 from components.position_components import PositionComponent
 from components.name_components import NameComponent
-from components.intent_components import WantsToMeleeComponent
+from components.intent_components import WantsToMeleeComponent, WantsToCastSpellComponent
 from components.status_effect_components import ConfusionComponent
+from components.ability_components import AbilitiesComponent
 from components.initiative_components import MyTurn
+
+from systems.system import System
 from systems.particule_system import ParticuleBuilder
+
 from player_systems.try_move_player import move_to, action_wait
 from map_builders.commons import distance_to
+
+from data_raw_master.load_raws import find_spell_entity
 from world import World
 
 
@@ -38,22 +44,47 @@ class MonsterAi(System):
             if can_act:
                 print(f'monster ai: player position is {player_position.x, player_position.y} - checking {x, y}')
                 if viewshed.visible_tiles[y][x]:
-                    print(f'me, monster {entity}, I see player position')
-                    if distance_to(position_component.x, position_component.y,
-                                   player_position.x, player_position.y) <= 1.5:
+                    distance_from_player = distance_to(position_component.x, position_component.y,
+                                                       player_position.x, player_position.y)
+                    if distance_from_player <= 1.5:
                         want_to_melee = WantsToMeleeComponent(player)
                         World.add_component(want_to_melee, entity)
                     else:
-                        move_astar = self.move_astar(entity, viewshed, position_component, player_position.x, player_position.y)
-                        current_map = World.fetch('current_map')
-                        if move_astar:
-                            x, y = move_astar
-                            move_to(x, y, entity, current_map)
+                        print(f'entity {entity} may try to cast a spell')
+                        cast_ability = False
+                        ability_list = World.get_entity_component(entity, AbilitiesComponent)
+                        if ability_list:
+                            print(f'ability list : {ability_list.abilities}')
+                            for ability in ability_list.abilities:
+                                print(f'ability is {ability.spell}')
+                                if ability.min_range <= distance_from_player <= ability.range:
+                                    if randint(1, 100) <= ability.chance:
+                                        spell_id = find_spell_entity(ability.spell)
+                                        if spell_id:
+                                            want_to_cast = WantsToCastSpellComponent(spell_id, player)
+                                            World.add_component(want_to_cast, entity)
+                                            print(f'{entity} cast spell {ability.spell} on player')
+                                            cast_ability = True
+                                            break
+                                        print(f'no spell id for {ability.spell}')
                         else:
-                            print(f'astar didnt work. Move towards instead.')
-                            self.move_towards(entity, position_component, player_position.x, player_position.y, current_map)
+                            print(f'no ability')
+
+                        if not cast_ability:
+                            move_astar = self.move_astar(entity, viewshed, position_component,
+                                                         player_position.x, player_position.y)
+                            current_map = World.fetch('current_map')
+                            if move_astar:
+                                print(f'move astar ok')
+                                x, y = move_astar
+                                move_to(x, y, entity, current_map)
+                            else:
+                                print(f'astar didnt work. Move towards instead.')
+                                self.move_towards(entity, position_component,
+                                                  player_position.x, player_position.y, current_map)
                 else:
-                    print(f'me, monster {entity}, I dont see player and wait. Im at {position_component.x, position_component.y}')
+                    print(f'me, monster {entity}, I dont see player and wait. Im at '
+                          f'{position_component.x, position_component.y}')
                     # do nothing, pass its turn.
                     action_wait(entity)
 

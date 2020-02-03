@@ -43,7 +43,8 @@ CHARS = [
     'chars/rat.png',
     'chars/dragon.png',
     'chars/golem.png',
-    'chars/skelton.png'
+    'chars/skelton.png',
+    'chars/snake.png'
 ]
 
 
@@ -69,7 +70,8 @@ PARTICULES = [
     'particules/grid.png',
     'particules/lightning.png',
     'particules/stat_upgrade.png',
-    'particules/harm_spell.png'
+    'particules/harm_spell.png',
+    'particules/poison_effect.png'
 ]
 
 

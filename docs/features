@@ -57,15 +57,117 @@ Release 5 - Done.
         Slow & DoT, various items
         tofix:pas de log si user != player dans try to cast.
         tofix: pickup: LearnSpellbook nom affiché.
-        > Proc effect on weapon.
+        Proc effect on weapon.
+        > Enemy abilities
 
 
 Release 5 - Magic items and combat!
     4.5 - Attaques speciales & magie basique
-        Enemy abilities
         -> Poc API
 
-    4.6 - Table de loots dynamiques.
+    4.6 - Combat.
+        hit chances:
+            melee skill vs dodge pour toucher.
+        Hit & shield:
+            Si hit, calcul dmg.
+            Jet de Parade pour reduction de degats.
+            Si Shield, reduction augmentée.
+        Stats & combat.
+            might: Augmente les dmg.
+            quickness: Chances d'extra-attaque.
+            body: reduit les dmg après armure.
+            wits: augmente les chances de degats critiques.
+            Affichage des bonus dans la fiche de personnage.
+        Armes 1 main, 1 main + bouclier, 2 mains, offhand.
+            1 main, shield:
+                Augmente le temps d'attaque.
+                Beneficie du bouclier.
+                Si parade, bonus au toucher contre l'attaquant.
+            1 main, no shield:
+                Augmente les chances de toucher.
+            2 mains:
+                Bouclier impossible.
+                Augmentation des dommages.
+                Augmente le temps d'attaque.
+            1 main + Offhand:
+                Extra-attaque.
+                Reduction des chances de toucher pour la seconde attaque.
+            Armes 2 mains & offhand ajoutées.
+        types de dmg:
+            degats physiques & degats magiques.
+                Physique prends en compte l'armure.
+            sous-type: Contondant:
+                Chances de stun.
+                Augmente le bonus de Might.
+                Augmente les degats critiques.
+            sous-type: Tranchant:
+                Chances de bleed.
+                Double le bonus d'extra attaque.
+            sous-type: Perforant.
+                Chances d'ignorer l'armure.
+            vulnerabilité aux degats:
+                Augmentations des dmg si la cible est sensible à ce type / sous-type de degats.
+                Reduction des dmg si la cible est insensible.
+            Armes de chaque type de dmg * chaque categorie (1 main, 2 mains etc).
+            Creatures sensibles & insensibles aux types de dmg.
+        localisation des coups:
+            Chances de toucher tête, torse, jambes, mains.
+            L'armure de la zone protégée est prise en compte, l'autre est ignorée.
+            Tête:
+                10% chances.
+                150% dmg subits.
+                Chances de concussion: Reduction visibilité, ranged, hit chance.
+            Jambes:
+                25% chances.
+                75% dmg.
+                Si crit: InitiativeCost augmentée pour mouvement, penalité Esquive / anti piege.
+            Mains:
+                10% chances.
+                50% dmg.
+                Si crit: Reduction hit chance.
+            Torse:
+                % restant.
+                100% dmg.
+                Si crit: Souffle coupé, chances d'augmentation de l'initiative cost pour attaque & mouvement.
+            Ambiance:
+                Messages selon la zone touchée.
+                Messages de mort selon zone touchée.
+            Monstres non humanoide:
+                % de zones corporelles definies sur le monstre.
+            Ajout de monstres sans tête, serpents, sans bras, sans jambes.
+        skills & magie.
+            Sorts avec niveau. Jet de Skill Magie vs Niveau du sort.
+        types de magie:
+            curative: effets de soins.
+            physique: reduit par armure, localisée.
+            psychique: resistée par Wits.
+            energie: Resistée par Body.
+        stats & magie:
+            might:
+                Augmente la portée.
+                Augmente legerement les dmg de type energie & physique.
+            body:
+                Chances de reduire le cout mana.
+                Augmente legerement la durée.
+            quickness:
+                Chances de Reduire le temps de cast.
+            wits:
+                Augmente mana.
+                Augmente effets (durée, puissance, portée).
+        pieges:
+            type de degats.
+            localisation prioritaire (Divise les autres localisations par deux, augmentant la cible par effet de bord).
+            HiddenSkill du piege.
+            Jet SkillTrap vs HiddenSkill
+            Si piege activé, jet SkillTrap vs Skill du Piege.
+            Variété de pieges pour couvrir les possibilités.
+        procs:
+            OnHit, OnGetHit, OnMiss, OnBlock, OnParry
+            Armes & wearables ont des procs divers, qui sont équipés sur leur porteur.
+            Refacto proc
+        -> API
+
+    4.7 - Table de loots dynamiques.
         MasterDungeon:
             Spawn passe par le MasterDungeon.
             Spawn d'items ou monstres plus équilibré (une chance sur deux).
@@ -97,137 +199,7 @@ Release 5 - Magic items and combat!
             Des objets peuvent apparaitre avec des pieges ou des gardiens.
         -> API
 
-    4.7 - Combat.
-        melee skill vs melee skill pour hit.
-            fail: Malus vulnerable: hit garanti pour le prochain tour / touché.
-            miss: rien.
-            success: degats.
-            crit: extra attaque.
-        dodge skill vs melee skill pour dodge.
-            fail: malus opportunité.
-            miss: prends les degats.
-            success: esquive le coup.
-            crit: esquive le coup. Opportunité contre son opposant.
-        parrying skill vs melee skill pour parry.
-            Si bouclier: reduit les dmg.
-            fail: stun leger.
-            miss: rien.
-            success: Annule largement les dmg.
-            crit: Annule les dmg. Gagne opportunité contre opposant.
-        stats & combat
-            might: augmente les dmg.
-            quickness: chances d'extra-attaque.
-            quickness: Ajout à l'attaque d'opportunité.
-            body: reduit les dmg après armure.
-            body: reduit les chances de stun.
-            wits: augmente les chances de degats critiques.
-            wits: donne une chance à attaque d'opportunité.
-            affichage des stats dans Char Sheet.
-        armes 1 main, 1 main + bouclier, 2 mains, offhand.
-            1 main:
-                ++ chances extra attaque.
-                ++ chances opportunité.
-                ++ chances de reduire le temps d'attaque (No shield)
-            1 main + bouclier:
-                ++ chances d'opportunité après parade.
-                ++ chances de parade.
-            2 mains:
-                ++ augmentation dmg.
-                -- augmentation du temps d'attaque.
-                -- impossible de bouclier.
-                ++ chances de stun.
-                + chances de parade.
-            Offhand:
-                +++ extra attaque garantie.
-                ++ chances de parade.
-                -- hit chance.
-            items: Arme 2 mains template, Arme offhand template.
-        types de dmg.
-            contondant:
-                ++ chances de stun.
-                ++ bonus might augmenté.
-                ++ dmg crit augmenté.
-            tranchant:
-                ++ chances de bleed.
-                ++ chances extra attaque.
-            perforant:
-                ++ chances d'ignore armor.
-                ++ chances d'opportunité.
-            vulnerabilité aux types de dmg
-                Degats doublés si vulnerable.
-                Divisés si resistant.
-        skills:
-            Macefighting, Fencing, Swordsmanship (Specialité).
-            S'ajoute aux jets d'attaque & defense.
-            S'ajoute aux dmg.
-            Armes 1 main de chaque type, 2 mains de chaque type, offhand de chaque type.
-        localisation dmg:
-            Chances de toucher tête, torse, jambe, mains.
-            Armure de la zone touchée reduit les dmg.
-            Selon zone:
-                Tete:
-                    10%
-                    150% dmg.
-                    Si crit: Concusion, sorts impossibles & reduction visibilité, ranged, et hit chance.
-                Jambes:
-                    25%
-                    75% dmg.
-                    Si crit: InitiativeCost augmenté pour mouvement, penalité Esquive / anti piege.
-                Mains:
-                    15%
-                    50% dmg.
-                    Si crit: reduction hit chance, desarmement.
-                Torse:
-                    %restant.
-                    100% dmg.
-                    Si crit: souffle coupé. % de chances de initiative cost pour mouvement & attaque.
-                Messages selon la zone touchée.
-                Messages de mort selon zone touchée.
-            % de zones corporelles definies sur le monstre.
-            Monstres sans tête, serpents, sans bras, sans jambes.
-        skills & magie.
-            Sorts avec niveau. Jet de Skill Magie vs Niveau du sort.
-            fail: mana perdue, degats magiques.
-            miss: demi mana perdue.
-            sucess: sort lancé.
-            crit: sort lancé, mana gratuite.
-            Possibilité de lancer sort sans mana, mais Epuisement: penalités generales, initiative cost etc.
-        types de magie:
-            curative: effets de soins.
-            physique: reduit par armure, localisée.
-            psychique
-            energie
-        stats & magie:
-            might:
-                Augmente la portée.
-                Augmente legerement les dmg.
-            body:
-                Chances de reduire le cout mana.
-            quickness:
-                Chances de Reduire le temps de cast.
-            wits:
-                Augmente mana.
-                Augmente effets (durée, puissance, portée).
-        pieges:
-            type de degats.
-            localisation prioritaire (Divise les autres localisations par deux, augmentant la cible par effet de bord).
-            HiddenSkill du piege.
-            Jet SkillTrap vs HiddenSkill:
-                fail: Ne pourra jamais le reveler + bonus du piege contre le perso.
-                miss: Non decouvert.
-                success: Decouvre le piege.
-                crit: Decouvre le piege & immunité contre lui.
-            Si piege activé, jet SkillTrap vs Skill du Piege.
-                fail: effets augmentés sur la victime.
-                miss: effets standards.
-                sucess: Piege esquivé, dommages partiels.
-                crit: Piege entierement esquivé, immunité contre lui. Piege tjrs actif contre ennemis.
-            Variété de pieges pour couvrir les possibilités.
-        procs:
-            OnHit, OnGetHit, OnMiss
-            Armes & wearables ont des procs divers, qui sont équipés sur leur porteur.
-            Refacto proc
-        -> API
+
 
     4.8 - Progression level.
         Effet particule au level up.

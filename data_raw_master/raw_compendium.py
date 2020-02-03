@@ -154,8 +154,10 @@ class RawCompendium:
                     raw_mob[component] = mob[component]
                 elif component == 'natural':
                     raw_mob[component] = RawCompendium.load_natural_def_attack_raw(mob[component])
+                elif component == 'abilities':
+                    raw_mob[component] = RawCompendium.load_abilities_raw(mob[component])
                 else:
-                    print(f'Unknown component {component} for mob {mob}')
+                    print(f'Unknown component "{component}" for mob {mob}')
                     raise NotImplementedError
             RawCompendium.mobs.append(raw_mob)
 
@@ -184,9 +186,29 @@ class RawCompendium:
             RawCompendium.props.append(props)
 
     @staticmethod
+    def load_abilities_raw(data):
+        abilities = list()
+        for ability in data:
+            ability_info = dict()
+            for info in ability:
+                if info == "spell":
+                    ability_info[info] = ability[info]
+                elif info == "chance":
+                    ability_info[info] = ability[info]
+                elif info == "range":
+                    ability_info[info] = ability[info]
+                elif info == "min_range":
+                    ability_info[info] = ability[info]
+                else:
+                    print(f'info "{info}" not implemented for ability "{ability}" in load abilities raw')
+                    raise NotImplementedError
+            abilities.append(ability_info)
+        return abilities
+
+    @staticmethod
     def load_natural_attacks_raw(data):
         for attack in data:
-            natural_attack = {}
+            natural_attack = dict()
             for component in attack:
                 if component == 'name':
                     natural_attack[component] = attack[component]
